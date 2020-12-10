@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "654066222620",
+    "firebase_url": "https://omegame-4d827.firebaseio.com",
+    "project_id": "omegame-4d827",
+    "storage_bucket": "omegame-4d827.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654066222620:android:5621b11ed8d6ca8093c1d9",
+        "android_client_info": {
+          "package_name": "com.onegame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654066222620-gadqui551u9nafka8k9gsns5h4ida77s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onegame",
+            "certificate_hash": "3e9e933d086abaaa82002685b25d5ecb1d8383f7"
+          }
+        },
+        {
+          "client_id": "654066222620-r4sk69ebeahhmc71fepgd51tq6uv2mdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7k_NSkkPg6iM5NX_wkcvtQWw6MMW517U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654066222620-r4sk69ebeahhmc71fepgd51tq6uv2mdf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
