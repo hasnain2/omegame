@@ -62,7 +62,7 @@ const InboxScreen = ({ navigation, route, }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => (ii._id || '')+ 'you'}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7}
                         onPress={() => {

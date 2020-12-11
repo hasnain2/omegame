@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_FILTER, ICON_SEARCH } from '../../assets/icons';
@@ -24,7 +24,9 @@ const AppSearchBar = ({ onChangeText, onRightPess, hideFilter }) => {
                 }}
             />
             {!hideFilter ?
-                <FastImage source={ICON_FILTER} onPress={onRightPess} style={{ height: RFValue(30), width: RFValue(30) }} />
+                <TouchableOpacity onPress={onRightPess}>
+                    <FastImage source={ICON_FILTER} style={{ height: RFValue(30), width: RFValue(30) }} />
+                </TouchableOpacity>
                 : null}
         </View>
     );

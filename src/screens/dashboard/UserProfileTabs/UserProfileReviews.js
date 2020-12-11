@@ -21,7 +21,7 @@ const UserProfileReviews = ({ navigation }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <View style={{ borderBottomColor: AppTheme.colors.lightGrey, borderBottomWidth: 0.5, padding: RFValue(15) }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

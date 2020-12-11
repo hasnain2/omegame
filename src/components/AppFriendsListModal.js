@@ -23,7 +23,6 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
     return (
         <AppModal show={show} toggle={toggle}>
             <View style={{ flex: 1, width: '100%', paddingTop: RFValue(40), backgroundColor: 'black', paddingVertical: RFValue(20) }}>
-
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <AppBackButton onPress={() => toggle()} />
 
@@ -33,7 +32,6 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
                         }} size={3} color={AppTheme.colors.primary} style={{ padding: RFValue(20) }} >Done</AppText>
                         : null}
                 </View>
-
 
                 <View style={{ paddingHorizontal: RFValue(20) }}>
                     <AppSearchBar hideFilter={true} onChangeText={(val) => {
@@ -48,7 +46,7 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
                     bounces={false}
-                    keyExtractor={ii => ii.id + 'you'}
+                    keyExtractor={ii => (ii?._id || '') + 'you'}
                     renderItem={({ item, index }) => (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => selectedContacts(item)}>
                             <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>

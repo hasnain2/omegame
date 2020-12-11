@@ -1,18 +1,17 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Alert, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
-import { AppButton, AppLoadingView, AppSearchBar, AppText, IsUserVerifiedCheck } from '../../components';
+import { DEFAULT_USER_PIC } from '../../../assets/images';
+import { AppButton, AppLoadingView, AppNoDataFound, AppSearchBar, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { MOCKUP_POSTS } from '../../mockups/Mockups';
+import { ActionsOnUsers, GerUserListByType } from '../../services';
+import { FRIEND_STATUSES_ACTIONS, GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
 import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
-import { GerUserListByType } from '../../services'
-import { GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
-import { DEFAULT_USER_PIC } from '../../../assets/images';
 const LIGHT_GREY = '#4d4d4d'
 const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let isFollowerMode = route.params.isFollowerMode;
@@ -38,14 +37,18 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <Ionicons onPress={() => navigation.goBack()} name="arrow-back" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(15) }} />
-            {state.loading ?
-                <AppLoadingView />
-                : null}
             <View style={{ paddingHorizontal: RFValue(20) }}>
                 <AppSearchBar hideFilter={true} onChangeText={(val) => {
                     setState(prev => ({ ...prev, searchTerm: val }))
                 }} />
             </View>
+            {state.loading ?
+                <AppLoadingView />
+                : null}
+
+            {!state.loading && state.data.length < 1 ?
+                <AppNoDataFound />
+                : null}
 
             <FlatList
                 data={state.data}
@@ -54,23 +57,78 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
 
                     }}>
                         <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
-                            <UserAvatar source={item?.profile?.pic ? { uri: item?.profile?.pic } : DEFAULT_USER_PIC} size={50} />
+                            <UserAvatar source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
                             <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                    <AppText bold={true} size={1} color={'white'}>{item?.profile?.firstName || item?.userName} {item?.profile?.lastName}</AppText>
-                                    <IsUserVerifiedCheck check={item?.profile?.isVerified} />
-                                    <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.profile?.earnedXps)}</AppText>
+                                    <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName} {item?.lastName}</AppText>
+                                    <IsUserVerifiedCheck check={item?.isVerified} />
+                                    <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.earnedXps)}</AppText>
                                 </View>
                                 <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.userName}</AppText>
                             </View>
                             <View style={{ flex: 0.7 }}>
-                                <AppButton size={'small'} grey={!isFollowerMode} onPress={() => { }} label={isFollowerMode ? "REMOVE" : "FOLLOWING"} />
+                                <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
+                                    console.log('-----', item)
+                                    Alert.alert(
+                                        isFollowerMode ? "Remove Follower" : "Unfollow",
+                                        "Are you sure to " + (isFollowerMode ? "remove " : "unfollow ") + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
+                                        [{
+                                            text: "Cancel",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                            style: "cancel"
+                                        }, {
+                                            text: "YES", onPress: () => {
+                                                if (isFollowerMode) {
+                                                    // REMOVE FOLLOWER
+                                                    let tempData = state.data;
+                                                    tempData = tempData.filter(itm => {
+                                                        let itm1 = itm;
+                                                        let itm2 = item;
+                                                        let matchess = itm._id === item._id;
+
+                                                        console.log('----------', { itm1, itm2, matchess })
+                                                        debugger
+                                                        return itm?._id != item?._id
+                                                    })
+                                                    setState(prev => ({
+                                                        ...prev,
+                                                        data: tempData,
+                                                        loading: false
+                                                    }))
+                                                } else {
+                                                    let tempData = state.data;
+                                                    console.log('-------DTA------', tempData)
+                                                    debugger
+                                                    tempData = tempData.filter(itm => {
+                                                        let itm1 = itm;
+                                                        let itm2 = item;
+                                                        let matchess = itm._id === item._id;
+
+                                                        console.log('----------', { itm1, itm2, matchess })
+                                                        debugger
+                                                        return itm?._id != item?._id
+                                                    })
+                                                    debugger
+                                                    setState(prev => ({
+                                                        ...prev,
+                                                        data: tempData,
+                                                        loading: false
+                                                    }))
+                                                    debugger
+                                                    ActionsOnUsers((FOLLOWRS) => {
+
+                                                    }, item?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)
+                                                }
+                                            }
+                                        }], { cancelable: false });
+
+                                }} label={isFollowerMode ? "REMOVE" : "FOLLOWING"} />
                             </View>
                         </View>
                     </TouchableOpacity>

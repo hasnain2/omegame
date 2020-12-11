@@ -34,7 +34,7 @@ const ReviewsScreen = ({ navigation }) => {
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
                     bounces={false}
-                    keyExtractor={ii => ii.id + 'you'}
+                    keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
@@ -79,7 +79,7 @@ const ReviewsScreen = ({ navigation }) => {
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={2}
                             bounces={false}
-                            keyExtractor={ii => ii.id + 'you'}
+                            keyExtractor={ii => (ii._id || '') + 'you'}
                             numColumns={NUMBER_OF_COLUMNS}
                             renderItem={({ item, index }) => (
                                 <View style={{ flex: 1, paddingVertical: RFValue(6) }}>
@@ -115,7 +115,7 @@ const ReviewsScreen = ({ navigation }) => {
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={2}
                             bounces={false}
-                            keyExtractor={ii => ii.id + 'you'}
+                            keyExtractor={ii => (ii._id || '') + 'you'}
                             numColumns={NUMBER_OF_COLUMNS}
                             renderItem={({ item, index }) => (
                                 <View style={{ flex: 1, paddingVertical: RFValue(6) }}>
@@ -153,7 +153,7 @@ const ReviewsScreen = ({ navigation }) => {
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={2}
                             bounces={false}
-                            keyExtractor={ii => ii.id + 'you'}
+                            keyExtractor={ii => (ii._id || '') + 'you'}
                             renderItem={({ item, index }) => (
                                 <View style={{ flex: 1, paddingVertical: RFValue(6) }}>
                                     <AppRadioButton val={state.releaseDate === item.name} onPress={() => {

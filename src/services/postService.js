@@ -65,7 +65,7 @@ const GetHomeFeed = (callback) => {
     }).then(([status, data]) => {
         console.log('-----------HOME FEED RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data.data.data)
+            callback(data?.data?.data || [])
         } else
             callback(false);
     }).catch((error) => {
@@ -73,14 +73,23 @@ const GetHomeFeed = (callback) => {
         callback(false)
     });
 }
-function deletefromreduxHelper(postID) {
+
+function DeletePostsOfAUserById(userID) {
     const tempHomeFeeds = store.getState().root.homeFeed;
     const tempSavedPosts = store.getState().root.savedPosts;
 
+    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii.createdBy._id != userID)));
+    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii.createdBy._id != userID)));
+}
+
+function DeletePostFromReduxOnlyByID(postID) {
+    const tempHomeFeeds = store.getState().root.homeFeed;
+    const tempSavedPosts = store.getState().root.savedPosts;
 
     store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii._id != postID)));
     store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii._id != postID)));
 }
+
 const DeletePost = (callback, postID) => {
     Alert.alert(
         "Delete Post",
@@ -92,7 +101,7 @@ const DeletePost = (callback, postID) => {
             }, style: "cancel"
         }, {
             text: "DELETE", onPress: () => {
-                deletefromreduxHelper(postID)
+                DeletePostFromReduxOnlyByID(postID)
                 callback(true)
                 fetch(EndPoints.GET_OR_DELETE_POST + postID, {
                     method: 'DELETE',
@@ -112,8 +121,7 @@ const DeletePost = (callback, postID) => {
                     callback(false)
                 });
             }
-        }
-        ], { cancelable: true });
+        }], { cancelable: true });
 }
 
 
@@ -128,7 +136,7 @@ const GetSinglePost = (callback, postID) => {
     }).then(([status, data]) => {
         console.log('-----------GETTING SINGLE POST BY ID RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data)
+            callback(data?.data)
         } else
             callback(false);
     }).catch((error) => {
@@ -154,6 +162,26 @@ const CommentPost = (callback, PAYLOAD) => {
             callback(false);
     }).catch((error) => {
         console.log('---------COMMENTING ON POST BY ID ERROR-----------', error)
+        callback(false)
+    });
+}
+
+const GetCommentsOfPost = (callback, CURSOR, LIMIT, postID) => {
+    fetch(EndPoints.COMMENT_POST + (CURSOR ? ('cursor=' + CURSOR + '&') : '') + (LIMIT ? ('&limit=' + LIMIT + '&') : '') + ('postId=' + postID), {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------GETTING POST COMMENTS RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data.data.data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------GETTING POST COMMENTS ERROR-----------', error)
         callback(false)
     });
 }
@@ -224,10 +252,11 @@ const FollowPost = (callback, postID, payload) => {
 }
 
 
-const SaveOrBookMarkPost = (callback, postID) => {
+const SaveOrBookMarkPost = (callback, postID, PAYLOAD) => {
     fetch(EndPoints.BOOKMARK_POST + postID, {
         method: 'POST',
-        headers: Interceptor.getHeaders()
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(PAYLOAD)
     }).then((response) => {
         const statusCode = response.status;
         const data = response.json();
@@ -264,4 +293,4 @@ const GetBookmarkPosts = (callback) => {
     });
 }
 
-export { CreatePostService, GetHomeFeed, CommentPost, DeletePost, GetSinglePost, LikePost, SharePost, FollowPost, SaveOrBookMarkPost, GetBookmarkPosts };
+export { DeletePostFromReduxOnlyByID, GetCommentsOfPost, DeletePostsOfAUserById, CreatePostService, GetHomeFeed, CommentPost, DeletePost, GetSinglePost, LikePost, SharePost, FollowPost, SaveOrBookMarkPost, GetBookmarkPosts };

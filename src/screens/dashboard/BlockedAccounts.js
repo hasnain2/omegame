@@ -30,7 +30,7 @@ const BlockedAccounts = ({ navigation, route, }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: AppTheme.colors.lightGrey, borderBottomWidth: 0.5, padding: RFValue(20) }}>
                         <UserAvatar source={{ uri: item.user.photo }} size={50} />

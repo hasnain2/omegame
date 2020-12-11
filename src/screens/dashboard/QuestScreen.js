@@ -36,7 +36,7 @@ const QuestScreen = ({ route, navigation }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} activeOpacity={1} onPress={() => {

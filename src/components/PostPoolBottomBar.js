@@ -58,10 +58,11 @@ const PostPoolBottomBar = ({ item, navigation, likePress, bookmarkPress }) => {
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                console.log('-------------BOOKMARK---------', JSON.stringify(item))
                 setState(prev => ({ ...prev, isSaved: !state.isSaved }))
                 SaveOrBookMarkPost((res) => {
 
-                }, item._id)
+                }, item._id, { bookmark: true })
             }}>
                 <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
                     <Image source={ICON_SAVE_POST} style={{ height: RFValue(36), width: RFValue(36), tintColor: state.isSaved ? AppTheme.colors.primary : 'grey' }} />

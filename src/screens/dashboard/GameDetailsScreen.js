@@ -118,7 +118,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
                     bounces={false}
-                    keyExtractor={ii => ii.id + 'you'}
+                    keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => (
                         <View style={{ padding: RFValue(15), borderBottomWidth: 0.3, borderBottomColor: AppTheme.colors.lightGrey }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: RFValue(15) }}>

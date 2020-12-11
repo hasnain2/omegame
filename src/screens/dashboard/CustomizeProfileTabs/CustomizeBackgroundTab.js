@@ -25,7 +25,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     if (item.addMore)
                         return (

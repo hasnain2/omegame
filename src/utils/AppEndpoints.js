@@ -27,7 +27,8 @@ const EndPoints = {
     BOOKMARK_POST: DOMAIN + 'posts/action/bookmark/', // ACTIONS on POST --> BOOKMARK OR SAVE POST
     GET_BOOKMARKED_OR_SAVED_POST: DOMAIN + 'posts/savedPosts', // get SAVED POST
 
-    COMMENT_POST: DOMAIN + 'comments', // POSTING COMMENT
+    COMMENT_POST: DOMAIN + 'comments?', // POSTING COMMENT // OR GETTING COMMENTS
+
 }
 
 export { DOMAIN, EndPoints };

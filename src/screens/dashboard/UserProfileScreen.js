@@ -47,9 +47,8 @@ const UserProfileScreen = ({ navigation, route, }) => {
         GetSingleUserProfile((profileRes) => {
             if (profileRes) {
                 setState(prev => ({ ...prev, loading: false, userData: profileRes }))
-            } else {
+            } else
                 setState(prev => ({ ...prev, loading: false }))
-            }
         }, route.params.userID)
     }, [ScrollRef])
 
@@ -107,7 +106,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                         <FastImage source={state.userData?.cover ? { uri: state.userData?.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar source={state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC} size={100} />
+                                <UserAvatar source={userID ? user?.pic ? { uri: user.pic } : state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC : DEFAULT_USER_PIC} size={100} />
 
                                 {userID ?
                                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
@@ -176,7 +175,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                             <View style={{ flex: 1, paddingRight: RFValue(10) }}>
                                 <AppButton onPress={() => {
                                     let tempUserObj = state.userData;
-                                    tempUserObj.isFollowing = !tempUserObj.isFollowing;
+                                    tempUserObj["isFollowing"] = !(tempUserObj?.isFollowing || true);
                                     setState(prev => ({ ...prev, userData: tempUserObj }))
                                     ActionsOnUsers(() => {
 
@@ -195,7 +194,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
 
 
 
-                {/* <View
+                <View
                     style={{ height: state.LHeight, width: state.LWidth, }}>
                     <UserProfileTabs navigation={navigation} route={route}
                         scrollPosition={({ scroll, index }) => {
@@ -205,7 +204,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         decelerationRate={0.2}
                         autoPlay={state.enableScrollViewScroll === false ? true : false}
                     />
-                </View> */}
+                </View>
 
 
 

@@ -5,8 +5,7 @@ import {
     View
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppLoadingView, AppGooglePlacesAutoFill, AppPostsListings, HomeScreenHeader } from '../../components';
-import { AppTheme } from '../../config';
+import { AppLoadingView, AppNoDataFound, AppPostsListings, HomeScreenHeader } from '../../components';
 import { setHomeFeed } from '../../redux/reducers/homeFeedSlice';
 import { GetHomeFeed } from '../../services/postService';
 const HomeScreen = ({ route, navigation }) => {
@@ -16,7 +15,7 @@ const HomeScreen = ({ route, navigation }) => {
     })
     let disptach = useDispatch();
     let homeFeed = useSelector(state => state.root.homeFeed)
-    
+    console.log('-------------HOME FEEDS--------', homeFeed[0])
     useEffect(() => {
         GetHomeFeed((res) => {
             if (res) {
@@ -26,13 +25,15 @@ const HomeScreen = ({ route, navigation }) => {
         });
     }, [])
     return (
-        <View style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
+        <View style={{ flex: 1, backgroundColor: 'black' }}>
+            {/* <AppGooglePlacesAutoFill /> */}
+            <HomeScreenHeader navigation={navigation} route={route} />
+
             {state.loading && homeFeed.length < 1 ?
                 <AppLoadingView /> : null}
 
-            {/* <AppGooglePlacesAutoFill /> */}
-            <HomeScreenHeader navigation={navigation} route={route} />
-            <AppPostsListings navigation={navigation} data={homeFeed} />
+            {!state.loading && homeFeed.length < 1 ?
+                <AppNoDataFound /> : <AppPostsListings navigation={navigation} data={homeFeed} />}
         </View>
     );
 };

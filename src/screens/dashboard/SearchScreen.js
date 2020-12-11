@@ -47,7 +47,7 @@ const SearchScreen = ({ route, navigation }) => {
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={2}
                             bounces={false}
-                            keyExtractor={ii => ii.id + 'you'}
+                            keyExtractor={ii => (ii._id || '') + 'you'}
                             renderItem={({ item, index }) => (
                                 <View style={{ flex: 1, paddingVertical: RFValue(6) }}>
                                     <AppRadioButton val={state.sortPostBy === item.name} onPress={() => {
@@ -76,7 +76,7 @@ const SearchScreen = ({ route, navigation }) => {
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={2}
                             bounces={false}
-                            keyExtractor={ii => ii.id + 'you'}
+                            keyExtractor={ii => (ii._id || '') + 'you'}
                             renderItem={({ item, index }) => (
                                 <View style={{ flex: 1, paddingVertical: RFValue(6) }}>
                                     <AppRadioButton val={state.sortPostByTime === item.name} onPress={() => {

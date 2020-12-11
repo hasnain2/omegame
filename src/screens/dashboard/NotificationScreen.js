@@ -31,7 +31,7 @@ const NotificationScreen = ({ navigation, route, }) => {
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
                     bounces={false}
-                    keyExtractor={ii => ii.id + 'you'}
+                    keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => {
                         return (
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
@@ -82,7 +82,7 @@ const NotificationScreen = ({ navigation, route, }) => {
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
                     bounces={false}
-                    keyExtractor={ii => ii.id + 'you'}
+                    keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => (
                         <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
                             <UserAvatar size={40} />

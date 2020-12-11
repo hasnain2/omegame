@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, View } from 'react-native';
+import { Dimensions, FlatList, Platform, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppTheme } from '../config';
@@ -50,23 +50,23 @@ const AppPostsListingsGrid = ({ navigation, data, style }) => {
     const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 60 })
 
     return (
-        <View style={[{ paddingTop: RFValue(10), backgroundColor: AppTheme.colors.background }, style ? style : null]}>
+        <View style={[{ flex: 1, paddingTop: RFValue(10), backgroundColor: AppTheme.colors.background }, style ? style : null]}>
             <FlatList
-                data={data || MOCKUP_POSTS}
+                data={data}
                 numColumns={NUMBER_OF_COLUMNS}
-                style={{ flex: 1, backgroundColor: 'red' }}
+                style={{ flex: 1, }}
 
-                windowSize={2}
-                initialNumToRender={1}
-                maxToRenderPerBatch={1}
+                windowSize={Platform.OS === 'ios' ? 3 : 2}
+                initialNumToRender={Platform.OS === 'ios' ? 10 : 3}
+                maxToRenderPerBatch={Platform.OS === 'ios' ? 10 : 3}
                 removeClippedSubviews={true}
                 bounces={false}
 
                 keyboardShouldPersistTaps={'always'}
-                onViewableItemsChanged={onViewRef.current}
-                viewabilityConfig={viewConfigRef.current}
+                // onViewableItemsChanged={onViewRef.current}
+                // viewabilityConfig={viewConfigRef.current}
 
-                keyExtractor={ii => ii.id + 'you'}
+                keyExtractor={ii => ii._id + ''}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         POST_DATA = item;

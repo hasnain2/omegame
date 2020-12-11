@@ -99,7 +99,8 @@ const ActionsOnUsers = (callback, id, TYPE) => {
 
 
 const GerUserListByType = (callback, id, TYPE) => {
-    fetch(EndPoints.GET_USER_LIST_BY_TYPE + TYPE, {
+    console.log('-----------------FRIENDS FOLLOWERS OR FOLLOWING----------', EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id)
+    fetch(EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
     }).then((response) => {
@@ -113,7 +114,7 @@ const GerUserListByType = (callback, id, TYPE) => {
         } else
             callback(false);
     }).catch((error) => {
-        console.log('---------GETTING USER LIST OF follower following ERROR-----------    '+TYPE, error)
+        console.log('---------GETTING USER LIST OF follower following ERROR-----------    ' + TYPE, error)
         callback(false)
     });
 }

@@ -18,7 +18,7 @@ const AppInputToolBar = ({ LHeight, onSend, chat }) => {
         keyboardIsVisible: 0,
         LWidth: 0
     })
-
+    console.log(LHeight)
     useEffect(() => {
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
@@ -40,7 +40,10 @@ const AppInputToolBar = ({ LHeight, onSend, chat }) => {
 
     return (
         <LinearGradient colors={['rgba(0,0,0,0)', 'black', 'black', 'black']}
-            style={[chat ? { width: '100%', height: RFValue(80) } : { position: 'absolute', left: 0, right: 0, bottom: Platform.OS === 'ios' ? state.keyboardIsVisible : 0, }]}>
+            style={[chat ? { width: '100%', height: RFValue(80) } : {
+                position: 'absolute', left: 0, right: 0,
+                bottom: Platform.OS === 'ios' ? state.keyboardIsVisible : 0,
+            }]}>
 
             <View style={{ flex: 1, borderColor: 'white', borderWidth: 1, borderRadius: 50, margin: RFValue(10), paddingHorizontal: RFValue(10), flexDirection: 'row', alignItems: 'center' }}>
                 <Fontisto name="smiley" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(5) }} />
