@@ -5,7 +5,9 @@ import { Dimensions, Image, StyleSheet, TextInput, TouchableOpacity, View } from
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
 import { ICON_IMAGE, ICON_LOCATION, ICON_ONLY_FRIENDS, ICON_PHOTO, ICON_POLL, ICON_PRIVATE, ICON_PUBLIC, ICON_TAG, ICON_TEXT } from '../../../../assets/icons';
+import { DEFAULT_USER_PIC } from '../../../../assets/images';
 import { AppButton, AppFriendsListModal, AppGallery, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
 import { CreatePostService, requestReadWritePermission } from '../../../services';
@@ -33,7 +35,7 @@ const CreatePost = ({ navigation, route }) => {
     useEffect(() => {
         requestReadWritePermission();
     })
-
+    let user = useSelector(state => state.root.user)
     const onSubmit = () => {
         if (state.whatsNewText) {
             let payload = {
@@ -63,11 +65,10 @@ const CreatePost = ({ navigation, route }) => {
             </View>
             <KeyboardAvoidingScrollView style={{}} contentContainerStyle={{ flex: 1, padding: RFValue(14) }}>
                 <View style={{ flexDirection: 'row' }}>
-                    <UserAvatar size={30} />
+                    <UserAvatar source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
                     <TextInput placeholder={state.postTypeIsPool ? "Ask a question" : "What's new?"}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}
-                        numberOfLines={5}
                         blurOnSubmit={true}
                         style={{ flex: 1, color: 'white', height: '100%', maxHeight: RFValue(250), marginLeft: RFValue(10) }}
                         onChangeText={(val) => { setState(prev => ({ ...prev, whatsNewText: val })) }}

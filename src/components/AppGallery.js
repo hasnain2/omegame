@@ -127,8 +127,8 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                     const ORIGINAL_URI = val.node.image.uri;
                     let uri = ORIGINAL_URI;
                     const appleId = ORIGINAL_URI.substring(5, 41);
-                    const fileNameLength = val.node.image.filename.length;
-                    const ext = val.node.image.filename.substring(fileNameLength - 3);
+                    const fileNameLength = IS_IOS_DEVICE ? val.node.image.filename.length : 10;
+                    const ext = IS_IOS_DEVICE ? val.node.image.filename.substring(fileNameLength - 3) : 'mp4';
                     if (IS_IOS_DEVICE) {
                         uri = `assets-library://asset/asset.${ext}?id=${appleId}&ext=${ext}`;
                     }
@@ -149,7 +149,7 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
             console.log('-------------IMESGES ARRHAY--------', ImagesArray[2])
             if (images.length > 0) {
                 setCoverPhoto(ImagesArray[0]);
-                selectedOne(ImagesArray[0]);
+                selectedOne({ ...ImagesArray[0], uri: ImagesArray[0]?.uri || ImagesArray[0]?.image?.uri });
                 setRecentCameraRollLibrary([...ImagesArray]);
             }
             setLoading(false);
@@ -239,7 +239,7 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                             onPress={() => {
                                 console.log('------ITEM CLICKED-----', item)
                                 setCoverPhoto({ ...item });
-                                selectedOne({ ...item, uri: Platform.OS === 'ios' ? item.image.uri2 : item.image.uri, type: item.type });
+                                selectedOne({ ...item, uri: Platform.OS === 'ios' ? item.type === 'video' ? item.image.uri2 : item.image.uri : item.image.uri, type: item.type });
                             }} >
                             <View pointerEvents="box-none" style={[coverPhoto?.image?.uri === item.image?.uri ? { borderWidth: 3, borderColor: AppTheme.colors.primary, margin: 0 } : null, { margin: CARD_MARGIN, height: CARD_SIZE, width: CARD_SIZE, overflow: 'hidden' }]}>
                                 {item.type === 'video' ?

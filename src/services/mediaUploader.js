@@ -5,6 +5,7 @@ import Interceptor from '../utils/Interceptor'
 import RNVideoHelper from 'react-native-video-helper';
 import ImageResizer from 'react-native-image-resizer';
 import { Platform } from 'react-native';
+import { GenerateThumbnailFromVideo } from '../utils/AppMediaPicker';
 
 // current vid size = 2498125
 const VideoAndImageCompressor = (image) => {
@@ -34,10 +35,9 @@ const VideoAndImageCompressor = (image) => {
             }).progress(value => {
                 // console.warn('-----compressing video-----progress', value); // Int with progress value from 0 to 1
             }).then(compressedUri => {
-                console.log('--------COMPRESED VIDEO ORIGINAL--------->', compressedUri)
+
                 let ValidPath = Platform.OS === 'android' ? ('file://' + compressedUri) : ('' + compressedUri)
-                console.log('--------COMPRESED VIDEO--------->', ValidPath)
-                var temp = {
+                let temp = {
                     ...imagetemp,
                     compressed: {
                         uri: ValidPath
@@ -54,38 +54,64 @@ const VideoAndImageCompressor = (image) => {
 
 };
 
-
+function postFiles(callback, fileName, bucket, data) {
+    fetch(EndPoints.UPLOAD_MEDIA + bucket, {
+        method: 'POST',
+        headers: Interceptor.getHeadersMultiPart(),
+        body: data
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        if (status === 201 || status === 200) {
+            let uploaderResponse = data?.data?.media[0]
+            callback({
+                ...uploaderResponse,
+                name: fileName,
+                oType: uploaderResponse?.type,
+                type: uploaderResponse?.type ? uploaderResponse?.type.includes('video') ? 'video' : 'photo' : 'photo'
+            })
+        } else {
+            AppShowToast(data?.message || "Failed to upload")
+            callback(false);
+        }
+    }).catch((error) => {
+        console.log('---------IMAGE UPLOADER ERROR-----------', error)
+        callback(false)
+    });
+}
 
 const UploadMedia = (callback, bucket, mediaObj) => {
 
     VideoAndImageCompressor(mediaObj).then((compressionResponse) => {
-        console.log('----------COMPRESSION RESPONSE-----------', compressionResponse)
-
-        console.log('------------MEDIA UPLOADER PAYLOAD--------------', { uri: compressionResponse.compressed.uri, name: compressionResponse.type === 'video' ? 'video' : 'image.jpg', type: compressionResponse.oType })
+        let fileName = 'assetmedia.' + (compressionResponse.oType.split('/')[1] ? ('' + compressionResponse.oType.split('/')[1]) : '');
         let multiFormData = new FormData()
-        multiFormData.append('files', { uri: compressionResponse.compressed.uri, name: compressionResponse.type === 'video' ? 'video' : 'image.jpg', type: compressionResponse.oType })
-        fetch(EndPoints.UPLOAD_MEDIA + bucket, {
-            method: 'POST',
-            headers: Interceptor.getHeadersMultiPart(),
-            body: multiFormData
-        }).then((response) => {
-            const statusCode = response.status;
-            const data = response.json();
-            return Promise.all([statusCode, data]);
-        }).then(([status, data]) => {
-            console.log('-----------IMAGE UPLOADER RES----------', JSON.stringify(data))
-            if (status === 201 || status === 200) {
-                let uploaderResponse = data?.data?.media[0]
-                console.log('--------', uploaderResponse)
-                callback({ ...uploaderResponse, oType: uploaderResponse?.type, type: uploaderResponse?.type ? uploaderResponse?.type.includes('video') ? 'video' : 'photo' : 'photo' })
-            } else {
-                AppShowToast(data?.message || "Failed to upload")
-                callback(false);
+        multiFormData.append('files', { uri: compressionResponse.compressed.uri, name: fileName, type: compressionResponse.oType })
+
+        postFiles((fileUploadRes) => {
+            if (fileUploadRes) {
+                if (mediaObj.type === 'video') {
+                    GenerateThumbnailFromVideo((thumbnail) => {
+                        if (thumbnail) {
+                            let multiFormDataForThumbnail = new FormData()
+                            multiFormDataForThumbnail.append('files', { uri: thumbnail, name: "thumbnail.png", type: 'image/png' })
+                            postFiles((thumbnailUploadRes) => {
+                                if (thumbnailUploadRes) {
+                                    callback({ ...thumbnailUploadRes, thumbnail: true })
+                                } else {
+                                    callback(fileUploadRes)
+                                }
+                            }, "thumbnail.png", bucket, multiFormDataForThumbnail)
+                        } else {
+                            callback(fileUploadRes)
+                        }
+                    }, mediaObj?.uri2 || mediaObj?.image?.uri2 || mediaObj?.image?.uri || mediaObj.uri)
+                } else {
+                    callback(fileUploadRes)
+                }
             }
-        }).catch((error) => {
-            console.log('---------IMAGE UPLOADER ERROR-----------', error)
-            callback(false)
-        });
+        }, fileName, bucket, multiFormData)
     }).catch(err => {
         console.log('--------ERROR COMMPRESSING MEDIA -------->\n', err)
         callback(false)

@@ -87,40 +87,21 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                                                 if (isFollowerMode) {
                                                     // REMOVE FOLLOWER
                                                     let tempData = state.data;
-                                                    tempData = tempData.filter(itm => {
-                                                        let itm1 = itm;
-                                                        let itm2 = item;
-                                                        let matchess = itm._id === item._id;
 
-                                                        console.log('----------', { itm1, itm2, matchess })
-                                                        debugger
-                                                        return itm?._id != item?._id
-                                                    })
                                                     setState(prev => ({
                                                         ...prev,
-                                                        data: tempData,
+                                                        data: tempData.filter(itm => itm._id != item._id),
                                                         loading: false
                                                     }))
                                                 } else {
                                                     let tempData = state.data;
-                                                    console.log('-------DTA------', tempData)
-                                                    debugger
-                                                    tempData = tempData.filter(itm => {
-                                                        let itm1 = itm;
-                                                        let itm2 = item;
-                                                        let matchess = itm._id === item._id;
 
-                                                        console.log('----------', { itm1, itm2, matchess })
-                                                        debugger
-                                                        return itm?._id != item?._id
-                                                    })
-                                                    debugger
                                                     setState(prev => ({
                                                         ...prev,
-                                                        data: tempData,
+                                                        data: tempData.filter(itm => itm._id != item._id),
                                                         loading: false
-                                                    }))
-                                                    debugger
+                                                    }));
+
                                                     ActionsOnUsers((FOLLOWRS) => {
 
                                                     }, item?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)

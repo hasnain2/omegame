@@ -13,7 +13,7 @@ import { UserProfilePosts } from './UserProfilePosts';
 import { UserProfileReviews } from './UserProfileReviews';
 const Tab = createMaterialTopTabNavigator();
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
-const UserProfileTabs = ({ navigation, scrollPosition, autoPlay }) => {
+const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
 
     useEffect(() => {
 
@@ -82,7 +82,9 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay }) => {
             <Tab.Screen name="UserProfilePosts"  >
                 {(props) => (
                     <View style={{ flex: 1 }}>
-                        <UserProfilePosts {...props} style={{ backgroundColor: AppTheme.colors.background }}
+                        <UserProfilePosts {...props}
+                            style={{ backgroundColor: AppTheme.colors.background }}
+                            userID={userID}
                             scrollPosition={(dta) => {
                                 scrollPosition ? scrollPosition(dta) : null
                             }}
@@ -93,7 +95,9 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay }) => {
             <Tab.Screen name="UserProfileGridPosts"  >
                 {(props) => (
                     <View style={{ flex: 1 }}>
-                        <UserProfileGridPosts {...props} style={{ backgroundColor: AppTheme.colors.background }}
+                        <UserProfileGridPosts {...props}
+                            style={{ backgroundColor: AppTheme.colors.background }}
+                            userID={userID}
                             scrollPosition={(dta) => {
                                 scrollPosition ? scrollPosition(dta) : null
                             }}
@@ -104,7 +108,9 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay }) => {
             <Tab.Screen name="UserProfileReviews"  >
                 {(props) => (
                     <View style={{ flex: 1 }}>
-                        <UserProfileReviews {...props} style={{ backgroundColor: AppTheme.colors.background }}
+                        <UserProfileReviews {...props}
+                            style={{ backgroundColor: AppTheme.colors.background }}
+                            userID={userID}
                             scrollPosition={(dta) => {
                                 scrollPosition ? scrollPosition(dta) : null
                             }}
@@ -115,7 +121,9 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay }) => {
             <Tab.Screen name="UserProfileExtras"  >
                 {(props) => (
                     <View style={{ flex: 1 }}>
-                        <UserProfileExtras {...props} style={{ backgroundColor: AppTheme.colors.background }}
+                        <UserProfileExtras {...props}
+                            style={{ backgroundColor: AppTheme.colors.background }}
+                            userID={userID}
                             scrollPosition={(dta) => {
                                 scrollPosition ? scrollPosition(dta) : null
                             }}

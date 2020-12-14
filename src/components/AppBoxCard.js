@@ -7,7 +7,6 @@ import { AppTheme } from '../config';
 import { EvilIcons } from '../utils/AppIcons';
 import { AppVideoPlayer } from './AppVideoPlayer';
 const AppBoxCard = ({ item, navigation, size, startPlaying }) => {
-    console.log(JSON.stringify(item))
     return (
         <View style={{ height: size, width: size }}>
             {item.attachments && item.attachments.length > 0 ?

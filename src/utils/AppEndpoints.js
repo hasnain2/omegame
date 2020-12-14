@@ -26,9 +26,11 @@ const EndPoints = {
     FOLLOW_POST: DOMAIN + 'posts/action/follow/', // ACTIONS on POST --> FOLLOW
     BOOKMARK_POST: DOMAIN + 'posts/action/bookmark/', // ACTIONS on POST --> BOOKMARK OR SAVE POST
     GET_BOOKMARKED_OR_SAVED_POST: DOMAIN + 'posts/savedPosts', // get SAVED POST
-
+    GET_POSTS_OF_SPECIFIC_USER: DOMAIN + 'posts/user?', // get all posts of specific user
     COMMENT_POST: DOMAIN + 'comments?', // POSTING COMMENT // OR GETTING COMMENTS
 
-}
+    COMMENT_REACTIONS: DOMAIN + 'comments/action/react/', // get comments of specific post
+    GET_COMMENT_REPLIES: DOMAIN + 'comments/replies?', // gett comment replies
+};
 
 export { DOMAIN, EndPoints };

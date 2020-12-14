@@ -10,7 +10,7 @@ import { Entypo, Fontisto } from '../utils/AppIcons';
 
 const DHeight = Dimensions.get('screen').height;
 
-const AppInputToolBar = ({ LHeight, onSend, chat }) => {
+const AppInputToolBar = ({ LHeight, onSend, chat, placeholder }) => {
     let [state, setState] = useState({
         loading: false,
         selectedSortType: 'recent',
@@ -47,7 +47,7 @@ const AppInputToolBar = ({ LHeight, onSend, chat }) => {
 
             <View style={{ flex: 1, borderColor: 'white', borderWidth: 1, borderRadius: 50, margin: RFValue(10), paddingHorizontal: RFValue(10), flexDirection: 'row', alignItems: 'center' }}>
                 <Fontisto name="smiley" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(5) }} />
-                <TextInput placeholderTextColor={AppTheme.colors.lightGrey} placeholder={"Type a message"}
+                <TextInput placeholderTextColor={AppTheme.colors.lightGrey} placeholder={placeholder?placeholder:"Type a message"}
                     onChangeText={(txt) => { setState(prev => ({ ...prev, comment: txt })) }}
                     value={state.comment}
                     style={{ height: '100%', paddingVertical: RFValue(15), fontSize: RFValue(16), color: 'white', flex: 1 }} />

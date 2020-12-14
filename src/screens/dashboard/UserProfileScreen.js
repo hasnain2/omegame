@@ -1,8 +1,9 @@
 
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, LayoutAnimation, Platform, Dimensions, StyleSheet, ScrollView, TouchableOpacity, UIManager, View } from 'react-native';
+import { Image, LayoutAnimation, Platform, Dimensions, StyleSheet, TouchableOpacity, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -12,6 +13,7 @@ import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppButton, AppGoldCoin, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
+import { GetPostsOfSpecificUser } from '../../services';
 import { ActionsOnUsers, GetSingleUserProfile } from '../../services/profileService';
 import { FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
 import { MaterialIcons } from '../../utils/AppIcons';
@@ -46,13 +48,25 @@ const UserProfileScreen = ({ navigation, route, }) => {
     useEffect(() => {
         GetSingleUserProfile((profileRes) => {
             if (profileRes) {
+                console.log('-----------USER PROFILE RES--------', profileRes)
                 setState(prev => ({ ...prev, loading: false, userData: profileRes }))
             } else
                 setState(prev => ({ ...prev, loading: false }))
         }, route.params.userID)
+        GetPostsOfSpecificUser((postsOfUser) => {
+
+        }, route.params.userID)
     }, [ScrollRef])
 
 
+    function followuser() {
+        let tempUserObj = state.userData;
+        tempUserObj["isFollowing"] = !(tempUserObj?.isFollowing || false);
+        setState(prev => ({ ...prev, userData: tempUserObj }))
+        ActionsOnUsers(() => {
+
+        }, route.params.userID, FRIEND_STATUSES_ACTIONS.FOLLOW)
+    }
     return (
         <View onStartShouldSetResponder={() => {
             setState(prev => ({ ...prev, enableScrollViewScroll: true }))
@@ -89,24 +103,24 @@ const UserProfileScreen = ({ navigation, route, }) => {
                 ref={ref => ScrollRef = ref}
                 decelerationRate={0.2}
                 nestedScrollEnabled={true}
-                scrollEnabled={state.enableScrollViewScroll}
-                onScroll={(event) => {
-                    if (event?.nativeEvent?.contentOffset?.y) {
-                        event.persist();
-                        let scollNum = event?.nativeEvent?.contentOffset?.y || 3
-                        if (scollNum > (state.LHeight * 1.2)) {
-                            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-                            if (state.enableScrollViewScroll)
-                                setState(prev => ({ ...prev, enableScrollViewScroll: false }))
-                        }
-                    }
-                }}
+                // scrollEnabled={state.enableScrollViewScroll}
+                // onScroll={(event) => {
+                //     if (event?.nativeEvent?.contentOffset?.y) {
+                //         event.persist();
+                //         let scollNum = event?.nativeEvent?.contentOffset?.y || 3
+                //         if (scollNum > (state.LHeight * 1.2)) {
+                //             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+                //             if (state.enableScrollViewScroll)
+                //                 setState(prev => ({ ...prev, enableScrollViewScroll: false }))
+                //         }
+                //     }
+                // }}
                 scrollEventThrottle={1}>
                 <View style={{}}>
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                         <FastImage source={state.userData?.cover ? { uri: state.userData?.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar source={userID ? user?.pic ? { uri: user.pic } : state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC : DEFAULT_USER_PIC} size={100} />
+                                <UserAvatar source={userID ? user?.pic ? { uri: user.pic } : state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC : state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC} size={100} />
 
                                 {userID ?
                                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
@@ -174,12 +188,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
                             <View style={{ flex: 1, paddingRight: RFValue(10) }}>
                                 <AppButton onPress={() => {
-                                    let tempUserObj = state.userData;
-                                    tempUserObj["isFollowing"] = !(tempUserObj?.isFollowing || true);
-                                    setState(prev => ({ ...prev, userData: tempUserObj }))
-                                    ActionsOnUsers(() => {
-
-                                    }, route.params.userID, FRIEND_STATUSES_ACTIONS.FOLLOW)
+                                    followuser();
                                 }} fill={true} label={state.userData?.isFollowing ? "UNFOLLOW" : "FOLLOW"} />
                             </View>
                             <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
@@ -195,8 +204,11 @@ const UserProfileScreen = ({ navigation, route, }) => {
 
 
                 <View
-                    style={{ height: state.LHeight, width: state.LWidth, }}>
-                    <UserProfileTabs navigation={navigation} route={route}
+                    style={{ height: state.LHeight - RFValue(50), width: state.LWidth, }}>
+                    <UserProfileTabs
+                        userID={route.params.userID}
+                        navigation={navigation}
+                        route={route}
                         scrollPosition={({ scroll, index }) => {
                             if (scroll && scroll < 300 && index < 3)
                                 setState(prev => ({ ...prev, enableScrollViewScroll: true }));
@@ -205,7 +217,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         autoPlay={state.enableScrollViewScroll === false ? true : false}
                     />
                 </View>
-
 
 
 
@@ -244,13 +255,13 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        // modify post
+                        followuser();
                         setState(prev => ({ ...prev, showMenu: false }))
                     }} style={styles.modalListItemStyle}>
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                             <Image source={ICON_UNFOLLOW} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
                         </View>
-                        <AppText size={2} color="white" style={{ flex: 1 }}>Unfollow</AppText>
+                        <AppText size={2} color="white" style={{ flex: 1 }}>{state.userData?.isFollowing ? "Unfollow" : "Follow"}</AppText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {

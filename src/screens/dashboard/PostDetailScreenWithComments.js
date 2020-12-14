@@ -1,18 +1,22 @@
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, TouchableOpacity, Platform, UIManager, LayoutAnimation, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { ICON_COMMENT, ICON_MENU } from '../../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppBackButton, AppInputToolBar, AppText, IsUserVerifiedCheck, PostCard } from '../../components';
+import { AppBackButton, AppInputToolBar, AppLoadingView, AppText, IsUserVerifiedCheck, PostCard } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { CommentPost, GetCommentsOfPost, GetSinglePost } from '../../services';
+import { CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost } from '../../services';
 import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { FontAwesome } from '../../utils/AppIcons';
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 let tempComment = {
     _id: "5fd389ab723fb8b357481223",
     mentions: [],
@@ -44,18 +48,37 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     let postID = postData?._id || route?.params?.postID;
     let user = useSelector(state => state.root.user)
 
-    tempComment.createdAt.firstName = user?.firstName || user?.userName || '';
-    tempComment.createdAt.userName = user?.userName || user?.firstName || '';
-    tempComment.createdAt.pic = user?.pic || false;
-
+    tempComment.createdBy.firstName = user?.firstName || user?.userName || '';
+    tempComment.createdBy.userName = user?.userName || user?.firstName || '';
+    tempComment.createdBy.pic = user?.pic || false;
 
     let [state, setState] = useState({
-        loading: false,
+        loading: true,
         comments: [],
         LHeight: 0,
         LWidth: 0,
-        parentID: ''
+        commentLikesArr: [],
+        replies: { _id: '', data: [] },
+        parentID: { parentComment: '', _id: '' }
     })
+
+    const getcommentshelper = () => {
+        GetCommentsOfPost((postCommentsResponse) => {
+            if (postCommentsResponse) {
+                console.log('-------COMMENTS---------', JSON.stringify(postCommentsResponse))
+                setState(prev => ({ ...prev, comments: postCommentsResponse, loading: false }))
+            }
+        }, '', '', postID)
+    }
+
+    const getcommentreplieshelper = (parentIDparam) => {
+        GetCommentsReplies((commentsRepliesResponse) => {
+            if (commentsRepliesResponse) {
+                console.log('-------REPLIES---------', JSON.stringify(commentsRepliesResponse))
+                setState(prev => ({ ...prev, loading: false, replies: { _id: parentIDparam, data: commentsRepliesResponse } }))
+            }
+        }, '', '', parentIDparam)
+    }
 
     useEffect(() => {
         GetSinglePost((data) => {
@@ -63,13 +86,104 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
 
             }
         }, postID);
-        GetCommentsOfPost((postCommentsResponse) => {
-            if (postCommentsResponse) {
-                console.log('-------COMMENTS---------', JSON.stringify(postCommentsResponse))
-                setState(prev => ({ ...prev, comments: postCommentsResponse }))
-            }
-        }, '', '', postID)
+        getcommentshelper();
     }, [])
+
+
+
+    function renderCommentView(item, isCommentIsLiked, index) {
+        return (
+            <View style={{ paddingHorizontal: RFValue(10) }}>
+                <View style={{ flexDirection: 'row', }}>
+                    <View style={{ height: '100%', alignItems: 'center' }}>
+                        <UserAvatar source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
+
+
+                        {(state.replies._id === item.parentComment && state.replies?.data.length - 1 != index) || state.replies._id === item._id ?
+                            <View style={{ width: 2, flex: 1, backgroundColor: AppTheme.colors.lightGrey }} />
+                            : null}
+                    </View>
+
+                    <View style={{ flex: 1 }} >
+                        <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{item?.createdBy?.firstName || item?.createdBy?.userName}</AppText>
+                                <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
+                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{item?.createdBy?.earnedCoins}</AppText>
+                                <AppText size={1} color={AppTheme.colors.lightGrey} style={{ flex: 1 }}> - {moment(item?.createdAt || new Date()).fromNow(true)}</AppText>
+
+                                <TouchableOpacity onPress={() => {
+
+                                }}>
+                                    <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} />
+                                </TouchableOpacity>
+
+                            </View>
+                            <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.createdBy?.userName}</AppText>
+                            <AppText size={2} color={'white'} style={{ paddingVertical: RFValue(10) }} >{item?.text}</AppText>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                let tempLikesArr = state.commentLikesArr;
+                                let foundIndex = tempLikesArr.findIndex(ii => ii === item._id)
+                                if (foundIndex > -1)
+                                    tempLikesArr.splice(foundIndex, 1)
+                                else
+                                    tempLikesArr.push(item._id)
+                                setState(prev => ({ ...prev, commentLikesArr: tempLikesArr }))
+                                CommentReaction(() => {
+
+                                }, item._id, {
+                                    type: "LIKE"
+                                })
+                            }}>
+                                <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
+                                    <FontAwesome name="heart-o" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: isCommentIsLiked ? AppTheme.colors.primary : 'grey' }} />
+                                    <AppText size={1} color={AppTheme.colors.lightGrey}>{largeNumberShortify(((item?.computed?.find(reactionVal => reactionVal.key === 'LIKE')?.value || 0) + isCommentIsLiked ? 1 : 0) || isCommentIsLiked ? 1 : 0)}</AppText>
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                // setState(prev => ({ ...prev, parentID: item?._id }))
+                            }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    {/* <Ionicons name="chatbubble-outline" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'white' }} /> */}
+                                    <FastImage source={ICON_COMMENT} style={{ height: RFValue(35), width: RFValue(35) }} />
+                                    <AppText size={1} color={AppTheme.colors.lightGrey}>{largeNumberShortify((item.computed?.find(reactionVal => reactionVal.key === 'REPLIES')?.value || 0) || 0)}</AppText>
+                                </View>
+                            </TouchableOpacity>
+
+                            {item.computed?.find(reactionVal => reactionVal.key === 'REPLIES')?.value > 0 ?
+                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                    if (state.replies._id === item._id) {
+                                        setState(prev => ({ ...prev, replies: { _id: '', data: [] } }))
+                                    } else {
+                                        setState(prev => ({ ...prev, loading: true }))
+                                        getcommentreplieshelper(item._id)
+                                    }
+                                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+                                }}>
+                                    <View style={{ flexDirection: 'row', padding: RFValue(10), paddingHorizontal: RFValue(20), alignItems: 'center' }}>
+                                        <AppText size={1} color={AppTheme.colors.lightGrey}>{state.replies._id === item._id ? "Hide replies" : "View replies"}</AppText>
+                                    </View>
+                                </TouchableOpacity>
+                                : null}
+
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                setState(prev => ({ ...prev, parentID: item }))
+                            }}>
+                                <View style={{ flexDirection: 'row', padding: RFValue(10), paddingHorizontal: RFValue(20), alignItems: 'center' }}>
+                                    <AppText size={1} color={AppTheme.colors.lightGrey}>Reply</AppText>
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                </View>
+            </View>
+        )
+    }
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}
             onLayout={(event) => {
@@ -79,7 +193,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
             <AppBackButton navigation={navigation} />
             {state.comments.length < 1 ?
                 <View style={{ paddingBottom: RFValue(20) }}>
-                    <PostCard item={postData} navigation={navigation} startPlaying={true} onMenuPress={() => { }} />
+                    <PostCard item={postData} navigation={navigation} startPlaying={true} />
                 </View>
                 : null}
 
@@ -90,80 +204,48 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                 initialNumToRender={5}
                 maxToRenderPerBatch={5}
                 keyExtractor={ee => ee._id + ''}
-                renderItem={({ item, index }) => (
-                    <>
-                        {index === 0 ?
-                            <View style={{ paddingBottom: RFValue(20) }}>
-                                <PostCard item={postData} navigation={navigation} startPlaying={true} onMenuPress={() => { }} />
-                            </View>
-                            : null}
-
-                        <View style={{ paddingHorizontal: RFValue(10) }}>
-                            <View style={{ flexDirection: 'row', }}>
-                                <View style={{ height: '100%', alignItems: 'center' }}>
-                                    <UserAvatar source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
-                                    {index % 2 != 0 ?
-                                        <View style={{ width: 2, flex: 1, backgroundColor: AppTheme.colors.lightGrey }} />
-                                        : null}
+                renderItem={({ item, index }) => {
+                    let isCommentIsLiked = state.commentLikesArr.includes(item._id);
+                    return (
+                        <>
+                            {index === 0 ?
+                                <View style={{ paddingBottom: RFValue(20) }}>
+                                    <PostCard item={postData} navigation={navigation} startPlaying={true} />
                                 </View>
+                                : null}
 
-                                <View style={{ flex: 1 }} >
-                                    <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                            <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{item?.createdBy?.firstName || item?.createdBy?.userName}</AppText>
-                                            <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                                            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{item?.createdBy?.earnedCoins}</AppText>
-                                            <AppText size={1} color={AppTheme.colors.lightGrey} style={{ flex: 1 }}> - {moment(item?.createdAt || new Date()).fromNow(true)}</AppText>
-
-                                            <TouchableOpacity onPress={() => {
-
-                                            }}>
-                                                <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} />
-                                            </TouchableOpacity>
-
+                            {renderCommentView(item, isCommentIsLiked, index)}
+                            {state.replies._id === item._id ?
+                                state.replies.data.map((ittem, inndex) => {
+                                    let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
+                                    return (
+                                        <View style={{}}>
+                                            { renderCommentView(ittem, isReplyIsLiked, inndex)}
                                         </View>
-                                        <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.createdBy?.userName}</AppText>
-                                        <AppText size={2} color={'white'} style={{ paddingVertical: RFValue(10) }} >{item?.text}</AppText>
-                                    </View>
+                                    )
+                                })
+                                : null}
 
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                        </>
+                    )
+                }} />
 
-                                        }}>
-                                            <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
-                                                <FontAwesome name="heart-o" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'grey' }} />
-                                                <AppText size={1} color={AppTheme.colors.lightGrey}>{largeNumberShortify(23234)}</AppText>
-                                            </View>
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                                            setState(prev => ({ ...prev, parentID: item?._id }))
-                                        }}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                {/* <Ionicons name="chatbubble-outline" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'white' }} /> */}
-                                                <FastImage source={ICON_COMMENT} style={{ height: RFValue(37), width: RFValue(37) }} />
-                                                <AppText size={1} color={AppTheme.colors.lightGrey}>{largeNumberShortify(item.comments)}</AppText>
-                                            </View>
-                                        </TouchableOpacity>
-
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </>
-                )} />
-            {state.LHeight > 0 ?
-                <AppInputToolBar LHeight={state.LHeight} onSend={(msg) => {
+            <AppInputToolBar
+                placeholder={state.parentID?.createdBy?.userName ? ("@" + state.parentID?.createdBy?.userName) : ""}
+                LHeight={state.LHeight} onSend={(msg) => {
                     let temCommentsState = state.comments;
                     tempComment.text = msg;
+                    tempComment.parentComment = state.parentID?.parentComment || state.parentID?._id;
                     tempComment.createdAt = new Date();
-                    temCommentsState.unshift(tempComment);
-                    setState(prev => ({ ...prev, comments: temCommentsState }));
+                    if (!state.parentID?.parentComment && !state.parentID?._id)
+                        temCommentsState.unshift(tempComment);
+
+                    setState(prev => ({ ...prev, replies: { _id: state.parentID?.parentComment || state.parentID?._id, data: state.parentID?.parentComment || state.parentID?._id ? [tempComment, ...state.replies.data] : [] }, parentID: { parentComment: '', _id: '' }, comments: temCommentsState }));
                     CommentPost(() => {
 
-                    }, state.parentID ? {
+                    }, state.parentID?.parentComment || state.parentID?._id ? {
                         // mentions: [],
-                        parentComment: postData._id,
+                        parentComment: state.parentID?.parentComment || state.parentID?._id,
                         text: msg,
                         post: postData._id
                     } : {
@@ -171,26 +253,11 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                             post: postData._id
                         })
                 }} />
-                :
-                <AppInputToolBar LHeight={state.LHeight} onSend={(msg) => {
-                    let temCommentsState = state.comments;
-                    tempComment.text = msg;
-                    tempComment.createdAt = new Date();
-                    temCommentsState.unshift(tempComment);
-                    setState(prev => ({ ...prev, comments: temCommentsState }));
-                    CommentPost(() => {
 
-                    }, state.parentID ? {
-                        // mentions: [],
-                        parentComment: postData._id,
-                        text: msg,
-                        post: postData._id
-                    } : {
-                            // mentions: [],
-                            text: msg,
-                            post: postData._id
-                        })
-                }} />}
+
+            {state.loading ?
+                <AppLoadingView />
+                : null}
         </View>
     );
 };

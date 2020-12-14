@@ -9,7 +9,6 @@ import { ICON_CHAT, ICON_NOTIFICATION } from '../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../assets/images';
 import { UserAvatar } from '../components/UserAvatar';
 import { AppTheme } from '../config';
-import { Ionicons, SimpleLineIcons } from '../utils/AppIcons';
 import { AppBadge } from './AppBadge';
 
 const HomeScreenHeader = ({ route, navigation }) => {

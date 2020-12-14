@@ -15,7 +15,7 @@ const UserProfileReviews = ({ navigation }) => {
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <FlatList
                 data={MOCK_GAMES}
-
+                nestedScrollEnabled={true}
                 initialNumToRender={2}
                 windowSize={2}
                 removeClippedSubviews={true}

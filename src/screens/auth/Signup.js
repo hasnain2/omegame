@@ -58,7 +58,7 @@ const Signup = ({ route, navigation }) => {
                             SignUpUser((res) => {
                                 if (res) {
                                     AppShowToast("Verification Email has been sent!")
-                                    navigation.goBack();
+                                    navigation.replace("Login");
                                 }
                                 setState(prev => ({ ...prev, loading: false }))
                             }, {

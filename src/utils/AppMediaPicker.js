@@ -10,18 +10,21 @@ const MEDIA_OPTIONS = {
 }
 
 const GenerateThumbnailFromVideo = (callback, videoPath) => {
+    console.log('VIDEO PATH TO BE COMPRESSED----', videoPath)
     createThumbnail({
         url: videoPath,
-        timeStamp: 7000,
+        timeStamp: 2000,
         format: 'png',
     }).then(response => {
         console.log('--------------THUMBNAIL GENERATION RES----------', response)
-        callback(response.path)
-    })
-        .catch(err => {
-            console.log('-------ERROR GENERATING THUMBNAIL------', err)
+        if (response.path)
+            callback(response.path)
+        else
             callback(false)
-        });
+    }).catch(err => {
+        console.log('-------ERROR GENERATING THUMBNAIL------', err)
+        callback(false)
+    });
 }
 
 const OpenGalleryPicker = (callback, type = 'video') => {

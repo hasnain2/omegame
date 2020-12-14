@@ -17,7 +17,6 @@ const UpdateProfile = (callback, formData) => {
         if (status === 201 || status === 200) {
             store.dispatch(setUser(data.data))
             storeData('user', { ...store.getState().root.user, ...data.data })
-            debugger
             callback(data)
         } else
             callback(false);

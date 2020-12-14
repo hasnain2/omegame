@@ -7,6 +7,7 @@ import { Alert } from 'react-native';
 import { store } from '../redux/store';
 import { setHomeFeed } from '../redux/reducers/homeFeedSlice';
 import { setSavedPosts } from '../redux/reducers/savedPostsSlice';
+import { RemovePostFromReduxStore } from './mutateReduxState';
 function creatPostHelper(callback, formData) {
     console.log('---------PAYLOAD RES---------->', formData)
     fetch(EndPoints.CREATE_POST, {
@@ -37,7 +38,19 @@ const CreatePostService = (callback, formData) => {
                         callback(true)
                     else
                         callback(false)
-                }, { ...formData, attachments: [{ name: results?.name, type: results?.oType, url: results?.url, bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC }] })
+                }, {
+                    ...formData,
+                    attachments: [{
+                        name: results?.name,
+                        type: results?.oType, url: results?.url,
+                        bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
+                        meta: [{
+                            type: results?.oType || results?.type,
+                            url: results?.url,
+                            isThumbnail: results.thumbnail ? true : false
+                        }]
+                    }]
+                })
                 console.log('---------CREATE POST UPLOAD MEDIA RESPONSE---------->', results)
             } else {
                 callback(false)
@@ -63,7 +76,7 @@ const GetHomeFeed = (callback) => {
         const data = response.json();
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
-        console.log('-----------HOME FEED RESPONSE-----------', JSON.stringify(data))
+        // console.log('-----------HOME FEED RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -74,21 +87,29 @@ const GetHomeFeed = (callback) => {
     });
 }
 
-function DeletePostsOfAUserById(userID) {
-    const tempHomeFeeds = store.getState().root.homeFeed;
-    const tempSavedPosts = store.getState().root.savedPosts;
-
-    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii.createdBy._id != userID)));
-    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii.createdBy._id != userID)));
+const GetPostsOfSpecificUser = (callback, userID) => {
+    console.log(EndPoints.GET_POSTS_OF_SPECIFIC_USER + userID)
+    fetch(EndPoints.GET_POSTS_OF_SPECIFIC_USER + 'userId=' + userID, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------SPECIFIC USER POSTS ERROR-----------', error)
+        callback(false)
+    });
 }
 
-function DeletePostFromReduxOnlyByID(postID) {
-    const tempHomeFeeds = store.getState().root.homeFeed;
-    const tempSavedPosts = store.getState().root.savedPosts;
 
-    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii._id != postID)));
-    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii._id != postID)));
-}
+
 
 const DeletePost = (callback, postID) => {
     Alert.alert(
@@ -101,7 +122,7 @@ const DeletePost = (callback, postID) => {
             }, style: "cancel"
         }, {
             text: "DELETE", onPress: () => {
-                DeletePostFromReduxOnlyByID(postID)
+                RemovePostFromReduxStore(postID)
                 callback(true)
                 fetch(EndPoints.GET_OR_DELETE_POST + postID, {
                     method: 'DELETE',
@@ -146,6 +167,14 @@ const GetSinglePost = (callback, postID) => {
 }
 
 const CommentPost = (callback, PAYLOAD) => {
+    console.log('------------COMMENTING ON POST-----------')
+    console.log('------------COMMENTING ON POST-----------')
+    console.log('------------COMMENTING ON POST-----------')
+    console.log('------------COMMENTING ON POST-----------', EndPoints.COMMENT_POST)
+    console.log('------------COMMENTING ON POST  PAYLOAD PAYLOAD-----------', PAYLOAD)
+    console.log('------------COMMENTING ON POST-----------')
+    console.log('------------COMMENTING ON POST-----------')
+    console.log('------------COMMENTING ON POST-----------')
     fetch(EndPoints.COMMENT_POST, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -166,6 +195,27 @@ const CommentPost = (callback, PAYLOAD) => {
     });
 }
 
+const CommentReaction = (callback, commentID, PAYLOAD) => {
+    fetch(EndPoints.COMMENT_REACTIONS + commentID, {
+        method: 'POST',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(PAYLOAD)
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------REACTION ON COMMENT LIKE ETC RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------REACTION ON COMMENT LIKE ETC ERROR-----------', error)
+        callback(false)
+    });
+}
+
 const GetCommentsOfPost = (callback, CURSOR, LIMIT, postID) => {
     fetch(EndPoints.COMMENT_POST + (CURSOR ? ('cursor=' + CURSOR + '&') : '') + (LIMIT ? ('&limit=' + LIMIT + '&') : '') + ('postId=' + postID), {
         method: 'GET',
@@ -182,6 +232,26 @@ const GetCommentsOfPost = (callback, CURSOR, LIMIT, postID) => {
             callback(false);
     }).catch((error) => {
         console.log('---------GETTING POST COMMENTS ERROR-----------', error)
+        callback(false)
+    });
+}
+
+const GetCommentsReplies = (callback, CURSOR, LIMIT, parentCommentID) => {
+    fetch(EndPoints.GET_COMMENT_REPLIES + (CURSOR ? ('cursor=' + CURSOR + '&') : '') + (LIMIT ? ('&limit=' + LIMIT + '&') : '') + ('parentComment=' + parentCommentID), {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------GETTING COMMENTS REPLIES RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data.data.data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------GETTING COMMENTS REPLIES ERROR-----------', error)
         callback(false)
     });
 }
@@ -232,9 +302,7 @@ const FollowPost = (callback, postID, payload) => {
     fetch(EndPoints.FOLLOW_POST + postID, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
-        body: JSON.stringify({
-
-        })
+        body: JSON.stringify(payload)
     }).then((response) => {
         const statusCode = response.status;
         const data = response.json();
@@ -252,7 +320,7 @@ const FollowPost = (callback, postID, payload) => {
 }
 
 
-const SaveOrBookMarkPost = (callback, postID, PAYLOAD) => {
+const SaveOrBookMarkPost = (callback, postID, PAYLOAD) => { // bookmark: true 
     fetch(EndPoints.BOOKMARK_POST + postID, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -293,4 +361,13 @@ const GetBookmarkPosts = (callback) => {
     });
 }
 
-export { DeletePostFromReduxOnlyByID, GetCommentsOfPost, DeletePostsOfAUserById, CreatePostService, GetHomeFeed, CommentPost, DeletePost, GetSinglePost, LikePost, SharePost, FollowPost, SaveOrBookMarkPost, GetBookmarkPosts };
+export {
+    GetCommentsOfPost,
+    CommentReaction,
+    GetCommentsReplies,
+    GetPostsOfSpecificUser,
+    CreatePostService, GetHomeFeed, CommentPost,
+    DeletePost, GetSinglePost, LikePost, SharePost,
+    FollowPost, SaveOrBookMarkPost,
+    GetBookmarkPosts
+};

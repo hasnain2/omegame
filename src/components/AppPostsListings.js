@@ -1,14 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
-import { FlatList, Platform, StyleSheet, View } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { MOCKUP_POSTS } from '../mockups/Mockups';
+import { FlatList, Platform, RefreshControl, View } from 'react-native';
 import { PoolCard } from './PoolCard';
 import { PostCard } from './PostCard';
 
 let currentItemBeingUpdated = 0;
 
-const AppPostsListings = ({ navigation, data, style, scrollPosition, autoPlay = true }) => {
+const AppPostsListings = ({ navigation, data, style, scrollPosition, loadMore, refreshing, autoPlay = true }) => {
     let [state, setState] = useState({
         showMenu: '',
         currentItemIndex: 0,
@@ -36,6 +34,7 @@ const AppPostsListings = ({ navigation, data, style, scrollPosition, autoPlay = 
             if (currentIndex != state.currentItemIndex && currentIndex != currentItemBeingUpdated) {
                 setState(prev => ({ ...prev, currentItemIndex: currentIndex }))
                 currentItemBeingUpdated = currentIndex;
+                console.log('----------CURRENT INDEX--------', currentIndex)
                 if (scrollPosition) {
                     scrollPosition({ index: currentIndex })
                 }
@@ -43,19 +42,28 @@ const AppPostsListings = ({ navigation, data, style, scrollPosition, autoPlay = 
         }
     });
 
-    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 60 })
+    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 80 })
 
     return (
         <View style={[{ flex: 1, backgroundColor: 'black' }, style ? style : null]}>
             <FlatList
+                nestedScrollEnabled={true}
                 onScroll={(e) => {
                     if (e?.nativeEvent?.contentOffset?.y) {
                         e.persist();
                         scrollPosition ? scrollPosition({ scroll: e?.nativeEvent?.contentOffset?.y, index: state.currentItemIndex }) : null
                     }
                 }}
-                data={data || MOCKUP_POSTS}
-
+                data={data}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => {
+                            if (loadMore)
+                                loadMore(0, true)
+                        }}
+                    />
+                }
 
 
                 windowSize={Platform.OS === 'ios' ? 3 : 2}
@@ -65,7 +73,7 @@ const AppPostsListings = ({ navigation, data, style, scrollPosition, autoPlay = 
                 bounces={false}
 
 
-                keyExtractor={ii => ii._id  + 'you'}
+                keyExtractor={ii => ii._id + 'you'}
                 keyboardShouldPersistTaps={'always'}
 
 
@@ -74,25 +82,16 @@ const AppPostsListings = ({ navigation, data, style, scrollPosition, autoPlay = 
 
                 renderItem={({ item, index }) => {
                     if (item.postType === 'media')
-                        return <PostCard key={'hello' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index}
-                            onMenuPress={() => { setState(prev => ({ ...prev, showMenu: item })) }} />
+                        return <PostCard key={'hello' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
                     else if (item.postType === 'voting')
-                        return <PoolCard key={'hello' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index}
-                            onMenuPress={() => { setState(prev => ({ ...prev, showMenu: item })) }} />
+                        return <PoolCard key={'hello' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
                     else
-                        return <PostCard key={'hello' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index}
-                            onMenuPress={() => { setState(prev => ({ ...prev, showMenu: item })) }} />
+                        return <PostCard key={'hello' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
                 }}
             />
-
 
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    modalListItemStyle: { flexDirection: 'row', alignItems: 'center', padding: RFValue(10), paddingHorizontal: RFValue(20) },
-    modalIconStyle: { fontSize: RFValue(25), flex: 0.15, color: 'white' },
-})
 
 export { AppPostsListings };

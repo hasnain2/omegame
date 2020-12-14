@@ -2,18 +2,26 @@ import * as React from 'react';
 import { View } from "react-native";
 import { useSelector } from 'react-redux';
 import { AppPostsListings } from "../../../components";
-const UserProfilePosts = ({ navigation, autoPlay, scrollPosition }) => {
+import { GetPostsOfSpecificUser } from '../../../services';
+const UserProfilePosts = ({ navigation, autoPlay, scrollPosition, userID }) => {
     let [state, setState] = React.useState({
         isModalVisible: null,
-        selectedColor: '#ff1a4a'
+        selectedColor: '#ff1a4a',
+        data: []
     })
 
-    let homeFeed = useSelector(state=>state.root.homeFeed)
+    React.useEffect(() => {
+        GetPostsOfSpecificUser((userPosts) => {
+            if (userPosts)
+                setState(prev => ({ ...prev, data: userPosts }))
+        }, userID)
+    }, [])
+
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <AppPostsListings navigation={navigation} style={{ backgroundColor: 'black' }}
                 autoPlay={autoPlay}
-                data={homeFeed}
+                data={state.data}
                 scrollPosition={(dta) => {
                     scrollPosition ? scrollPosition(dta) : null
                 }} />

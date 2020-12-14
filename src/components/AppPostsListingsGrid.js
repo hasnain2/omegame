@@ -55,7 +55,7 @@ const AppPostsListingsGrid = ({ navigation, data, style }) => {
                 data={data}
                 numColumns={NUMBER_OF_COLUMNS}
                 style={{ flex: 1, }}
-
+                nestedScrollEnabled={true}
                 windowSize={Platform.OS === 'ios' ? 3 : 2}
                 initialNumToRender={Platform.OS === 'ios' ? 10 : 3}
                 maxToRenderPerBatch={Platform.OS === 'ios' ? 10 : 3}
@@ -81,7 +81,7 @@ const AppPostsListingsGrid = ({ navigation, data, style }) => {
 
             <AppModal show={state.showPost} toggle={() => setState(prev => ({ ...prev, showPost: false }))}>
                 <View style={{ width }}>
-                    <PostCard item={POST_DATA} startPlaying={true} navigation={navigation} onMenuPress={() => { }} likePress={() => { }} bookmarkPress={() => { }} />
+                    <PostCard item={POST_DATA} startPlaying={true} navigation={navigation} />
                 </View>
             </AppModal>
 

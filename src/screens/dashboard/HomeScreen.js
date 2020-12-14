@@ -11,18 +11,22 @@ import { GetHomeFeed } from '../../services/postService';
 const HomeScreen = ({ route, navigation }) => {
     let [state, setState] = useState({
         loading: true,
+        refreshing: false,
         data: []
     })
     let disptach = useDispatch();
     let homeFeed = useSelector(state => state.root.homeFeed)
     console.log('-------------HOME FEEDS--------', homeFeed[0])
-    useEffect(() => {
+    function getHomeFeedHelper() {
         GetHomeFeed((res) => {
             if (res) {
                 disptach(setHomeFeed(res))
             }
-            setState(prev => ({ ...prev, loading: false }))
+            setState(prev => ({ ...prev, loading: false, refreshing: false }))
         });
+    }
+    useEffect(() => {
+        getHomeFeedHelper();
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -33,7 +37,15 @@ const HomeScreen = ({ route, navigation }) => {
                 <AppLoadingView /> : null}
 
             {!state.loading && homeFeed.length < 1 ?
-                <AppNoDataFound /> : <AppPostsListings navigation={navigation} data={homeFeed} />}
+                <AppNoDataFound /> :
+                <AppPostsListings navigation={navigation} data={homeFeed}
+                    refreshing={state.refreshing}
+                    loadMore={(offset, refreshControl) => {
+                        if (refreshControl)
+                            setState(prev => ({ ...prev, refreshing: true }))
+
+                        getHomeFeedHelper(offset)
+                    }} />}
         </View>
     );
 };

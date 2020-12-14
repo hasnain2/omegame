@@ -20,11 +20,11 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
     let [state, setState] = useState({
         name: user.firstName,
         bio: user?.bio,
-        dob: user.dateOfBirth || '',
+        dateOfBirth: user.dateOfBirth || '',
         favoriteGame: user?.favouriteGame || '',
         favoriteConsole: user?.favouriteConsole || '',
 
-        gamingAccounts: user?.gamingAccounts || [
+        gamingAccounts: user?.gamingAccounts && user?.gamingAccounts.length > 0 ? user?.gamingAccounts : [
             { gamingAccountProvider: "XBOX", account: '' },
             { gamingAccountProvider: "PSN", account: '' },
             { gamingAccountProvider: "STREAM", account: '' },
@@ -46,7 +46,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
     const onSubmit = () => {
         let formedData = {
             bio: state.bio || null,
-            dateOfBirth: moment(new Date(state.dob)).toISOString() || null,
+            dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
             favouriteConsole: state.favoriteConsole || null,
             favouriteGame: state.favoriteGame || null,
             firstName: state.name || null,
@@ -104,7 +104,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                     setState(prev => ({ ...prev, showDatePicker: true }))
                 }}>
                     <View pointerEvents={"none"}>
-                        <AppInput editable={false} value={state.dob ? (moment(state.dob).format('DD MMM, yyyy') + '') : ''} label={"Date of birth"} onChangeText={(val) => { setState(prev => ({ ...prev, dob: val })) }} />
+                        <AppInput editable={false} value={state.dateOfBirth ? (moment(state.dateOfBirth).format('DD MMM, yyyy') + '') : ''} label={"Date of birth"} onChangeText={(val) => { setState(prev => ({ ...prev, dateOfBirth: val })) }} />
                     </View>
                 </TouchableOpacity>
                 <AppInput label={"Favorite game"} value={state.favoriteGame} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteGame: val })) }} />
@@ -127,12 +127,12 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
             </View>
 
             <AppDateTimePicker show={state.showDatePicker}
-                value={state.dob}
+                value={state.dateOfBirth}
                 setShow={(val) => {
                     setState(prev => ({ ...prev, showDatePicker: val }))
                 }}
                 onChange={(val) => {
-                    setState(prev => ({ ...prev, dob: val }))
+                    setState(prev => ({ ...prev, dateOfBirth: val }))
                 }}
             />
         </View>
