@@ -12,7 +12,7 @@ const renderOptionItem = (label, value) => {
     return (
         <View style={{ paddingVertical: RFValue(10) }} >
             <AppText color={AppTheme.colors.lightGrey} size={1}>{label}</AppText>
-            <AppText color={'white'} size={2}>{value}</AppText>
+            <AppText color={'white'} size={2} style={{ paddingTop: RFValue(5) }}>{value}</AppText>
         </View>
     )
 }
@@ -33,7 +33,7 @@ const PersonalInformationScreen = ({ navigation, route, }) => {
                     {renderOptionItem("Username:", user.userName)}
                     {renderOptionItem("E-mail:", user.email)}
                     {renderOptionItem("Gender:", user.gender || user?.profile?.gender || "Male")}
-                    {renderOptionItem("Date of Birth:", user?.profile?.dateOfBirth ? moment(user?.profile?.dateOfBirth).format('DD / MM / YYYY') : '')}
+                    {renderOptionItem("Date of Birth:", user?.dateOfBirth ? moment(user?.dateOfBirth).format('DD / MM / YYYY') : '')}
                 </View>
             </View>
         </View>

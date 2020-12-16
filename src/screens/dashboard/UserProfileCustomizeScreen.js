@@ -6,7 +6,8 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BACKGROUND_IMG } from '../../../assets/images';
+import { useSelector } from 'react-redux';
+import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
@@ -15,6 +16,8 @@ import { OmegaStoreTabs } from '../OmegaStore/OmegaStoreTabs';
 import { CustomizeTabs } from './CustomizeProfileTabs/CustomizeTabs';
 import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
 const UserProfileCustomizeScreen = ({ navigation, route, }) => {
+    let user = useSelector(state => state.root.user)
+    console.log(user)
     let [state, setState] = useState({
         loading: false,
         LHeight: 0,
@@ -42,27 +45,27 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
                     <FastImage source={BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                         <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <UserAvatar size={100} />
+                            <UserAvatar source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={100} />
                             <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                     <AppGoldCoin />
-                                    <AppText style={{ paddingHorizontal: RFValue(10) }}>1123</AppText>
+                                    <AppText style={{ paddingHorizontal: RFValue(10) }}>{user?.level}</AppText>
                                 </View>
                                 <View style={{ flex: 0.55 }}>
-                                    <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={0.5} color={AppTheme.colors.primary} />
+                                    <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={user?.earnedXps} color={AppTheme.colors.primary} />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                    <AppText size={1} bold={true} style={{}}>XP 50/100</AppText>
+                                    <AppText size={1} bold={true} style={{}}>XP {user?.earnedXps}/100</AppText>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                                    <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>Username <IsUserVerifiedCheck check={true} /></AppText>
-                                    <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>NickName</AppText>
+                                    <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>{user?.userName} <IsUserVerifiedCheck check={user?.isVerified} /></AppText>
+                                    <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{user?.firstName || user?.userName}</AppText>
                                 </View>
                                 <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
                                     <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>
-                                    <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>1123</AppText>
+                                    <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{user?.level}</AppText>
                                 </View>
                             </View>
                         </LinearGradient>

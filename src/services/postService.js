@@ -35,20 +35,21 @@ const CreatePostService = (callback, formData) => {
             if (results) {
                 creatPostHelper((creatResults) => {
                     if (creatResults)
-                        callback(true)
+                        callback(creatResults)
                     else
                         callback(false)
                 }, {
                     ...formData,
                     attachments: [{
                         name: results?.name,
-                        type: results?.oType, url: results?.url,
+                        type: results?.oType,
+                        url: results?.url,
                         bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
-                        meta: [{
-                            type: results?.oType || results?.type,
-                            url: results?.url,
-                            isThumbnail: results.thumbnail ? true : false
-                        }]
+                        meta: results?.thumbnail?.thumbnail ? [{
+                            type: results?.thumbnail?.oType || results?.thumbnail?.type,
+                            url: results?.thumbnail?.url,
+                            isThumbnail: results?.thumbnail?.thumbnail ? true : false
+                        }] : null
                     }]
                 })
                 console.log('---------CREATE POST UPLOAD MEDIA RESPONSE---------->', results)
@@ -60,7 +61,7 @@ const CreatePostService = (callback, formData) => {
     } else {
         creatPostHelper((creatResults) => {
             if (creatResults)
-                callback(true)
+                callback(creatResults)
             else
                 callback(false)
         }, { ...formData })
@@ -366,8 +367,14 @@ export {
     CommentReaction,
     GetCommentsReplies,
     GetPostsOfSpecificUser,
-    CreatePostService, GetHomeFeed, CommentPost,
-    DeletePost, GetSinglePost, LikePost, SharePost,
-    FollowPost, SaveOrBookMarkPost,
+    CreatePostService,
+    GetHomeFeed,
+    CommentPost,
+    DeletePost,
+    GetSinglePost,
+    LikePost,
+    SharePost,
+    FollowPost,
+    SaveOrBookMarkPost,
     GetBookmarkPosts
 };

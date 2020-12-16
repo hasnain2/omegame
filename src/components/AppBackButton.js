@@ -11,7 +11,7 @@ const AppBackButton = ({ navigation, onPress }) => {
                 onPress()
             else
                 navigation.goBack()
-        }} style={{ padding: RFValue(8) }}>
+        }} style={{ padding: RFValue(8), width: RFValue(65) }}>
             <Image source={ICON_ARROW_LEFT} style={{ tintColor: 'white', height: size, width: size }} />
         </TouchableOpacity>
     );

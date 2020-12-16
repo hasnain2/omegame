@@ -8,28 +8,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { ICON_IMAGE, ICON_LOCATION, ICON_ONLY_FRIENDS, ICON_PHOTO, ICON_POLL, ICON_PRIVATE, ICON_PUBLIC, ICON_TAG, ICON_TEXT } from '../../../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../../../assets/images';
-import { AppButton, AppFriendsListModal, AppGallery, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
+import { AppButton, AppFriendsListModal, AppGallery, AppGooglePlacesAutoFill, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
-import { CreatePostService, requestReadWritePermission } from '../../../services';
+import { AddPostToReduxStore, CreatePostService, requestReadWritePermission } from '../../../services';
 import { PRIVACY } from '../../../utils/AppConstants';
 import { AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
-import { AntDesign, EvilIcons, FontAwesome, Fontisto, Ionicons, MaterialCommunityIcons } from '../../../utils/AppIcons';
+import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({ navigation, route }) => {
     let [state, setState] = useState({
         loading: false,
         whatsNewText: '',
-        showPrivacyOptions: false,
-        showTagFriends: false,
         postTypeIsPool: false,
 
-        showGallery: false,
         privacy: 'Public',
         selectedMedia: null,
         answersArr: ['', ''],
-
+        location: null,
         chosenContacts: [],
+
+        showGallery: false,
+        showPrivacyOptions: false,
+        showTagFriends: false,
+        showLocationPicker: false,
         showFriendsListModal: false,
     })
     useEffect(() => {
@@ -43,12 +45,16 @@ const CreatePost = ({ navigation, route }) => {
                 privacy: PRIVACY.find(ii => ii.name === state.privacy)?.key || 'PUBLIC',
                 tagged: state.chosenContacts,
                 text: state.whatsNewText,
-                file: state.selectedMedia || false
+                file: state.selectedMedia || false,
             }
+            if (state.location)
+                payload["location"] = state.location
             setState(prev => ({ ...prev, loading: true }))
             CreatePostService((result) => {
                 setState(prev => ({ ...prev, loading: false }))
                 if (result) {
+                    if (result.data)
+                        AddPostToReduxStore(result?.data)
                     AppShowToast("Post created successfully");
                     navigation.goBack();
                 }
@@ -124,9 +130,9 @@ const CreatePost = ({ navigation, route }) => {
 
                 {state.selectedMedia && state.selectedMedia.uri ?
                     state.selectedMedia?.type === 'photo' ?
-                        <Image source={{ uri: state.selectedMedia.uri }} style={{ height: RFValue(300), width: '100%', marginTop: RFValue(10) }} resizeMode={'cover'} />
+                        <Image source={{ uri: state.selectedMedia.uri }} style={{ height: RFValue(300), width: '100%', marginTop: RFValue(15) }} resizeMode={'cover'} />
                         :
-                        <View style={{ height: RFValue(300), width: '100%' }}>
+                        <View style={{ height: RFValue(300), width: '100%', marginTop: RFValue(15) }}>
                             <AppVideoPlayer source={state.selectedMedia} startPlaying={!state.showGallery} />
                         </View>
                     : null}
@@ -172,7 +178,7 @@ const CreatePost = ({ navigation, route }) => {
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', paddingVertical: RFValue(20) }}>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        // setState(prev => ({ ...prev, showPrivacyOptions: true }))
+                        setState(prev => ({ ...prev, showLocationPicker: true }))
                     }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={ICON_LOCATION} style={{ height: RFValue(25), width: RFValue(25), tintColor: 'white' }} />
@@ -205,6 +211,12 @@ const CreatePost = ({ navigation, route }) => {
                 <View style={{ margin: RFValue(30) }} />
             </KeyboardAvoidingScrollView>
 
+
+            <AppGooglePlacesAutoFill show={state.showLocationPicker}
+                onChangeValue={(val) => {
+                    setState(prev => ({ ...prev, location: val }))
+                }}
+                toggle={() => setState(prev => ({ ...prev, showLocationPicker: false }))} />
 
             <AppModal show={state.showPrivacyOptions} type={"bottom"} toggle={() => setState(prev => ({ ...prev, showPrivacyOptions: false }))}>
                 <View style={{ borderTopRightRadius: RFValue(10), borderTopLeftRadius: RFValue(10), backgroundColor: 'black', paddingBottom: RFValue(50) }}>

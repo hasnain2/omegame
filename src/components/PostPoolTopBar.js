@@ -114,7 +114,7 @@ const PostPoolTopBar = ({ item, navigation }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                RemovePostFromReduxStore(item._id)
+                                RemovePostFromReduxStore(item._id);
                                 // modify post
                                 setState(prev => ({ ...prev, showMenu: '' }))
                             }} style={styles.modalListItemStyle}>

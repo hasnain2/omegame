@@ -31,6 +31,11 @@ const EndPoints = {
 
     COMMENT_REACTIONS: DOMAIN + 'comments/action/react/', // get comments of specific post
     GET_COMMENT_REPLIES: DOMAIN + 'comments/replies?', // gett comment replies
+
+    //-----GAMES AND REVIEWS------
+    GET_GAMES_LIST: DOMAIN + 'games',
+    GET_GAME_REVIEWS: DOMAIN + 'games/reviews?gameId=', // get specific game reviews by gameID
+    POST_GAME_REVIEW: DOMAIN + 'games/action/review', // post review for a game
 };
 
 export { DOMAIN, EndPoints };

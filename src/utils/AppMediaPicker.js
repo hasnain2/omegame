@@ -1,6 +1,8 @@
 import { Alert, Platform } from 'react-native';
 import { createThumbnail } from "react-native-create-thumbnail";
 import ImagePicker from 'react-native-image-crop-picker';
+import { AppConfig } from '../config';
+
 
 const MEDIA_OPTIONS = {
     width: 800,
@@ -9,6 +11,29 @@ const MEDIA_OPTIONS = {
     multiple: false
 }
 
+function pickerResponseMaker(callback, response, type) {
+    console.log('-----[[[[[--PICKER RESPONSE-]]]]]--------', response)
+    if (response?.path) {
+        const ORIGINAL_URI = response?.path;
+        let uri = ORIGINAL_URI;
+        const fileName = response?.filename || response?.mime;
+        const ext = fileName.split('/')[1] || ''
+
+        if (type === 'video') { // val.node.image.fileSize
+            //   { image: { uri: image.path }, ext, type: "video", upload: true }
+            if (AppConfig.IS_IOS_DEVICE) {
+                callback({ image: { uri: ORIGINAL_URI, uri2: uri }, ext, type: 'video', oType: response?.mime ? response.mime : ('video/' + ext), uri: ORIGINAL_URI })
+            } else {
+                callback({ image: { uri: ORIGINAL_URI, }, ext, type: 'video', oType: response?.mime ? response.mime : ('video/' + ext), uri: ORIGINAL_URI })
+            }
+        } else {
+            callback({ image: { uri: ORIGINAL_URI }, oType: response?.mime ? response.mime : ('image/' + ext), type, uri: ORIGINAL_URI })
+        }
+
+    } else {
+        callback(false)
+    }
+}
 const GenerateThumbnailFromVideo = (callback, videoPath) => {
     console.log('VIDEO PATH TO BE COMPRESSED----', videoPath)
     createThumbnail({
@@ -33,16 +58,12 @@ const OpenGalleryPicker = (callback, type = 'video') => {
         mediaType: type,
         cropping: type === 'photo'
     }).then((response) => {
-        if (type === 'video') {
-            GenerateThumbnailFromVideo((thumbnailRes) => {
-                if (thumbnailRes)
-                    callback({ type, selectedFrom: 'gallery', uri: response.path, thumbnail: thumbnailRes })
-                else
-                    callback({ type, selectedFrom: 'gallery', uri: response.path })
-            }, response.path)
-        } else {
-            callback({ type, selectedFrom: 'gallery', uri: response.path })
-        }
+
+        pickerResponseMaker((res) => {
+            callback(res)
+        }, response, type)
+
+
     }).catch((err) => {
         callback(false)
         console.log('---------OpenGalleryPicker ERROR------', err)
@@ -55,22 +76,31 @@ const OpenCameraPicker = (callback, type = 'video') => {
         mediaType: type,
         cropping: type === 'photo'
     }).then((response) => {
-        if (type === 'video') {
-            console.log('---------CAMERA RESPONSE--------', response)
-            let path = response.path;
-            console.log('-----------------path before parsing------------', path)
-            if (Platform.OS === 'ios') {
-                path = path.replace('file://', '')
-            }
-            GenerateThumbnailFromVideo((thumbnailRes) => {
-                if (thumbnailRes)
-                    callback({ type, selectedFrom: 'camera', uri: path, thumbnail: thumbnailRes })
-                else
-                    callback({ type, selectedFrom: 'camera', uri: path })
-            }, path)
-        } else {
-            callback({ type, selectedFrom: 'camera', uri: response.path })
-        }
+
+        pickerResponseMaker((res) => {
+            callback(res)
+        }, response, type)
+
+
+
+        // if (type === 'video') {
+        //     console.log('---------CAMERA RESPONSE--------', response)
+        //     let path = response.path;
+        //     console.log('-----------------path before parsing------------', path)
+        //     if (Platform.OS === 'ios') {
+        //         path = path.replace('file://', '')
+        //     }
+        //     GenerateThumbnailFromVideo((thumbnailRes) => {
+        //         if (thumbnailRes)
+        //             callback({ type, selectedFrom: 'camera', uri: path, thumbnail: thumbnailRes })
+        //         else
+        //             callback({ type, selectedFrom: 'camera', uri: path })
+        //     }, path)
+        // } else {
+        //     callback({ type, selectedFrom: 'camera', uri: response.path })
+        // }
+
+
     }).catch((err) => {
         callback(false)
         console.log('---------OpenGalleryPicker ERROR------', err)

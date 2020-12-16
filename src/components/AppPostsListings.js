@@ -31,14 +31,9 @@ const AppPostsListings = ({ navigation, data, style, scrollPosition, loadMore, r
     const onViewRef = React.useRef((viewableItems) => {
         if (viewableItems && viewableItems?.changed?.length > 0) {
             let currentIndex = viewableItems?.changed[0]?.index;
-            if (currentIndex != state.currentItemIndex && currentIndex != currentItemBeingUpdated) {
-                setState(prev => ({ ...prev, currentItemIndex: currentIndex }))
-                currentItemBeingUpdated = currentIndex;
-                console.log('----------CURRENT INDEX--------', currentIndex)
-                if (scrollPosition) {
-                    scrollPosition({ index: currentIndex })
-                }
-            }
+            console.log('----------CURRENT INDEX--------', currentIndex)
+            setState(prev => ({ ...prev, currentItemIndex: currentIndex }))
+
         }
     });
 

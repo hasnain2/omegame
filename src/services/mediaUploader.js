@@ -64,6 +64,7 @@ function postFiles(callback, fileName, bucket, data) {
         const data = response.json();
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
+        console.log('---------IMAGE UPLOADER RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             let uploaderResponse = data?.data?.media[0]
             callback({
@@ -88,30 +89,49 @@ const UploadMedia = (callback, bucket, mediaObj) => {
         let fileName = 'assetmedia.' + (compressionResponse.oType.split('/')[1] ? ('' + compressionResponse.oType.split('/')[1]) : '');
         let multiFormData = new FormData()
         multiFormData.append('files', { uri: compressionResponse.compressed.uri, name: fileName, type: compressionResponse.oType })
-
+        debugger
         postFiles((fileUploadRes) => {
+
+            debugger
             if (fileUploadRes) {
+
+                debugger
                 if (mediaObj.type === 'video') {
+                    debugger
                     GenerateThumbnailFromVideo((thumbnail) => {
                         if (thumbnail) {
+                            debugger
                             let multiFormDataForThumbnail = new FormData()
                             multiFormDataForThumbnail.append('files', { uri: thumbnail, name: "thumbnail.png", type: 'image/png' })
+                            debugger
                             postFiles((thumbnailUploadRes) => {
                                 if (thumbnailUploadRes) {
-                                    callback({ ...thumbnailUploadRes, thumbnail: true })
+                                    debugger
+                                    callback({ ...fileUploadRes, thumbnail: { thumbnail: true, url: thumbnailUploadRes.url, oType: 'image/png' }, thumbnail: true })
                                 } else {
+                                    debugger
                                     callback(fileUploadRes)
                                 }
+                                debugger
                             }, "thumbnail.png", bucket, multiFormDataForThumbnail)
                         } else {
+                            debugger
                             callback(fileUploadRes)
                         }
+                        debugger
                     }, mediaObj?.uri2 || mediaObj?.image?.uri2 || mediaObj?.image?.uri || mediaObj.uri)
                 } else {
+                    debugger
                     callback(fileUploadRes)
                 }
+                debugger
+            } else {
+                debugger
+                callback(false)
             }
+            debugger
         }, fileName, bucket, multiFormData)
+        debugger
     }).catch(err => {
         console.log('--------ERROR COMMPRESSING MEDIA -------->\n', err)
         callback(false)

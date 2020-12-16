@@ -6,17 +6,9 @@ import { PERMISSIONS, request } from 'react-native-permissions';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_ARROW_RIGHT } from "../../assets/icons";
 import { AppText } from '../components';
-import { AppTheme } from "../config";
+import { AppConfig, AppTheme } from "../config";
 import { EvilIcons } from "../utils/AppIcons";
 import { AppVideoPlayer } from './AppVideoPlayer';
-import {
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-} from 'react-native-popup-menu';
-import FastImage from "react-native-fast-image";
-
 
 const NumberOfIMagesToGet = 150;
 const AppGallery = ({ navigation, toggle, selectedOne }) => {
@@ -110,7 +102,6 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
             let pics = await CameraRoll.getPhotos(tempPrams ? tempPrams : paginated ? { ...params, after: paginated } : params);
             let images = pics.edges;
 
-            const IS_IOS_DEVICE = Platform.OS === 'ios';
 
             if (pics.page_info.has_next_page) {
             } else {
@@ -127,15 +118,15 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                     const ORIGINAL_URI = val.node.image.uri;
                     let uri = ORIGINAL_URI;
                     const appleId = ORIGINAL_URI.substring(5, 41);
-                    const fileNameLength = IS_IOS_DEVICE ? val.node.image.filename.length : 10;
-                    const ext = IS_IOS_DEVICE ? val.node.image.filename.substring(fileNameLength - 3) : 'mp4';
-                    if (IS_IOS_DEVICE) {
+                    const fileNameLength = AppConfig.IS_IOS_DEVICE ? val.node.image.filename.length : 10;
+                    const ext = AppConfig.IS_IOS_DEVICE ? val.node.image.filename.substring(fileNameLength - 3) : 'mp4';
+                    if (AppConfig.IS_IOS_DEVICE) {
                         uri = `assets-library://asset/asset.${ext}?id=${appleId}&ext=${ext}`;
                     }
                     console.log('---------DOES INCLUDES------', val.node.type.includes('video'))
                     if (val.node.type.includes('video')) { // val.node.image.fileSize
                         //   { image: { uri: image.path }, ext, type: "video", upload: true }
-                        if (IS_IOS_DEVICE) {
+                        if (AppConfig.IS_IOS_DEVICE) {
                             ImagesArray.push({ image: { uri: ORIGINAL_URI, uri2: uri }, type: 'video', oType: ('video/' + ext), upload: true, duration: val.node.image.playableDuration })
                         } else {
                             ImagesArray.push({ image: { uri: ORIGINAL_URI, }, type: 'video', oType: val.node.type, upload: true, duration: val.node.image.playableDuration })

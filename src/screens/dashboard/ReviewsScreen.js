@@ -1,33 +1,54 @@
 
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { AppButton, AppModal, AppRadioButton, AppSearchBar, AppText } from '../../components';
+import { DEFAULT_USER_PIC } from '../../../assets/images';
+import { AppButton, AppLoadingView, AppModal, AppRadioButton, AppSearchBar, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_CONSOLE_TYPES, MOCK_GAMES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
+import { GetGamesList } from '../../services/gamesService';
 import { AntDesign, MaterialIcons } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const ReviewsScreen = ({ navigation }) => {
     let [state, setState] = useState({
+        loading: true,
         searchTerm: '',
+        offset: 0,
         showFilter: false,
         visibleFilter: '',
         selectedConsoleTypes: [],
         selectedGenreTypes: [],
-        releaseDate: 'All time'
+        releaseDate: 'All time',
+        data: []
+
     })
+    function getgameshelper(offset) {
+        GetGamesList((gamesRes) => {
+            if (gamesRes) {
+                setState(prev => ({ ...prev, loading: false, data: gamesRes }))
+            } else {
+                setState(prev => ({ ...prev, loading: false }))
+            }
+        }, offset)
+    }
+
+    useEffect(() => {
+        getgameshelper(0);
+    }, [])
     return (
         <View style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
             <View style={{ padding: RFValue(10) }}>
                 <AppSearchBar onChangeText={(val) => { setState(prev => ({ ...prev, searchTerm: val })) }} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
             </View>
-
+            {state.loading ?
+                <AppLoadingView />
+                : null}
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={MOCK_GAMES}
+                    data={state.data}
 
                     initialNumToRender={2}
                     windowSize={2}
@@ -38,17 +59,17 @@ const ReviewsScreen = ({ navigation }) => {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                                navigation.navigate("GameDetailsScreen")
+                                navigation.navigate("GameDetailsScreen", { gameData: item })
                             }}>
                                 <>
                                     <View style={{ flexDirection: 'row', flex: 1, padding: RFValue(10), alignItems: 'center' }}>
-                                        <UserAvatar source={{ uri: item.cover }} size={55} />
+                                        <UserAvatar source={item?.background?.url ? { uri: item?.background?.url } : DEFAULT_USER_PIC} size={55} />
                                         <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
                                             <AppText size={3} bold={true} >{item.name}</AppText>
-                                            <AppText size={2} color={AppTheme.colors.lightGrey} >{item.type}</AppText>
+                                            <AppText size={2} color={AppTheme.colors.lightGrey} >{item.supportedDevices.map(ii => (ii + ', ').toUpperCase())}</AppText>
                                             <AppText size={0} color={AppTheme.colors.lightGrey} >Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}</AppText>
                                         </View>
-                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{item.points}</AppText>
+                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{item?.computed[0]?.value?.toFixed(2)}</AppText>
                                         <MaterialIcons name="arrow-forward-ios" style={{ fontSize: RFValue(18), paddingLeft: RFValue(10), color: AppTheme.colors.lightGrey }} />
                                     </View>
                                     <Divider style={{ backgroundColor: AppTheme.colors.lightGrey, height: 0.5 }} />

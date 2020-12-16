@@ -1,19 +1,20 @@
 
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, LayoutAnimation, Platform, Dimensions, StyleSheet, TouchableOpacity, UIManager, View } from 'react-native';
+import { Dimensions, Image, Platform, StyleSheet, TouchableOpacity, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ICON_BLOCK, ICON_CUSTOMIZE, ICON_MENU, ICON_MUTE, ICON_REPORT, ICON_SETTINGS, ICON_UNFOLLOW } from '../../../assets/icons';
 import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppButton, AppGoldCoin, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { GetPostsOfSpecificUser } from '../../services';
+import { setUser } from '../../redux/reducers/userSlice';
+import { GetPostsOfSpecificUser, RemovePostsOfUserFromReduxStore } from '../../services';
 import { ActionsOnUsers, GetSingleUserProfile } from '../../services/profileService';
 import { FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
 import { MaterialIcons } from '../../utils/AppIcons';
@@ -29,6 +30,9 @@ const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BL
 
 const UserProfileScreen = ({ navigation, route, }) => {
     let userID = route.params.userID || false;
+    let user = useSelector(state => state.root.user)
+    let disp = useDispatch();
+    userID = (user?._id || user?.profile?._id) === userID;
 
     let [state, setState] = useState({
         loading: true,
@@ -38,18 +42,19 @@ const UserProfileScreen = ({ navigation, route, }) => {
         bioShowMoreLines: 3,
         scrollPosition: 0,
         enableScrollViewScroll: true,
-        userData: null
+        userData: userID ? user : null
     });
-    let user = useSelector(state => state.root.user)
 
-    userID = (user?._id || user?.profile?._id) === userID;
+
+
 
     let ScrollRef = useRef(null);
     useEffect(() => {
         GetSingleUserProfile((profileRes) => {
             if (profileRes) {
-                console.log('-----------USER PROFILE RES--------', profileRes)
                 setState(prev => ({ ...prev, loading: false, userData: profileRes }))
+                if (userID)
+                    disp(setUser(profileRes))
             } else
                 setState(prev => ({ ...prev, loading: false }))
         }, route.params.userID)
@@ -61,12 +66,14 @@ const UserProfileScreen = ({ navigation, route, }) => {
 
     function followuser() {
         let tempUserObj = state.userData;
-        tempUserObj["isFollowing"] = !(tempUserObj?.isFollowing || false);
-        setState(prev => ({ ...prev, userData: tempUserObj }))
         ActionsOnUsers(() => {
 
-        }, route.params.userID, FRIEND_STATUSES_ACTIONS.FOLLOW)
+        }, route.params.userID, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
+
+        tempUserObj["isFollowing"] = !(tempUserObj?.isFollowing || false);
+        setState(prev => ({ ...prev, userData: tempUserObj }));
     }
+    userData = userID ? user : state.userData;
     return (
         <View onStartShouldSetResponder={() => {
             setState(prev => ({ ...prev, enableScrollViewScroll: true }))
@@ -103,50 +110,38 @@ const UserProfileScreen = ({ navigation, route, }) => {
                 ref={ref => ScrollRef = ref}
                 decelerationRate={0.2}
                 nestedScrollEnabled={true}
-                // scrollEnabled={state.enableScrollViewScroll}
-                // onScroll={(event) => {
-                //     if (event?.nativeEvent?.contentOffset?.y) {
-                //         event.persist();
-                //         let scollNum = event?.nativeEvent?.contentOffset?.y || 3
-                //         if (scollNum > (state.LHeight * 1.2)) {
-                //             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-                //             if (state.enableScrollViewScroll)
-                //                 setState(prev => ({ ...prev, enableScrollViewScroll: false }))
-                //         }
-                //     }
-                // }}
                 scrollEventThrottle={1}>
                 <View style={{}}>
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
-                        <FastImage source={state.userData?.cover ? { uri: state.userData?.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
+                        <FastImage source={userData?.cover ? { uri: userData?.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar source={userID ? user?.pic ? { uri: user.pic } : state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC : state.userData?.pic ? { uri: state.userData.pic } : DEFAULT_USER_PIC} size={100} />
+                                <UserAvatar source={userID ? user?.pic ? { uri: user.pic } : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC} size={100} />
 
                                 {userID ?
                                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                             <AppGoldCoin />
-                                            <AppText style={{ paddingHorizontal: RFValue(10) }}>{state.userData?.level}</AppText>
+                                            <AppText style={{ paddingHorizontal: RFValue(10) }}>{userData?.level}</AppText>
                                         </View>
                                         <View style={{ flex: 0.55 }}>
-                                            <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={(state.userData?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
+                                            <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={(userData?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
                                         </View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                            <AppText size={1} bold={true} style={{}}>XP {state.userData?.earnedXps}/100</AppText>
+                                            <AppText size={1} bold={true} style={{}}>XP {userData?.earnedXps}/100</AppText>
                                         </View>
                                     </View>
                                     : null}
                                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                                     <View style={{ flex: 1, justifyContent: 'center' }}>
                                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                            <AppText size={3} bold={true} >{state.userData?.firstName || ''}</AppText>
-                                            <IsUserVerifiedCheck check={state.userData?.isVerified} />
+                                            <AppText size={3} bold={true} >{userData?.firstName || ''}</AppText>
+                                            <IsUserVerifiedCheck check={userData?.isVerified} />
                                         </View>
-                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{state.userData?.userName}</AppText>
+                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{userData?.userName}</AppText>
                                     </View>
                                     <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
                                         <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>
-                                        <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{state.userData?.level}</AppText>
+                                        <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{userData?.level}</AppText>
                                     </View>
                                 </View>
                             </LinearGradient>
@@ -156,8 +151,8 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ padding: RFValue(10) }}>
                         <AppText onPress={() => {
                             setState(prev => ({ ...prev, bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3 }))
-                        }} lines={state.bioShowMoreLines} style={{}}>{state.userData?.bio}</AppText>
-                        {state.userData?.bio ?
+                        }} lines={state.bioShowMoreLines} style={{}}>{userData?.bio}</AppText>
+                        {userData?.bio ?
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
                                 setState(prev => ({ ...prev, bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3 }))
                             }}>
@@ -172,14 +167,14 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <AppText size={2} onPress={() => {
                             navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: true, userID: route?.params?.userID })
-                        }} color={AppTheme.colors.primary}>{state.userData?.followers} <AppText size={2} color={AppTheme.colors.lightGrey}>Followers</AppText></AppText>
+                        }} color={AppTheme.colors.primary}>{userData?.followers} <AppText size={2} color={AppTheme.colors.lightGrey}>Followers</AppText></AppText>
                         <AppText size={2} onPress={() => {
                             navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: false, userID: route?.params?.userID })
-                        }} color={AppTheme.colors.primary}>{state.userData?.following} <AppText size={2} color={AppTheme.colors.lightGrey}>Followings</AppText></AppText>
+                        }} color={AppTheme.colors.primary}>{userData?.following} <AppText size={2} color={AppTheme.colors.lightGrey}>Followings</AppText></AppText>
                     </View>
 
                     {userID ?
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("EditUserProfileScreen", { data: state.userData })}>
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("EditUserProfileScreen", { data: userData })}>
                             <View style={{ marginVertical: RFValue(25), marginHorizontal: RFValue(10), borderWidth: 1, borderColor: AppTheme.colors.lightGrey, borderRadius: 90, padding: RFValue(10), justifyContent: 'center', alignItems: 'center' }}>
                                 <AppText size={2} color={AppTheme.colors.lightGrey} bold={true}>EDIT PROFILE</AppText>
                             </View>
@@ -189,12 +184,12 @@ const UserProfileScreen = ({ navigation, route, }) => {
                             <View style={{ flex: 1, paddingRight: RFValue(10) }}>
                                 <AppButton onPress={() => {
                                     followuser();
-                                }} fill={true} label={state.userData?.isFollowing ? "UNFOLLOW" : "FOLLOW"} />
+                                }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : "FOLLOW"} />
                             </View>
                             <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
                                 <AppButton onPress={() => {
-                                    if (state.userData)
-                                        navigation.navigate('ChatWindow', { friend: state.userData })
+                                    if (userData)
+                                        navigation.navigate('ChatWindow', { friend: userData })
                                 }} label={"MESSAGE"} />
                             </View>
                         </View>
@@ -261,11 +256,13 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                             <Image source={ICON_UNFOLLOW} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
                         </View>
-                        <AppText size={2} color="white" style={{ flex: 1 }}>{state.userData?.isFollowing ? "Unfollow" : "Follow"}</AppText>
+                        <AppText size={2} color="white" style={{ flex: 1 }}>{userData?.isFollowing ? "Unfollow" : "Follow"}</AppText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
                         // modify post
+                        RemovePostsOfUserFromReduxStore(route.params.userID)
+                        navigation.goBack();
                         ActionsOnUsers(() => {
 
                         }, route.params.userID, FRIEND_STATUSES_ACTIONS.BLOCKED)

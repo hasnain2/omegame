@@ -58,6 +58,18 @@ function timeRemaining(date) {
     return obj
 }
 
+function generateRandomString(length) {
+    let result = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    // tslint:disable-next-line:no-shadowed-variable
+    for (let i = 0; i < length; i += 1) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
+
 function AppShareContents(callback, msg) {
     let options = {
         message: msg,
@@ -75,4 +87,4 @@ function AppShareContents(callback, msg) {
         .catch((err) => { callback(false); err && console.log('-------------ERROR SHARING-------------', err); });
 }
 
-export { largeNumberShortify, numberWithCommas, AppShowToast, stringifyNumber, dateDifference, timeRemaining, CapitalizeFirstLetter, AppShareContents }
+export { largeNumberShortify, generateRandomString, numberWithCommas, AppShowToast, stringifyNumber, dateDifference, timeRemaining, CapitalizeFirstLetter, AppShareContents }

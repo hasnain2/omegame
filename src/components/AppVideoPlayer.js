@@ -4,7 +4,6 @@ import Video from 'react-native-video';
 import convertToCache from 'react-native-video-cache';
 
 const AppVideoPlayer = ({ source, startPlaying, style, children, controls }) => {
-    console.log(source)
     return (
         <View style={{
             backgroundColor: 'black',

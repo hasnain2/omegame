@@ -75,8 +75,10 @@ const Login = ({ route, navigation }) => {
                     <AppInput editable={!state.loading} style={{ backgroundColor: 'black' }} type={"email"} label={"Username or e-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
                     <AppInput editable={!state.loading} style={{ backgroundColor: 'black' }} type={'password'} passwordVisible={state.passwordVisible} label={"Password"} onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisible: !state.passwordVisible }))} right={<Ionicons name={state.passwordVisible ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(10), justifyContent: 'space-between', alignItems: 'center', }}>
-                        <AppRadioButton label={"Remember me"} size={20} val={state.rememberMe} onPress={() => { setState(prev => ({ ...prev, rememberMe: !state.rememberMe })) }} />
-                        <AppText onPress={() => navigation.navigate("ForgotPassword")} size={1} color={AppTheme.colors.primary} >Forgot Password</AppText>
+                        {/* <AppRadioButton label={"Remember me"} size={20} val={state.rememberMe} onPress={() => { setState(prev => ({ ...prev, rememberMe: !state.rememberMe })) }} /> */}
+                        <AppText ></AppText>
+                        <AppText onPress={() => navigation.navigate("ForgotPassword")}
+                            style={{ textAlign: 'right' }} size={1} color={AppTheme.colors.primary} >Forgot Password</AppText>
                     </View>
                     <View style={{ flex: 1, paddingTop: RFValue(25), justifyContent: 'center' }}>
                         <AppButton loading={state.loading} bgColor="black" onPress={onsubmit} label={"Start"} />

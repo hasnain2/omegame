@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { AppButton, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { Ionicons } from '../../utils/AppIcons';
 
 const DeleteAccount = ({ navigation, route, }) => {
+    let user = useSelector(state => state.root.user)
     let [state, setState] = useState({
         loading: false,
     })
@@ -23,7 +25,7 @@ const DeleteAccount = ({ navigation, route, }) => {
                 <AppText size={1} style={{ paddingVertical: RFValue(10) }} >Before you go...</AppText>
 
                 <AppText onPress={() => { navigation.goBack() }} size={2} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }} >- If you're sick of getting notifications you can <AppText onPress={() => { navigation.goBack() }} size={2} color={AppTheme.colors.primary}>disable them here</AppText>.</AppText>
-                <AppText onPress={() => { navigation.navigate("PersonalInformationScreen") }} size={2} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }} >- If you want to change your username you can <AppText onPress={() => { }} size={2} color={AppTheme.colors.primary}>do that here</AppText>.</AppText>
+                <AppText onPress={() => { navigation.navigate("EditUserProfileScreen", { data: user }) }} size={2} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }} >- If you want to change your username you can <AppText onPress={() => { }} size={2} color={AppTheme.colors.primary}>do that here</AppText>.</AppText>
                 <AppText size={2} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }} >- Account deletion is final. <AppText onPress={() => { }} size={2} bold={true} color={AppTheme.colors.lightGrey}>You will permanently lose your profile, messages and photos</AppText>.</AppText>
             </View>
 

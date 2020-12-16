@@ -14,8 +14,7 @@ import { BUCKETS } from '../../utils/AppConstants';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 const EditUserProfileScreen = ({ navigation, route, }) => {
-
-    let user = useSelector(state => state.root.user);
+    let user = route?.params?.data || useSelector(state => state.root.user);
     console.log('-------USER-------', user)
     let [state, setState] = useState({
         name: user.firstName,
@@ -44,30 +43,52 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
     })
 
     const onSubmit = () => {
-        let formedData = {
-            bio: state.bio || null,
-            dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
-            favouriteConsole: state.favoriteConsole || null,
-            favouriteGame: state.favoriteGame || null,
-            firstName: state.name || null,
-            gamingAccounts: state.gamingAccounts,
-            gender: "MALE" || null,
-            // lastName: "" || null,
-            // nickName: "" || null,
-            isPrivate: false
-        };
-        if (state.imageToUpload)
-            formedData = { ...formedData, pic: state.imageToUpload }
-        setState(prev => ({ ...prev, loading: true }))
-        UpdateProfile((res) => {
-            setState(prev => ({ ...prev, loading: false }))
-            if (res) {
-                navigation.goBack();
-                AppShowToast("Profile has been updated")
-            } else {
+        if (!state.name) {
+            AppShowToast("Please provide name")
+            return
+        }
+        if (!state.bio) {
+            AppShowToast("Please provide bio")
+            return
+        }
+        if (!state.dateOfBirth) {
+            AppShowToast("Please provide date of birth")
+            return
+        }
+        if (!state.favoriteGame) {
+            AppShowToast("Please provide favourite game")
+            return
+        } if (!state.favoriteConsole) {
+            AppShowToast("Please provide favourite console")
+            return
+        }
+        if (state.gamingAccounts[0].account && state.gamingAccounts[1].account && state.gamingAccounts[2].account && state.gamingAccounts[3].account) {
+            let formedData = {
+                bio: state.bio || null,
+                dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
+                favouriteConsole: state.favoriteConsole || null,
+                favouriteGame: state.favoriteGame || null,
+                firstName: state.name || null,
+                gamingAccounts: state.gamingAccounts,
+                gender: "MALE" || null,
+                // lastName: "" || null,
+                // nickName: "" || null,
+                isPrivate: false
+            };
+            if (state.imageToUpload)
+                formedData = { ...formedData, pic: state.imageToUpload }
+            setState(prev => ({ ...prev, loading: true }))
+            UpdateProfile((res) => {
+                setState(prev => ({ ...prev, loading: false }))
+                if (res) {
+                    navigation.goBack();
+                    AppShowToast("Profile has been updated")
+                } else {
 
-            }
-        }, formedData)
+                }
+            }, formedData)
+        }
+
     }
 
     return (
@@ -86,7 +107,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                                         setState(prev => ({ ...prev, imageLoading: true }))
                                         UploadMedia((uploaderRes) => {
                                             setState(prev => ({ ...prev, imageLoading: false, imageToUpload: uploaderRes.url }))
-                                        }, BUCKETS.PROFILE, { image: res })
+                                        }, BUCKETS.PROFILE, res)
                                         setState(prev => ({ ...prev, photo: res.uri }))
                                     }
                                 }, false)

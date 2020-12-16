@@ -28,12 +28,12 @@ const RequestVerificationScreen = ({ navigation, route, }) => {
     })
 
     const onSubmit = () => {
-        if (state.filePath && state.filePath.name) {
+        if (state.filePath && state.filePath.url) {
             if (state.userName && state.knownAs && state.fullName && state.category) {
                 let formData = {
                     category: state.category,
                     fullName: state.fullName,
-                    identityDoc: state.filePath.name,
+                    identityDoc: state.filePath.url,
                     knownAs: state.knownAs,
                     userName: state.userName
                 }
@@ -48,12 +48,12 @@ const RequestVerificationScreen = ({ navigation, route, }) => {
             } else
                 AppShowToast("Please provide all fields");
         } else
-            AppShowToast("Please select a document photo");
+            AppShowToast("Please select a photo");
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
-            <AppHeaderCommon navigation={navigation} label={"Apply for Omegame Verification".toUpperCase()} />
+            <AppHeaderCommon navigation={navigation} label={"Request Verification".toUpperCase()} />
             <KeyboardAvoidingScrollView style={{ flex: 1 }}>
                 <View style={{ flex: 1, padding: RFValue(20) }}>
                     <AppText bold={true} size={3} color="white">Apply for Omegame Verification</AppText>
@@ -94,8 +94,8 @@ const RequestVerificationScreen = ({ navigation, route, }) => {
                                 UploadMedia((results) => {
                                     setState(prev => ({ ...prev, imageLoading: false }))
                                     if (results) {
-                                        console.log('---------UPLOAD RESULTS-------->', results?.data?.media)
-                                        setState(prev => ({ ...prev, filePath: results?.data?.media || '' }))
+                                        console.log('---------UPLOAD RESULTS-------->', results)
+                                        setState(prev => ({ ...prev, filePath: results || '' }))
                                     }
                                 }, BUCKETS.PROFILE_DOC, res)
                             }

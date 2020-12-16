@@ -31,12 +31,12 @@ const CustomizeCornersTab = ({ navigation }) => {
                 <FlatList
                     data={MOCK_CORNERS}
                     numColumns={NUMBER_OF_COLUMNS}
-
+                    style={{ flex: 1, width: '100%', height: '100%' }}
                     initialNumToRender={2}
                     windowSize={2}
-                    removeClippedSubviews={true}
+                    // removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
-                    bounces={false}
+                    // bounces={false}
                     keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => {
                         return (

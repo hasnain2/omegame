@@ -46,7 +46,7 @@ const AppInputToolBar = ({ LHeight, onSend, chat, placeholder }) => {
             }]}>
 
             <View style={{ flex: 1, borderColor: 'white', borderWidth: 1, borderRadius: 50, margin: RFValue(10), paddingHorizontal: RFValue(10), flexDirection: 'row', alignItems: 'center' }}>
-                <Fontisto name="smiley" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(5) }} />
+                {/* <Fontisto name="smiley" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(5) }} /> */}
                 <TextInput placeholderTextColor={AppTheme.colors.lightGrey} placeholder={placeholder?placeholder:"Type a message"}
                     onChangeText={(txt) => { setState(prev => ({ ...prev, comment: txt })) }}
                     value={state.comment}
@@ -54,7 +54,7 @@ const AppInputToolBar = ({ LHeight, onSend, chat, placeholder }) => {
                 <TouchableOpacity onPress={() => {
 
                 }}>
-                    <FastImage source={ICON_ANNEX} style={{ height: RFValue(30), width: RFValue(30) }} />
+                    {/* <FastImage source={ICON_ANNEX} style={{ height: RFValue(30), width: RFValue(30) }} /> */}
                 </TouchableOpacity>
                 <AppText onPress={() => {
                     if (state.comment) {

@@ -15,7 +15,7 @@ const UpdateProfile = (callback, formData) => {
     }).then(([status, data]) => {
         console.log('-----------PROFILE UPDATE RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            store.dispatch(setUser(data.data))
+            store.dispatch(setUser({ ...data.data }))
             storeData('user', { ...store.getState().root.user, ...data.data })
             callback(data)
         } else
@@ -85,7 +85,7 @@ const ActionsOnUsers = (callback, id, TYPE) => {
         const data = response.json();
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
-        console.log('-----------ACTIONS ON FRIENDS RES----------', data)
+        console.log('-----------ACTIONS ON FRIENDS RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
         } else

@@ -27,8 +27,10 @@ const PRIVACY = [
 
 const FRIEND_STATUSES_ACTIONS = { // action on friends weather to 
     BLOCKED: 'BLOCKED',
+    UNBLOCKED: 'UN_BLOCKED',
     FRIEND: 'FRIEND',
     FOLLOW: 'FOLLOW',
+    UNFOLLOW: 'UN_FRIEND',
     ACCEPT_FRIEND_REQUEST: 'ACCEPT_FRIEND_REQUEST'
 }
 

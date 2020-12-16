@@ -9,9 +9,9 @@ import { AppTheme } from "../config";
 
 
 
-const AppCustomSlider = () => {
+const AppCustomSlider = ({ onChange }) => {
     let [state, setState] = useState({
-        value: 2
+        value: 5
     })
     return (
         <View style={{ paddingTop: RFValue(30) }}>
@@ -20,7 +20,7 @@ const AppCustomSlider = () => {
                 <Slider
                     value={state.value}
                     thumbImage={() => <FastImage source={BACKGROUND_IMG} style={{ height: 10, width: 10 }} />}
-                    // step={0.5}
+                    step={0.5}
                     tapToSeek={true}
                     maximumValue={10}
                     minimumValue={0}
@@ -30,7 +30,12 @@ const AppCustomSlider = () => {
                     onSlidingStart={value =>
                         console.log('-------on sliding start-------', value)
                     }
-                    onValueChange={value => setState(prev => ({ ...prev, value: value }))}
+                    onValueChange={value => {
+                        if (onChange) {
+                            onChange(value)
+                        }
+                        setState(prev => ({ ...prev, value: value }))
+                    }}
                 >
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={[AppTheme.colors.red, AppTheme.colors.green]}
                         style={{ position: 'absolute', bottom: RFValue(18), height: RFValue(3), zIndex: -1, width: '100%' }} />
