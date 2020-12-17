@@ -10,6 +10,7 @@ import { ICON_IMAGE, ICON_LOCATION, ICON_ONLY_FRIENDS, ICON_PHOTO, ICON_POLL, IC
 import { DEFAULT_USER_PIC } from '../../../../assets/images';
 import { AppButton, AppFriendsListModal, AppGallery, AppGooglePlacesAutoFill, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
+import { setFriends } from '../../../redux/reducers/friendsSlice';
 import { store } from '../../../redux/store';
 import { AddPostToReduxStore, CreatePostService, GerUserListByType, requestReadWritePermission } from '../../../services';
 import { GET_FRIEND_LIST_TYPES, PRIVACY } from '../../../utils/AppConstants';
@@ -29,6 +30,7 @@ const CreatePost = ({ navigation, route }) => {
         answersArr: ['', ''],
         location: null,
         chosenContacts: [],
+        friendList: [],
 
         showGallery: false,
         showPrivacyOptions: false,
@@ -40,8 +42,8 @@ const CreatePost = ({ navigation, route }) => {
     function getfriendshelper(cursor) {
         GerUserListByType((response) => {
             if (response) {
-                console.log('---------------FRIENDS LIST----------', JSON.stringify(response))
-                setState(prev => ({ ...prev, data: response, loading: false }));
+                store.dispatch(setFriends(response))
+                setState(prev => ({ ...prev, loading: false }));
             } else
                 setState(prev => ({ ...prev, loading: false }));
         }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND)
@@ -56,7 +58,7 @@ const CreatePost = ({ navigation, route }) => {
             let payload = {
                 hashTags: [],
                 privacy: PRIVACY.find(ii => ii.name === state.privacy)?.key || 'PUBLIC',
-                tagged: state.chosenContacts,
+                tagged: state.chosenContacts.map(ii => ii?._id),
                 text: state.whatsNewText,
                 file: state.selectedMedia || false,
             }
@@ -294,16 +296,14 @@ const CreatePost = ({ navigation, route }) => {
                 showDone={true}
                 selectedContacts={(contact) => {
                     let tempArr = state.chosenContacts;
-                    if (tempArr.includes(contact.id)) {
-                        let tempInd = tempArr.findIndex(ii => ii === contact.id)
-                        if (tempInd >= 0) {
-                            tempArr.splice(tempInd, 1)
-                            setState(prev => ({ ...prev, chosenContacts: tempArr }))
-                        }
+                    let tempInd = tempArr.findIndex(ii => ii?._id === contact?._id);
+
+                    if (tempInd > -1) {
+                        tempArr.splice(tempInd, 1)
                     } else {
-                        tempArr.push(contact.id)
-                        setState(prev => ({ ...prev, chosenContacts: tempArr }))
+                        tempArr.push(contact)
                     }
+                    setState(prev => ({ ...prev, chosenContacts: tempArr }))
                 }} />
 
 

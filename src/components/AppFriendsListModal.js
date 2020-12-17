@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
+import { DEFAULT_USER_PIC } from '../../assets/images';
 import { AppTheme } from '../config';
-import { MOCKUP_POSTS } from '../mockups/Mockups';
+import { setFriends } from '../redux/reducers/friendsSlice';
+import { store } from '../redux/store';
+import { GerUserListByType } from '../services';
+import { GET_FRIEND_LIST_TYPES } from '../utils/AppConstants';
 import { largeNumberShortify } from '../utils/AppHelperMethods';
 import { AntDesign } from '../utils/AppIcons';
 import { AppBackButton } from './AppBackButton';
-import { AppHeaderCommon } from './AppHeaderCommon';
 import { AppModal } from './AppModal';
 import { AppNoDataFound } from './AppNoDataFound';
 import { AppSearchBar } from './AppSearchBar';
@@ -21,8 +25,20 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
         data: [],
         showModal: show
     })
-    useEffect(() => {
+    let friends = useSelector(state => state.root.friends)
 
+    function getfriendshelper(cursor) {
+        GerUserListByType((response) => {
+            if (response) {
+                store.dispatch(setFriends(response))
+                setState(prev => ({ ...prev, loading: false }));
+            } else
+                setState(prev => ({ ...prev, loading: false }));
+        }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND)
+    }
+
+    useEffect(() => {
+        getfriendshelper(0)
     }, [])
     return (
         <AppModal show={show} toggle={toggle}>
@@ -43,11 +59,11 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
                     }} />
                 </View>
                 <View style={{ flex: 1 }}>
-                    {!state.loading && state.data.length < 1 ?
+                    {!state.loading && friends.length < 1 ?
                         <AppNoDataFound msg={"You don't have friends"} />
                         :
                         <FlatList
-                            data={state.data}
+                            data={friends}
                             initialNumToRender={2}
                             windowSize={2}
                             removeClippedSubviews={true}
@@ -57,16 +73,16 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
                             renderItem={({ item, index }) => (
                                 <TouchableOpacity activeOpacity={0.7} onPress={() => selectedContacts(item)}>
                                     <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
-                                        <UserAvatar source={{ uri: item.user.photo }} size={50} />
+                                        <UserAvatar source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
                                         <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                                <AppText bold={true} size={1} color={'white'}>{item.user.first_name} {item.user.last_name}</AppText>
-                                                <IsUserVerifiedCheck check={item.user.isVerified} />
-                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item.user.XP)}</AppText>
+                                                <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName}</AppText>
+                                                <IsUserVerifiedCheck check={item?.isVerified} />
+                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.earnedXps || 0)}</AppText>
                                             </View>
-                                            <AppText size={1} color={AppTheme.colors.lightGrey} >{item.user.nickname}</AppText>
+                                            <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.userName}</AppText>
                                         </View>
-                                        {chosenContacts.includes(item.id) ?
+                                        {chosenContacts.find(ii => ii?._id === item?._id) ?
                                             <AntDesign name={"check"} style={{ fontSize: RFValue(20), color: AppTheme.colors.green }} />
                                             : null}
                                     </View>

@@ -27,7 +27,7 @@ const InboxScreen = ({ navigation, route, }) => {
                             setState(prev => ({ ...prev, showFriendsListModal: true }))
                         }}>
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={ICON_NEW_MESSAGE} style={{ fontSize: RFValue(30), height: RFValue(30), width: RFValue(25), tintColor: '#02aaff' }} />
+                                <Image source={ICON_NEW_MESSAGE} style={{ height: RFValue(30), width: RFValue(25), tintColor: '#02aaff' }} />
                                 <AppText size={2} color={'#02aaff'}>  New Message</AppText>
                             </View>
                         </TouchableOpacity>
@@ -62,7 +62,7 @@ const InboxScreen = ({ navigation, route, }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => (ii._id || '')+ 'you'}
+                keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7}
                         onPress={() => {

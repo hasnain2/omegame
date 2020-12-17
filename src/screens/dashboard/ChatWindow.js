@@ -5,12 +5,14 @@ import { Dimensions, Image, SafeAreaView, StyleSheet, TouchableOpacity, View } f
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MUTE, ICON_REPORT, ICON_UNFOLLOW } from '../../../assets/icons';
+import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppInputToolBar, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 const LIGHT_GREY = '#4d4d4d'
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' };
 const ChatWindow = ({ navigation, route, }) => {
+    let friend = route?.params?.friend
     const [messages, setMessages] = useState([]);
     let [state, setState] = useState({
         showMenu: false,
@@ -87,16 +89,18 @@ const ChatWindow = ({ navigation, route, }) => {
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: LIGHT_GREY }}>
                     <AppBackButton navigation={navigation} />
-                    <UserAvatar size={35} />
+                    <UserAvatar onPress={() => {
+                        navigation.push("UserProfileScreen", { userID: friend?._id })
+                    }} source={friend?.pic ? { uri: friend?.pic } : DEFAULT_USER_PIC} size={35} />
                     <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <AppText bold={true} size={1} color={'white'}>Username</AppText>
-                            <IsUserVerifiedCheck check={true} />
-                            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>1123</AppText>
-                            <AppText size={1} color={AppTheme.colors.lightGrey}> - 4 h</AppText>
+                            <AppText bold={true} size={1} color={'white'}>{friend.firstName || friend?.userName}</AppText>
+                            <IsUserVerifiedCheck check={friend?.isVerified} />
+                            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{friend.earnedXps}</AppText>
+                            {/* <AppText size={1} color={AppTheme.colors.lightGrey}> - 4 h</AppText> */}
 
                         </View>
-                        <AppText size={1} color={'white'} >Nick Name</AppText>
+                        <AppText size={1} color={'white'} >{friend?.userName || friend?.firstName}</AppText>
                     </View>
                     <TouchableOpacity
                         style={{ paddingHorizontal: RFValue(10) }}

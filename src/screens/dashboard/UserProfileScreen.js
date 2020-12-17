@@ -189,7 +189,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                             <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
                                 <AppButton onPress={() => {
                                     if (userData)
-                                        navigation.navigate('ChatWindow', { friend: userData })
+                                        navigation.push('ChatWindow', { friend: userData })
                                 }} label={"MESSAGE"} />
                             </View>
                         </View>
