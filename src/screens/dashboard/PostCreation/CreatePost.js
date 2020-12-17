@@ -10,13 +10,15 @@ import { ICON_IMAGE, ICON_LOCATION, ICON_ONLY_FRIENDS, ICON_PHOTO, ICON_POLL, IC
 import { DEFAULT_USER_PIC } from '../../../../assets/images';
 import { AppButton, AppFriendsListModal, AppGallery, AppGooglePlacesAutoFill, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
-import { AddPostToReduxStore, CreatePostService, requestReadWritePermission } from '../../../services';
-import { PRIVACY } from '../../../utils/AppConstants';
+import { store } from '../../../redux/store';
+import { AddPostToReduxStore, CreatePostService, GerUserListByType, requestReadWritePermission } from '../../../services';
+import { GET_FRIEND_LIST_TYPES, PRIVACY } from '../../../utils/AppConstants';
 import { AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
 import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({ navigation, route }) => {
+
     let [state, setState] = useState({
         loading: false,
         whatsNewText: '',
@@ -34,9 +36,20 @@ const CreatePost = ({ navigation, route }) => {
         showLocationPicker: false,
         showFriendsListModal: false,
     })
+
+    function getfriendshelper(cursor) {
+        GerUserListByType((response) => {
+            if (response) {
+                console.log('---------------FRIENDS LIST----------', JSON.stringify(response))
+                setState(prev => ({ ...prev, data: response, loading: false }));
+            } else
+                setState(prev => ({ ...prev, loading: false }));
+        }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND)
+    }
     useEffect(() => {
         requestReadWritePermission();
-    })
+        getfriendshelper();
+    }, [])
     let user = useSelector(state => state.root.user)
     const onSubmit = () => {
         if (state.whatsNewText) {

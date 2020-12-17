@@ -166,10 +166,10 @@ const UserProfileScreen = ({ navigation, route, }) => {
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <AppText size={2} onPress={() => {
-                            navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: true, userID: route?.params?.userID })
+                            navigation.push("AppFollowersAndFollowingList", { isFollowerMode: true, userID: route?.params?.userID })
                         }} color={AppTheme.colors.primary}>{userData?.followers} <AppText size={2} color={AppTheme.colors.lightGrey}>Followers</AppText></AppText>
                         <AppText size={2} onPress={() => {
-                            navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: false, userID: route?.params?.userID })
+                            navigation.push("AppFollowersAndFollowingList", { isFollowerMode: false, userID: route?.params?.userID })
                         }} color={AppTheme.colors.primary}>{userData?.following} <AppText size={2} color={AppTheme.colors.lightGrey}>Followings</AppText></AppText>
                     </View>
 

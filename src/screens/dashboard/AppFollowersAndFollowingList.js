@@ -18,6 +18,8 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let userID = route.params.userID;
 
     let user = useSelector(state => state.root.user);
+    console.log('-----------USER-LOGGED IN---------', user?._id)
+    console.log('-----------other user---------', userID)
     let [state, setState] = useState({
         loading: true,
         searchTerm: '',
@@ -60,7 +62,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                 keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                        navigation.push("UserProfileScreen", { userID: item._id })
                     }}>
                         <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
                             <UserAvatar source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
@@ -73,43 +75,45 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                                 <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.userName}</AppText>
                             </View>
                             <View style={{ flex: 0.7 }}>
-                                <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
-                                    console.log('-----', item)
-                                    Alert.alert(
-                                        isFollowerMode ? "Remove Follower" : "Unfollow",
-                                        "Are you sure to " + (isFollowerMode ? "remove " : "unfollow ") + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
-                                        [{
-                                            text: "Cancel",
-                                            onPress: () => console.log("Cancel Pressed"),
-                                            style: "cancel"
-                                        }, {
-                                            text: "YES", onPress: () => {
-                                                if (isFollowerMode) {
-                                                    // REMOVE FOLLOWER
-                                                    let tempData = state.data;
+                                {user?._id === item?.profileId ?
+                                    null :
+                                    <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
+                                        console.log('-----', item)
+                                        Alert.alert(
+                                            isFollowerMode ? "Remove Follower" : "Unfollow",
+                                            "Are you sure to " + (isFollowerMode ? "remove " : "unfollow ") + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
+                                            [{
+                                                text: "Cancel",
+                                                onPress: () => console.log("Cancel Pressed"),
+                                                style: "cancel"
+                                            }, {
+                                                text: "YES", onPress: () => {
+                                                    if (isFollowerMode) {
+                                                        // REMOVE FOLLOWER
+                                                        let tempData = state.data;
 
-                                                    setState(prev => ({
-                                                        ...prev,
-                                                        data: tempData.filter(itm => itm._id != item._id),
-                                                        loading: false
-                                                    }))
-                                                } else {
-                                                    let tempData = state.data;
+                                                        setState(prev => ({
+                                                            ...prev,
+                                                            data: tempData.filter(itm => itm._id != item._id),
+                                                            loading: false
+                                                        }))
+                                                    } else {
+                                                        let tempData = state.data;
 
-                                                    setState(prev => ({
-                                                        ...prev,
-                                                        data: tempData.filter(itm => itm._id != item._id),
-                                                        loading: false
-                                                    }));
+                                                        setState(prev => ({
+                                                            ...prev,
+                                                            data: tempData.filter(itm => itm._id != item._id),
+                                                            loading: false
+                                                        }));
 
-                                                    ActionsOnUsers((FOLLOWRS) => {
+                                                        ActionsOnUsers((FOLLOWRS) => {
 
-                                                    }, item?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)
+                                                        }, item?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)
+                                                    }
                                                 }
-                                            }
-                                        }], { cancelable: false });
+                                            }], { cancelable: false });
 
-                                }} label={isFollowerMode ? "REMOVE" : "FOLLOWING"} />
+                                    }} label={isFollowerMode ? "REMOVE" : "FOLLOWING"} />}
                             </View>
                         </View>
                     </TouchableOpacity>
