@@ -123,7 +123,7 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                     if (AppConfig.IS_IOS_DEVICE) {
                         uri = `assets-library://asset/asset.${ext}?id=${appleId}&ext=${ext}`;
                     }
-                    console.log('---------DOES INCLUDES------', val.node.type.includes('video'))
+
                     if (val.node.type.includes('video')) { // val.node.image.fileSize
                         //   { image: { uri: image.path }, ext, type: "video", upload: true }
                         if (AppConfig.IS_IOS_DEVICE) {
@@ -137,10 +137,10 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
 
                 }
             });
-            console.log('-------------IMESGES ARRHAY--------', ImagesArray[2])
+
             if (images.length > 0) {
                 setCoverPhoto(ImagesArray[0]);
-                selectedOne({ ...ImagesArray[0], uri: ImagesArray[0]?.uri || ImagesArray[0]?.image?.uri });
+                selectedOne({ ...ImagesArray[0], uri: Platform.OS === 'ios' ? ImagesArray[0]?.type === 'video' ? ImagesArray[0]?.image.uri2 : ImagesArray[0]?.image.uri : ImagesArray[0]?.image.uri, type: ImagesArray[0]?.type });
                 setRecentCameraRollLibrary([...ImagesArray]);
             }
             setLoading(false);
@@ -237,7 +237,6 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                                     Platform.OS === 'ios' ?
                                         // <AppVideoPlayer source={{ uri: item?.image?.uri2 || item?.image?.uri }} startPlaying={false} controls={false} />
                                         <Image source={item.image} resizeMode="cover" style={{ height: CARD_SIZE, width: CARD_SIZE }} />
-
                                         :
                                         <Image source={item.image} resizeMode="cover" style={{ height: CARD_SIZE, width: CARD_SIZE }} />
                                     :

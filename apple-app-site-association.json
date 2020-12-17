@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps":[],
+        "details": [
+            {
+                "appID": "Z2APUMCWUU.org.reactjs.native.example.OneGame", 
+                "paths": ["*"]
+            }
+        ]
+    }
+}

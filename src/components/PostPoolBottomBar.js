@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -18,13 +18,24 @@ const PostPoolBottomBar = ({ item, navigation }) => {
         isSaved: item.isSaved || false,
     })
 
+    useEffect(() => {
+        console.log('------rerendering--------')
+        setState(prev => ({
+            ...prev,
+            isShared: item.isShared || false,
+            isLiked: item.isLiked || false,
+            isSaved: item.isSaved || false,
+        }));
+        // setStateItem(item)
+    }, [item.isLiked, item.isSaved, item.isShared])
+
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', }}>
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
                 UpdatePostFromReduxStore({ ...item, isLiked: !state.isLiked })
                 LikePost(() => {
 
-                }, item._id, { type: "LIKE" })
+                }, item?._id, { type: state.isLiked ? "UN_LIKE" : "LIKE" })
                 setState(prev => ({ ...prev, isLiked: !state.isLiked }))
             }}>
                 <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
@@ -46,7 +57,7 @@ const PostPoolBottomBar = ({ item, navigation }) => {
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
                 SharePost(() => {
 
-                }, item._id, { platform: SHARE_STATUS_TYPES.FACEBOOK })
+                }, item?._id, { platform: SHARE_STATUS_TYPES.FACEBOOK })
                 AppShareContents((res) => {
                     setState(prev => ({ ...prev, isShared: res }))
                 }, "hey you might wanna check this post out on OmeGame.")
@@ -61,7 +72,7 @@ const PostPoolBottomBar = ({ item, navigation }) => {
                 UpdatePostFromReduxStore({ ...item, isSaved: !state.isSaved })
                 SaveOrBookMarkPost((res) => {
 
-                }, item._id, { bookmark: !state.isSaved });
+                }, item?._id, { bookmark: !state.isSaved });
                 setState(prev => ({ ...prev, isSaved: !state.isSaved }))
             }}>
                 <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>

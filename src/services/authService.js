@@ -70,10 +70,11 @@ const ForgotPasswordCall = (callback, formedData) => {
         const data = response.json();
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
-        console.log('---------------FORGOT PASS RES-------------', data)
+        console.log('---------------FORGOT PASS RES-------------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)
         } else {
+            AppShowToast(data?.message?.message || "Please try again later")
             callback(false)
         }
     }).catch((error) => {

@@ -8,8 +8,7 @@ import { APP_LOGO } from '../../../assets/images';
 import { AppButton, AppHeaderCommon, AppInput, AppText } from '../../components';
 import { AppTheme } from '../../config/AppTheme';
 import { AppShowToast } from '../../utils/AppHelperMethods';
-import { ValidateEmail } from '../../utils/AppValidators';
-import { ForgotPasswordCall } from './../../services'
+import { ForgotPasswordCall } from './../../services';
 const ForgotPassword = ({ route, navigation }) => {
     let [state, setState] = useState({
         loading: false,
@@ -17,15 +16,14 @@ const ForgotPassword = ({ route, navigation }) => {
     })
 
     const onSubmit = () => {
-        if (ValidateEmail(state.email)) {
+        if (state.email.trim()) {
             setState(prev => ({ ...prev, loading: true }))
             ForgotPasswordCall((res) => {
                 if (res) AppShowToast("Recovery link has been sent to your email")
-                else AppShowToast("Unable to send link please check your email and try again")
                 setState(prev => ({ ...prev, loading: false }))
             }, state.email.toLowerCase().trim())
         } else {
-            AppShowToast("Kindly provide valid email address")
+            AppShowToast("Kindly provide valid username or email address")
         }
     }
     return (

@@ -7,7 +7,7 @@ import { Alert } from 'react-native';
 import { store } from '../redux/store';
 import { setHomeFeed } from '../redux/reducers/homeFeedSlice';
 import { setSavedPosts } from '../redux/reducers/savedPostsSlice';
-import { RemovePostFromReduxStore } from './mutateReduxState';
+import { RemovePostFromReduxStore, UpdatePostFromReduxStore } from './mutateReduxState';
 function creatPostHelper(callback, formData) {
     console.log('---------PAYLOAD RES---------->', formData)
     fetch(EndPoints.CREATE_POST, {
@@ -146,7 +146,6 @@ const DeletePost = (callback, postID) => {
         }], { cancelable: true });
 }
 
-
 const GetSinglePost = (callback, postID) => {
     fetch(EndPoints.GET_OR_DELETE_POST + postID, {
         method: 'GET',
@@ -157,8 +156,9 @@ const GetSinglePost = (callback, postID) => {
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
         console.log('-----------GETTING SINGLE POST BY ID RESPONSE-----------', JSON.stringify(data))
-        if (status === 201 || status === 200) {
-            callback(data?.data)
+        if ((status === 201 || status === 200) && data?.data) {
+            UpdatePostFromReduxStore(data?.data)
+            callback(data?.data || false)
         } else
             callback(false);
     }).catch((error) => {
@@ -168,14 +168,6 @@ const GetSinglePost = (callback, postID) => {
 }
 
 const CommentPost = (callback, PAYLOAD) => {
-    console.log('------------COMMENTING ON POST-----------')
-    console.log('------------COMMENTING ON POST-----------')
-    console.log('------------COMMENTING ON POST-----------')
-    console.log('------------COMMENTING ON POST-----------', EndPoints.COMMENT_POST)
-    console.log('------------COMMENTING ON POST  PAYLOAD PAYLOAD-----------', PAYLOAD)
-    console.log('------------COMMENTING ON POST-----------')
-    console.log('------------COMMENTING ON POST-----------')
-    console.log('------------COMMENTING ON POST-----------')
     fetch(EndPoints.COMMENT_POST, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -187,7 +179,7 @@ const CommentPost = (callback, PAYLOAD) => {
     }).then(([status, data]) => {
         console.log('-----------COMMENTING ON POST BY ID RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data)
+            callback(data?.data)
         } else
             callback(false);
     }).catch((error) => {
@@ -226,7 +218,7 @@ const GetCommentsOfPost = (callback, CURSOR, LIMIT, postID) => {
         const data = response.json();
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
-        console.log('-----------GETTING POST COMMENTS RESPONSE-----------', JSON.stringify(data))
+        // console.log('-----------GETTING POST COMMENTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data.data)
         } else
@@ -246,7 +238,7 @@ const GetCommentsReplies = (callback, CURSOR, LIMIT, parentCommentID) => {
         const data = response.json();
         return Promise.all([statusCode, data]);
     }).then(([status, data]) => {
-        console.log('-----------GETTING COMMENTS REPLIES RESPONSE-----------', JSON.stringify(data))
+        // console.log('-----------GETTING COMMENTS REPLIES RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data.data)
         } else

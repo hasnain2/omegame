@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -69,18 +69,17 @@ const CreatePost = ({ navigation, route }) => {
             <View style={{ width: RFValue(70) }}>
                 <AntDesign onPress={() => navigation.goBack()} name={"close"} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(15) }} />
             </View>
-            <KeyboardAvoidingScrollView style={{}} contentContainerStyle={{ flex: 1, padding: RFValue(14) }}>
+            <KeyboardAvoidingScrollView nestedScrollEnabled={true} style={{ flex: 1, padding: RFValue(14) }}>
                 <View style={{ flexDirection: 'row' }}>
                     <UserAvatar source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
                     <TextInput placeholder={state.postTypeIsPool ? "Ask a question" : "What's new?"}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}
                         blurOnSubmit={true}
-                        style={{ flex: 1, color: 'white', height: '100%', maxHeight: RFValue(250), marginLeft: RFValue(10) }}
+                        style={{ flex: 1, color: 'white', height: '100%', maxHeight: RFValue(150), marginLeft: RFValue(10) }}
                         onChangeText={(val) => { setState(prev => ({ ...prev, whatsNewText: val })) }}
                     />
                 </View>
-
                 {state.postTypeIsPool ?
                     <View style={{ padding: RFValue(10) }}>
                         {state.answersArr.map((item, index) => (
@@ -165,7 +164,8 @@ const CreatePost = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, postTypeIsPool: !state.postTypeIsPool }))
+                        // setState(prev => ({ ...prev, postTypeIsPool: !state.postTypeIsPool }))
+                        AppShowToast('Pool feature comming soon')
                     }}>
                         <View style={[styles.boxContainerStyle, state.postTypeIsPool ? { borderColor: AppTheme.colors.primary } : null]}>
                             {state.postTypeIsPool ?
@@ -203,14 +203,29 @@ const CreatePost = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
 
+                {state.location?.addressName ?
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: RFValue(20) }}>
+                        <Image source={ICON_LOCATION} style={{ height: RFValue(20), width: RFValue(20), tintColor: 'white', marginRight: RFValue(5) }} />
+                        <AppText size={0} >{(state.location?.addressName || state.location?.streetAddress || "")}</AppText>
+                    </View>
+                    : null}
+
+                {state.chosenContacts && state.chosenContacts?.length > 0 ?
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: RFValue(20) }}>
+                        <Image source={ICON_TAG} style={{ height: RFValue(20), width: RFValue(20), tintColor: 'white', marginRight: RFValue(5) }} />
+                        <AppText size={0} color={AppTheme.colors.primary} >{state.chosenContacts.map((iii, inndex) => (iii.userName + ", "))}</AppText>
+                    </View>
+                    : null}
+
+                <View style={{ margin: RFValue(20) }} />
                 <AppButton
                     loading={state.loading}
                     bgColor="black" onPress={() => {
                         onSubmit()
                     }} label={"SHARE"} />
                 <View style={{ margin: RFValue(30) }} />
-            </KeyboardAvoidingScrollView>
 
+            </KeyboardAvoidingScrollView>
 
             <AppGooglePlacesAutoFill show={state.showLocationPicker}
                 onChangeValue={(val) => {

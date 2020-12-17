@@ -16,7 +16,6 @@ const HomeScreen = ({ route, navigation }) => {
     })
     let disptach = useDispatch();
     let homeFeed = useSelector(state => state.root.homeFeed)
-    console.log('-------------HOME FEEDS--------', homeFeed[0])
     function getHomeFeedHelper() {
         GetHomeFeed((res) => {
             if (res) {

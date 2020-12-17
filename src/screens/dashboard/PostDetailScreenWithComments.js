@@ -1,7 +1,7 @@
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, TouchableOpacity, Platform, UIManager, LayoutAnimation, View } from 'react-native';
+import { FlatList, Image, LayoutAnimation, Platform, TouchableOpacity, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
@@ -10,47 +10,17 @@ import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppInputToolBar, AppLoadingView, AppText, IsUserVerifiedCheck, PostCard } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost } from '../../services';
+import { store } from '../../redux/store';
+import { CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost, UpdatePostFromReduxStore } from '../../services';
 import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { FontAwesome } from '../../utils/AppIcons';
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-let tempComment = {
-    _id: "5fd389ab723fb8b357481223",
-    mentions: [],
-    text: "Hello",
-    post: "5fd37aeb723fb8b35748121f",
-    createdBy: {
-        _id: "5fcf8078c2a5304076e1ecb3",
-        profileId: "",
-        followers: 3,
-        friends: 0,
-        following: 6,
-        level: 1,
-        bio: "Asdf",
-        pic: "",
-        cover: null,
-        earnedCoins: 0,
-        earnedXps: 0,
-        userName: "asadalicodingpixel",
-        isVerified: false,
-        firstName: "Asdf"
-    },
-    slug: "",
-    createdAt: "2020-12-11T15:00:59.166Z",
-    updatedAt: "2020-12-11T15:00:59.166Z",
-    __v: 0
-}
 const PostDetailScreenWithComments = ({ navigation, route, }) => {
-    let postData = route?.params?.post;
+    let [postData, setPostData] = useState(route?.params?.post || null);
     let postID = postData?._id || route?.params?.postID;
-    let user = useSelector(state => state.root.user)
-
-    tempComment.createdBy.firstName = user?.firstName || user?.userName || '';
-    tempComment.createdBy.userName = user?.userName || user?.firstName || '';
-    tempComment.createdBy.pic = user?.pic || false;
 
     let [state, setState] = useState({
         loading: true,
@@ -65,7 +35,6 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     const getcommentshelper = () => {
         GetCommentsOfPost((postCommentsResponse) => {
             if (postCommentsResponse) {
-                console.log('-------COMMENTS---------', JSON.stringify(postCommentsResponse))
                 setState(prev => ({ ...prev, comments: postCommentsResponse, loading: false }))
             }
         }, '', '', postID)
@@ -74,22 +43,23 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     const getcommentreplieshelper = (parentIDparam) => {
         GetCommentsReplies((commentsRepliesResponse) => {
             if (commentsRepliesResponse) {
-                console.log('-------REPLIES---------', JSON.stringify(commentsRepliesResponse))
                 setState(prev => ({ ...prev, loading: false, replies: { _id: parentIDparam, data: commentsRepliesResponse } }))
             }
         }, '', '', parentIDparam)
     }
 
-    useEffect(() => {
-        GetSinglePost((data) => {
-            if (data) {
-
+    const getsinglepostbyidhelper = () => {
+        GetSinglePost((updatedPost) => {
+            if (updatedPost) {
+                setPostData(updatedPost)
             }
         }, postID);
+    }
+
+    useEffect(() => {
+        getsinglepostbyidhelper()
         getcommentshelper();
     }, [])
-
-
 
     function renderCommentView(item, isCommentIsLiked, index) {
         return (
@@ -97,7 +67,6 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                 <View style={{ flexDirection: 'row', }}>
                     <View style={{ height: '100%', alignItems: 'center' }}>
                         <UserAvatar source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
-
 
                         {(state.replies._id === item.parentComment && state.replies?.data.length - 1 != index) || state.replies._id === item._id ?
                             <View style={{ width: 2, flex: 1, backgroundColor: AppTheme.colors.lightGrey }} />
@@ -219,7 +188,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 state.replies.data.map((ittem, inndex) => {
                                     let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
                                     return (
-                                        <View style={{}}>
+                                        <View key={ittem?._id + '' + inndex} style={{}}>
                                             { renderCommentView(ittem, isReplyIsLiked, inndex)}
                                         </View>
                                     )
@@ -232,17 +201,17 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
 
             <AppInputToolBar
                 placeholder={state.parentID?.createdBy?.userName ? ("@" + state.parentID?.createdBy?.userName) : ""}
-                LHeight={state.LHeight} onSend={(msg) => {
-                    let temCommentsState = state.comments;
-                    tempComment.text = msg;
-                    tempComment.parentComment = state.parentID?.parentComment || state.parentID?._id;
-                    tempComment.createdAt = new Date();
-                    if (!state.parentID?.parentComment && !state.parentID?._id)
-                        temCommentsState.unshift(tempComment);
+                LHeight={state.LHeight}
+                onSend={(msg) => {
+                    CommentPost((newCommentRes) => {
+                        if (newCommentRes) {
+                            getcommentshelper();
+                            if (state.parentID?.parentComment || state.parentID?._id)
+                                getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id)
 
-                    setState(prev => ({ ...prev, replies: { _id: state.parentID?.parentComment || state.parentID?._id, data: state.parentID?.parentComment || state.parentID?._id ? [tempComment, ...state.replies.data] : [] }, parentID: { parentComment: '', _id: '' }, comments: temCommentsState }));
-                    CommentPost(() => {
-
+                        }
+                        setState(prev => ({ ...prev, parentID: '' }))
+                        getsinglepostbyidhelper();
                     }, state.parentID?.parentComment || state.parentID?._id ? {
                         // mentions: [],
                         parentComment: state.parentID?.parentComment || state.parentID?._id,
@@ -253,7 +222,6 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                             post: postData._id
                         })
                 }} />
-
 
             {state.loading ?
                 <AppLoadingView />

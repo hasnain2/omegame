@@ -11,37 +11,29 @@ const UpdatePostIsLikedCheck = (postID) => {
 }
 
 const UpdatePostFromReduxStore = (newPostObject) => {
-    const tempHomeFeeds = store.getState().root.homeFeed;
-    const tempSavedPosts = store.getState().root.savedPosts;
+    console.log(newPostObject)
+    var tempHomeFeeds = [...store.getState().root.homeFeed];
+    var tempSavedPosts = [...store.getState().root.savedPosts];
 
-    let UpdatedHomePostsArray = []
-    tempHomeFeeds.forEach((item, index) => {
-        if (item._id === newPostObject._id) {
-            UpdatedHomePostsArray.push(newPostObject);
-        } else {
-            UpdatedHomePostsArray.push(item)
-        }
-    })
+    let foundIndexHomeFeed = tempHomeFeeds.findIndex(ii => ii?._id === newPostObject?._id)
+    let foundIndexSavedPosts = tempSavedPosts.findIndex(ii => ii?._id === newPostObject?._id)
 
-    let UpdatedSavedPostsArray = []
-    tempSavedPosts.forEach((item, index) => {
-        if (item._id === newPostObject._id) {
-            if (newPostObject.isSaved)
-                UpdatedSavedPostsArray.push(newPostObject);
-        } else {
-            if (item.isSaved)
-                UpdatedSavedPostsArray.push(item)
-        }
 
-    })
-    store.dispatch(setHomeFeed(UpdatedHomePostsArray));
-    store.dispatch(setSavedPosts(UpdatedSavedPostsArray));
+    if (foundIndexHomeFeed > -1)
+        tempHomeFeeds[foundIndexHomeFeed] = { ...newPostObject }
+
+    if (foundIndexSavedPosts > -1)
+        tempSavedPosts[foundIndexSavedPosts] = { ...newPostObject }
+
+
+    store.dispatch(setHomeFeed(tempHomeFeeds));
+    store.dispatch(setSavedPosts(tempSavedPosts));
 }
 
 
 
 const AddPostToReduxStore = (newPost) => {
-    let tempHomeFeeds = store.getState().root.homeFeed;
+    let tempHomeFeeds = [...store.getState().root.homeFeed];
     tempHomeFeeds = [newPost, ...tempHomeFeeds]
 
     store.dispatch(setHomeFeed(tempHomeFeeds));
@@ -49,16 +41,16 @@ const AddPostToReduxStore = (newPost) => {
 
 
 const RemovePostFromReduxStore = (postID) => {
-    const tempHomeFeeds = store.getState().root.homeFeed;
-    const tempSavedPosts = store.getState().root.savedPosts;
+    const tempHomeFeeds = [...store.getState().root.homeFeed];
+    const tempSavedPosts = [...store.getState().root.savedPosts];
 
     store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii._id != postID)));
     store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii._id != postID)));
 }
 
 const RemovePostsOfUserFromReduxStore = (userID) => {
-    const tempHomeFeeds = store.getState().root.homeFeed;
-    const tempSavedPosts = store.getState().root.savedPosts;
+    const tempHomeFeeds = [...store.getState().root.homeFeed];
+    const tempSavedPosts = [...store.getState().root.savedPosts];
 
     store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii.createdBy._id != userID)));
     store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii.createdBy._id != userID)));

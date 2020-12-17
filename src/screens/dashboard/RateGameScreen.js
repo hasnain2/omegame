@@ -99,18 +99,10 @@ const RateGameScreen = ({ navigation, route, }) => {
                     />
                 </View>
 
-
-
             </KeyboardAvoidingScrollView>
             <View style={{ padding: RFValue(15), paddingTop: 0 }}>
                 <AppButton bgColor="black" onPress={onSubmit} label={"RATE THIS GAME"} />
             </View>
-
-
-
-
-
-
 
             <AppModal show={state.showFilter} toggle={() => { setState(prev => ({ ...prev, showFilter: !state.showFilter })) }}>
                 <View style={{ backgroundColor: '#1b1b1b', padding: RFValue(15), width: '85%', maxHeight: '90%', borderRadius: 15 }}>

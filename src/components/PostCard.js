@@ -18,7 +18,21 @@ const PostCard = ({ item, startPlaying, navigation }) => {
             <PostPoolTopBar item={item} navigation={navigation} />
             <AppText size={1} style={{ padding: RFValue(15), paddingTop: 0 }}>{item.text}</AppText>
 
-            {item?.attachments && item?.attachments[0] ?
+            {item.location?.addressName ?
+                <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingBottom: RFValue(10), flexWrap: 'wrap' }}>
+                    <AppText size={0} color={'grey'} style={{ paddingTop: 0 }}>Location: {item.location?.addressName || ''}</AppText>
+                </View>
+                : null}
+
+            {item.tagged?.length > 0 ?
+                <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingBottom: RFValue(10), flexWrap: 'wrap' }}>
+                    {item.tagged.map(iii => (
+                        <AppText size={0} color={AppTheme.colors.primary} style={{ paddingTop: 0 }}>#{iii.userName}, </AppText>
+                    ))}
+                </View>
+                : null}
+
+            {item?.attachments && item?.attachments?.length>0 ?
                 <TouchableOpacity activeOpacity={0.9} onPress={() => {
                     navigation.navigate("PostDetailScreenWithComments", { post: item })
                 }}>

@@ -28,7 +28,7 @@ const AppInputToolBar = ({ LHeight, onSend, chat, placeholder }) => {
             Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
             Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
         };
-    }, []);
+    }, [LHeight]);
 
     function _keyboardDidShow(e) {
         setState(prev => ({ ...prev, keyboardIsVisible: e.endCoordinates.height - ((DHeight - LHeight) / 2) }))
@@ -57,8 +57,8 @@ const AppInputToolBar = ({ LHeight, onSend, chat, placeholder }) => {
                     {/* <FastImage source={ICON_ANNEX} style={{ height: RFValue(30), width: RFValue(30) }} /> */}
                 </TouchableOpacity>
                 <AppText onPress={() => {
-                    if (state.comment) {
-                        onSend(state.comment)
+                    if (state.comment.trim()) {
+                        onSend(state.comment.trim())
                         setState(prev => ({ ...prev, comment: "" }))
                     }
                 }} color={AppTheme.colors.primary} size={2} bold={true} style={{ padding: RFValue(5), paddingVertical: RFValue(5) }} >SEND</AppText>

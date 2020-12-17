@@ -62,7 +62,7 @@ const ChangePasswordScreen = ({ navigation, route, }) => {
                         right={<Ionicons name={state.passVisibility1 ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />}
 
                         value={state.currentPass}
-                        onChangeText={(txt) => setState(prev => ({ ...prev, currentPass: txt }))}
+                        onChangeText={(txt) => setState(prev => ({ ...prev, currentPass: txt, passwordError: '' }))}
                         label={"Current Password"}
                     />
                     <AppInput
@@ -74,7 +74,7 @@ const ChangePasswordScreen = ({ navigation, route, }) => {
                         right={<Ionicons name={state.passVisibility2 ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />}
 
                         value={state.newPass}
-                        onChangeText={(txt) => setState(prev => ({ ...prev, newPass: txt }))}
+                        onChangeText={(txt) => setState(prev => ({ ...prev, newPass: txt, passwordError: '' }))}
                         label={"New Password"}
                     />
                     <AppInput
@@ -86,7 +86,7 @@ const ChangePasswordScreen = ({ navigation, route, }) => {
                         right={<Ionicons name={state.passVisibility3 ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />}
 
                         value={state.confirmNewPass}
-                        onChangeText={(txt) => setState(prev => ({ ...prev, confirmNewPass: txt }))}
+                        onChangeText={(txt) => setState(prev => ({ ...prev, confirmNewPass: txt, passwordError: '' }))}
                         label={"Confirm Password"}
                     />
                     {state.passwordError ?
@@ -97,6 +97,7 @@ const ChangePasswordScreen = ({ navigation, route, }) => {
                     bgColor="black"
                     loading={state.loading}
                     onPress={() => {
+                        setState(prev => ({ ...prev, passwordError: '' }))
                         onSubmit();
                     }} label={"CHANGE MY PASSWORD"} />
             </View>

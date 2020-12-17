@@ -36,6 +36,8 @@ const EndPoints = {
     GET_GAMES_LIST: DOMAIN + 'games',
     GET_GAME_REVIEWS: DOMAIN + 'games/reviews?gameId=', // get specific game reviews by gameID
     POST_GAME_REVIEW: DOMAIN + 'games/action/review', // post review for a game
+
+    GET_ASSETS_FOR_CUSTOMIZATION: DOMAIN + 'assets',
 };
 
 export { DOMAIN, EndPoints };
