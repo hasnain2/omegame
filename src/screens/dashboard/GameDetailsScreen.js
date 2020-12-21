@@ -63,7 +63,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                 </TouchableOpacity>
                 <View style={{ flex: 0.3 }} />
             </View>
-            <ScrollView style={{ flex: 1 }} nestedScrollEnabled={true}>
+            <ScrollView style={{ flex: 1 }} decelerationRate={0} nestedScrollEnabled={true}>
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
                     <FastImage source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                         <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -141,6 +141,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                         data={gameReviews}
                         initialNumToRender={2}
                         windowSize={2}
+                        decelerationRate={0}
                         nestedScrollEnabled={true}
                         keyExtractor={ii => ii?._id}
                         removeClippedSubviews={true}

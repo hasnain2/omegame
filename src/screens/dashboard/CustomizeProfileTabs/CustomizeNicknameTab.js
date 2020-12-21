@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../../components";
 import { AppTheme } from '../../../config';
 import { MOCK_CORNERS } from '../../../mockups/Mockups';
 import { AntDesign, FontAwesome } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const CustomizeNicknameTab = ({ navigation }) => {
+    let user = useSelector(state => state.root.user)
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a'
@@ -18,7 +20,7 @@ const CustomizeNicknameTab = ({ navigation }) => {
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <View style={{ flexDirection: 'row', padding: RFValue(10) }}>
-                <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} />
+                {/* <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} /> */}
                 <ScrollView horizontal={true}>
                     {COLORS.map((itm) => (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
@@ -44,17 +46,17 @@ const CustomizeNicknameTab = ({ navigation }) => {
                         }}>
                             <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                 <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(20), alignItems: 'center' }}>
-                                    <AppText color={state.selectedColor}>Nickname</AppText>
+                                    <AppText size={3} color={state.selectedColor}>{user?.userName || ''}</AppText>
                                 </View>
                             </View>
                         </TouchableOpacity>
                     )
                 }} />
 
-            <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ isModalVisible: null }))} >
+            <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ ...prev, isModalVisible: null }))} >
                 {state.isModalVisible ?
                     <View style={{ padding: RFValue(30) }}>
-                        <AntDesign name="close" onPress={() => setState(prev => ({ isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
+                        <AntDesign name="close" onPress={() => setState(prev => ({ ...prev, isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
                         <View style={{ backgroundColor: 'black', borderRadius: RFValue(10), overflow: 'hidden', padding: RFValue(30) }}>
                             {/* <FastImage source={state.isModalVisible.image} style={{ width: Dimensions.get('screen').width - RFValue(20), height: '80%' }} /> */}
 
@@ -69,7 +71,7 @@ const CustomizeNicknameTab = ({ navigation }) => {
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>
                                 </View>
-                                <AppButtonPlane onPress={() => { setState(prev => ({ isModalVisible: null })) }} label={"BUY"} />
+                                <AppButtonPlane onPress={() => { setState(prev => ({ ...prev, isModalVisible: null })) }} label={"BUY"} />
                             </View>
                         </View>
                     </View>

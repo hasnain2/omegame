@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../components";
 import { AppTheme } from '../../config';
 import { MOCK_CORNERS } from '../../mockups/Mockups';
 import { AntDesign, FontAwesome } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreNicknameTab = ({ navigation }) => {
+    let user = useSelector(state => state.root.user)
+    console.log('----', user._id)
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a'
@@ -34,9 +37,9 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
 
                     initialNumToRender={2}
                     windowSize={2}
-                    removeClippedSubviews={true}
+                    // removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
-                    bounces={false}
+                    // bounces={false}
                     keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => {
                         return (
@@ -48,10 +51,10 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
 
                                     <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(30), alignItems: 'center' }}>
                                         <AppText size={2} color={AppTheme.colors.lightGrey}>Username</AppText>
-                                        <AppText color={state.selectedColor}>Nickname</AppText>
+                                        <AppText size={3} color={state.selectedColor}>{user?.userName}</AppText>
                                     </View>
                                     <View style={{ justifyContent: 'center', alignItems: 'center', borderTopWidth: 1, borderTopColor: AppTheme.colors.lightGrey, padding: RFValue(15) }}>
-                                        <AppText size={2} >Nickname</AppText>
+                                        <AppText size={2} >{"ColorName-" + index}</AppText>
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: RFValue(5) }}>
                                             <AppGoldCoin />

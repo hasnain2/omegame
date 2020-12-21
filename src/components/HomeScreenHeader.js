@@ -28,7 +28,7 @@ const HomeScreenHeader = ({ route, navigation }) => {
                 navigation.navigate("NotificationScreen")
             }}>
                 <View pointerEvents={'none'} style={{}}>
-                    <AppBadge count={15} />
+                    <AppBadge count={0} />
                     <FastImage source={ICON_NOTIFICATION} style={{ height: RFValue(40), width: RFValue(40) }} />
                 </View>
             </TouchableOpacity>
@@ -37,7 +37,7 @@ const HomeScreenHeader = ({ route, navigation }) => {
                 navigation.navigate("InboxScreen");
             }}>
                 <View pointerEvents={'none'} style={{}}>
-                    <AppBadge count={4} />
+                    <AppBadge count={0} />
                     <FastImage source={ICON_CHAT} style={{ height: RFValue(40), width: RFValue(40) }} />
                 </View>
             </TouchableOpacity>

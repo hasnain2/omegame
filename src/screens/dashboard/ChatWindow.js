@@ -10,9 +10,10 @@ import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppInputToolBar, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { DeleteChat, GetChatMessages } from '../../services';
+import { ActionsOnUsers, DeleteChat, GetChatMessages } from '../../services';
 import { socket } from '../../services/socketService';
-import { CHAT_SOCKET_EVENTS } from '../../utils/AppConstants';
+import { CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
+import { AppShowToast } from '../../utils/AppHelperMethods';
 var uuid = require('react-native-uuid');
 
 const LIGHT_GREY = '#4d4d4d'
@@ -208,7 +209,18 @@ const ChatWindow = ({ navigation, route, }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                            Alert.alert("Block", "Are you sure to block " + friend?.userName + "?",
+                                [{
+                                    text: "Cancel",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                }, {
+                                    text: "OK", onPress: () => {
+                                        ActionsOnUsers(() => {
+                                            AppShowToast((friend?.userName || 'User') + ' has been blocked.')
+                                        }, friend?._id, FRIEND_STATUSES_ACTIONS.BLOCKED)
+                                    }
+                                }], { cancelable: false });
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_BLOCK} style={ICONSTYLE} />

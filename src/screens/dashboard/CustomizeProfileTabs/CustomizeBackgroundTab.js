@@ -5,19 +5,32 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../../components';
 import { AppTheme } from '../../../config/index';
 import { MOCK_BACKGROUNDS } from '../../../mockups/Mockups';
+import { GetMyAssets } from '../../../services/customizationService';
+import { ASSET_TYPES } from '../../../utils/AppConstants';
 import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeBackgroundTab = ({ navigation }) => {
     let [state, setState] = React.useState({
-        isModalVisible: null
+        isModalVisible: null,
+        data: []
     })
     const PADDING = RFValue(3);
     const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(2));
     const CARD_HEIGHT = CARD_WIDTH + RFValue(50);
+
+    function getmyassetshelper() {
+        GetMyAssets((myassetsRes) => {
+            if (myassetsRes)
+                setState(prev => ({ ...prev, data: myassetsRes }))
+        }, ASSET_TYPES.BACKGROUND)
+    }
+    React.useEffect(() => {
+        getmyassetshelper()
+    }, [])
     return (
         <View style={{ backgroundColor: 'black', flex: 1, }}>
             <FlatList
-                data={[...MOCK_BACKGROUNDS, { addMore: true }]}
+                data={[...state.data, { addMore: true }]}
                 numColumns={NUMBER_OF_COLUMNS}
 
                 initialNumToRender={2}
@@ -30,7 +43,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                     if (item.addMore)
                         return (
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                                navigation.navigate("OmegaStore")
                             }}>
                                 <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
                                     <Ionicons name="add-circle-outline" style={{ fontSize: RFValue(30), color: 'white' }} />
@@ -42,17 +55,16 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             }}>
                                 <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden' }}>
-                                    <FastImage source={item.image} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} />
-
+                                    <FastImage source={{ uri: item?.attachment?.url }} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} />
                                 </View>
                             </TouchableOpacity>
                         )
                 }} />
 
-            <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ isModalVisible: null }))} >
+            <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ ...prev, isModalVisible: null }))} >
                 {state.isModalVisible ?
                     <View style={{ flex: 1, padding: RFValue(30) }}>
-                        <AntDesign name="close" onPress={() => setState(prev => ({ isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
+                        <AntDesign name="close" onPress={() => setState(prev => ({ ...prev, isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
                         <View style={{ width: Dimensions.get('screen').width - RFValue(20), flex: 1, margin: PADDING, borderRadius: RFValue(10), overflow: 'hidden' }}>
                             <FastImage source={state.isModalVisible.image} style={{ width: Dimensions.get('screen').width - RFValue(20), height: '80%' }} />
                             <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center', backgroundColor: 'black', borderTopWidth: 1, borderTopColor: 'grey', padding: RFValue(15) }}>
@@ -62,7 +74,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>
                                 </View>
-                                <AppButtonPlane onPress={() => { setState(prev => ({ isModalVisible: null })) }} label={"BUY"} />
+                                <AppButtonPlane onPress={() => { setState(prev => ({ ...prev, isModalVisible: null })) }} label={"BUY"} />
                             </View>
                         </View>
                     </View>
