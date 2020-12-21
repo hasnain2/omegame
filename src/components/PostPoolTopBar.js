@@ -1,14 +1,16 @@
 
 import moment from 'moment';
 import React, { useState } from 'react';
-import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MODIFY, ICON_MUTE, ICON_REPORT, ICON_UNFOLLOW } from '../../assets/icons';
 import { AppText } from '../components';
 import { AppTheme } from '../config';
-import { RemovePostFromReduxStore } from '../services/mutateReduxState';
+import { ActionsOnUsers } from '../services';
+import { RemovePostFromReduxStore, RemovePostsOfUserFromReduxStore } from '../services/mutateReduxState';
 import { DeletePost, FollowPost } from '../services/postService';
+import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
 import { largeNumberShortify } from '../utils/AppHelperMethods';
 import { AppModal } from './AppModal';
 import { IsUserVerifiedCheck } from './IsUserVerifiedCheck';
@@ -114,9 +116,24 @@ const PostPoolTopBar = ({ item, navigation }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                RemovePostFromReduxStore(item._id);
-                                // modify post
-                                setState(prev => ({ ...prev, showMenu: '' }))
+                                Alert.alert(
+                                    "Block " + (item?.createdBy?.firstName || item?.createdBy?.userName),
+                                    "Are you sure you want to block " + (item?.createdBy?.firstName || item?.createdBy?.userName) + '?',
+                                    [{
+                                        text: "Cancel",
+                                        onPress: () => console.log("Cancel Pressed"),
+                                        style: "cancel"
+                                    }, {
+                                        text: "Block", onPress: () => {
+                                            setState(prev => ({ ...prev, showMenu: '' }))
+                                            RemovePostsOfUserFromReduxStore(item?.createdBy?._id);
+                                            ActionsOnUsers(() => {
+
+                                            }, item?.createdBy?._id, FRIEND_STATUSES_ACTIONS.BLOCKED)
+                                        }
+                                    }], { cancelable: false });
+
+
                             }} style={styles.modalListItemStyle}>
                                 <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                     <Image source={ICON_BLOCK} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />

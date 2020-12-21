@@ -4,6 +4,7 @@ import { EndPoints } from '../utils/AppEndpoints'
 import { storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
 const UpdateProfile = (callback, formData) => {
+    console.log('---------------USER PROFILE GOING TO UPDATE RESPONSE--------------\n', formData)
     fetch(EndPoints.PROFILE_UPDATE_CREATE, {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),

@@ -134,13 +134,12 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                     setState(prev => ({ ...prev, showDatePicker: false, showGenderPicker: true }))
                 }}>
                     <View pointerEvents={"none"}>
-                        <AppInput editable={false} value={state.gender} label={"Gender"} onChangeText={(val) => { }} />
+                        <AppInput editable={false} value={state.gender || "Select gender"} label={"Gender"} onChangeText={(val) => { }} />
                     </View>
                 </TouchableOpacity>
 
                 <AppInput label={"Favorite game"} value={state.favoriteGame} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteGame: val })) }} />
                 <AppInput label={"Favorite console"} value={state.favoriteConsole} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteConsole: val })) }} />
-
 
                 {state.gamingAccounts.map((iitm, index) => {
                     return (

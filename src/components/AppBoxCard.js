@@ -8,7 +8,7 @@ import { EvilIcons } from '../utils/AppIcons';
 import { AppVideoPlayer } from './AppVideoPlayer';
 const AppBoxCard = ({ item, navigation, size, startPlaying }) => {
     return (
-        <View style={{ height: size, width: size }}>
+        <View style={{ height: size, width: size, }}>
             {item.attachments && item.attachments.length > 0 ?
                 item?.attachments[0]?.type.includes('video') ?
                     <View style={{ height: size, width: size }}>
