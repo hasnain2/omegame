@@ -3,10 +3,11 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
+import { Divider } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { ICON_PHOTO } from '../../../assets/icons';
-import { AppButton, AppDateTimePicker, AppHeaderCommon, AppInput } from '../../components';
+import { AppButton, AppDateTimePicker, AppHeaderCommon, AppInput, AppModal, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { UploadMedia } from '../../services';
 import { UpdateProfile } from '../../services/profileService';
@@ -15,13 +16,13 @@ import { AppShowToast } from '../../utils/AppHelperMethods';
 import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 const EditUserProfileScreen = ({ navigation, route, }) => {
     let user = route?.params?.data || useSelector(state => state.root.user);
-    console.log('-------USER-------', user)
     let [state, setState] = useState({
         name: user.firstName,
         bio: user?.bio,
         dateOfBirth: user.dateOfBirth || '',
         favoriteGame: user?.favouriteGame || '',
         favoriteConsole: user?.favouriteConsole || '',
+        gender: user?.gender || '', showGenderPicker: false,
 
         gamingAccounts: user?.gamingAccounts && user?.gamingAccounts.length > 0 ? user?.gamingAccounts : [
             { gamingAccountProvider: "XBOX", account: '' },
@@ -70,7 +71,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                 favouriteGame: state.favoriteGame || null,
                 firstName: state.name || null,
                 gamingAccounts: state.gamingAccounts,
-                gender: "MALE" || null,
+                gender: state.gender || '',
                 // lastName: "" || null,
                 // nickName: "" || null,
                 isPrivate: false
@@ -122,12 +123,21 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                 <AppInput label={"Name"} value={state.name} onChangeText={(val) => { setState(prev => ({ ...prev, name: val })) }} />
                 <AppInput label={"Bio"} value={state.bio} onChangeText={(val) => { setState(prev => ({ ...prev, bio: val })) }} />
                 <TouchableOpacity onPress={() => {
-                    setState(prev => ({ ...prev, showDatePicker: true }))
+                    setState(prev => ({ ...prev, showDatePicker: true, showGenderPicker: false }))
                 }}>
                     <View pointerEvents={"none"}>
-                        <AppInput editable={false} value={state.dateOfBirth ? (moment(state.dateOfBirth).format('DD MMM, yyyy') + '') : ''} label={"Date of birth"} onChangeText={(val) => { setState(prev => ({ ...prev, dateOfBirth: val })) }} />
+                        <AppInput editable={false} value={state.dateOfBirth ? (moment(state.dateOfBirth).format('DD MMM, yyyy') + '') : ''} label={"Date of birth"} onChangeText={(val) => { }} />
                     </View>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                    setState(prev => ({ ...prev, showDatePicker: false, showGenderPicker: true }))
+                }}>
+                    <View pointerEvents={"none"}>
+                        <AppInput editable={false} value={state.gender} label={"Gender"} onChangeText={(val) => { }} />
+                    </View>
+                </TouchableOpacity>
+
                 <AppInput label={"Favorite game"} value={state.favoriteGame} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteGame: val })) }} />
                 <AppInput label={"Favorite console"} value={state.favoriteConsole} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteConsole: val })) }} />
 
@@ -156,6 +166,23 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                     setState(prev => ({ ...prev, dateOfBirth: val }))
                 }}
             />
+
+            <AppModal type={'bottom'} show={state.showGenderPicker} toggle={() => setState(prev => ({ ...prev, showGenderPicker: false }))}>
+                <View style={{ backgroundColor: 'black', padding: RFValue(20), width: '100%', paddingBottom: RFValue(50) }}>
+                    <AppText style={{ paddingVertical: RFValue(15), textAlign: 'center' }}>Select gender</AppText>
+                    <AppText onPress={() => {
+                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'MALE' }))
+                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Male</AppText>
+                    <Divider style={{ width: '100%', backgroundColor: 'grey' }} />
+                    <AppText onPress={() => {
+                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'FEMALE' }))
+                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Female</AppText>
+                    <Divider style={{ width: '100%', backgroundColor: 'grey' }} />
+                    <AppText onPress={() => {
+                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'RATHER NOT SAY' }))
+                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Rather not say!</AppText>
+                </View>
+            </AppModal>
         </View>
     );
 };

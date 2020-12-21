@@ -1,19 +1,16 @@
 
 
 import React, { useState } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
 import { ICON_ACCOUNT_SETTINGS, ICON_GAMEOVER, ICON_INFO, ICON_NOTIFICATION, ICON_PRIVATE, ICON_SAVE_POST } from '../../../assets/icons';
 import { AppBackButton, AppSwitchButton, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { LogOutUser } from '../../services/authService';
-import { Entypo, EvilIcons, Ionicons } from '../../utils/AppIcons';
+import { EvilIcons } from '../../utils/AppIcons';
 
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' }
 const AppSettingsScreen = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
-    console.log('---------USER----', user)
     let [state, setState] = useState({
         loading: false,
         isNotificationOn: true,
@@ -148,21 +145,28 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                         </View>
                         : null}
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        LogOutUser((dta) => { });
+                        Alert.alert(
+                            "Logout",
+                            "Are you sure you want to logout?",
+                            [{
+                                text: "Cancel",
+                                onPress: () => console.log("Cancel Pressed"),
+                                style: "cancel"
+                            }, {
+                                text: "LOGOUT", onPress: () => {
+                                    LogOutUser((dta) => { });
+                                }
+                            }], { cancelable: false });
                     }}>
                         {rendListItem(ICON_GAMEOVER, "Gameover", false)}
                     </TouchableOpacity>
 
-
                 </View>
-
-
 
                 <View style={{ borderTopColor: AppTheme.colors.lightGrey, borderTopWidth: 0.5, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
                     <EvilIcons name="star" style={{ fontSize: RFValue(20), color: AppTheme.colors.lightBlue }} />
                     <AppText size={2} color={AppTheme.colors.lightBlue} >Leave a feedback</AppText>
                 </View>
-
 
             </View>
         </View>

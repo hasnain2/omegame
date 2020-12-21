@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppLoadingView, AppNoDataFound, AppPostsListings, HomeScreenHeader } from '../../components';
 import { setHomeFeed } from '../../redux/reducers/homeFeedSlice';
 import { GetHomeFeed } from '../../services/postService';
+import { initSocket } from '../../services/socketService';
 const HomeScreen = ({ route, navigation }) => {
     let [state, setState] = useState({
         loading: true,
@@ -15,7 +16,8 @@ const HomeScreen = ({ route, navigation }) => {
         data: []
     })
     let disptach = useDispatch();
-    let homeFeed = useSelector(state => state.root.homeFeed)
+    let homeFeed = useSelector(state => state.root.homeFeed);
+    let user = useSelector(state => state.root.user)
     function getHomeFeedHelper() {
         GetHomeFeed((res) => {
             if (res) {
@@ -25,6 +27,7 @@ const HomeScreen = ({ route, navigation }) => {
         });
     }
     useEffect(() => {
+        initSocket(user.token);
         getHomeFeedHelper();
     }, [])
     return (

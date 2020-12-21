@@ -4,7 +4,7 @@ import { resetUser, setUser } from '../redux/reducers/userSlice'
 import { store } from '../redux/store'
 import { EndPoints } from '../utils/AppEndpoints'
 import { AppShowToast } from '../utils/AppHelperMethods'
-import { clearStorage, storeData } from '../utils/AppStorage'
+import { clearStorage, getData, removeItemsFromLocalStorage, storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
 const LogInUser = (callback, formData) => {
 
@@ -107,11 +107,19 @@ const ChangePassword = (callback, formedData) => {
 }
 
 const LogOutUser = (callback) => {
-    clearStorage().then(res => callback(true)).then(err => {
+    getData('rememberMe', (dta) => {
+        if (dta) {
+            removeItemsFromLocalStorage(['user']);
+        } else {
+            clearStorage().then(res => callback(true)).then(err => {
+                console.log('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
+            })
+        }
         store.dispatch(resetUser())
         store.dispatch(resetHomeFeed())
         store.dispatch(resetSavedPosts())
         callback(false)
     })
+
 }
 export { LogInUser, SignUpUser, LogOutUser, ChangePassword, ForgotPasswordCall }

@@ -46,8 +46,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
     });
 
 
-
-
     let ScrollRef = useRef(null);
     useEffect(() => {
         GetSingleUserProfile((profileRes) => {
@@ -105,8 +103,8 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>}
             </View>
 
-
-            <ScrollView style={{ flex: 1 }}
+            <ScrollView
+                style={{ flex: 1 }}
                 ref={ref => ScrollRef = ref}
                 decelerationRate={0.2}
                 nestedScrollEnabled={true}
@@ -165,17 +163,21 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </View>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                        <AppText size={2} onPress={() => {
-                            navigation.push("AppFollowersAndFollowingList", { isFollowerMode: true, userID: route?.params?.userID })
-                        }} color={AppTheme.colors.primary}>{userData?.followers} <AppText size={2} color={AppTheme.colors.lightGrey}>Followers</AppText></AppText>
-                        <AppText size={2} onPress={() => {
-                            navigation.push("AppFollowersAndFollowingList", { isFollowerMode: false, userID: route?.params?.userID })
-                        }} color={AppTheme.colors.primary}>{userData?.following} <AppText size={2} color={AppTheme.colors.lightGrey}>Followings</AppText></AppText>
+                        <AppText size={2}
+                            style={{ paddingVertical: RFValue(15) }}
+                            onPress={() => {
+                                navigation.push("AppFollowersAndFollowingList", { isFollowerMode: true, userID: route?.params?.userID })
+                            }} color={AppTheme.colors.primary}>{userData?.followers} <AppText size={2} color={AppTheme.colors.lightGrey}>Followers</AppText></AppText>
+                        <AppText size={2}
+                            style={{ paddingVertical: RFValue(15) }}
+                            onPress={() => {
+                                navigation.push("AppFollowersAndFollowingList", { isFollowerMode: false, userID: route?.params?.userID })
+                            }} color={AppTheme.colors.primary}>{userData?.following} <AppText size={2} color={AppTheme.colors.lightGrey}>Followings</AppText></AppText>
                     </View>
 
                     {userID ?
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("EditUserProfileScreen", { data: userData })}>
-                            <View style={{ marginVertical: RFValue(25), marginHorizontal: RFValue(10), borderWidth: 1, borderColor: AppTheme.colors.lightGrey, borderRadius: 90, padding: RFValue(10), justifyContent: 'center', alignItems: 'center' }}>
+                        <TouchableOpacity style={{}} activeOpacity={0.7} onPress={() => navigation.navigate("EditUserProfileScreen", { data: userData })}>
+                            <View style={{ marginHorizontal: RFValue(10), borderWidth: 1, borderColor: AppTheme.colors.lightGrey, borderRadius: 90, padding: RFValue(10), justifyContent: 'center', alignItems: 'center' }}>
                                 <AppText size={2} color={AppTheme.colors.lightGrey} bold={true}>EDIT PROFILE</AppText>
                             </View>
                         </TouchableOpacity>
@@ -196,8 +198,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     }
                 </View>
 
-
-
                 <View
                     style={{ height: state.LHeight - RFValue(50), width: state.LWidth, }}>
                     <UserProfileTabs
@@ -213,14 +213,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     />
                 </View>
 
-
-
             </ScrollView>
-
-
-
-
-
 
             <AppModal show={state.showMenu}
                 type={"bottom"}

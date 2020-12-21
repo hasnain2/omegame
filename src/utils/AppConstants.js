@@ -25,6 +25,14 @@ const PRIVACY = [
     }
 ]
 
+const CHAT_SOCKET_EVENTS = {
+    NEW_MESSAGE: 'newMessage',
+    ON_MESSAGE_SCREEN: 'onMessageScreen',
+    SEEN: 'seen',
+    ERROR: 'error',
+    MIRROR: 'mirror',
+}
+
 const FRIEND_STATUSES_ACTIONS = { // action on friends weather to 
     BLOCKED: 'BLOCKED',
     UNBLOCKED: 'UN_BLOCKED',
@@ -47,4 +55,4 @@ const GET_FRIEND_LIST_TYPES = { // -----  get frieds/following/followers/blocked
     BLOCKED: 'BLOCKED'
 }
 
-export { BUCKETS, PRIVACY, FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES, GET_FRIEND_LIST_TYPES }
+export { BUCKETS, PRIVACY, CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES, GET_FRIEND_LIST_TYPES }

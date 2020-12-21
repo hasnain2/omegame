@@ -20,19 +20,19 @@ const PostCard = ({ item, startPlaying, navigation }) => {
 
             {item.location?.addressName ?
                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingBottom: RFValue(10), flexWrap: 'wrap' }}>
-                    <AppText size={0} color={'grey'} style={{ paddingTop: 0 }}>Location: {item.location?.addressName || ''}</AppText>
+                    <AppText size={0} color={'grey'} style={{ paddingTop: 0 }}>Location: {item.location?.addressName || ''}, {item.location?.country || ''}</AppText>
                 </View>
                 : null}
 
             {item.tagged?.length > 0 ?
                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingBottom: RFValue(10), flexWrap: 'wrap' }}>
-                    {item.tagged.map(iii => (
-                        <AppText size={0} color={AppTheme.colors.primary} style={{ paddingTop: 0 }}>#{iii?.userName}, </AppText>
+                    {item.tagged.map((iii, ind) => (
+                        <AppText key={iii?.userName + ind} size={0} color={AppTheme.colors.primary} style={{ paddingTop: 0 }}>@{iii?.userName}, </AppText>
                     ))}
                 </View>
                 : null}
 
-            {item?.attachments && item?.attachments?.length>0 ?
+            {item?.attachments && item?.attachments?.length > 0 ?
                 <TouchableOpacity activeOpacity={0.9} onPress={() => {
                     navigation.navigate("PostDetailScreenWithComments", { post: item })
                 }}>

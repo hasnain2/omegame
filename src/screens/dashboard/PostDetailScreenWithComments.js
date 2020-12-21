@@ -84,7 +84,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 <TouchableOpacity onPress={() => {
 
                                 }}>
-                                    <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} />
+                                    {/* <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} /> */}
                                 </TouchableOpacity>
 
                             </View>
@@ -202,6 +202,9 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
             <AppInputToolBar
                 placeholder={state.parentID?.createdBy?.userName ? ("@" + state.parentID?.createdBy?.userName) : ""}
                 LHeight={state.LHeight}
+                removeTag={() => {
+                    setState(prev => ({ ...prev, parentID: '' }))
+                }}
                 onSend={(msg) => {
                     CommentPost((newCommentRes) => {
                         if (newCommentRes) {

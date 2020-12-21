@@ -11,4 +11,16 @@ const getData = (key, callback) => {
 };
 const clearStorage = async () => await AsyncStorage.clear();
 
-export { storeData, getData, clearStorage }
+const removeItemsFromLocalStorage = async (keys) => {
+    keys.forEach(async key => {
+        try {
+            await AsyncStorage.removeItem(key);
+            return true;
+        }
+        catch (exception) {
+            return false;
+        }
+    });
+}
+
+export { storeData, getData, clearStorage, removeItemsFromLocalStorage }

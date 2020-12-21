@@ -1,56 +1,70 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MUTE, ICON_REPORT, ICON_UNFOLLOW } from '../../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppBackButton, AppInputToolBar, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
+import { AppBackButton, AppInputToolBar, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
+import { DeleteChat, GetChatMessages } from '../../services';
+import { socket } from '../../services/socketService';
+import { CHAT_SOCKET_EVENTS } from '../../utils/AppConstants';
+var uuid = require('react-native-uuid');
+
 const LIGHT_GREY = '#4d4d4d'
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' };
 const ChatWindow = ({ navigation, route, }) => {
-    let friend = route?.params?.friend
+    let friend = route?.params?.friend;
+
+    let user = useSelector(state => state.root.user);
+
     const [messages, setMessages] = useState([]);
     let [state, setState] = useState({
         showMenu: false,
+        loading: true,
         LHeight: 0,
         LWidth: 0
     })
+
+    function getChatmsgeshelper() {
+        GetChatMessages((messagesRes) => {
+            setState(prev => ({ ...prev, loading: false }))
+            if (messagesRes)
+                setMessages(messagesRes)
+        }, 0, friend?._id)
+    }
+
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-        ])
+        getChatmsgeshelper();
+
+        let messagesListner = socket.on(CHAT_SOCKET_EVENTS.NEW_MESSAGE, msg => {
+            setMessages(previousMessages => GiftedChat.append(previousMessages, msg));
+        });
+
+        return () => {
+            messagesListner.removeListener(CHAT_SOCKET_EVENTS.NEW_MESSAGE);
+        }
     }, [])
 
     const onSend = (val) => {
-        if (val) {
+        if (val.trim()) {
+            let guidd = uuid.v1();
             let new_message = {
-                _id: Math.random(),
-                text: val,
+                guid: guidd,
+                text: val.trim(),
+                message: val.trim(),
                 createdAt: new Date(),
-                user: {
-                    _id: 1,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
+                to: friend?._id || ''
             }
-            setMessages(previousMessages => GiftedChat.append(previousMessages, new_message))
+            socket.emit(CHAT_SOCKET_EVENTS.NEW_MESSAGE, new_message);
         }
     }
 
-    const renderInputToolbar = (props) => state.LHeight ? <AppInputToolBar chat={true} LHeight={state.LHeight} onSend={(msg) => { onSend(msg) }} /> : <AppInputToolBar chat={true} LHeight={state.LHeight} onSend={(msg) => { onSend(msg) }} />;
+    const renderInputToolbar = (props) => <AppInputToolBar chat={true} LHeight={state.LHeight} onSend={(msg) => { onSend(msg) }} />;
 
     const renderBubble = (props) => {
         return (<Bubble {...props}
@@ -79,7 +93,15 @@ const ChatWindow = ({ navigation, route, }) => {
         />
         )
     }
+    function renderTicks(currentMessage) {
+        const tickedUser = currentMessage.user._id
+        return (
 
+            <View>
+                {!currentMessage.sent && false && tickedUser === user?._id && (<Text style={{ color: AppTheme.colors.primary, paddingRight: 10 }}>✓✓</Text>)}
+            </View>
+        )
+    }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
             <View style={{ flex: 1, backgroundColor: 'black' }}
@@ -112,15 +134,21 @@ const ChatWindow = ({ navigation, route, }) => {
                 <View style={{ flex: 1, backgroundColor: '#1b1b1b', paddingBottom: RFValue(50) }}>
                     <GiftedChat
                         messages={messages}
+                        renderTicks={renderTicks}
                         showUserAvatar={false}
                         renderInputToolbar={renderInputToolbar}
                         showAvatarForEveryMessage={false}
                         renderBubble={renderBubble}
                         onSend={messages => onSend(messages)}
                         user={{
-                            _id: 1,
+                            _id: user?._id,
+                            avatar: user?.pic,
+                            name: user?.userName,
                         }}
                     />
+                    {state.loading ?
+                        <AppLoadingView />
+                        : null}
                 </View>
 
                 <AppModal show={state.showMenu} type="bottom" toggle={() => setState(prev => ({ ...prev, showMenu: false }))}>
@@ -129,7 +157,22 @@ const ChatWindow = ({ navigation, route, }) => {
                         <View style={{ height: RFValue(3), width: RFValue(40), backgroundColor: AppTheme.colors.lightGrey, alignSelf: 'center', borderRadius: 20 }} />
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                            Alert.alert(
+                                "Delete conversation",
+                                "Are you sure to delete your conversation with " + friend?.userName,
+                                [{
+                                    text: "Cancel",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                }, {
+                                    text: "DELETE", onPress: () => {
+                                        setState(prev => ({ ...prev, showMenu: false, loading: true }))
+                                        DeleteChat(() => {
+                                            setMessages([])
+                                            setState(prev => ({ ...prev, loading: false }))
+                                        }, friend?.chatId)
+                                    }
+                                }], { cancelable: false });
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_DELETE} style={ICONSTYLE} />

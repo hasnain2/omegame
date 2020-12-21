@@ -19,7 +19,6 @@ const PostPoolBottomBar = ({ item, navigation }) => {
     })
 
     useEffect(() => {
-        console.log('------rerendering--------')
         setState(prev => ({
             ...prev,
             isShared: item.isShared || false,
