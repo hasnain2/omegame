@@ -12,6 +12,7 @@ import { store } from './src/redux/store';
 import { AuthLoading } from './src/screens';
 import { getData } from './src/utils/AppStorage';
 import Interceptor from './src/utils/Interceptor';
+import NotificationPopup from 'react-native-push-notification-popup';
 
 const App = ({ }) => {
   let [state, setState] = useState({
@@ -46,7 +47,10 @@ const App = ({ }) => {
             }
           </SafeAreaView>
         </MenuProvider>
+
+        <NotificationPopup ref={ref => global.popupRef = ref} />
       </NavigationContainer>
+
     </PaperProvider>
   )
 };

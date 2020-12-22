@@ -49,6 +49,7 @@
     "react-native-paper": "^4.4.0",
     "react-native-permissions": "^3.0.0",
     "react-native-popup-menu": "^0.15.9",
+    "react-native-push-notification-popup": "^1.6.0",
     "react-native-ratings": "^7.3.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-responsive-fontsize": "^0.5.0",

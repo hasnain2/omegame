@@ -1,15 +1,11 @@
 
 import io from "socket.io-client";
 import { DOMAIN } from "../utils/AppEndpoints";
+import { AppShowPushNotification } from "./PushNotifications/NotificationMethods";
 
 let SocketEndpoint = DOMAIN;
 
 export let socket = io.connect(SocketEndpoint);
-
-socket.on("connect", function () {
-    console.log('--------socket CONNECTED----------')
-
-});
 
 export const initSocket = async (token) => {
     try {
@@ -18,31 +14,21 @@ export const initSocket = async (token) => {
         else
             return
 
-
-        debugger
         socket = io.connect(SocketEndpoint, {
             query: {
                 token
             }
         });
 
-        socket.on("connect", function () {
-            console.log('--------socket CONNECTED----------')
-        });
-
         socket.on('connect', function () {
-            console.log('--------connectedddd----------')
+            AppShowPushNotification('Socket', "Connection has been established.");
         });
         socket.on('event', function (data) {
             console.log('--------event----------', data)
         });
         socket.on('disconnect', function () {
-            console.log('--------disconnect----------')
+            AppShowPushNotification('Socket', "Connection has been lost.");
         });
-
-
-
-        console.log('--------IN SOCKET----------')
     } catch (err) {
         console.log('---------SOCKET ERROR---------', err)
     }
