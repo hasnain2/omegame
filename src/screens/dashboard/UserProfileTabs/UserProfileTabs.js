@@ -88,7 +88,7 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                             scrollPosition={(dta) => {
                                 scrollPosition ? scrollPosition(dta) : null
                             }}
-                            autoPlay={autoPlay} />
+                            autoPlay={true} />
                     </View>
                 )}
             </Tab.Screen>
@@ -121,7 +121,7 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
             <Tab.Screen name="UserProfileExtras"  >
                 {(props) => (
                     <View style={{ flex: 1 }}>
-                        <UserProfileExtras {...props}
+                        <UserProfileGridPosts {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
                             scrollPosition={(dta) => {
@@ -129,6 +129,16 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                             }}
                             autoPlay={autoPlay} />
                     </View>
+
+                    // <View style={{ flex: 1 }}>
+                    //     <UserProfileExtras {...props}
+                    //         style={{ backgroundColor: AppTheme.colors.background }}
+                    //         userID={userID}
+                    //         scrollPosition={(dta) => {
+                    //             scrollPosition ? scrollPosition(dta) : null
+                    //         }}
+                    //         autoPlay={autoPlay} />
+                    // </View>
                 )}
             </Tab.Screen>
         </Tab.Navigator>

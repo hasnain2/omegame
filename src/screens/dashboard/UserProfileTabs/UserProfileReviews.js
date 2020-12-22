@@ -6,15 +6,25 @@ import { AppText } from '../../../components';
 import { UserAvatar } from '../../../components/UserAvatar';
 import { AppTheme } from '../../../config';
 import { MOCK_GAMES } from '../../../mockups/Mockups';
-const UserProfileReviews = ({ navigation }) => {
+import { GetUserReviews } from '../../../services/gamesService';
+const UserProfileReviews = ({ navigation, userID }) => {
     let [state, setState] = React.useState({
-        isModalVisible: null,
-        selectedColor: '#ff1a4a'
+        loading: true,
+        data: []
     })
+
+    React.useEffect(() => {
+        GetUserReviews((reviewRes) => {
+            if (reviewRes)
+                setState(prev => ({ ...prev, data: reviewRes, loading: false }))
+            else
+                setState(prev => ({ ...prev, loading: false }))
+        }, userID)
+    }, [])
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <FlatList
-                data={MOCK_GAMES}
+                data={state.data}
                 nestedScrollEnabled={true}
                 initialNumToRender={2}
                 windowSize={2}
@@ -25,20 +35,20 @@ const UserProfileReviews = ({ navigation }) => {
                 renderItem={({ item, index }) => (
                     <View style={{ borderBottomColor: AppTheme.colors.lightGrey, borderBottomWidth: 0.5, padding: RFValue(15) }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <UserAvatar corner={item?.corner || ''}  source={{ uri: item.cover }} size={55} />
+                            <UserAvatar corner={item?.corner || ''} source={{ uri: item.gameImage }} size={55} />
                             <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
-                                <AppText bold={true} size={2}>{item.name}</AppText>
-                                <AppText color={AppTheme.colors.lightGrey} size={2}>{item.name}</AppText>
+                                <AppText bold={true} size={2}>{item?.name || item?.gameName || ''}</AppText>
+                                <AppText color={AppTheme.colors.lightGrey} size={2}>{item.forEntity}</AppText>
                                 <AppText color={AppTheme.colors.lightGrey} size={0}>Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}</AppText>
                             </View>
                             <View style={{ borderRadius: RFValue(10), borderWidth: 1, padding: RFValue(10), flex: 0.2, justifyContent: 'center', alignItems: 'center', borderColor: item.negetive ? AppTheme.colors.red : AppTheme.colors.green }}>
-                                <AppText size={1}>PS4</AppText>
-                                <AppText size={3}>{item.points}</AppText>
+                                <AppText size={1}>{item?.devices[0]}</AppText>
+                                <AppText size={3}>{item.ratings}</AppText>
                             </View>
                         </View>
                         <View style={{ paddingVertical: RFValue(15) }}>
-                            <AppText lines={2} size={2}>{item.description}</AppText>
-                            <AppText color={AppTheme.colors.lightGrey} style={{ paddingTop: RFValue(10) }} size={0}>01 gennaio 2020</AppText>
+                            <AppText lines={2} size={2}>{item.feedback}</AppText>
+                            <AppText color={AppTheme.colors.lightGrey} style={{ paddingTop: RFValue(10) }} size={0}>{moment(item.createdAt).format('DD MMM YYYY')}</AppText>
                         </View>
                     </View>
                 )} />

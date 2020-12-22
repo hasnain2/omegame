@@ -1,20 +1,20 @@
 
 
+import moment from 'moment';
 import React, { useState } from 'react';
-import { TextInput, FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { BACKGROUND_IMG } from '../../../assets/images';
 import { AppBackButton, AppButton, AppCustomSlider, AppModal, AppRadioButton, AppText, UserAvatar } from '../../components';
 import { AppTheme } from '../../config';
-import moment from 'moment';
-import { useSelector } from 'react-redux';
-import { AntDesign } from '../../utils/AppIcons';
 import { MOCK_CONSOLE_TYPES } from '../../mockups/Mockups';
+import { setGameReviews } from '../../redux/reducers/gameReviewsSlice';
+import { store } from '../../redux/store';
 import { PostGameReview } from '../../services/gamesService';
 import { AppShowToast } from '../../utils/AppHelperMethods';
-import { store } from '../../redux/store';
-import { setGameReviews } from '../../redux/reducers/gameReviewsSlice';
+import { AntDesign } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const RateGameScreen = ({ navigation, route, }) => {
     let gameData = route?.params?.gameData
@@ -32,13 +32,16 @@ const RateGameScreen = ({ navigation, route, }) => {
         if (state.reviewText.trim()) {
             setState(prev => ({ ...prev, loading: true }))
             PostGameReview((postReviewRes) => {
-                console.log('---------REVIEW RES--------', postReviewRes)
                 if (postReviewRes) {
-                    store.dispatch(setGameReviews([{ ...postReviewRes, createdBy: user }, ...store.getState().root.gameReviews]))
+                    let allReviews = [...store.getState().root.gameReviews];
+
+                    allReviews.unshift({ ...postReviewRes, createdBy: user })
+                    store.dispatch(setGameReviews(allReviews))
                 }
                 setState(prev => ({ ...prev, loading: false }))
-                if (postReviewRes)
+                if (postReviewRes) {
                     navigation.goBack();
+                }
             }, {
                 feedback: state.reviewText.trim(),
                 ratings: state.rating,
@@ -58,7 +61,7 @@ const RateGameScreen = ({ navigation, route, }) => {
             <KeyboardAvoidingScrollView >
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(15) }}>
-                    <UserAvatar corner={gameData?.corner || ''}  source={BACKGROUND_IMG} size={50} />
+                    <UserAvatar corner={gameData?.corner || ''} source={BACKGROUND_IMG} size={50} />
 
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingVertical: RFValue(10), justifyContent: 'space-between', }}>
                         <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -89,7 +92,7 @@ const RateGameScreen = ({ navigation, route, }) => {
 
 
                 <View style={{ flexDirection: 'row', padding: RFValue(20) }}>
-                    <UserAvatar corner={user?.corner || ''}  source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />
+                    <UserAvatar corner={user?.corner || ''} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />
                     <TextInput placeholder={"Let us know what do you think about this game..."}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}

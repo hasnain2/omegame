@@ -16,7 +16,7 @@ let currentItemBeingUpdated = 0;
 const { height, width } = Dimensions.get('screen')
 let POST_DATA = null;
 const NUMBER_OF_COLUMNS = 3;
-const AppPostsListingsGrid = ({ navigation, data, style }) => {
+const AppPostsListingsGrid = ({ navigation, data, style, }) => {
     const PADDING = RFValue(2);
     const CARD_SIZE = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(2))
 
@@ -62,8 +62,8 @@ const AppPostsListingsGrid = ({ navigation, data, style }) => {
                 windowSize={Platform.OS === 'ios' ? 3 : 2}
                 initialNumToRender={Platform.OS === 'ios' ? 10 : 3}
                 maxToRenderPerBatch={Platform.OS === 'ios' ? 10 : 3}
-                removeClippedSubviews={true}
-                bounces={false}
+                // removeClippedSubviews={true}
+                // bounces={false}
 
                 keyboardShouldPersistTaps={'always'}
                 // onViewableItemsChanged={onViewRef.current}
@@ -72,6 +72,9 @@ const AppPostsListingsGrid = ({ navigation, data, style }) => {
                 keyExtractor={ii => ii._id + ''}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7}
+                        onPress={() => {
+                            navigation.navigate("PostDetailScreenWithComments", { post: item })
+                        }}
                         onPressOut={() => {
                             setState(prev => ({ ...prev, showPost: false }))
                         }}

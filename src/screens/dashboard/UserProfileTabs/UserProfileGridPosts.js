@@ -2,16 +2,24 @@ import * as React from 'react';
 import { View } from "react-native";
 import { useSelector } from 'react-redux';
 import { AppPostsListingsGrid } from "../../../components";
-const UserProfileGridPosts = ({ navigation }) => {
+import { GetMediaOnlyPosts } from '../../../services';
+const UserProfileGridPosts = ({ navigation, userID }) => {
     let [state, setState] = React.useState({
-        isModalVisible: null,
-        selectedColor: '#ff1a4a'
-    })
+        loading: true,
+        data: []
+    });
+
+    React.useEffect(() => {
+        GetMediaOnlyPosts((userPosts) => {
+            if (userPosts)
+                setState(prev => ({ ...prev, loading: false, data: userPosts }))
+        }, userID)
+    }, [])
     let homeFeed = useSelector(state => state.root.homeFeed)
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <AppPostsListingsGrid navigation={navigation}
-                data={homeFeed}
+                data={state.data}
                 style={{ backgroundColor: 'black' }} />
         </View>
     )

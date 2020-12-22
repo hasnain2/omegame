@@ -18,17 +18,18 @@ const HomeScreen = ({ route, navigation }) => {
     let disptach = useDispatch();
     let homeFeed = useSelector(state => state.root.homeFeed);
     let user = useSelector(state => state.root.user)
-    function getHomeFeedHelper() {
+    function getHomeFeedHelper(cursor) {
         GetHomeFeed((res) => {
             if (res) {
+                console.log('--------------------------------GOT POSTS-----------', res.length)
                 disptach(setHomeFeed(res))
             }
             setState(prev => ({ ...prev, loading: false, refreshing: false }))
-        });
+        }, cursor);
     }
     useEffect(() => {
         initSocket(user.token);
-        getHomeFeedHelper();
+        getHomeFeedHelper(0);
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>

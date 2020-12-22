@@ -19,11 +19,11 @@ const SearchScreen = ({ route, navigation }) => {
     })
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
-            <View style={{ padding: RFValue(10), paddingBottom:0 }}>
+            <View style={{ padding: RFValue(10), paddingBottom: 0 }}>
                 <AppSearchBar onChangeText={(val) => setState(prev => ({ ...prev, searchTerm: val }))} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
             </View>
             <View style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>
-                <SearchTabs navigation={navigation} />
+                <SearchTabs navigation={navigation} searchTerm={state.searchTerm} />
             </View>
 
             <AppModal show={state.showFilter} toggle={() => { setState(prev => ({ ...prev, showFilter: !state.showFilter })) }}>

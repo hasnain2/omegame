@@ -51,6 +51,12 @@ const EndPoints = {
     GET_ALL_ASSETS: BASE_URL + 'assets/type/',
     BUY_ASSET: BASE_URL + 'assets/action/buy', //-- -POST body= { "assetId": "string"}
     SET_ASSET_DEFAULT: BASE_URL + 'profile/customization/', //patch 1
+
+
+    GET_REVIEWS_OF_USER: BASE_URL + 'reviews/user/', //---------REVIEWS OF USERS
+
+    GET_ONLY_MEDIA_POSTS: BASE_URL + 'posts/user?mediaOnly=true',
+    GET_ALL_TRENDING_USERS: BASE_URL + 'profile/users',
 };
 
 export { DOMAIN, EndPoints };

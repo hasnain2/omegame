@@ -3,18 +3,23 @@
 import React, { useState } from 'react';
 import { Alert, Image, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { ICON_ACCOUNT_SETTINGS, ICON_GAMEOVER, ICON_INFO, ICON_NOTIFICATION, ICON_PRIVATE, ICON_SAVE_POST } from '../../../assets/icons';
 import { AppBackButton, AppSwitchButton, AppText } from '../../components';
 import { AppTheme } from '../../config';
+import { setUser } from '../../redux/reducers/userSlice';
+import { store } from '../../redux/store';
+import { UpdateProfile } from '../../services';
 import { LogOutUser } from '../../services/authService';
 import { EvilIcons } from '../../utils/AppIcons';
+import { storeData } from '../../utils/AppStorage';
 
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' }
 const AppSettingsScreen = ({ navigation, route, }) => {
+    let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: false,
         isNotificationOn: true,
-        isPrivateAccount: false,
         accountSettingDetails: false,
         infoHelpDetails: false,
     })
@@ -63,9 +68,16 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                         {rendListItem(ICON_NOTIFICATION, "Notifications", state.isNotificationOn)}
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, isPrivateAccount: !state.isPrivateAccount }))
+                        UpdateProfile((res) => {
+                            if (res) {
+                                let tempUser = { ...store.getState().root.user };
+                                tempUser.isPrivate = !user.isPrivate;
+                                storeData('user', tempUser)
+                                store.dispatch(setUser(tempUser));
+                            }
+                        }, { isPrivate: !user.isPrivate });
                     }}>
-                        {rendListItem(ICON_PRIVATE, "Private Account", state.isPrivateAccount)}
+                        {rendListItem(ICON_PRIVATE, "Private Account", user.isPrivate)}
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         setState(prev => ({ ...prev, accountSettingDetails: !state.accountSettingDetails, infoHelpDetails: false }))

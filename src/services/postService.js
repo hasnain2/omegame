@@ -1,15 +1,12 @@
+import { Alert } from 'react-native';
+import { BUCKETS } from '../utils/AppConstants';
 import { EndPoints } from '../utils/AppEndpoints';
+import { AppShowToast } from '../utils/AppHelperMethods';
 import Interceptor from '../utils/Interceptor';
 import { UploadMedia } from './mediaUploader';
-import { BUCKETS, PRIVACY } from '../utils/AppConstants'
-import { AppShowToast } from '../utils/AppHelperMethods';
-import { Alert } from 'react-native';
-import { store } from '../redux/store';
-import { setHomeFeed } from '../redux/reducers/homeFeedSlice';
-import { setSavedPosts } from '../redux/reducers/savedPostsSlice';
 import { RemovePostFromReduxStore, UpdatePostFromReduxStore } from './mutateReduxState';
+const LIMIT = 5;
 function creatPostHelper(callback, formData) {
-    console.log('---------PAYLOAD RES---------->', formData)
     fetch(EndPoints.CREATE_POST, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -68,8 +65,9 @@ const CreatePostService = (callback, formData) => {
     }
 }
 
-const GetHomeFeed = (callback) => {
-    fetch(EndPoints.HOME_FEED, {
+const GetHomeFeed = (callback, cursor) => {
+    // ${EndPoints.HOME_FEED}?cursor=${cursor}&limit=${LIMIT}
+    fetch(`${EndPoints.HOME_FEED}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then((response) => {
@@ -84,6 +82,46 @@ const GetHomeFeed = (callback) => {
             callback(false);
     }).catch((error) => {
         console.log('---------HOME FEED ERROR-----------', error)
+        callback(false)
+    });
+}
+
+const GetExplorePosts = (callback, cursor) => {
+    fetch(`${EndPoints.HOME_FEED}`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------EXPLORE POSTS RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------EXPLORE POSTS ERROR-----------', error)
+        callback(false)
+    });
+}
+
+const GetExploreMediaOnlyPosts = (callback, cursor) => {
+    fetch(`${EndPoints.HOME_FEED}?mediaOnly=true`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------EXPLORE MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------EXPLORE MEDIA ONLY POSTS ERROR-----------', error)
         callback(false)
     });
 }
@@ -163,6 +201,26 @@ const GetSinglePost = (callback, postID) => {
             callback(false);
     }).catch((error) => {
         console.log('---------GETTING SINGLE POST BY ID ERROR-----------', error)
+        callback(false)
+    });
+}
+
+const GetMediaOnlyPosts = (callback, userID) => {
+    fetch(`${EndPoints.GET_ONLY_MEDIA_POSTS}${userID ? ("&userId=" + userID) : ''}`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------GET MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------GET MEDIA ONLY POSTS ERROR-----------', error)
         callback(false)
     });
 }
@@ -368,5 +426,8 @@ export {
     SharePost,
     FollowPost,
     SaveOrBookMarkPost,
-    GetBookmarkPosts
+    GetBookmarkPosts,
+    GetMediaOnlyPosts,
+    GetExploreMediaOnlyPosts,
+    GetExplorePosts,
 };

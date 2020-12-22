@@ -33,11 +33,31 @@ function GetGameReviews(callback, CURSOR, FILTER, GAMEID) {
     }).then(([status, data]) => {
         console.log('-----------GAMES REVIEWS LIST RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data?.data || [])
+            callback(data?.data?.data || [])
         } else
             callback(false);
     }).catch((error) => {
         console.log('---------GAMES REVIEWS LIST ERROR-----------', error)
+        callback(false)
+    });
+}
+
+function GetUserReviews(callback, userID) {
+    fetch(`${EndPoints.GET_REVIEWS_OF_USER}${userID}`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------GET USER REVIEWS RESPONSE----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------GET USER REVIEWS ERROR-----------', error)
         callback(false)
     });
 }
@@ -68,5 +88,6 @@ function PostGameReview(callback, PAYLOAD) {
 export {
     GetGamesList,
     GetGameReviews,
-    PostGameReview
+    PostGameReview,
+    GetUserReviews
 };

@@ -1,5 +1,6 @@
 import { setUser } from '../redux/reducers/userSlice'
 import { store } from '../redux/store'
+import { GET_ALL_USER_SORT_BY } from '../utils/AppConstants'
 import { EndPoints } from '../utils/AppEndpoints'
 import { storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
@@ -30,9 +31,6 @@ const UpdateProfile = (callback, formData) => {
 
 
 const RequestVerification = (callback, formData) => {
-
-    console.log('---------VERIFICATION BODY------------>', formData)
-
     fetch(EndPoints.REQUEST_VERIFICATION, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -49,6 +47,26 @@ const RequestVerification = (callback, formData) => {
             callback(false);
     }).catch((error) => {
         console.log('---------RequestVerification ERROR-----------', error)
+        callback(false)
+    });
+}
+
+const GetAllTrendingUsers = (callback, formData) => {
+    fetch(`${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders(),
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------GET ALL TRENDING USERS RES----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------GET ALL TRENDING USERS ERROR-----------', error)
         callback(false)
     });
 }
@@ -119,4 +137,4 @@ const GerUserListByType = (callback, id, TYPE) => {
     });
 }
 
-export { UpdateProfile, RequestVerification, GetSingleUserProfile, ActionsOnUsers, GerUserListByType }
+export { UpdateProfile, GetAllTrendingUsers, RequestVerification, GetSingleUserProfile, ActionsOnUsers, GerUserListByType }

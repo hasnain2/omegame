@@ -58,8 +58,8 @@ const AppPostsListings = ({ navigation, data, style, loadMore, refreshing, autoP
                 windowSize={Platform.OS === 'ios' ? 3 : 2}
                 initialNumToRender={Platform.OS === 'ios' ? 10 : 3}
                 maxToRenderPerBatch={Platform.OS === 'ios' ? 10 : 3}
-                removeClippedSubviews={true}
-                bounces={false}
+                // removeClippedSubviews={true}
+                // bounces={false}
 
                 keyExtractor={ii => ii?._id + 'you'}
                 keyboardShouldPersistTaps={'always'}
