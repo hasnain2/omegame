@@ -18,8 +18,7 @@ const App = ({ }) => {
     loading: true,
   });
   let navRef = useRef(null)
-  let user = useSelector(state => state.root.user);
-
+  let { user, settings } = useSelector(state => state.root);
 
   useEffect(() => {
     getData('user', (storageUser) => {
@@ -38,7 +37,7 @@ const App = ({ }) => {
       <NavigationContainer ref={navRef}>
         <StatusBar barStyle="light-content" />
         <MenuProvider>
-          <SafeAreaView style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: settings.bgColor }}>
             {state.loading ?
               <AuthLoading />
               : user.token ?

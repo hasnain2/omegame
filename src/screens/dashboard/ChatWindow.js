@@ -112,7 +112,7 @@ const ChatWindow = ({ navigation, route, }) => {
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: LIGHT_GREY }}>
                     <AppBackButton navigation={navigation} />
-                    <UserAvatar onPress={() => {
+                    <UserAvatar corner={friend?.corner || ''}  onPress={() => {
                         navigation.push("UserProfileScreen", { userID: friend?._id })
                     }} source={friend?.pic ? { uri: friend?.pic } : DEFAULT_USER_PIC} size={35} />
                     <View style={{ flex: 1, paddingLeft: RFValue(10) }} >

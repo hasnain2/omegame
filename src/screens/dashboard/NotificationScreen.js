@@ -39,7 +39,7 @@ const NotificationScreen = ({ navigation, route, }) => {
                         return (
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
                                 <View >
-                                    <UserAvatar size={50} />
+                                    <UserAvatar corner={item?.user?.corner || ''}  size={50} />
                                     <View style={{ position: 'absolute', bottom: RFValue(14), right: RFValue(2), backgroundColor: 'white', borderRadius: 90, }}>
                                         <AntDesign name={"pluscircle"} style={{ fontSize: RFValue(15), color: AppTheme.colors.primary }} />
 
@@ -88,7 +88,7 @@ const NotificationScreen = ({ navigation, route, }) => {
                     keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => (
                         <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
-                            <UserAvatar size={40} />
+                            <UserAvatar corner={item?.user?.corner || ''}  size={40} />
                             <View style={{ flex: 1, paddingHorizontal: RFValue(10) }}>
                                 <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.msg}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
                             </View>

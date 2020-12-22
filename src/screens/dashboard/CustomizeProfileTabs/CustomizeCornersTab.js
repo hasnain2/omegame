@@ -7,7 +7,9 @@ import { UserAvatar } from '../../../components/UserAvatar';
 import { AppTheme } from '../../../config';
 import { MOCK_CORNERS } from '../../../mockups/Mockups';
 import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
-import { GetMyAssets } from '../../../services/customizationService';
+import { setUser } from '../../../redux/reducers/userSlice';
+import { store } from '../../../redux/store';
+import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
 import { AntDesign, FontAwesome, Ionicons } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 4;
@@ -15,6 +17,7 @@ const CustomizeCornersTab = ({ navigation }) => {
     let myAssets = useSelector(state => state.root.myAssets);
     const dispatch = useDispatch();
     let [state, setState] = React.useState({
+        loading: true,
         isModalVisible: null,
         selectedColor: '#ff1a4a',
     })
@@ -71,10 +74,19 @@ const CustomizeCornersTab = ({ navigation }) => {
                             )
                         else
                             return (
-                                <TouchableOpacity activeOpacity={0.7} style={{ padding: RFValue(5) }} onPress={() => {
-
-                                }}>
-                                    <UserAvatar source={{ uri: item?.attachment?.url }} size={CARD_WIDTH / 1.35} />
+                                <TouchableOpacity activeOpacity={0.7} style={{ padding: RFValue(5) }} >
+                                    <UserAvatar onPress={() => {
+                                        setState(prev => ({ ...prev, loading: true }))
+                                        PromtToSetAsDefault((setCornerRes) => {
+                                            if (setCornerRes) {
+                                                let tempUser = { ...store.getState().root.user };
+                                                tempUser.corner = item?.attachment?.url
+                                                store.dispatch(setUser(tempUser));
+                                                storeData('user', tempUser)
+                                            }
+                                            setState(prev => ({ ...prev, loading: false }))
+                                        }, ASSET_TYPES.CORNER, item._id)
+                                    }} source={{ uri: item?.attachment?.url }} size={CARD_WIDTH / 1.35} />
                                 </TouchableOpacity>
                             )
                     }} />
@@ -86,7 +98,7 @@ const CustomizeCornersTab = ({ navigation }) => {
                         <View style={{ backgroundColor: 'black', borderRadius: RFValue(10), overflow: 'hidden', padding: RFValue(30) }}>
                             {/* <FastImage source={state.isModalVisible.image} style={{ width: Dimensions.get('screen').width - RFValue(20), height: '80%' }} /> */}
                             <View style={{ justifyContent: 'center', paddingVertical: RFValue(30), alignItems: 'center' }}>
-                                <UserAvatar source={{ uri: state.isModalVisible?.attachment?.url }} size={110} />
+                                <UserAvatar  source={{ uri: state.isModalVisible?.attachment?.url }} size={110} />
                             </View>
                             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', borderTopWidth: 1, borderTopColor: 'grey', padding: RFValue(15) }}>
                                 <AppText size={2}>{state.isModalVisible.name}</AppText>

@@ -25,7 +25,7 @@ const PostPoolTopBar = ({ item, navigation }) => {
         <>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ padding: RFValue(15) }}>
-                    <UserAvatar onPress={() => {
+                    <UserAvatar corner={item?.createdBy?.corner || ''} onPress={() => {
                         navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
                     }} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : false} />
                 </View>

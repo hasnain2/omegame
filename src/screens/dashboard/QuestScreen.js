@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider, ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { ICON_SHOP } from '../../../assets/icons';
 import { BACKGROUND_IMG } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
@@ -14,6 +15,7 @@ import { AppTheme } from '../../config';
 import { MOCK_QUESTS } from '../../mockups/Mockups';
 import { timeRemaining } from '../../utils/AppHelperMethods';
 const QuestScreen = ({ route, navigation }) => {
+    let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         LHeight: 0,
         LWidth: 0,
@@ -50,7 +52,7 @@ const QuestScreen = ({ route, navigation }) => {
                                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                                         <FastImage source={BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                                <UserAvatar size={100} />
+                                                <UserAvatar corner={user?.corner || ''} size={100} />
                                                 <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                                         <AppGoldCoin />

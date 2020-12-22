@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { Alert, Dimensions, FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../components";
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
+import { setUser } from '../../redux/reducers/userSlice';
+import { store } from '../../redux/store';
 import { AddAssetCorner } from '../../services';
-import { BuyAsset, GetAllAssets } from '../../services/customizationService';
+import { BuyAsset, GetAllAssets, PromtToSetAsDefault } from '../../services/customizationService';
 import { ASSET_TYPES } from '../../utils/AppConstants';
 import { AntDesign, FontAwesome } from '../../utils/AppIcons';
+import { storeData } from '../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreCornersTab = ({ navigation }) => {
     let [state, setState] = React.useState({
@@ -19,7 +23,8 @@ const OmegaStoreCornersTab = ({ navigation }) => {
     const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
     const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
     const BUBBLE_SIZE = RFValue(25);
-
+    let user = useSelector(state => state.root.user);
+    console.log('-------', user._id)
     function getallassetshelper() {
         GetAllAssets((allAssetsRes) => {
             if (allAssetsRes) {
@@ -46,7 +51,6 @@ const OmegaStoreCornersTab = ({ navigation }) => {
             <FlatList
                 data={state.data}
                 numColumns={NUMBER_OF_COLUMNS}
-
                 initialNumToRender={2}
                 windowSize={2}
                 // removeClippedSubviews={true}
@@ -105,13 +109,13 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                                         style: "cancel"
                                     }, {
                                         text: "OK", onPress: () => {
+                                            setState(prev => ({ ...prev, isModalVisible: null, loading: true }))
                                             AddAssetCorner(state.isModalVisible)
-                                            BuyAsset(() => {
+                                            BuyAsset((buyAssetRes) => {
+                                                setState(prev => ({ ...prev, loading: false }))
                                             }, state.isModalVisible?._id)
-                                            setState(prev => ({ ...prev, isModalVisible: '' }))
                                         }
                                     }], { cancelable: false });
-
                                 }} label={"BUY"} />
                             </View>
                         </View>

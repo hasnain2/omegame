@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { EndPoints } from '../utils/AppEndpoints';
 import Interceptor from '../utils/Interceptor';
 const LIMIT = 50;
@@ -41,6 +42,48 @@ function GetAllAssets(callback, type) {
     });
 }
 
+function PromtToSetAsDefault(callback, type, assetID) {
+    Alert.alert(`Set ${type}`, `Do you want to set this ${type} for you default ${type}`,
+        [{
+            text: "No",
+            onPress: () => {
+                callback(false)
+            },
+            style: "cancel"
+        }, {
+            text: "Yes", onPress: () => {
+                SetAssetAsDefault((setAssetRes) => {
+                    if (setAssetRes)
+                        callback(true)
+                    else
+                        callback(false)
+                }, type, assetID)
+            }
+        }], { cancelable: false });
+}
+function SetAssetAsDefault(callback, type, assetID) {
+    fetch(EndPoints.SET_ASSET_DEFAULT + type, {
+        method: 'PATCH',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify({
+            assetId: assetID
+        })
+    }).then((response) => {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]);
+    }).then(([status, data]) => {
+        console.log('-----------SETTING DEFAULT ASSET RES----------', type, JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        console.log('---------SETTING DEFAULT ASSET ERROR-----------', type, error)
+        callback(false)
+    });
+}
+
 function BuyAsset(callback, assetID) {
     fetch(EndPoints.BUY_ASSET, {
         method: 'POST',
@@ -55,7 +98,7 @@ function BuyAsset(callback, assetID) {
     }).then(([status, data]) => {
         console.log('-----------BUY ASSET RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data?.data?.data || [])
+            callback(true)
         } else
             callback(false);
     }).catch((error) => {
@@ -67,5 +110,7 @@ function BuyAsset(callback, assetID) {
 export {
     GetMyAssets,
     GetAllAssets,
-    BuyAsset
+    BuyAsset,
+    SetAssetAsDefault,
+    PromtToSetAsDefault
 };

@@ -24,7 +24,7 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <FastImage source={user?.cover ? { uri: user.cover } : BACKGROUND_IMG} style={{ height: LHeight, width: LWidth, }} >
                 <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <UserAvatar source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={75} />
+                    <UserAvatar corner={user?.corner || ''}  source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={75} />
                     <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                             <AppGoldCoin />

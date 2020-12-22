@@ -86,7 +86,7 @@ const CreatePost = ({ navigation, route }) => {
             </View>
             <KeyboardAvoidingScrollView nestedScrollEnabled={true} style={{ flex: 1, padding: RFValue(14) }}>
                 <View style={{ flexDirection: 'row' }}>
-                    <UserAvatar source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
+                    <UserAvatar corner={user?.corner || ''}  source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
                     <TextInput placeholder={state.postTypeIsPool ? "Ask a question" : "What's new?"}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}

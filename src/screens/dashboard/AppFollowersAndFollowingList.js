@@ -65,7 +65,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                         navigation.push("UserProfileScreen", { userID: item._id })
                     }}>
                         <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
-                            <UserAvatar source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
+                            <UserAvatar corner={item?.corner || ''}  source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
                             <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                     <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName} {item?.lastName}</AppText>

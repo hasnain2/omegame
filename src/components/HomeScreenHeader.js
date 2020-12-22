@@ -20,7 +20,7 @@ const HomeScreenHeader = ({ route, navigation }) => {
             }}>
                 <View pointerEvents={'none'} style={{ padding: RFValue(5) }}>
                     <AppBadge count={0} />
-                    <UserAvatar source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
+                    <UserAvatar corner={user?.corner || ''}  source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
                 </View>
             </TouchableOpacity>
 

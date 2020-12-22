@@ -67,7 +67,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
                     <FastImage source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                         <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <UserAvatar source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} size={140} />
+                            <UserAvatar corner={gameData?.corner || ''}  source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} size={140} />
 
                             <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingVertical: RFValue(10), justifyContent: 'space-between', }}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -151,7 +151,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                         renderItem={({ item, index }) => (
                             <View style={{ padding: RFValue(15), borderBottomWidth: 0.3, borderBottomColor: AppTheme.colors.lightGrey }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: RFValue(15) }}>
-                                    <UserAvatar onPress={() => {
+                                    <UserAvatar corner={item?.createdBy?.corner || ''}  onPress={() => {
                                         navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
                                     }} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : false} />
 

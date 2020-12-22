@@ -38,7 +38,7 @@ const AppContactsSearch = ({ navigation, route, }) => {
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.replace("ChatWindow")}>
                         <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
-                            <UserAvatar source={{ uri: item.user.photo }} size={50} />
+                            <UserAvatar corner={item?.user?.corner || ''}  source={{ uri: item.user.photo }} size={50} />
                             <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                     <AppText bold={true} size={1} color={'white'}>{item.user.first_name} {item.user.last_name}</AppText>

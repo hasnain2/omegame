@@ -54,6 +54,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, loading: false, userData: profileRes }))
                 if (userID)
                     disp(setUser(profileRes))
+                debugger
             } else
                 setState(prev => ({ ...prev, loading: false }))
         }, route.params.userID)
@@ -114,7 +115,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                         <FastImage source={userData?.cover ? { uri: userData?.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar source={userID ? user?.pic ? { uri: user.pic } : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC} size={100} />
+                                <UserAvatar corner={userData?.corner || ''}  source={userID ? user?.pic ? { uri: user.pic } : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC} size={100} />
 
                                 {userID ?
                                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>

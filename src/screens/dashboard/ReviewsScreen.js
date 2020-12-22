@@ -63,7 +63,7 @@ const ReviewsScreen = ({ navigation }) => {
                             }}>
                                 <>
                                     <View style={{ flexDirection: 'row', flex: 1, padding: RFValue(10), alignItems: 'center' }}>
-                                        <UserAvatar source={item?.background?.url ? { uri: item?.background?.url } : DEFAULT_USER_PIC} size={55} />
+                                        <UserAvatar corner={item?.corner || ''}  source={item?.background?.url ? { uri: item?.background?.url } : DEFAULT_USER_PIC} size={55} />
                                         <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
                                             <AppText size={3} bold={true} >{item.name}</AppText>
                                             <AppText size={2} color={AppTheme.colors.lightGrey} >{item.supportedDevices.map(ii => (ii + ', ').toUpperCase())}</AppText>

@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { ProgressBar } from 'react-native-paper';
@@ -12,13 +12,11 @@ import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { largeNumberShortify } from '../../utils/AppHelperMethods';
-import { Ionicons, MaterialIcons } from '../../utils/AppIcons';
-import { OmegaStoreTabs } from '../OmegaStore/OmegaStoreTabs';
+import { Ionicons } from '../../utils/AppIcons';
 import { CustomizeTabs } from './CustomizeProfileTabs/CustomizeTabs';
-import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
 const UserProfileCustomizeScreen = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
-    console.log(user)
+    let user = useSelector(state => state.root.user);
+
     let [state, setState] = useState({
         loading: false,
         LHeight: 0,
@@ -44,9 +42,9 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
             </View>
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
-                    <FastImage source={BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
+                    <FastImage source={user?.cover ? { uri: user.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                         <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <UserAvatar source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={100} />
+                            <UserAvatar corner={user?.corner || ''}  source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={100} />
                             <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                     <AppGoldCoin />

@@ -3,12 +3,15 @@ import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../../components';
+import { AppButtonPlane, AppGoldCoin, AppLoadingView, AppModal, AppText } from '../../../components';
 import { AppTheme } from '../../../config/index';
 import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
-import { GetMyAssets } from '../../../services/customizationService';
+import { setUser } from '../../../redux/reducers/userSlice';
+import { store } from '../../../redux/store';
+import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
 import { AntDesign, Ionicons } from '../../../utils/AppIcons';
+import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeBackgroundTab = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -27,7 +30,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                 let tempMyAssets = { ...myAssets };
                 tempMyAssets.backgrounds = myassetsRes;
                 dispatch(setMyAssets(tempMyAssets))
-                setState(prev => ({ ...prev }))
+                setState(prev => ({ ...prev, loading: false }))
             }
         }, ASSET_TYPES.BACKGROUND)
     }
@@ -38,6 +41,9 @@ const CustomizeBackgroundTab = ({ navigation }) => {
 
     return (
         <View style={{ backgroundColor: 'black', flex: 1, }}>
+            {state.loading ?
+                <AppLoadingView />
+                : null}
             <FlatList
                 data={[...myAssets.backgrounds, { addMore: true }]}
                 numColumns={NUMBER_OF_COLUMNS}
@@ -62,6 +68,16 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                     else
                         return (
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                setState(prev => ({ ...prev, loading: true }))
+                                PromtToSetAsDefault((setBackgroundRes) => {
+                                    if (setBackgroundRes) {
+                                        let tempUser = { ...store.getState().root.user };
+                                        tempUser.cover = item?.attachment?.url
+                                        store.dispatch(setUser(tempUser));
+                                        storeData('user', tempUser)
+                                    }
+                                    setState(prev => ({ ...prev, loading: false }))
+                                }, ASSET_TYPES.BACKGROUND, item._id)
                             }}>
                                 <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                     <FastImage source={{ uri: item?.attachment?.url }} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} />

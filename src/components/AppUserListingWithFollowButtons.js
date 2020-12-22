@@ -22,7 +22,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style }) => {
                 keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <View style={{ flexDirection: 'row', borderBottomColor: AppTheme.colors.darkGrey, borderBottomWidth: 1, flex: 1, padding: RFValue(7), alignItems: 'center' }}>
-                        <UserAvatar size={50} source={item.user.photo ? { uri: item.user.photo } : null} />
+                        <UserAvatar corner={item?.user?.corner || ''}  size={50} source={item.user.photo ? { uri: item.user.photo } : null} />
                         <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                 <AppText bold={true} size={1} color={'white'}>{item.user.first_name} {item.user.last_name}</AppText>

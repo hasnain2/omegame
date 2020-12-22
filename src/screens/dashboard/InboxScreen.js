@@ -118,7 +118,7 @@ const InboxScreen = ({ navigation, route, }) => {
                                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10) }}>
                                     <View style={{ flex: 1 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <UserAvatar source={inboxItem?.user?.pic ? { uri: inboxItem?.user?.pic } : DEFAULT_USER_PIC} size={50} />
+                                            <UserAvatar corner={inboxItem?.user?.corner || ''}  source={inboxItem?.user?.pic ? { uri: inboxItem?.user?.pic } : DEFAULT_USER_PIC} size={50} />
                                             <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                                     <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{inboxItem?.user?.firstName || inboxItem?.user?.userName}</AppText>

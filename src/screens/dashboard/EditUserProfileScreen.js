@@ -98,7 +98,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
 
             <KeyboardAvoidingScrollView style={{ paddingHorizontal: RFValue(20) }}>
                 <View style={{ alignSelf: 'center', paddingVertical: RFValue(20) }}>
-                    <UserAvatar source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
+                    <UserAvatar corner={user?.corner || ''}  source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
                     <View style={{ position: 'absolute', bottom: RFValue(20), right: RFValue(3), borderRadius: 90 }}>
                         <TouchableOpacity
                             style={{ flex: 1 }}

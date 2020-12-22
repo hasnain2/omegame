@@ -82,7 +82,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                         <FastImage source={BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar size={100} />
+                                <UserAvatar corner={user?.corner || ''}  size={100} />
                                 <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                         <AppGoldCoin />

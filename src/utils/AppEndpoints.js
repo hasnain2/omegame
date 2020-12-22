@@ -47,9 +47,10 @@ const EndPoints = {
     DELETE_CHAT_MESSAGES: BASE_URL + 'chat/chat/',
 
     //---------CUSTOMIZATION---
-    GET_MY_ASSETS: BASE_URL + 'profile/customization/',
+    GET_MY_ASSETS: BASE_URL + 'profile/customization/', // for getting my assets
     GET_ALL_ASSETS: BASE_URL + 'assets/type/',
     BUY_ASSET: BASE_URL + 'assets/action/buy', //-- -POST body= { "assetId": "string"}
+    SET_ASSET_DEFAULT: BASE_URL + 'profile/customization/', //patch 1
 };
 
 export { DOMAIN, EndPoints };
