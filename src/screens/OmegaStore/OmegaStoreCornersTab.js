@@ -57,6 +57,7 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, isModalVisible: item }))
+                            console.log(item)
                         }}>
                             <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                 {/* <FastImage source={item.image} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} /> */}

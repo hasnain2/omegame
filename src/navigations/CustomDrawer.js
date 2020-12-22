@@ -9,6 +9,7 @@ import { ICON_ACCOUNT_SETTINGS, ICON_CUSTOMIZE, ICON_FEEDBACK, ICON_HOME, ICON_S
 import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck, UserAvatar } from '../components';
 import { AppTheme } from '../config';
+import { largeNumberShortify } from '../utils/AppHelperMethods';
 
 const LWidth = '100%';
 const LHeight = '50%';
@@ -21,29 +22,29 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
     let user = useSelector(state => state.root.user);
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
-            <FastImage source={BACKGROUND_IMG} style={{ height: LHeight, width: LWidth, }} >
+            <FastImage source={user?.cover ? { uri: user.cover } : BACKGROUND_IMG} style={{ height: LHeight, width: LWidth, }} >
                 <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
                     <UserAvatar source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={75} />
                     <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                             <AppGoldCoin />
-                            <AppText bold={true} size={1} style={{ paddingHorizontal: RFValue(10) }}>{user?.profile?.level}</AppText>
+                            <AppText bold={true} size={1} style={{ paddingHorizontal: RFValue(10) }}>{largeNumberShortify(user?.earnedCoins || 0)}</AppText>
                         </View>
                         <View style={{ flex: 0.3 }}>
-                            <ProgressBar style={{ height: RFValue(12), borderRadius: 3 }} progress={(user?.profile?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
+                            <ProgressBar style={{ height: RFValue(12), borderRadius: 3 }} progress={(user?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                            <AppText size={1} bold={true} style={{}}>XP {user?.profile?.earnedXps || '0'}/100</AppText>
+                            <AppText size={1} bold={true} style={{}}>XP {largeNumberShortify(user?.earnedXps || 0) || '0'}/100</AppText>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                         <View style={{ flex: 1, justifyContent: 'center' }}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>{user?.userName} <IsUserVerifiedCheck check={user?.profile?.isVerified} /></AppText>
-                            <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{user?.profile?.firstName}</AppText>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>{user?.userName} <IsUserVerifiedCheck check={user?.isVerified} /></AppText>
+                            <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{user?.firstName}</AppText>
                         </View>
                         <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
                             <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>
-                            <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{user?.profile?.level || '0'}</AppText>
+                            <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{user?.level || '0'}</AppText>
                         </View>
                     </View>
                 </LinearGradient>
@@ -51,15 +52,15 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
 
 
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                <TouchableOpacity onPress={() => navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: true, userID: user._id || user?.profile?._id })}>
+                <TouchableOpacity onPress={() => navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: true, userID: user._id || user?._id })}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <AppText bold={true} size={2} color={AppTheme.colors.primary}>{user?.profile?.followers || "0"} </AppText>
+                        <AppText bold={true} size={2} color={AppTheme.colors.primary}>{user?.followers || "0"} </AppText>
                         <AppText size={2} color={AppTheme.colors.lightGrey}>Followers</AppText>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: false, userID: user._id || user?.profile?._id })}>
+                <TouchableOpacity onPress={() => navigation.navigate("AppFollowersAndFollowingList", { isFollowerMode: false, userID: user._id || user?._id })}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <AppText bold={true} size={2} color={AppTheme.colors.primary}>{user?.profile?.following || "0"} </AppText>
+                        <AppText bold={true} size={2} color={AppTheme.colors.primary}>{user?.following || "0"} </AppText>
                         <AppText size={2} color={AppTheme.colors.lightGrey}>Following</AppText>
                     </View>
                 </TouchableOpacity>

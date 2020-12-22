@@ -32,7 +32,7 @@ const PersonalInformationScreen = ({ navigation, route, }) => {
                 <View style={{ paddingTop: RFValue(20) }}>
                     {renderOptionItem("Username:", user.userName)}
                     {renderOptionItem("E-mail:", user.email)}
-                    {renderOptionItem("Gender:", user.gender || user?.profile?.gender || "Male")}
+                    {renderOptionItem("Gender:", user.gender || user?.gender || "Male")}
                     {renderOptionItem("Date of Birth:", user?.dateOfBirth ? moment(user?.dateOfBirth).format('DD / MM / YYYY') : '')}
                 </View>
             </View>

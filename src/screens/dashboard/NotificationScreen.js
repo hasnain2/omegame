@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { AppButton, AppHeader, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
@@ -12,6 +13,8 @@ import { MOCK_FOLLOW_REQUESTS, MOCK_NOTIFICATIONS } from '../../mockups/Mockups'
 import { AntDesign } from '../../utils/AppIcons';
 const NotificationScreen = ({ navigation, route, }) => {
     let tempArr = MOCK_FOLLOW_REQUESTS;
+    let user = useSelector(state => state.root.user)
+    console.log('-----------------user-------', user)
     let [state, setState] = useState({
         loading: false,
         data: tempArr.slice(0, 3),

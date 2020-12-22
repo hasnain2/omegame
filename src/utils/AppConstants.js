@@ -7,23 +7,19 @@ const BUCKETS = {
     MEDIA_PRIVATE: 'MEDIA_PRIVATE'
 }
 
-const PRIVACY = [
-    {
-        "Only me": 'ONLY_ME',
-        name: 'Only me',
-        key: 'ONLY_ME'
-    },
-    {
-        'Only Friends': 'FRIENDS',
-        name: 'Only Friends',
-        key: 'FRIENDS'
-    },
-    {
-        'Public': 'PUBLIC',
-        name: 'Public',
-        key: 'PUBLIC'
-    }
-]
+const PRIVACY = [{
+    "Only me": 'ONLY_ME',
+    name: 'Only me',
+    key: 'ONLY_ME'
+}, {
+    'Only Friends': 'FRIENDS',
+    name: 'Only Friends',
+    key: 'FRIENDS'
+}, {
+    'Public': 'PUBLIC',
+    name: 'Public',
+    key: 'PUBLIC'
+}]
 
 const CHAT_SOCKET_EVENTS = {
     NEW_MESSAGE: 'newMessage',
@@ -59,4 +55,12 @@ const GET_FRIEND_LIST_TYPES = { // -----  get frieds/following/followers/blocked
     BLOCKED: 'BLOCKED'
 }
 
-export { BUCKETS, ASSET_TYPES, PRIVACY, CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES, GET_FRIEND_LIST_TYPES }
+const DEEP_LINK_TYPES = {
+    POST_ID: 'postID',
+    USER_ID: 'userID',
+    GAME_ID: 'gameID',
+    QUEST_ID: 'questID',
+    CODE: 'code',
+}
+
+export { BUCKETS, DEEP_LINK_TYPES, ASSET_TYPES, PRIVACY, CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES, GET_FRIEND_LIST_TYPES }

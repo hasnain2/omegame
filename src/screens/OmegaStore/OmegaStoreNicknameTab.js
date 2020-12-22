@@ -76,10 +76,10 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
 
                             <View style={{ justifyContent: 'center', paddingVertical: RFValue(30), alignItems: 'center' }}>
                                 <AppText size={2} color={AppTheme.colors.lightGrey}>Username</AppText>
-                                <AppText color={state.selectedColor}>Nickname</AppText>
+                                <AppText color={state.selectedColor}>{user?.userName}</AppText>
                             </View>
                             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', borderTopWidth: 1, borderTopColor: 'grey', padding: RFValue(15) }}>
-                                <AppText size={2}>Nickname</AppText>
+                                <AppText size={2}>{state.isModalVisible?.name}</AppText>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: RFValue(10) }}>
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>

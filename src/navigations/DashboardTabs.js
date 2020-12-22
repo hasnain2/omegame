@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, Linking, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_ADD, ICON_GAME, ICON_HOME, ICON_QUEST, ICON_SEARCH } from '../../assets/icons';
@@ -10,6 +10,7 @@ import { AppTheme } from '../config';
 import { AppContactsSearch, AppFollowersAndFollowingList, AppSettingsScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen, DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen, PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen, ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen } from '../screens';
 import { UserSavedPosts } from '../screens/dashboard/UserSavedPosts';
 import { requestPushNotificationPermission } from '../services';
+import { DynamicLinkHelper } from '../utils/AppHelperMethods';
 import { CustomDrawer } from './CustomDrawer';
 
 
@@ -64,7 +65,22 @@ function DashboardTabsExtra({ navigation }) {
   );
 }
 
-const DrawerDashboardTabsExtra = () => {
+const DrawerDashboardTabsExtra = ({ navigation }) => {
+  React.useEffect(() => {
+    Linking.addEventListener('url', (link) => {
+      DynamicLinkHelper(navigation, link);
+    });
+    Linking.getInitialURL().then(link => {
+      DynamicLinkHelper(navigation, link);
+    }).catch(err => {
+      console.log('----------ERROR LINK GETTING INITIAL URL DEEP LINK----------', err)
+    })
+    return () => {
+      Linking.removeEventListener('url', (link) => {
+        DynamicLinkHelper(navigation, link);
+      });
+    }
+  }, [])
   return (
     <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawer {...props} />}
       drawerStyle={{ width: '85%' }}

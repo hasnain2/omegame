@@ -17,6 +17,7 @@ import { setUser } from '../../redux/reducers/userSlice';
 import { GetPostsOfSpecificUser, RemovePostsOfUserFromReduxStore } from '../../services';
 import { ActionsOnUsers, GetSingleUserProfile } from '../../services/profileService';
 import { FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
+import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { MaterialIcons } from '../../utils/AppIcons';
 import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
 
@@ -32,7 +33,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
     let userID = route.params.userID || false;
     let user = useSelector(state => state.root.user)
     let disp = useDispatch();
-    userID = (user?._id || user?.profile?._id) === userID;
+    userID = (user?._id || user?._id) === userID;
 
     let [state, setState] = useState({
         loading: true,
@@ -119,13 +120,13 @@ const UserProfileScreen = ({ navigation, route, }) => {
                                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                             <AppGoldCoin />
-                                            <AppText style={{ paddingHorizontal: RFValue(10) }}>{userData?.level}</AppText>
+                                            <AppText size={3} style={{ paddingHorizontal: RFValue(5) }}>{largeNumberShortify(userData?.earnedCoins || 0)}</AppText>
                                         </View>
-                                        <View style={{ flex: 0.55 }}>
+                                        <View style={{ flex: 0.54 }}>
                                             <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={(userData?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
                                         </View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                            <AppText size={1} bold={true} style={{}}>XP {userData?.earnedXps}/100</AppText>
+                                            <AppText size={1} bold={true} style={{}}>XP {largeNumberShortify(userData?.earnedXps)}/100</AppText>
                                         </View>
                                     </View>
                                     : null}
@@ -267,20 +268,16 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         <AppText size={2} color="white" style={{ flex: 1 }}>Block</AppText>
                     </TouchableOpacity>
 
-
                 </View>
             </AppModal>
-
 
         </View>
     );
 };
 
-
 const styles = StyleSheet.create({
     modalListItemStyle: { flexDirection: 'row', alignItems: 'center', padding: RFValue(10), paddingHorizontal: RFValue(20) },
     modalIconStyle: { fontSize: RFValue(25), flex: 0.15, color: 'white' },
 })
-
 
 export { UserProfileScreen };

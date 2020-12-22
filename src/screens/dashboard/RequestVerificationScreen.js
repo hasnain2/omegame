@@ -21,8 +21,8 @@ const RequestVerificationScreen = ({ navigation, route, }) => {
         loading: false,
         imageLoading: false,
         userName: user?.userName || '',
-        knownAs: user?.profile?.knownAs || '',
-        fullName: user?.profile?.firstName || '',
+        knownAs: user?.knownAs || '',
+        fullName: user?.firstName || '',
         category: '',
         filePath: ''
     })

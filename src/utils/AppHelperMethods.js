@@ -1,6 +1,7 @@
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import Share from 'react-native-share';
+import { DEEP_LINK_TYPES } from './AppConstants';
 
 const largeNumberShortify = (num) => {
     return Math.abs(num) > 999999 ?
@@ -87,4 +88,25 @@ function AppShareContents(callback, msg) {
         .catch((err) => { callback(false); err && console.log('-------------ERROR SHARING-------------', err); });
 }
 
-export { largeNumberShortify, generateRandomString, numberWithCommas, AppShowToast, stringifyNumber, dateDifference, timeRemaining, CapitalizeFirstLetter, AppShareContents }
+const DynamicLinkHelper = async (navigation, link) => {
+    let url = link?.url || link || false;
+    // http://ec2-18-219-104-108.us-east-2.compute.amazonaws.com?userID=5fd71492477b9b12dbe05c40
+    // http://ec2-18-219-104-108.us-east-2.compute.amazonaws.com?postID=5fdc564d87235e83ebddf16d
+    if (url) {
+        let postId = url.split(`${DEEP_LINK_TYPES.POST_ID}=`)[1] || false;
+        let userId = url.split(`${DEEP_LINK_TYPES.USER_ID}=`)[1] || false;
+        let code = url.split(`${DEEP_LINK_TYPES.CODE}=`)[1] || false;
+
+        if (postId) {
+            console.log('-----------GOT POST ID--------', postId)
+            navigation.navigate("PostDetailScreenWithComments", { postID: postId });
+        } else if (userId) {
+            console.log('-----------GOT USER ID--------', userId)
+            navigation.navigate("UserProfileScreen", { userID: userId });
+        } else if (code) {
+            console.log('-----------GOT CODE--------', code);
+        }
+    }
+}
+
+export { largeNumberShortify, DynamicLinkHelper, generateRandomString, numberWithCommas, AppShowToast, stringifyNumber, dateDifference, timeRemaining, CapitalizeFirstLetter, AppShareContents }

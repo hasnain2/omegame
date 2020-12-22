@@ -1,6 +1,6 @@
 
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MenuProvider } from 'react-native-popup-menu';
@@ -17,7 +17,10 @@ const App = ({ }) => {
   let [state, setState] = useState({
     loading: true,
   });
+  let navRef = useRef(null)
   let user = useSelector(state => state.root.user);
+
+
   useEffect(() => {
     getData('user', (storageUser) => {
       if (storageUser) {
@@ -32,7 +35,7 @@ const App = ({ }) => {
   return (
     <PaperProvider theme={AppTheme}>
       <StatusBar barStyle={'dark-content'} backgroundColor="black" />
-      <NavigationContainer>
+      <NavigationContainer ref={navRef}>
         <StatusBar barStyle="light-content" />
         <MenuProvider>
           <SafeAreaView style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>

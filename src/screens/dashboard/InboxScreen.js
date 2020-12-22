@@ -111,10 +111,7 @@ const InboxScreen = ({ navigation, route, }) => {
                         return (
                             <TouchableOpacity activeOpacity={0.7}
                                 onPress={() => {
-                                    navigation.navigate('ChatWindow', { friend: inboxItem?.user })
-
-                                    console.log('-------USER--------', inboxItem?.user)
-
+                                    navigation.navigate('ChatWindow', { friend: inboxItem?.user });
                                 }} onLongPress={() => {
                                     setState(prev => ({ ...prev, deletionEnabled: index + '' }))
                                 }}>

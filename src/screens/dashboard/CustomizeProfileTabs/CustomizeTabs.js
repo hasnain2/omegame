@@ -1,12 +1,9 @@
 
-
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { AppGoldCoin, AppText } from '../../../components';
 import { AppTheme } from '../../../config';
-import { Ionicons } from '../../../utils/AppIcons';
 import { CustomizeBackgroundTab } from './CustomizeBackgroundTab';
 import { CustomizeCornersTab } from './CustomizeCornersTab';
 import { CustomizeNicknameTab } from './CustomizeNicknameTab';
@@ -34,10 +31,8 @@ const CustomizeTabs = ({ navigation }) => {
                         },
                         style: {
                             backgroundColor: 'black',
-
                         },
-                    }}
-                >
+                    }}>
                     <Tab.Screen name="Backgrounds" component={CustomizeBackgroundTab} />
                     <Tab.Screen name="Corners" component={CustomizeCornersTab} />
                     <Tab.Screen name="Nickname" component={CustomizeNicknameTab} />

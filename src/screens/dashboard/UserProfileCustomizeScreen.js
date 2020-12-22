@@ -11,6 +11,7 @@ import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
+import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { Ionicons, MaterialIcons } from '../../utils/AppIcons';
 import { OmegaStoreTabs } from '../OmegaStore/OmegaStoreTabs';
 import { CustomizeTabs } from './CustomizeProfileTabs/CustomizeTabs';
@@ -49,13 +50,13 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                             <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                     <AppGoldCoin />
-                                    <AppText style={{ paddingHorizontal: RFValue(10) }}>{user?.level}</AppText>
+                                    <AppText size={2} style={{ paddingHorizontal: RFValue(5) }}>{largeNumberShortify(user?.earnedCoins || 0)}</AppText>
                                 </View>
-                                <View style={{ flex: 0.55 }}>
-                                    <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={user?.earnedXps} color={AppTheme.colors.primary} />
+                                <View style={{ flex: 0.53 }}>
+                                    <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={(user?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                    <AppText size={1} bold={true} style={{}}>XP {user?.earnedXps}/100</AppText>
+                                    <AppText size={1} bold={true} style={{}}>XP {largeNumberShortify(user?.earnedXps || 0)}/100</AppText>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
@@ -71,9 +72,6 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                         </LinearGradient>
                     </FastImage>
                 </View>
-
-
-
 
                 <CustomizeTabs navigation={navigation} route={route} />
             </ScrollView>
