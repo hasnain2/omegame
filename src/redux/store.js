@@ -6,7 +6,7 @@ import savedPosts from './reducers/savedPostsSlice';
 import gameReviews from './reducers/gameReviewsSlice';
 import friends from './reducers/friendsSlice';
 import inbox from './reducers/inboxSlice';
-
+import myAssets from './reducers/myAssetsSlice';
 
 const rootReducer = combineReducers({
     user: user,
@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
     gameReviews: gameReviews,
     friends: friends,
     inbox: inbox,
+    myAssets: myAssets,
 });
 
 export const store = configureStore({

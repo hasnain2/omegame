@@ -2,17 +2,20 @@ import * as React from 'react';
 import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../../components';
 import { AppTheme } from '../../../config/index';
-import { MOCK_BACKGROUNDS } from '../../../mockups/Mockups';
+import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
 import { GetMyAssets } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
 import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeBackgroundTab = ({ navigation }) => {
+    const dispatch = useDispatch();
+    let myAssets = useSelector(state => state.root.myAssets)
     let [state, setState] = React.useState({
         isModalVisible: null,
-        data: []
+        loading: myAssets.length < 1
     })
     const PADDING = RFValue(3);
     const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(2));
@@ -20,17 +23,23 @@ const CustomizeBackgroundTab = ({ navigation }) => {
 
     function getmyassetshelper() {
         GetMyAssets((myassetsRes) => {
-            if (myassetsRes)
-                setState(prev => ({ ...prev, data: myassetsRes }))
+            if (myassetsRes) {
+                let tempMyAssets = { ...myAssets };
+                tempMyAssets.backgrounds = myassetsRes;
+                dispatch(setMyAssets(tempMyAssets))
+                setState(prev => ({ ...prev }))
+            }
         }, ASSET_TYPES.BACKGROUND)
     }
+
     React.useEffect(() => {
         getmyassetshelper()
     }, [])
+
     return (
         <View style={{ backgroundColor: 'black', flex: 1, }}>
             <FlatList
-                data={[...state.data, { addMore: true }]}
+                data={[...myAssets.backgrounds, { addMore: true }]}
                 numColumns={NUMBER_OF_COLUMNS}
 
                 initialNumToRender={2}

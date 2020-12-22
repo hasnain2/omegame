@@ -4,6 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../components";
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
+import { AddAssetCorner } from '../../services';
 import { BuyAsset, GetAllAssets } from '../../services/customizationService';
 import { ASSET_TYPES } from '../../utils/AppConstants';
 import { AntDesign, FontAwesome } from '../../utils/AppIcons';
@@ -33,7 +34,7 @@ const OmegaStoreCornersTab = ({ navigation }) => {
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <View style={{ flexDirection: 'row', padding: RFValue(10) }}>
-                <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} />
+                {/* <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} /> */}
                 <ScrollView horizontal={true}>
                     {COLORS.map((itm) => (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
@@ -103,9 +104,10 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                                         style: "cancel"
                                     }, {
                                         text: "OK", onPress: () => {
+                                            AddAssetCorner(state.isModalVisible)
                                             BuyAsset(() => {
-
                                             }, state.isModalVisible?._id)
+                                            setState(prev => ({ ...prev, isModalVisible: '' }))
                                         }
                                     }], { cancelable: false });
 

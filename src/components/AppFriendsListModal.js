@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { DEFAULT_USER_PIC } from '../../assets/images';
 import { AppTheme } from '../config';
 import { setFriends } from '../redux/reducers/friendsSlice';
@@ -26,11 +26,11 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
         showModal: show
     })
     let friends = useSelector(state => state.root.friends)
-
+    let disp = useDispatch();
     function getfriendshelper(cursor) {
         GerUserListByType((response) => {
             if (response) {
-                store.dispatch(setFriends(response))
+                disp(setFriends(response))
                 setState(prev => ({ ...prev, loading: false }));
             } else
                 setState(prev => ({ ...prev, loading: false }));

@@ -1,30 +1,34 @@
 import * as React from 'react';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../../components";
 import { UserAvatar } from '../../../components/UserAvatar';
 import { AppTheme } from '../../../config';
 import { MOCK_CORNERS } from '../../../mockups/Mockups';
+import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
 import { GetMyAssets } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
 import { AntDesign, FontAwesome, Ionicons } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeCornersTab = ({ navigation }) => {
+    let myAssets = useSelector(state => state.root.myAssets);
+    const dispatch = useDispatch();
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a',
-        data: []
     })
     const PADDING = RFValue(3);
     const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(2));
-    const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
-    const BUBBLE_SIZE = RFValue(25);
-
 
     function getmyassetshelper() {
         GetMyAssets((cornersRes) => {
-            if (cornersRes)
-                setState(prev => ({ ...prev, data: cornersRes }))
+            if (cornersRes) {
+                let tempMyAssets = { ...myAssets };
+                tempMyAssets.corners = cornersRes;
+                dispatch(setMyAssets(tempMyAssets))
+            }
+            setState(prev => ({ ...prev, loading: false }))
         }, ASSET_TYPES.CORNER)
     }
     React.useEffect(() => {
@@ -45,7 +49,7 @@ const CustomizeCornersTab = ({ navigation }) => {
             </View>
             <View style={{ padding: RFValue(10) }}>
                 <FlatList
-                    data={[...state.data, { addMore: true }]}
+                    data={[...myAssets.corners, { addMore: true }]}
                     numColumns={NUMBER_OF_COLUMNS}
                     style={{ flex: 1, width: '100%', height: '100%' }}
                     initialNumToRender={2}

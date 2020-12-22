@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../components';
 import { AppTheme } from '../../config/index';
+import { AddAssetBackground } from '../../services';
 import { BuyAsset, GetAllAssets } from '../../services/customizationService';
 import { ASSET_TYPES } from '../../utils/AppConstants';
 import { AntDesign } from '../../utils/AppIcons';
@@ -24,9 +25,11 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
             }
         }, ASSET_TYPES.BACKGROUND)
     }
+
     React.useEffect(() => {
         getallassetshelper();
     }, [])
+
     return (
         <View style={{ backgroundColor: 'black', flex: 1, }}>
             <FlatList
@@ -60,10 +63,10 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                     )
                 }} />
 
-            <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ isModalVisible: null }))} >
+            <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ ...prev, isModalVisible: null }))} >
                 {state.isModalVisible ?
                     <View style={{ flex: 1, padding: RFValue(30) }}>
-                        <AntDesign name="close" onPress={() => setState(prev => ({ isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
+                        <AntDesign name="close" onPress={() => setState(prev => ({ ...prev, isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
                         <View style={{ width: Dimensions.get('screen').width - RFValue(20), flex: 1, margin: PADDING, borderRadius: RFValue(10), overflow: 'hidden' }}>
                             <FastImage source={{ uri: state.isModalVisible?.attachment?.url }} style={{ width: Dimensions.get('screen').width - RFValue(20), height: '80%' }} />
                             <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center', backgroundColor: 'black', borderTopWidth: 1, borderTopColor: 'grey', padding: RFValue(15) }}>
@@ -75,9 +78,9 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                                 </View>
                                 <AppButtonPlane onPress={() => {
                                     BuyAsset(() => {
-
+                                        AddAssetBackground(state.isModalVisible)
                                     }, state.isModalVisible?._id)
-                                    setState(prev => ({ isModalVisible: null }))
+                                    setState(prev => ({ ...prev, isModalVisible: null }))
                                 }} label={"BUY"} />
                             </View>
                         </View>

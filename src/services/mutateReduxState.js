@@ -1,4 +1,5 @@
 import { setHomeFeed } from "../redux/reducers/homeFeedSlice";
+import { setMyAssets } from "../redux/reducers/myAssetsSlice";
 import { setSavedPosts } from "../redux/reducers/savedPostsSlice";
 import { store } from "../redux/store";
 
@@ -9,6 +10,7 @@ const UpdatePostIsSaveCheck = (postID) => {
 const UpdatePostIsLikedCheck = (postID) => {
 
 }
+
 
 const UpdatePostFromReduxStore = (newPostObject) => {
     console.log(newPostObject)
@@ -57,4 +59,20 @@ const RemovePostsOfUserFromReduxStore = (userID) => {
 }
 
 
-export { UpdatePostIsLikedCheck, AddPostToReduxStore, UpdatePostIsSaveCheck, RemovePostFromReduxStore, UpdatePostFromReduxStore, RemovePostsOfUserFromReduxStore }
+
+const AddAssetBackground = (newBackground) => {
+    let tempBackgrounds = { ...store.getState().root.myAssets };
+    tempBackgrounds.backgrounds = [newBackground, ...tempBackgrounds.backgrounds]
+
+    store.dispatch(setMyAssets(tempBackgrounds));
+}
+
+const AddAssetCorner = (newCorner) => {
+    let tempCorners = { ...store.getState().root.myAssets };
+    tempCorners.corners = [newCorner, ...tempCorners.corners];
+
+    store.dispatch(setMyAssets(tempCorners));
+}
+
+
+export { AddAssetBackground, AddAssetCorner, UpdatePostIsLikedCheck, AddPostToReduxStore, UpdatePostIsSaveCheck, RemovePostFromReduxStore, UpdatePostFromReduxStore, RemovePostsOfUserFromReduxStore }

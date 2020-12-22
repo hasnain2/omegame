@@ -9,7 +9,6 @@ import { AntDesign, FontAwesome } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreNicknameTab = ({ navigation }) => {
     let user = useSelector(state => state.root.user)
-    console.log('----', user._id)
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a'
@@ -21,7 +20,7 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <View style={{ flexDirection: 'row', padding: RFValue(10) }}>
-                <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} />
+                {/* <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} /> */}
                 <ScrollView horizontal={true}>
                     {COLORS.map((itm) => (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
