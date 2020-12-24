@@ -1,7 +1,7 @@
 
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
@@ -14,8 +14,14 @@ import { OmegaStoreCornersTab } from './OmegaStoreCornersTab';
 import { OmegaStoreNicknameTab } from './OmegaStoreNicknameTab';
 const Tab = createMaterialTopTabNavigator();
 
-const OmegaStoreTabs = ({ navigation }) => {
+const OmegaStoreTabs = ({ navigation, route }) => {
     let user = useSelector(state => state.root.user)
+
+    useEffect(() => {
+        // if (route?.params?.corner) {
+        //     navigation.jumpTo("Corners")
+        // }
+    }, [])
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
             <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -30,6 +36,7 @@ const OmegaStoreTabs = ({ navigation }) => {
                     <View style={{ flex: 0.3 }} />
                 </View>
                 <Tab.Navigator
+                    initialRouteName={route?.params?.name === 'Corners' ? "Corners" : route?.params?.name === 'nickNames' ? "Nickname" : "Backgrounds"}
                     tabBarOptions={{
                         showLabel: true,
                         showIcon: false,

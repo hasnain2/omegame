@@ -43,7 +43,7 @@ function GetAllAssets(callback, type) {
 }
 
 function PromtToSetAsDefault(callback, type, assetID) {
-    Alert.alert(`Set ${type}`, `Do you want to set this ${type} for you default ${type}`,
+    Alert.alert(`Set ${type.toLowerCase()}`, `Do you want to set this ${type.toLowerCase()} as your default ${type.toLowerCase()}`,
         [{
             text: "No",
             onPress: () => {

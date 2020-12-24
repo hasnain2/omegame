@@ -1,6 +1,6 @@
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppTheme } from '../../../config';
@@ -10,6 +10,7 @@ import { CustomizeNicknameTab } from './CustomizeNicknameTab';
 const Tab = createMaterialTopTabNavigator();
 
 const CustomizeTabs = ({ navigation }) => {
+   
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
             <View style={{ flex: 1, backgroundColor: 'black' }}>
