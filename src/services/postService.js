@@ -66,8 +66,7 @@ const CreatePostService = (callback, formData) => {
 }
 
 const GetHomeFeed = (callback, cursor) => {
-    // ${EndPoints.HOME_FEED}?cursor=${cursor}&limit=${LIMIT}
-    fetch(`${EndPoints.HOME_FEED}`, {
+    fetch(`${EndPoints.HOME_FEED}${cursor ? ("?cursor=" + cursor + "&limit=" + LIMIT) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then((response) => {
@@ -403,7 +402,7 @@ const GetBookmarkPosts = (callback) => {
     }).then(([status, data]) => {
         console.log('----------- GET SAVE OR BOOKMARK POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data.data)
+            callback(data?.data?.data || false)
         } else
             callback(false);
     }).catch((error) => {

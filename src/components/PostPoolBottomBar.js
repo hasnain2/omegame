@@ -12,7 +12,7 @@ import { DEEP_LINK_TYPES, SHARE_STATUS_TYPES } from '../utils/AppConstants';
 import { DOMAIN } from '../utils/AppEndpoints';
 import { AppShareContents, largeNumberShortify } from '../utils/AppHelperMethods';
 import { FontAwesome } from '../utils/AppIcons';
-const PostPoolBottomBar = ({ item, navigation }) => {
+const PostPoolBottomBar = ({ item, navigation, stopPlaying }) => {
     let [state, setState] = useState({
         isShared: item.isShared || false,
         isLiked: item.isLiked || false,
@@ -55,10 +55,14 @@ const PostPoolBottomBar = ({ item, navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                if (stopPlaying)
+                    stopPlaying(true)
                 SharePost(() => {
 
                 }, item?._id, { platform: SHARE_STATUS_TYPES.FACEBOOK })
                 AppShareContents((res) => {
+                    if (stopPlaying)
+                        stopPlaying(false)
                     setState(prev => ({ ...prev, isShared: res }))
                 }, `Hey you might wanna check this post out on OmeGame.\n${DOMAIN}?${DEEP_LINK_TYPES.POST_ID}=${item?._id}`)
             }}>

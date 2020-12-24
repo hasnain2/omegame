@@ -12,10 +12,12 @@ import { Ionicons } from '../../utils/AppIcons';
 const UserSavedPosts = ({ navigation, route, }) => {
     let [state, setState] = useState({
         loading: true,
-    })
+    });
+
     let dispatch = useDispatch();
-    let savedPosts = useSelector(state => state.root.savedPosts)
-    useEffect(() => {
+    let { savedPosts } = useSelector(state => state.root);
+
+    function getbookmarkpostshelper(cursor) {
         GetBookmarkPosts((bookmarkResponse) => {
             if (bookmarkResponse) {
                 setState(prev => ({ ...prev, loading: false }))
@@ -23,6 +25,9 @@ const UserSavedPosts = ({ navigation, route, }) => {
             } else
                 setState(prev => ({ ...prev, loading: false }))
         })
+    }
+    useEffect(() => {
+        getbookmarkpostshelper(0)
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -42,7 +47,6 @@ const UserSavedPosts = ({ navigation, route, }) => {
                 <View style={{ flex: 1, }}>
                     <AppPostsListings navigation={navigation} route={route} style={{ backgroundColor: 'black' }} data={savedPosts} />
                 </View>}
-
         </View>
     );
 };

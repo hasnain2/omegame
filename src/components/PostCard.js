@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -10,6 +10,9 @@ import { PostPoolBottomBar } from './PostPoolBottomBar';
 import { PostPoolTopBar } from './PostPoolTopBar';
 
 const PostCard = ({ item, startPlaying, navigation }) => {
+    let [state, setState] = useState({
+        stopPlaying: false
+    })
     useEffect(() => {
 
     }, [])
@@ -38,7 +41,7 @@ const PostCard = ({ item, startPlaying, navigation }) => {
                 }}>
                     <View style={{ height: RFValue(300), width: '100%' }}>
                         {item?.attachments[0]?.type.includes('video') ?
-                            <AppVideoPlayer source={{ uri: item?.attachments[0]?.url }} startPlaying={startPlaying} />
+                            <AppVideoPlayer source={{ uri: item?.attachments[0]?.url }} startPlaying={startPlaying && !state.stopPlaying} />
                             :
                             <FastImage
                                 source={{
@@ -49,7 +52,9 @@ const PostCard = ({ item, startPlaying, navigation }) => {
                     </View>
                 </TouchableOpacity>
                 : null}
-            <PostPoolBottomBar item={item} navigation={navigation} />
+            <PostPoolBottomBar item={item} navigation={navigation} stopPlaying={(val) => {
+                setState(prev => ({ ...prev, stopPlaying: val }))
+            }} />
         </View>
     )
 };

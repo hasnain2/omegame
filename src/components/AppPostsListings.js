@@ -67,10 +67,16 @@ const AppPostsListings = ({ navigation, data, style, loadMore, refreshing, autoP
                 onViewableItemsChanged={onViewRef.current}
                 viewabilityConfig={viewConfigRef.current}
 
+                onEndReached={() => {
+                    if (loadMore) {
+                        loadMore(data[data.length - 1]?._id, false)
+                    }
+                }}
+                onEndReachedThreshold={0.5}
                 renderItem={({ item, index }) => {
-                    if (item.postType === 'media')
+                    if (item?.postType === 'media')
                         return <PostCard key={'PostCard' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
-                    else if (item.postType === 'voting')
+                    else if (item?.postType === 'voting')
                         return <PoolCard key={'PoolCard' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
                     else
                         return <PostCard key={'PostCard' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
