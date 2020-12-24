@@ -12,6 +12,7 @@ import { store } from '../../../redux/store';
 import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
 import { AntDesign, FontAwesome, Ionicons } from '../../../utils/AppIcons';
+import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeCornersTab = ({ navigation }) => {
     let myAssets = useSelector(state => state.root.myAssets);
@@ -27,9 +28,7 @@ const CustomizeCornersTab = ({ navigation }) => {
     function getmyassetshelper() {
         GetMyAssets((cornersRes) => {
             if (cornersRes) {
-                let tempMyAssets = { ...myAssets };
-                tempMyAssets.corners = cornersRes;
-                dispatch(setMyAssets(tempMyAssets))
+                dispatch(setMyAssets({ corners: cornersRes }));
             }
             setState(prev => ({ ...prev, loading: false }))
         }, ASSET_TYPES.CORNER)
@@ -98,7 +97,7 @@ const CustomizeCornersTab = ({ navigation }) => {
                         <View style={{ backgroundColor: 'black', borderRadius: RFValue(10), overflow: 'hidden', padding: RFValue(30) }}>
                             {/* <FastImage source={state.isModalVisible.image} style={{ width: Dimensions.get('screen').width - RFValue(20), height: '80%' }} /> */}
                             <View style={{ justifyContent: 'center', paddingVertical: RFValue(30), alignItems: 'center' }}>
-                                <UserAvatar  source={{ uri: state.isModalVisible?.attachment?.url }} size={110} />
+                                <UserAvatar source={{ uri: state.isModalVisible?.attachment?.url }} size={110} />
                             </View>
                             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', borderTopWidth: 1, borderTopColor: 'grey', padding: RFValue(15) }}>
                                 <AppText size={2}>{state.isModalVisible.name}</AppText>

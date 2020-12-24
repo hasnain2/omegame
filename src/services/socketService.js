@@ -21,10 +21,10 @@ export const initSocket = async (token) => {
         });
 
         socket.on('connect', function () {
-            AppShowPushNotification('Status', "Connection has been established.");
+            // AppShowPushNotification('Status', "Connection has been established.");
         });
         socket.on('disconnect', function () {
-            AppShowPushNotification('Status', "Connection has been lost.");
+            // AppShowPushNotification('Status', "Connection has been lost.");
         });
     } catch (err) {
         console.log('---------SOCKET ERROR---------', err)

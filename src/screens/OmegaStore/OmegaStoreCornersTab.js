@@ -5,13 +5,11 @@ import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../components";
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { setUser } from '../../redux/reducers/userSlice';
-import { store } from '../../redux/store';
 import { AddAssetCorner } from '../../services';
-import { BuyAsset, GetAllAssets, PromtToSetAsDefault } from '../../services/customizationService';
+import { BuyAsset, GetAllAssets } from '../../services/customizationService';
 import { ASSET_TYPES } from '../../utils/AppConstants';
-import { AntDesign, FontAwesome } from '../../utils/AppIcons';
-import { storeData } from '../../utils/AppStorage';
+import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AntDesign } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreCornersTab = ({ navigation }) => {
     let [state, setState] = React.useState({
@@ -110,9 +108,13 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                                     }, {
                                         text: "OK", onPress: () => {
                                             setState(prev => ({ ...prev, isModalVisible: null, loading: true }))
-                                            AddAssetCorner(state.isModalVisible)
                                             BuyAsset((buyAssetRes) => {
-                                                setState(prev => ({ ...prev, loading: false }))
+                                                if (buyAssetRes) {
+                                                    AddAssetCorner(state.isModalVisible)
+                                                    setState(prev => ({ ...prev, loading: false }))
+                                                } else {
+                                                    AppShowToast("You dont have enough coins")
+                                                }
                                             }, state.isModalVisible?._id)
                                         }
                                     }], { cancelable: false });

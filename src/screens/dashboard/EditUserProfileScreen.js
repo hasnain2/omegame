@@ -15,7 +15,9 @@ import { BUCKETS } from '../../utils/AppConstants';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 const EditUserProfileScreen = ({ navigation, route, }) => {
-    let user = route?.params?.data || useSelector(state => state.root.user);
+    let routeUser = route?.params?.data;
+    let reduxUser = useSelector(state => state.root.user);
+    let user = { ...routeUser, ...reduxUser };
     let [state, setState] = useState({
         name: user.firstName,
         bio: user?.bio,
@@ -24,7 +26,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
         favoriteConsole: user?.favouriteConsole || '',
         gender: user?.gender || '', showGenderPicker: false,
 
-        gamingAccounts: user?.gamingAccounts && user?.gamingAccounts.length > 0 ? user?.gamingAccounts : [
+        gamingAccounts: (user?.gamingAccounts && user?.gamingAccounts.length > 0) ? user?.gamingAccounts : [
             { gamingAccountProvider: "XBOX", account: '' },
             { gamingAccountProvider: "PSN", account: '' },
             { gamingAccountProvider: "STREAM", account: '' },
@@ -88,6 +90,8 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
 
                 }
             }, formedData)
+        } else {
+            AppShowToast(`Please provide ${state.gamingAccounts[0].gamingAccountProvider || state.gamingAccounts[1].gamingAccountProvider || state.gamingAccounts[2].gamingAccountProvider || state.gamingAccounts[3].gamingAccountProvider} account`)
         }
 
     }
@@ -98,7 +102,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
 
             <KeyboardAvoidingScrollView style={{ paddingHorizontal: RFValue(20) }}>
                 <View style={{ alignSelf: 'center', paddingVertical: RFValue(20) }}>
-                    <UserAvatar corner={user?.corner || ''}  source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
+                    <UserAvatar corner={user?.corner || ''} source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
                     <View style={{ position: 'absolute', bottom: RFValue(20), right: RFValue(3), borderRadius: 90 }}>
                         <TouchableOpacity
                             style={{ flex: 1 }}
@@ -141,13 +145,15 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                 <AppInput label={"Favorite game"} value={state.favoriteGame} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteGame: val })) }} />
                 <AppInput label={"Favorite console"} value={state.favoriteConsole} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteConsole: val })) }} />
 
-                {state.gamingAccounts.map((iitm, index) => {
+                {state.gamingAccounts.map((item, index) => {
                     return (
-                        <AppInput label={iitm.gamingAccountProvider} value={iitm.account} onChangeText={(val) => {
-                            let arr = state.gamingAccounts;
-                            arr[index].account = val;
-                            setState(prev => ({ ...prev, gamingAccounts: arr }))
-                        }} />
+                        <AppInput label={item.gamingAccountProvider} value={item.account}
+                            onChangeText={(val) => {
+                                let tempArr = state.gamingAccounts.slice();
+                                tempArr[index] = { ...tempArr[index], account: val };
+
+                                setState(prev => ({ ...prev, gamingAccounts: tempArr }))
+                            }} />
                     )
                 })}
             </KeyboardAvoidingScrollView>
@@ -178,8 +184,8 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                     }} size={3} style={{ paddingVertical: RFValue(15) }}>Female</AppText>
                     <Divider style={{ width: '100%', backgroundColor: 'grey' }} />
                     <AppText onPress={() => {
-                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'RATHER NOT SAY' }))
-                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Rather not say!</AppText>
+                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'OTHERS' }))
+                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Others</AppText>
                 </View>
             </AppModal>
         </View>

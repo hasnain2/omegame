@@ -10,7 +10,9 @@ export const myAssetsSlice = createSlice({
     name: 'myAssets',
     initialState: initState,
     reducers: {
-        setMyAssets: (state, action) => action.payload,
+        setMyAssets: (state, action) => {
+            return { ...state, ...action.payload }
+        },
         resetMyAssets: () => initState,
     },
 });

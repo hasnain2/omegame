@@ -15,7 +15,7 @@ import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeBackgroundTab = ({ navigation }) => {
     const dispatch = useDispatch();
-    let myAssets = useSelector(state => state.root.myAssets)
+    let { myAssets } = useSelector(state => state.root)
     let [state, setState] = React.useState({
         isModalVisible: null,
         loading: myAssets.length < 1
@@ -27,9 +27,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
     function getmyassetshelper() {
         GetMyAssets((myassetsRes) => {
             if (myassetsRes) {
-                let tempMyAssets = { ...myAssets };
-                tempMyAssets.backgrounds = myassetsRes;
-                dispatch(setMyAssets(tempMyAssets))
+                store.dispatch(setMyAssets({ backgrounds: myassetsRes }))
                 setState(prev => ({ ...prev, loading: false }))
             }
         }, ASSET_TYPES.BACKGROUND)
@@ -46,6 +44,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                 : null}
             <FlatList
                 data={[...myAssets.backgrounds, { addMore: true }]}
+                extraData={myAssets.backgrounds}
                 numColumns={NUMBER_OF_COLUMNS}
 
                 initialNumToRender={2}

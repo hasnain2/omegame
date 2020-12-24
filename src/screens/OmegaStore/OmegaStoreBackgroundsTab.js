@@ -4,13 +4,11 @@ import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../components';
 import { AppTheme } from '../../config/index';
-import { setUser } from '../../redux/reducers/userSlice';
-import { store } from '../../redux/store';
 import { AddAssetBackground } from '../../services';
-import { BuyAsset, GetAllAssets, PromtToSetAsDefault } from '../../services/customizationService';
+import { BuyAsset, GetAllAssets } from '../../services/customizationService';
 import { ASSET_TYPES } from '../../utils/AppConstants';
+import { AppShowToast } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
-import { storeData } from '../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreBackgroundsTab = ({ navigation }) => {
     let [state, setState] = React.useState({
@@ -83,7 +81,11 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                                     setState(prev => ({ ...prev, isModalVisible: null, loading: true }));
                                     BuyAsset((buyAssetRes) => {
                                         setState(prev => ({ ...prev, loading: false }));
-                                        AddAssetBackground(state.isModalVisible)
+                                        if (buyAssetRes) {
+                                            AddAssetBackground(state.isModalVisible)
+                                        } else {
+                                            AppShowToast("You dont have enough coins")
+                                        }
                                     }, state.isModalVisible?._id)
                                 }} label={"BUY"} />
                             </View>

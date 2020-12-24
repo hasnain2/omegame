@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../../components";
 import { AppTheme } from '../../../config';
 import { MOCK_CORNERS } from '../../../mockups/Mockups';
-import { AntDesign, FontAwesome } from '../../../utils/AppIcons';
+import { AntDesign } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const CustomizeNicknameTab = ({ navigation }) => {
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a'
