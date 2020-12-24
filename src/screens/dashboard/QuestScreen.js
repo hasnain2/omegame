@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,18 +12,35 @@ import { BACKGROUND_IMG } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { MOCK_QUESTS } from '../../mockups/Mockups';
-import { timeRemaining } from '../../utils/AppHelperMethods';
+import { GetQuests } from '../../services';
+import { largeNumberShortify, timeRemaining } from '../../utils/AppHelperMethods';
 const QuestScreen = ({ route, navigation }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
+        loading: true,
         LHeight: 0,
         LWidth: 0,
-        visibleDescriptionOfIndex: 999999
-    })
+        visibleDescriptionOfIndex: 999999,
+        data: []
+    });
+
     const TRANS_BLACK = 'rgba(0,0,0,0.0)';
     const BLACK = 'black';
     const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, BLACK, BLACK];
+
+    function getquesthelper(offset) {
+        GetQuests((questListResponse) => {
+            if (questListResponse) {
+                setState(prev => ({ ...prev, loading: false, data: questListResponse }))
+            } else {
+                setState(prev => ({ ...prev, loading: false }))
+            }
+        }, offset)
+    }
+
+    useEffect(() => {
+        getquesthelper(0);
+    }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}
             onLayout={(event) => {
@@ -31,7 +48,7 @@ const QuestScreen = ({ route, navigation }) => {
                 setState(prev => ({ ...prev, LHeight: height, LWidth: width }))
             }}>
             <FlatList
-                data={MOCK_QUESTS}
+                data={state.data}
 
                 initialNumToRender={2}
                 windowSize={2}
@@ -56,26 +73,26 @@ const QuestScreen = ({ route, navigation }) => {
                                                 <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                                         <AppGoldCoin />
-                                                        <AppText style={{ paddingHorizontal: RFValue(10) }}>1123</AppText>
+                                                        <AppText style={{ paddingHorizontal: RFValue(5) }}>{largeNumberShortify(user?.earnedCoins || 0)}</AppText>
                                                     </View>
-                                                    <View style={{ flex: 0.55 }}>
-                                                        <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={0.5} color={AppTheme.colors.primary} />
+                                                    <View style={{ flex: 0.35 }}>
+                                                        <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={(user?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
                                                     </View>
                                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                                        <AppText size={1} bold={true} style={{}}>XP 50/100</AppText>
+                                                        <AppText size={1} bold={true} style={{}}>XP {largeNumberShortify(user?.earnedXps || 0)}/100</AppText>
                                                     </View>
                                                 </View>
                                                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                                                     <View style={{ flex: 1, justifyContent: 'center' }}>
                                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                            <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>Username</AppText>
-                                                            <IsUserVerifiedCheck check={true} />
+                                                            <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>{user?.firstName || user?.userName}</AppText>
+                                                            <IsUserVerifiedCheck check={user?.isVerified} />
                                                         </View>
-                                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>NickName</AppText>
+                                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{user?.userName}</AppText>
                                                     </View>
                                                     <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
                                                         <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>
-                                                        <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>1123</AppText>
+                                                        <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{user?.level}</AppText>
                                                     </View>
                                                 </View>
                                             </LinearGradient>
@@ -84,32 +101,31 @@ const QuestScreen = ({ route, navigation }) => {
                                     : null}
                                 <View style={{ padding: RFValue(10) }}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                                        <AppText lines={2} color={"white"} size={2} bold={true} style={{ flex: 1 }}>{item.name}</AppText>
+                                        <AppText lines={2} color={"white"} size={2} bold={true} style={{ flex: 1 }}>{item?.questTitle}</AppText>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <AppGoldCoin />
-                                            <AppText lines={2} color={"white"} size={1} bold={true} style={{ paddingHorizontal: RFValue(10) }} >10</AppText>
+                                            <AppText lines={2} color={"white"} size={1} bold={true} style={{ paddingHorizontal: RFValue(10) }} >{item?.questRewardInCoins}</AppText>
                                         </View>
                                     </View>
 
                                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: RFValue(5), justifyContent: 'space-between', }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                             <AppText lines={1} color={AppTheme.colors.primary} size={1} >8</AppText>
-                                            <AppText lines={1} color={AppTheme.colors.lightGrey} size={1} > / 10 COMPLETED</AppText>
+                                            <AppText lines={1} color={AppTheme.colors.lightGrey} size={1} > / {item?.tasks[0]?.taskGoal} COMPLETED</AppText>
                                         </View>
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <AppText lines={2} color={AppTheme.colors.primary} size={1} bold={true} >XP+</AppText>
-                                            <AppText lines={2} color={"white"} size={1} style={{ paddingHorizontal: RFValue(10) }} bold={true} >10</AppText>
+                                            <AppText lines={2} color={AppTheme.colors.primary} size={1} bold={true} >XP +</AppText>
+                                            <AppText lines={2} color={"white"} size={1} style={{ paddingHorizontal: RFValue(10) }} bold={true} >{item?.questRewardInXp}</AppText>
                                         </View>
                                     </View>
 
-
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                                        <AppText lines={2} color={AppTheme.colors.lightGrey} size={0} style={{ paddingVertical: RFValue(5) }} >TIME LEFT: {timeRemaining(item.deadLine).txt}</AppText>
+                                        <AppText lines={2} color={AppTheme.colors.lightGrey} size={0} style={{ paddingVertical: RFValue(5) }} >TIME LEFT: {timeRemaining(item.questExpiryDate).txt}</AppText>
                                     </View>
 
                                     {state.visibleDescriptionOfIndex === index ?
-                                        <AppText color={'white'} size={2} style={{ paddingVertical: RFValue(5) }} >{item.description}</AppText>
+                                        <AppText color={'white'} size={2} style={{ paddingVertical: RFValue(5) }} >{item?.questDescription}</AppText>
                                         : null}
                                 </View>
                                 <Divider style={{ backgroundColor: 'grey', height: 0.5 }} />

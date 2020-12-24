@@ -1,15 +1,17 @@
 
 
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
+import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppButton, AppHeader, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_FOLLOW_REQUESTS, MOCK_NOTIFICATIONS } from '../../mockups/Mockups';
+import { GetNotificationHistory } from '../../services';
 import { AntDesign } from '../../utils/AppIcons';
 const NotificationScreen = ({ navigation, route, }) => {
     let tempArr = MOCK_FOLLOW_REQUESTS;
@@ -18,8 +20,21 @@ const NotificationScreen = ({ navigation, route, }) => {
     let [state, setState] = useState({
         loading: false,
         data: tempArr.slice(0, 3),
-        limitRequests: 2
-    })
+        limitRequests: 2,
+        notificationData: []
+    });
+    function getnotificationhistoryhelper(cursor) {
+        GetNotificationHistory((notificatioHistoryResponse) => {
+            if (notificatioHistoryResponse) {
+                setState(prev => ({ ...prev, loading: false, notificationData: notificatioHistoryResponse }))
+            } else {
+                setState(prev => ({ ...prev, loading: false }))
+            }
+        }, cursor)
+    }
+    useEffect(() => {
+        getnotificationhistoryhelper(false);
+    }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <AppHeader navigation={navigation} />
@@ -39,7 +54,7 @@ const NotificationScreen = ({ navigation, route, }) => {
                         return (
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
                                 <View >
-                                    <UserAvatar corner={item?.user?.corner || ''}  size={50} />
+                                    <UserAvatar corner={item?.user?.corner || ''} size={50} />
                                     <View style={{ position: 'absolute', bottom: RFValue(14), right: RFValue(2), backgroundColor: 'white', borderRadius: 90, }}>
                                         <AntDesign name={"pluscircle"} style={{ fontSize: RFValue(15), color: AppTheme.colors.primary }} />
 
@@ -79,20 +94,20 @@ const NotificationScreen = ({ navigation, route, }) => {
                 <AppText size={1} bold={true} color={AppTheme.colors.lightGrey}>NOTIFICATIONS</AppText>
 
                 <FlatList
-                    data={MOCK_NOTIFICATIONS}
+                    data={state.notificationData}
                     initialNumToRender={2}
                     windowSize={2}
-                    removeClippedSubviews={true}
+                    // removeClippedSubviews={true}
                     maxToRenderPerBatch={2}
-                    bounces={false}
+                    // bounces={false}
                     keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => (
                         <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
-                            <UserAvatar corner={item?.user?.corner || ''}  size={40} />
+                            <UserAvatar corner={item?.createdBy?.corner || ''} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={40} />
                             <View style={{ flex: 1, paddingHorizontal: RFValue(10) }}>
-                                <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.msg}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
+                                <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.body}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
                             </View>
-                            {item.image ?
+                            {item?.post && item?.post?.attatchment ?
                                 <FastImage source={{ uri: item.image }} style={{ height: RFValue(50), width: RFValue(60), borderRadius: 5 }} />
                                 : null}
                         </View>

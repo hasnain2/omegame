@@ -57,6 +57,13 @@ const EndPoints = {
 
     GET_ONLY_MEDIA_POSTS: BASE_URL + 'posts/user?mediaOnly=true',
     GET_ALL_TRENDING_USERS: BASE_URL + 'profile/users',
+
+    GET_NOTIFICATION_HISTORY: BASE_URL + 'notifications/history',
+    NOTIFICATION_STATUS_SET: BASE_URL + 'notifications/read/',
+
+    //----------QUESTS LIST----------
+    GET_QUEST_LIST: BASE_URL + 'quests', // --- get list of quests
+    GET_SPECIFIC_QUEST_BY_ID: BASE_URL + 'quests/', // --- get SPECIFIC QUEST BY ID
 };
 
 export { DOMAIN, EndPoints };
