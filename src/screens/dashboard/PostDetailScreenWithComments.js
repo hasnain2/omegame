@@ -33,7 +33,9 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     const getcommentshelper = () => {
         GetCommentsOfPost((postCommentsResponse) => {
             if (postCommentsResponse) {
-                setState(prev => ({ ...prev, comments: postCommentsResponse, }))
+                setState(prev => ({ ...prev, loading: false, comments: postCommentsResponse, }))
+            } else {
+                setState(prev => ({ ...prev, loading: false }))
             }
         }, '', '', postID)
     }
@@ -41,7 +43,9 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     const getcommentreplieshelper = (parentIDparam) => {
         GetCommentsReplies((commentsRepliesResponse) => {
             if (commentsRepliesResponse) {
-                setState(prev => ({ ...prev, replies: { _id: parentIDparam, data: commentsRepliesResponse } }))
+                setState(prev => ({ ...prev, loading: false, replies: { _id: parentIDparam, data: commentsRepliesResponse } }))
+            } else {
+                setState(prev => ({ ...prev, loading: false }))
             }
         }, '', '', parentIDparam)
     }
@@ -65,7 +69,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
             <View style={{ paddingHorizontal: RFValue(10) }}>
                 <View style={{ flexDirection: 'row', }}>
                     <View style={{ height: '100%', alignItems: 'center' }}>
-                        <UserAvatar corner={item?.createdBy?.corner || ''}  source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
+                        <UserAvatar corner={item?.createdBy?.corner || ''} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
 
                         {(state?.replies?._id === item?.parentComment && state.replies?.data?.length - 1 != index) || state?.replies?._id === item?._id ?
                             <View style={{ width: 2, flex: 1, backgroundColor: AppTheme.colors.lightGrey }} />
