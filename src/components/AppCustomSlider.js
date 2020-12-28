@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { RFValue } from "react-native-responsive-fontsize";
 import { BACKGROUND_IMG } from "../../assets/images";
 import { AppTheme } from "../config";
+import { AppLogger } from '../utils/AppHelperMethods';
 
 
 
@@ -28,7 +29,7 @@ const AppCustomSlider = ({ onChange }) => {
                     maximumTrackTintColor={'rgba(0,0,0,0)'}
                     style={{ width: '100%', opacity: 1, height: 50, }}
                     onSlidingStart={value =>
-                        console.log('-------on sliding start-------', value)
+                        AppLogger('-------on sliding start-------', value)
                     }
                     onValueChange={value => {
                         if (onChange) {

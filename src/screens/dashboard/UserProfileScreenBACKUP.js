@@ -10,6 +10,7 @@ import { BACKGROUND_IMG } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
+import { AppLogger } from '../../utils/AppHelperMethods';
 import { FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '../../utils/AppIcons';
 import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
 
@@ -37,7 +38,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
     const BLACK = 'black';
     const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, BLACK, BLACK];
 
-    console.log('---------SCROLL STATUS-------', state.enableScrollViewScroll)
+    AppLogger('---------SCROLL STATUS-------', state.enableScrollViewScroll)
     return (
         <View
             onStartShouldSetResponder={() => {
@@ -82,7 +83,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                         <FastImage source={BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar corner={user?.corner || ''}  size={100} />
+                                <UserAvatar corner={user?.corner || ''} size={100} />
                                 <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                         <AppGoldCoin />
@@ -145,7 +146,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     style={{ height: state.LHeight, width: state.LWidth, }}>
                     <UserProfileTabs navigation={navigation} route={route}
                         scrollPosition={({ scroll, index }) => {
-                            console.log('---------', scroll, '------', index)
+                            AppLogger('---------', index)
                             if (scroll && scroll < 300 && index < 3)
                                 setState(prev => ({ ...prev, enableScrollViewScroll: true }));
                         }}

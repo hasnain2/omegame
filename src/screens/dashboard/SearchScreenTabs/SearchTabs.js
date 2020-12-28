@@ -9,33 +9,43 @@ import { ICON_ADD_FRIEND, ICON_PHOTO, ICON_TEXT } from '../../../../assets/icons
 import { AppPostsListings, AppPostsListingsGrid, AppUserListingWithFollowButtons } from '../../../components';
 import { AppTheme } from '../../../config';
 import { GetAllTrendingUsers, GetExploreMediaOnlyPosts, GetExplorePosts, GetMediaOnlyPosts } from '../../../services';
+import { AppLogger } from '../../../utils/AppHelperMethods';
 const Tab = createMaterialTopTabNavigator();
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
 const ICON_SIZE = RFValue(36)
-const SearchTabs = ({ navigation, searchTerm }) => {
+const SearchTabs = ({ navigation, query }) => {
+    // query = query.replaceAll(':', "%")
+    AppLogger('----QUERY----', query)
     let [state, setState] = useState({
         loading: false,
         mediaPosts: [],
         allPosts: [],
         usersList: []
     });
-    
-    useEffect(() => {
+
+    function getexploremediaonlypostshelper(cursor, searchQuery) {
         GetExploreMediaOnlyPosts((postResponse) => {
             if (postResponse) {
                 setState(prev => ({ ...prev, loading: false, mediaPosts: postResponse }))
             } else {
                 setState(prev => ({ ...prev, loading: false }))
             }
-        }, false)
+        }, cursor, searchQuery)
+    }
 
+    function getexplorepostshelper(cursor, searchQuery) {
         GetExplorePosts((postResponse) => {
             if (postResponse) {
                 setState(prev => ({ ...prev, loading: false, allPosts: postResponse }))
             } else {
                 setState(prev => ({ ...prev, loading: false }))
             }
-        }, false)
+        }, cursor, searchQuery)
+    }
+
+    function getalltrendingusers(cursor, searchQuery) {
+        let newQuery = searchQuery.split('&')
+        let newQuery2 = newQuery.find(ii => ii.includes('search'));
 
         GetAllTrendingUsers((postResponse) => {
             if (postResponse) {
@@ -43,8 +53,16 @@ const SearchTabs = ({ navigation, searchTerm }) => {
             } else {
                 setState(prev => ({ ...prev, loading: false }))
             }
-        }, false)
-    }, [])
+        }, cursor, newQuery2)
+    }
+
+    useEffect(() => {
+
+        AppLogger('--------QUERY-------\n', query)
+        getexploremediaonlypostshelper(false, query)
+        getexplorepostshelper(false, query)
+        getalltrendingusers(false, query)
+    }, [query])
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -81,7 +99,7 @@ const SearchTabs = ({ navigation, searchTerm }) => {
             <Tab.Screen name="TabPosts"  >
                 {(props) => (
                     <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
-                        <AppPostsListings {...props} searchTerm={searchTerm} data={state.allPosts} style={{ backgroundColor: AppTheme.colors.background }} />
+                        <AppPostsListings {...props} data={state.allPosts} style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}
             </Tab.Screen>
@@ -95,7 +113,7 @@ const SearchTabs = ({ navigation, searchTerm }) => {
             <Tab.Screen name="TabUsers"  >
                 {(props) => (
                     <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
-                        <AppUserListingWithFollowButtons searchTerm={searchTerm} data={state.usersList} {...props} style={{ backgroundColor: AppTheme.colors.background }} />
+                        <AppUserListingWithFollowButtons data={state.usersList} {...props} style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}
             </Tab.Screen>

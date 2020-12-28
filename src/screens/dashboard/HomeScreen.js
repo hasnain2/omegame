@@ -50,7 +50,8 @@ const HomeScreen = ({ route, navigation }) => {
 
             {!state.loading && homeFeed?.length < 1 ?
                 <AppNoDataFound /> :
-                <AppPostsListings navigation={navigation} data={homeFeed}
+                <AppPostsListings navigation={navigation}
+                    data={homeFeed}
                     refreshing={state.refreshing}
                     loadMore={(offset, refreshControl) => {
                         if (refreshControl) {

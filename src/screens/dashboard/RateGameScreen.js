@@ -13,7 +13,7 @@ import { MOCK_CONSOLE_TYPES } from '../../mockups/Mockups';
 import { setGameReviews } from '../../redux/reducers/gameReviewsSlice';
 import { store } from '../../redux/store';
 import { PostGameReview } from '../../services/gamesService';
-import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const RateGameScreen = ({ navigation, route, }) => {
@@ -85,7 +85,7 @@ const RateGameScreen = ({ navigation, route, }) => {
                     <AppText size={3} color={'white'} style={{}}>How much did you like this game?</AppText>
                     <AppText size={3} bold={true} color={state.rating > 5 ? AppTheme.colors.green : AppTheme.colors.red} style={{ textAlign: 'right' }}>{state.rating.toFixed(2)}</AppText>
                     <AppCustomSlider onChange={(val) => {
-                        console.log('-------RATING-------', val)
+                        AppLogger('-------RATING-------', val)
                         setState(prev => ({ ...prev, rating: val }))
                     }} />
                 </View>

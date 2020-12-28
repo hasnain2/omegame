@@ -10,7 +10,7 @@ import { AppTheme } from '../config';
 import { AppContactsSearch, AppFollowersAndFollowingList, AppSettingsScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen, DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen, PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen, ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen } from '../screens';
 import { UserSavedPosts } from '../screens/dashboard/UserSavedPosts';
 import { requestPushNotificationPermission } from '../services';
-import { DynamicLinkHelper } from '../utils/AppHelperMethods';
+import { AppLogger, DynamicLinkHelper } from '../utils/AppHelperMethods';
 import { CustomDrawer } from './CustomDrawer';
 
 
@@ -73,7 +73,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
     Linking.getInitialURL().then(link => {
       DynamicLinkHelper(navigation, link);
     }).catch(err => {
-      console.log('----------ERROR LINK GETTING INITIAL URL DEEP LINK----------', err)
+      AppLogger('----------ERROR LINK GETTING INITIAL URL DEEP LINK----------', err)
     })
     return () => {
       Linking.removeEventListener('url', (link) => {

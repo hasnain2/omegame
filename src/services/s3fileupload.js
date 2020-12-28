@@ -5,6 +5,7 @@ import * as RNFS from 'react-native-fs';
 // import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import { AppConfig } from '../config';
+import { AppLogger } from '../utils/AppHelperMethods';
 
 AWS.config.update(AppConfig.S3_DIRECT_UPLOAD_CONFIGURATION);
 
@@ -25,7 +26,6 @@ const uploadFile = (file) => {
         // let buffer = Buffer.from(RNFSUri)
 
         // let blob = await RNFetchBlob.fs.readFile(RNFSUri)
-        // console.log(blob instanceof Blob) // true
 
         const data = await RNFetchBlob.fs.readFile(RNFSUri, 'base64');
 
@@ -52,12 +52,11 @@ const uploadFile = (file) => {
 
             s3.completeMultipartUpload(doneParams, function (err, data) {
                 if (err) {
-                    console.log("An error occurred while completing the multipart upload");
-                    console.log(err);
+                    AppLogger('', "An error occurred while completing the multipart upload");
+                    AppLogger('', err);
                 } else {
                     var delta = (new Date() - startTime) / 1000;
-                    // console.log('Completed upload in', delta, 'seconds');
-                    console.log('Final upload data:', data);
+                    AppLogger('Final upload data:', data);
                     resolve({ bucket: data.Bucket, etag: data.ETag, key: data.Key, location: data.Location, cover: file.cover, unlock: file.unlock, type: "video", preview: file.preview });
 
                 }
@@ -68,12 +67,10 @@ const uploadFile = (file) => {
             var tryNum = tryNum || 1;
             s3.uploadPart(partParams, function (multiErr, mData) {
                 if (multiErr) {
-                    console.log('multiErr, upload part error:', multiErr);
+                    AppLogger('multiErr-upload part error--', multiErr);
                     if (tryNum < maxUploadTries) {
-                        // console.log('Retrying upload of part: #', partParams.PartNumber)
                         uploadPart(s3, multipart, partParams, tryNum + 1);
                     } else {
-                        // console.log('Failed uploading part: #', partParams.PartNumber)
                         reject("Upload Failed")
                     }
                     return;
@@ -82,8 +79,6 @@ const uploadFile = (file) => {
                     ETag: mData.ETag,
                     PartNumber: Number(this.request.params.PartNumber)
                 };
-                // console.log("Completed part", this.request.params.PartNumber);
-                // console.log('mData', mData);
                 if (--numPartsLeft > 0) return; // complete only when all parts uploaded
 
                 var doneParams = {
@@ -98,8 +93,8 @@ const uploadFile = (file) => {
         }
 
         s3.createMultipartUpload(multiPartParams, function (mpErr, multipart) {
-            if (mpErr) { console.log('Error!', mpErr); return; }
-            console.log("Got upload ID", multipart.UploadId);
+            if (mpErr) { AppLogger('Error!', mpErr); return; }
+            AppLogger("Got upload ID", multipart.UploadId);
 
             // Grab each partSize chunk and upload it as a part
             for (var rangeStart = 0; rangeStart < buffer.length; rangeStart += partSize) {
@@ -114,7 +109,7 @@ const uploadFile = (file) => {
                     };
 
                 // Send a single part
-                console.log('Uploading part: #', partParams.PartNumber, ', Range start:', rangeStart);
+                AppLogger('Uploading part: #', rangeStart);
                 uploadPart(s3, multipart, partParams);
             }
         });
@@ -124,7 +119,7 @@ const uploadFile = (file) => {
 
 const s3fileupload = async (file) => {
 
-    console.log('------uploading to s3------>', JSON.stringify(file))
+    AppLogger('------uploading to s3------>', JSON.stringify(file))
     var filename = new Date().getTime();
     file["name"] = filename + "video_clout." + file.ext;
 

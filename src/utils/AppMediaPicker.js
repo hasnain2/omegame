@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import { createThumbnail } from "react-native-create-thumbnail";
 import ImagePicker from 'react-native-image-crop-picker';
 import { AppConfig } from '../config';
+import { AppLogger } from './AppHelperMethods';
 
 const MEDIA_OPTIONS = {
     width: 800,
@@ -32,19 +33,19 @@ function pickerResponseMaker(callback, response, type) {
     }
 }
 const GenerateThumbnailFromVideo = (callback, videoPath) => {
-    console.log('VIDEO PATH TO BE COMPRESSED----', videoPath)
+    AppLogger('VIDEO PATH TO BE COMPRESSED----', videoPath)
     createThumbnail({
         url: videoPath,
         timeStamp: 2000,
         format: 'png',
     }).then(response => {
-        console.log('--------------THUMBNAIL GENERATION RES----------', response)
+        AppLogger('--------------THUMBNAIL GENERATION RES----------', response)
         if (response.path)
             callback(response.path)
         else
             callback(false)
     }).catch(err => {
-        console.log('-------ERROR GENERATING THUMBNAIL------', err)
+        AppLogger('-------ERROR GENERATING THUMBNAIL------', err)
         callback(false)
     });
 }
@@ -60,7 +61,7 @@ const OpenGalleryPicker = (callback, type = 'video') => {
         }, response, type)
     }).catch((err) => {
         callback(false)
-        console.log('---------OpenGalleryPicker ERROR------', err)
+        AppLogger('---------OpenGalleryPicker ERROR------', err)
     })
 }
 
@@ -75,7 +76,7 @@ const OpenCameraPicker = (callback, type = 'video') => {
         }, response, type)
     }).catch((err) => {
         callback(false)
-        console.log('---------OpenGalleryPicker ERROR------', err)
+        AppLogger('---------OpenGalleryPicker ERROR------', err)
     })
 }
 
@@ -114,7 +115,7 @@ const OpenCameraGalleryPromptPicker = (callback, type) => {
 
 const CleanCachedImages = (callback) => {
     ImagePicker.clean().then(() => {
-        console.log('removed all tmp images from tmp directory');
+        AppLogger('', 'removed all tmp images from tmp directory');
         callback(true)
     }).catch(e => {
         alert(e);

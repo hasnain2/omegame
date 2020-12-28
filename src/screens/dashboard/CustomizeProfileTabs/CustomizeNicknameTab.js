@@ -7,16 +7,19 @@ import { AppTheme } from '../../../config';
 import { MOCK_CORNERS } from '../../../mockups/Mockups';
 import { AntDesign } from '../../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
+
+const PADDING = RFValue(3);
+const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
+const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
+const BUBBLE_SIZE = RFValue(25);
+
 const CustomizeNicknameTab = ({ navigation }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a'
     })
-    const PADDING = RFValue(3);
-    const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
-    const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
-    const BUBBLE_SIZE = RFValue(25);
+  
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <View style={{ flexDirection: 'row', padding: RFValue(10) }}>
@@ -71,7 +74,13 @@ const CustomizeNicknameTab = ({ navigation }) => {
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>
                                 </View>
-                                <AppButtonPlane onPress={() => { setState(prev => ({ ...prev, isModalVisible: null })) }} label={"BUY"} />
+                                <AppButtonPlane onPress={() => {
+                                    if (!state.isModalVisible.isPurchased)
+                                        setState(prev => ({ ...prev, isModalVisible: null }));
+                                    else {
+                                        AppShowToast("You already own this item")
+                                    }
+                                }} label={"BUY"} />
                             </View>
                         </View>
                     </View>

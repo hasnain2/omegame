@@ -11,7 +11,7 @@ import { ActionsOnUsers } from '../services';
 import { RemovePostFromReduxStore, RemovePostsOfUserFromReduxStore } from '../services/mutateReduxState';
 import { DeletePost, FollowPost } from '../services/postService';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
-import { largeNumberShortify } from '../utils/AppHelperMethods';
+import { AppLogger, largeNumberShortify } from '../utils/AppHelperMethods';
 import { AppModal } from './AppModal';
 import { IsUserVerifiedCheck } from './IsUserVerifiedCheck';
 import { UserAvatar } from './UserAvatar';
@@ -121,7 +121,7 @@ const PostPoolTopBar = ({ item, navigation }) => {
                                     "Are you sure you want to block " + (item?.createdBy?.firstName || item?.createdBy?.userName) + '?',
                                     [{
                                         text: "Cancel",
-                                        onPress: () => console.log("Cancel Pressed"),
+                                        onPress: () => AppLogger('', "Cancel Pressed"),
                                         style: "cancel"
                                     }, {
                                         text: "Block", onPress: () => {

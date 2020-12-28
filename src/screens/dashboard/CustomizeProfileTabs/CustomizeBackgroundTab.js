@@ -10,6 +10,7 @@ import { setUser } from '../../../redux/reducers/userSlice';
 import { store } from '../../../redux/store';
 import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
+import { AppShowToast, RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
 import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 4;
@@ -27,7 +28,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
     function getmyassetshelper() {
         GetMyAssets((myassetsRes) => {
             if (myassetsRes) {
-                store.dispatch(setMyAssets({ backgrounds: myassetsRes }))
+                store.dispatch(setMyAssets({ backgrounds: RemoveDuplicateObjectsFromArray(myassetsRes) }))
                 setState(prev => ({ ...prev, loading: false }))
             }
         }, ASSET_TYPES.BACKGROUND)
@@ -62,8 +63,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                                 <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
                                     <Ionicons name="add-circle-outline" style={{ fontSize: RFValue(30), color: 'white' }} />
                                 </View>
-                            </TouchableOpacity>
-                        )
+                            </TouchableOpacity>)
                     else
                         return (
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
@@ -81,8 +81,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                                 <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                     <FastImage source={{ uri: item?.attachment?.url }} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} />
                                 </View>
-                            </TouchableOpacity>
-                        )
+                            </TouchableOpacity>)
                 }} />
 
             <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ ...prev, isModalVisible: null }))} >
@@ -98,7 +97,13 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>
                                 </View>
-                                <AppButtonPlane onPress={() => { setState(prev => ({ ...prev, isModalVisible: null })) }} label={"BUY"} />
+                                <AppButtonPlane onPress={() => {
+                                    if (!state.isModalVisible.isPurchased)
+                                        setState(prev => ({ ...prev, isModalVisible: null }));
+                                    else {
+                                        AppShowToast("You already own this item")
+                                    }
+                                }} label={"BUY"} />
                             </View>
                         </View>
                     </View>

@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../../components";
 import { UserAvatar } from '../../../components/UserAvatar';
 import { AppTheme } from '../../../config';
-import { MOCK_CORNERS } from '../../../mockups/Mockups';
 import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
 import { setUser } from '../../../redux/reducers/userSlice';
 import { store } from '../../../redux/store';
 import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
 import { ASSET_TYPES } from '../../../utils/AppConstants';
-import { AntDesign, FontAwesome, Ionicons } from '../../../utils/AppIcons';
+import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
+import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeCornersTab = ({ navigation }) => {
@@ -28,7 +28,7 @@ const CustomizeCornersTab = ({ navigation }) => {
     function getmyassetshelper() {
         GetMyAssets((cornersRes) => {
             if (cornersRes) {
-                dispatch(setMyAssets({ corners: cornersRes }));
+                dispatch(setMyAssets({ corners: RemoveDuplicateObjectsFromArray(cornersRes) }));
             }
             setState(prev => ({ ...prev, loading: false }))
         }, ASSET_TYPES.CORNER)
@@ -106,7 +106,13 @@ const CustomizeCornersTab = ({ navigation }) => {
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>
                                 </View>
-                                <AppButtonPlane onPress={() => { setState(prev => ({ ...prev, isModalVisible: null })) }} label={"BUY"} />
+                                <AppButtonPlane onPress={() => {
+                                    if (!state.isModalVisible.isPurchased)
+                                        setState(prev => ({ ...prev, isModalVisible: null }));
+                                    else {
+                                        AppShowToast("You already own this item")
+                                    }
+                                }} label={"BUY"} />
                             </View>
                         </View>
                     </View>

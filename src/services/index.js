@@ -8,3 +8,10 @@ export * from './mutateReduxState'
 export * from './s3fileupload'
 export * from './chatService'
 export * from './questService'
+
+function JSONBodyHelper(response) {
+    const statusCode = response.status;
+    const data = response.json();
+    return Promise.all([statusCode, data]);
+}
+export { JSONBodyHelper }

@@ -8,7 +8,7 @@ import { AppTheme } from '../../config';
 import { AddAssetCorner } from '../../services';
 import { BuyAsset, GetAllAssets } from '../../services/customizationService';
 import { ASSET_TYPES } from '../../utils/AppConstants';
-import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreCornersTab = ({ navigation }) => {
@@ -22,7 +22,7 @@ const OmegaStoreCornersTab = ({ navigation }) => {
     const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
     const BUBBLE_SIZE = RFValue(25);
     let user = useSelector(state => state.root.user);
-    console.log('-------', user._id)
+    AppLogger('-------', user._id)
     function getallassetshelper() {
         GetAllAssets((allAssetsRes) => {
             if (allAssetsRes) {
@@ -59,7 +59,7 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, isModalVisible: item }))
-                            console.log(item)
+                            AppLogger('', item)
                         }}>
                             <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                 {/* <FastImage source={item.image} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} /> */}
@@ -102,7 +102,7 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                                         text: "Cancel",
                                         onPress: () => {
                                             setState(prev => ({ ...prev, isModalVisible: null }));
-                                            console.log("Cancel Pressed")
+                                            AppLogger('', "Cancel Pressed")
                                         },
                                         style: "cancel"
                                     }, {

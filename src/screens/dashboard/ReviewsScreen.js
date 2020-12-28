@@ -10,6 +10,7 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_CONSOLE_TYPES, MOCK_GAMES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
 import { GetGamesList } from '../../services/gamesService';
+import { AppLogger } from '../../utils/AppHelperMethods';
 import { AntDesign, MaterialIcons } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const ReviewsScreen = ({ navigation }) => {
@@ -63,7 +64,7 @@ const ReviewsScreen = ({ navigation }) => {
                             }}>
                                 <>
                                     <View style={{ flexDirection: 'row', flex: 1, padding: RFValue(10), alignItems: 'center' }}>
-                                        <UserAvatar corner={item?.corner || ''}  source={item?.background?.url ? { uri: item?.background?.url } : DEFAULT_USER_PIC} size={55} />
+                                        <UserAvatar corner={item?.corner || ''} source={item?.background?.url ? { uri: item?.background?.url } : DEFAULT_USER_PIC} size={55} />
                                         <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
                                             <AppText size={3} bold={true} >{item.name}</AppText>
                                             <AppText size={2} color={AppTheme.colors.lightGrey} >{item.supportedDevices.map(ii => (ii + ', ').toUpperCase())}</AppText>
@@ -114,7 +115,7 @@ const ReviewsScreen = ({ navigation }) => {
                                             tempArr.push(item.name)
                                         }
                                         setState(prev => ({ ...prev, selectedConsoleTypes: tempArr }))
-                                        console.log(state.selectedConsoleTypes)
+                                        AppLogger('', state.selectedConsoleTypes)
                                     }} size={20} label={item.name} />
                                 </View>
                             )} />
@@ -150,7 +151,7 @@ const ReviewsScreen = ({ navigation }) => {
                                             tempArr.push(item.name)
                                         }
                                         setState(prev => ({ ...prev, selectedGenreTypes: tempArr }))
-                                        console.log(state.selectedGenreTypes)
+                                        AppLogger('', state.selectedGenreTypes)
                                     }} size={20} label={item.name} />
                                 </View>
                             )} />

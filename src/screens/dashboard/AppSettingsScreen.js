@@ -11,6 +11,7 @@ import { setUser } from '../../redux/reducers/userSlice';
 import { store } from '../../redux/store';
 import { UpdateProfile } from '../../services';
 import { LogOutUser } from '../../services/authService';
+import { AppLogger } from '../../utils/AppHelperMethods';
 import { EvilIcons } from '../../utils/AppIcons';
 import { storeData } from '../../utils/AppStorage';
 
@@ -162,7 +163,7 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                             "Are you sure you want to logout?",
                             [{
                                 text: "Cancel",
-                                onPress: () => console.log("Cancel Pressed"),
+                                onPress: () => AppLogger('', "Cancel Pressed"),
                                 style: "cancel"
                             }, {
                                 text: "LOGOUT", onPress: () => {

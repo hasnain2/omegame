@@ -1,9 +1,10 @@
+import { JSONBodyHelper } from '.'
 import { resetHomeFeed } from '../redux/reducers/homeFeedSlice'
 import { resetSavedPosts } from '../redux/reducers/savedPostsSlice'
 import { resetUser, setUser } from '../redux/reducers/userSlice'
 import { store } from '../redux/store'
 import { EndPoints } from '../utils/AppEndpoints'
-import { AppShowToast } from '../utils/AppHelperMethods'
+import { AppLogger, AppShowToast } from '../utils/AppHelperMethods'
 import { clearStorage, getData, removeItemsFromLocalStorage, storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
 const LogInUser = (callback, formData) => {
@@ -12,11 +13,7 @@ const LogInUser = (callback, formData) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
-    }).then((response) => {
-        const statusCode = response.status;
-        const data = response.json();
-        return Promise.all([statusCode, data]);
-    }).then(([status, data]) => {
+    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
         if (status === 201 || status === 200) {
             Interceptor.setToken(data?.data?.access_token || "");
             let UserObj = { ...data.data.user, ...data?.data?.user?.profile, token: data.data.access_token, email: formData?.userName };
@@ -32,7 +29,7 @@ const LogInUser = (callback, formData) => {
         } else
             callback(false)
     }).catch((error) => {
-        console.log('---------LOGIN ERROR-----------', error)
+        AppLogger('---------LOGIN ERROR-----------', error)
         callback(false)
     });
 
@@ -43,12 +40,8 @@ const SignUpUser = (callback, formedData) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formedData)
-    }).then((response) => {
-        const statusCode = response.status;
-        const data = response.json();
-        return Promise.all([statusCode, data]);
-    }).then(([status, data]) => {
-        console.log('-----------SIGN UP RESPONSE----------', JSON.stringify(data))
+    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+        AppLogger('-----------SIGN UP RESPONSE----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)
         } else {
@@ -56,7 +49,7 @@ const SignUpUser = (callback, formedData) => {
             callback(false)
         }
     }).catch((error) => {
-        console.log('---------SIGN UP DATA - ERROR-----------', error)
+        AppLogger('---------SIGN UP DATA - ERROR-----------', error)
         callback(false)
     });
 }
@@ -65,12 +58,8 @@ const ForgotPasswordCall = (callback, formedData) => {
     fetch(EndPoints.FORGOT_PASSWORD + '?email=' + formedData, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => {
-        const statusCode = response.status;
-        const data = response.json();
-        return Promise.all([statusCode, data]);
-    }).then(([status, data]) => {
-        console.log('---------------FORGOT PASS RES-------------', JSON.stringify(data))
+    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+        AppLogger('---------------FORGOT PASS RES-------------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)
         } else {
@@ -78,7 +67,7 @@ const ForgotPasswordCall = (callback, formedData) => {
             callback(false)
         }
     }).catch((error) => {
-        console.log('---------SIGN UP DATA - ERROR-----------', error)
+        AppLogger('---------SIGN UP DATA - ERROR-----------', error)
         callback(false)
     });
 }
@@ -88,12 +77,8 @@ const ChangePassword = (callback, formedData) => {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formedData)
-    }).then((response) => {
-        const statusCode = response.status;
-        const data = response.json();
-        return Promise.all([statusCode, data]);
-    }).then(([status, data]) => {
-        console.log('---------------CHANGE PASS RES-------------', data)
+    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+        AppLogger('---------------CHANGE PASS RES-------------', data)
         if (status === 201 || status === 200) {
             callback(true)
         } else {
@@ -101,7 +86,7 @@ const ChangePassword = (callback, formedData) => {
             callback(false)
         }
     }).catch((error) => {
-        console.log('--------- CHANGE PASS - ERROR-----------', error)
+        AppLogger('--------- CHANGE PASS - ERROR-----------', error)
         callback(false)
     });
 }
@@ -112,7 +97,7 @@ const LogOutUser = (callback) => {
             removeItemsFromLocalStorage(['user']);
         } else {
             clearStorage().then(res => callback(true)).then(err => {
-                console.log('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
+                AppLogger('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
             })
         }
         store.dispatch(resetUser())

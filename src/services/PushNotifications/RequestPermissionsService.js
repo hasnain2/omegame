@@ -1,6 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 
 import { PermissionsAndroid, Platform } from "react-native";
+import { AppLogger } from '../../utils/AppHelperMethods';
 
 async function requestReadWritePermission() {
     if (Platform.OS === 'android') {
@@ -24,7 +25,7 @@ async function requestPushNotificationPermission() {
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-        console.log('Authorization status:', authStatus);
+        AppLogger('Authorization status:', authStatus);
     }
 }
 

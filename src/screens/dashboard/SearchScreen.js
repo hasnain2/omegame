@@ -6,6 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButton, AppModal, AppRadioButton, AppSearchBar, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
+import { GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 import { SearchTabs } from './SearchScreenTabs/SearchTabs';
 const POST_SORTING_TYPES = [{ id: 0, name: 'Best' }, { id: 1, name: 'Top' }, { id: 2, name: 'Hot' }, { id: 3, name: 'Controversial' }, { id: 4, name: 'Rising' },];
@@ -23,7 +24,20 @@ const SearchScreen = ({ route, navigation }) => {
                 <AppSearchBar onChangeText={(val) => setState(prev => ({ ...prev, searchTerm: val }))} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
             </View>
             <View style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>
-                <SearchTabs navigation={navigation} searchTerm={state.searchTerm} />
+                <SearchTabs navigation={navigation}
+
+                    query={`sort=${state.sortPostBy.toUpperCase()}${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
+                        : state.sortPostByTime === 'Past week' ? GetLastWeekStartOf()
+                            : state.sortPostByTime === 'Past month' ? GetLastMonthStartOf()
+                                : state.sortPostByTime === 'Past year' ? GetLastYearStartOf()
+                                    : GetLastYearStartOf()
+                        }&to=${state.sortPostByTime === 'Newest' ? GetCurrentDate()
+                            : state.sortPostByTime === 'Past week' ? GetLastWeekEndOf()
+                                : state.sortPostByTime === 'Past month' ? GetLastMonthEndOf()
+                                    : state.sortPostByTime === 'Past year' ? GetLastYearEndOf()
+                                        : GetCurrentDate()
+                        }`}
+                />
             </View>
 
             <AppModal show={state.showFilter} toggle={() => { setState(prev => ({ ...prev, showFilter: !state.showFilter })) }}>

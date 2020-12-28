@@ -1850,18 +1850,22 @@ const MOCK_BACKGROUNDS = [
 const MOCK_CORNERS = [
     {
         id: 0,
+        _id:'01',
         name: 'Corner Name',
         coins: 10
     }, {
         id: 1,
+        _id:'02',
         name: 'Corner Name',
         coins: 10
     }, {
         id: 2,
+        _id:'03',
         name: 'Corner Name',
         coins: 10
     }, {
         id: 3,
+        _id:'04',
         name: 'Corner Name',
         coins: 10
     },

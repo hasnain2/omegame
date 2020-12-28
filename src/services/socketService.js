@@ -1,6 +1,7 @@
 
 import io from "socket.io-client";
 import { DOMAIN } from "../utils/AppEndpoints";
+import { AppLogger } from "../utils/AppHelperMethods";
 import { AppShowPushNotification } from "./PushNotifications/NotificationMethods";
 
 let SocketEndpoint = DOMAIN;
@@ -27,6 +28,6 @@ export const initSocket = async (token) => {
             // AppShowPushNotification('Status', "Connection has been lost.");
         });
     } catch (err) {
-        console.log('---------SOCKET ERROR---------', err)
+        AppLogger('---------SOCKET ERROR---------', err)
     }
 };

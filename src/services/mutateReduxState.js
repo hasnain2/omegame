@@ -2,6 +2,7 @@ import { setHomeFeed } from "../redux/reducers/homeFeedSlice";
 import { setMyAssets } from "../redux/reducers/myAssetsSlice";
 import { setSavedPosts } from "../redux/reducers/savedPostsSlice";
 import { store } from "../redux/store";
+import { AppLogger } from "../utils/AppHelperMethods";
 
 const UpdatePostIsSaveCheck = (postID) => {
 
@@ -13,7 +14,7 @@ const UpdatePostIsLikedCheck = (postID) => {
 
 
 const UpdatePostFromReduxStore = (newPostObject) => {
-    console.log(newPostObject)
+    AppLogger('', newPostObject)
     var tempHomeFeeds = [...store.getState().root.homeFeed];
     var tempSavedPosts = [...store.getState().root.savedPosts];
 

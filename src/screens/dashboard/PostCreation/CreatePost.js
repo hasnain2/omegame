@@ -14,7 +14,7 @@ import { setFriends } from '../../../redux/reducers/friendsSlice';
 import { store } from '../../../redux/store';
 import { AddPostToReduxStore, CreatePostService, GerUserListByType, requestReadWritePermission } from '../../../services';
 import { GET_FRIEND_LIST_TYPES, PRIVACY } from '../../../utils/AppConstants';
-import { AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
 import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
@@ -86,7 +86,7 @@ const CreatePost = ({ navigation, route }) => {
             </View>
             <KeyboardAvoidingScrollView nestedScrollEnabled={true} style={{ flex: 1, padding: RFValue(14) }}>
                 <View style={{ flexDirection: 'row' }}>
-                    <UserAvatar corner={user?.corner || ''}  source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
+                    <UserAvatar corner={user?.corner || ''} source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
                     <TextInput placeholder={state.postTypeIsPool ? "Ask a question" : "What's new?"}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}
@@ -111,7 +111,7 @@ const CreatePost = ({ navigation, route }) => {
                                             array[index] = val
                                             return { ...prev, answersArr: array }
                                         })
-                                        console.log(state.answersArr)
+                                        AppLogger('', state.answersArr)
                                     }}
                                 />
                                 {index != 0 && index != 1 ?
@@ -155,7 +155,7 @@ const CreatePost = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: RFValue(25) }}>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         OpenCameraGalleryPromptPicker((res) => {
-                            console.log('====================PICKER-=----------->\n', res)
+                            AppLogger('====================PICKER-=----------->\n', res)
                             if (res)
                                 setState(prev => ({ ...prev, selectedMedia: res }))
                         }, 'camera')
@@ -167,7 +167,7 @@ const CreatePost = ({ navigation, route }) => {
 
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         // OpenCameraGalleryPromptPicker((res) => {
-                        //     console.log(res)
+                        //     AppLogger('',res)
                         //     if (res)
                         //         setState(prev => ({ ...prev, selectedMedia: res }))
                         // }, 'gallery')
@@ -313,7 +313,7 @@ const CreatePost = ({ navigation, route }) => {
                     <AppGallery navigation={navigation}
                         selectedOne={(selected) => {
 
-                            console.log('-------------SELECTED ONE------------\n', selected)
+                            AppLogger('-------------SELECTED ONE------------\n', selected)
                             setState(prev => ({ ...prev, selectedMedia: selected }))
                         }}
                         toggle={() => setState(prev => ({ ...prev, showGallery: false }))} />

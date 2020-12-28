@@ -7,6 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_ARROW_RIGHT } from "../../assets/icons";
 import { AppText } from '../components';
 import { AppConfig, AppTheme } from "../config";
+import { AppLogger } from "../utils/AppHelperMethods";
 import { EvilIcons } from "../utils/AppIcons";
 import { AppVideoPlayer } from './AppVideoPlayer';
 
@@ -228,7 +229,7 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                             style={{}}
                             onLongPress={() => { }}
                             onPress={() => {
-                                console.log('------ITEM CLICKED-----', item)
+                                AppLogger('------ITEM CLICKED-----', item)
                                 setCoverPhoto({ ...item });
                                 selectedOne({ ...item, uri: Platform.OS === 'ios' ? item.type === 'video' ? item.image.uri2 : item.image.uri : item.image.uri, type: item.type });
                             }} >

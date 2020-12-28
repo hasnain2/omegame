@@ -1,15 +1,16 @@
-import { EndPoints } from '../utils/AppEndpoints'
-import { AppShowToast } from '../utils/AppHelperMethods'
-import Interceptor from '../utils/Interceptor'
-
-import RNVideoHelper from 'react-native-video-helper';
-import ImageResizer from 'react-native-image-resizer';
 import { Platform } from 'react-native';
+import ImageResizer from 'react-native-image-resizer';
+import RNVideoHelper from 'react-native-video-helper';
+import { JSONBodyHelper } from '.';
+import { EndPoints } from '../utils/AppEndpoints';
+import { AppLogger, AppShowToast } from '../utils/AppHelperMethods';
 import { GenerateThumbnailFromVideo } from '../utils/AppMediaPicker';
+import Interceptor from '../utils/Interceptor';
+
 
 // current vid size = 2498125
 const VideoAndImageCompressor = (image) => {
-    console.log('------------media going to be compressed----------', image)
+    AppLogger('------------media going to be compressed----------', image)
     let imagetemp = { ...image, uri: image?.image?.uri || image?.uri, type: image?.image?.type || image?.type };
     return new Promise((resolve, reject) => {
         if (imagetemp.type === 'photo' || imagetemp.type === 'image') {
@@ -45,13 +46,11 @@ const VideoAndImageCompressor = (image) => {
                 }
                 resolve(temp);
             }).catch((err) => {
-                console.log('-------video compression error------>', err)
+                AppLogger('-------video compression error------>', err)
                 reject(err)
             });
         }
     })
-
-
 };
 
 function postFiles(callback, fileName, bucket, data) {
@@ -59,12 +58,8 @@ function postFiles(callback, fileName, bucket, data) {
         method: 'POST',
         headers: Interceptor.getHeadersMultiPart(),
         body: data
-    }).then((response) => {
-        const statusCode = response.status;
-        const data = response.json();
-        return Promise.all([statusCode, data]);
-    }).then(([status, data]) => {
-        console.log('---------IMAGE UPLOADER RESPONSE-----------', JSON.stringify(data))
+    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+        AppLogger('---------IMAGE UPLOADER RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             let uploaderResponse = data?.data?.media[0]
             callback({
@@ -78,7 +73,7 @@ function postFiles(callback, fileName, bucket, data) {
             callback(false);
         }
     }).catch((error) => {
-        console.log('---------IMAGE UPLOADER ERROR-----------', error)
+        AppLogger('---------IMAGE UPLOADER ERROR-----------', error)
         callback(false)
     });
 }
@@ -88,52 +83,35 @@ const UploadMedia = (callback, bucket, mediaObj) => {
     VideoAndImageCompressor(mediaObj).then((compressionResponse) => {
         let fileName = 'assetmedia.' + (compressionResponse.oType.split('/')[1] ? ('' + compressionResponse.oType.split('/')[1]) : '');
         let multiFormData = new FormData()
-        multiFormData.append('files', { uri: compressionResponse.compressed.uri, name: fileName, type: compressionResponse.oType })
-        debugger
+        multiFormData.append('files', { uri: compressionResponse.compressed.uri, name: fileName, type: compressionResponse.oType });
         postFiles((fileUploadRes) => {
 
-            debugger
             if (fileUploadRes) {
-
-                debugger
                 if (mediaObj.type === 'video') {
-                    debugger
                     GenerateThumbnailFromVideo((thumbnail) => {
                         if (thumbnail) {
-                            debugger
                             let multiFormDataForThumbnail = new FormData()
-                            multiFormDataForThumbnail.append('files', { uri: thumbnail, name: "thumbnail.png", type: 'image/png' })
-                            debugger
+                            multiFormDataForThumbnail.append('files', { uri: thumbnail, name: "thumbnail.png", type: 'image/png' });
                             postFiles((thumbnailUploadRes) => {
                                 if (thumbnailUploadRes) {
-                                    debugger
                                     callback({ ...fileUploadRes, thumbnail: { thumbnail: true, url: thumbnailUploadRes.url, oType: 'image/png' }, thumbnail: true })
                                 } else {
-                                    debugger
                                     callback(fileUploadRes)
                                 }
-                                debugger
                             }, "thumbnail.png", bucket, multiFormDataForThumbnail)
                         } else {
-                            debugger
                             callback(fileUploadRes)
                         }
-                        debugger
                     }, mediaObj?.uri2 || mediaObj?.image?.uri2 || mediaObj?.image?.uri || mediaObj.uri)
                 } else {
-                    debugger
                     callback(fileUploadRes)
                 }
-                debugger
             } else {
-                debugger
                 callback(false)
             }
-            debugger
         }, fileName, bucket, multiFormData)
-        debugger
     }).catch(err => {
-        console.log('--------ERROR COMMPRESSING MEDIA -------->\n', err)
+        AppLogger('--------ERROR COMMPRESSING MEDIA -------->\n', err)
         callback(false)
     });
 
@@ -143,4 +121,5 @@ const UploadMedia = (callback, bucket, mediaObj) => {
 
 }
 
-export { UploadMedia }
+export { UploadMedia };
+

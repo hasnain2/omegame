@@ -1,3 +1,4 @@
+import { AppLogger } from "./AppHelperMethods";
 
 export default class Interceptor {
     static token = null;
@@ -25,7 +26,7 @@ export default class Interceptor {
     }
 
     static setToken(token) {
-        console.log('-------------token is-------------', token)
+        AppLogger('-------------token is-------------', token)
         this.token = token;
     }
     static getToken() {

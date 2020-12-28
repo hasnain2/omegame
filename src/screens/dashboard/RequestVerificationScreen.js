@@ -10,7 +10,7 @@ import { AppTheme } from '../../config';
 import { UploadMedia } from '../../services';
 import { RequestVerification } from '../../services/profileService';
 import { BUCKETS } from '../../utils/AppConstants';
-import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 
@@ -94,7 +94,7 @@ const RequestVerificationScreen = ({ navigation, route, }) => {
                                 UploadMedia((results) => {
                                     setState(prev => ({ ...prev, imageLoading: false }))
                                     if (results) {
-                                        console.log('---------UPLOAD RESULTS-------->', results)
+                                        AppLogger('---------UPLOAD RESULTS-------->', results)
                                         setState(prev => ({ ...prev, filePath: results || '' }))
                                     }
                                 }, BUCKETS.PROFILE_DOC, res)

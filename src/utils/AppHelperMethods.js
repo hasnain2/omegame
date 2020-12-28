@@ -1,16 +1,14 @@
-import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import Share from 'react-native-share';
+import Toast from 'react-native-simple-toast';
 import { DEEP_LINK_TYPES } from './AppConstants';
 
 const largeNumberShortify = (num) => {
     return Math.abs(num) > 999999 ?
         Math.sign(num) * ((Math.abs(num) / 1000000).toFixed(1)) + ' M'
-        :
-        Math.abs(num) > 999 ?
+        : Math.abs(num) > 999 ?
             Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + ' K'
-            :
-            Math.sign(num) * Math.abs(num)
+            : Math.sign(num) * Math.abs(num)
 }
 
 const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -55,7 +53,7 @@ function timeRemaining(date) {
     let seconds = a.diff(b, 'seconds') // 1
 
     let obj = { days, hours, minutes, seconds, txt: days + 'd ' + hours + 'h ' + minutes + 'm' }
-    console.log('-----CALCULATED TIME------', obj)
+    AppLogger('-----CALCULATED TIME------', obj)
     return obj
 }
 
@@ -83,9 +81,9 @@ function AppShareContents(callback, msg) {
     Share.open(options)
         .then((res) => {
             callback(true)
-            console.log('-------------shared-------------', msg)
+            AppLogger('-------------shared-------------', msg)
         })
-        .catch((err) => { callback(false); err && console.log('-------------ERROR SHARING-------------', err); });
+        .catch((err) => { callback(false); err && AppLogger('-------------ERROR SHARING-------------', err); });
 }
 
 const DynamicLinkHelper = async (navigation, link) => {
@@ -98,15 +96,52 @@ const DynamicLinkHelper = async (navigation, link) => {
         let code = url.split(`${DEEP_LINK_TYPES.CODE}=`)[1] || false;
 
         if (postId) {
-            console.log('-----------GOT POST ID--------', postId)
+            AppLogger('-----------GOT POST ID--------', postId)
             navigation.navigate("PostDetailScreenWithComments", { postID: postId });
         } else if (userId) {
-            console.log('-----------GOT USER ID--------', userId)
+            AppLogger('-----------GOT USER ID--------', userId)
             navigation.navigate("UserProfileScreen", { userID: userId });
         } else if (code) {
-            console.log('-----------GOT CODE--------', code);
+            AppLogger('-----------GOT CODE--------', code);
         }
     }
 }
 
-export { largeNumberShortify, DynamicLinkHelper, generateRandomString, numberWithCommas, AppShowToast, stringifyNumber, dateDifference, timeRemaining, CapitalizeFirstLetter, AppShareContents }
+const RemoveDuplicateObjectsFromArray = (arrayToProcess) => {
+    return arrayToProcess.filter((item, index, self) =>
+        index === self.findIndex((t) => (
+            t._id === item._id
+        )));
+}
+
+function AppLogger(identifier, msgOrError) {
+    if (__DEV__)
+        console.log(identifier, msgOrError)
+}
+
+const GetLastWeekStartOf = () => moment().subtract(1, 'weeks').startOf('week').toISOString() + '';
+const GetLastWeekEndOf = () => moment().subtract(1, 'weeks').endOf('week').toISOString() + '';
+const GetLastMonthStartOf = () => moment().subtract(1, 'months').startOf('month').toISOString() + '';
+const GetLastMonthEndOf = () => moment().subtract(1, 'months').endOf('month').toISOString() + '';
+const GetLastYearStartOf = () => moment().subtract(1, 'years').startOf('year').toISOString() + '';
+const GetLastYearEndOf = () => moment().subtract(1, 'years').endOf('year').toISOString() + '';
+const GetCurrentDate = () => moment().toISOString() + '';
+
+export {
+    largeNumberShortify,
+    AppLogger,
+    RemoveDuplicateObjectsFromArray,
+    DynamicLinkHelper,
+    generateRandomString,
+    numberWithCommas,
+    AppShowToast,
+    stringifyNumber,
+    dateDifference,
+    timeRemaining,
+    GetLastWeekStartOf, GetLastWeekEndOf,
+    GetLastMonthStartOf, GetLastMonthEndOf,
+    GetLastYearStartOf, GetLastYearEndOf,
+    GetCurrentDate,
+    CapitalizeFirstLetter,
+    AppShareContents
+};

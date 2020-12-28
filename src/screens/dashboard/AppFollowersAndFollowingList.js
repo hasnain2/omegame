@@ -10,7 +10,7 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { ActionsOnUsers, GerUserListByType } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
-import { largeNumberShortify } from '../../utils/AppHelperMethods';
+import { AppLogger, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 const LIGHT_GREY = '#4d4d4d'
 const AppFollowersAndFollowingList = ({ navigation, route, }) => {
@@ -18,8 +18,8 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let userID = route.params.userID;
 
     let user = useSelector(state => state.root.user);
-    console.log('-----------USER-LOGGED IN---------', user?._id)
-    console.log('-----------other user---------', userID)
+    AppLogger('-----------USER-LOGGED IN---------', user?._id)
+    AppLogger('-----------other user---------', userID)
     let [state, setState] = useState({
         loading: true,
         searchTerm: '',
@@ -29,7 +29,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     useEffect(() => {
         GerUserListByType((response) => {
             if (response) {
-                console.log('---------------FOLLOW FOLLOWING LIST----------', JSON.stringify(response))
+                AppLogger('---------------FOLLOW FOLLOWING LIST----------', JSON.stringify(response))
                 setState(prev => ({ ...prev, data: response, loading: false }));
             } else
                 setState(prev => ({ ...prev, loading: false }));
@@ -65,7 +65,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                         navigation.push("UserProfileScreen", { userID: item._id })
                     }}>
                         <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
-                            <UserAvatar corner={item?.corner || ''}  source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
+                            <UserAvatar corner={item?.corner || ''} source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
                             <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                     <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName} {item?.lastName}</AppText>
@@ -78,13 +78,13 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                                 {user?._id === item?.profileId ?
                                     null :
                                     <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
-                                        console.log('-----', item)
+                                        AppLogger('-----', item)
                                         Alert.alert(
                                             isFollowerMode ? "Remove Follower" : "Unfollow",
                                             "Are you sure to " + (isFollowerMode ? "remove " : "unfollow ") + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
                                             [{
                                                 text: "Cancel",
-                                                onPress: () => console.log("Cancel Pressed"),
+                                                onPress: () => AppLogger('', "Cancel Pressed"),
                                                 style: "cancel"
                                             }, {
                                                 text: "YES", onPress: () => {

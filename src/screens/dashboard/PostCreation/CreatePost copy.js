@@ -7,7 +7,7 @@ import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scrol
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButton, AppFriendsListModal, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
-import { AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
 import { AntDesign, EvilIcons, FontAwesome, Fontisto, Ionicons, MaterialCommunityIcons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
@@ -58,7 +58,7 @@ const CreatePost = ({ navigation, route }) => {
                                             array[index] = val
                                             return { ...prev, answersArr: array }
                                         })
-                                        console.log(state.answersArr)
+                                        AppLogger('', state.answersArr)
                                     }}
                                 />
                                 {index != 0 && index != 1 ?
@@ -102,7 +102,7 @@ const CreatePost = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: RFValue(25) }}>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         OpenCameraGalleryPromptPicker((res) => {
-                            console.log(res)
+                            AppLogger('', res)
                             if (res)
                                 setState(prev => ({ ...prev, selectedMedia: res }))
                         }, 'camera')
@@ -114,7 +114,7 @@ const CreatePost = ({ navigation, route }) => {
 
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         OpenCameraGalleryPromptPicker((res) => {
-                            console.log(res)
+                            AppLogger('', res)
                             if (res)
                                 setState(prev => ({ ...prev, selectedMedia: res }))
                         }, 'gallery')

@@ -3,6 +3,7 @@ import { SafeAreaView, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppConfig } from '../config';
+import { AppLogger } from '../utils/AppHelperMethods';
 import { AppBackButton } from './AppBackButton';
 import { AppModal } from './AppModal';
 import { AppText } from './AppText';
@@ -28,7 +29,7 @@ const AppGooglePlacesAutoFill = ({ show, toggle, onChangeValue }) => {
                             nearbyPlacesAPI="GoogleReverseGeocoding"
                             currentLocation={true}
                             onFail={(err) => {
-                                console.log('---------GOOGLE PLACES FAILED------', err)
+                                AppLogger('---------GOOGLE PLACES FAILED------', err)
                             }}
                             onPress={(data, details = null) => {
 
