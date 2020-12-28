@@ -45,22 +45,21 @@ const HomeScreen = ({ route, navigation }) => {
             {/* <AppGooglePlacesAutoFill /> */}
             <HomeScreenHeader navigation={navigation} route={route} />
 
-            {state.loading && homeFeed?.length < 1 ?
-                <AppLoadingView /> : null}
-
             {!state.loading && homeFeed?.length < 1 ?
                 <AppNoDataFound /> :
-                <AppPostsListings navigation={navigation}
-                    data={homeFeed}
-                    refreshing={state.refreshing}
-                    loadMore={(offset, refreshControl) => {
-                        if (refreshControl) {
-                            setState(prev => ({ ...prev, refreshing: true }));
-                            getHomeFeedHelper(false)
-                        } else {
-                            getHomeFeedHelper(offset)
-                        };
-                    }} />}
+                state.loading && homeFeed?.length < 1 ?
+                    <AppLoadingView /> :
+                    <AppPostsListings navigation={navigation}
+                        data={homeFeed}
+                        refreshing={state.refreshing}
+                        loadMore={(offset, refreshControl) => {
+                            if (refreshControl) {
+                                setState(prev => ({ ...prev, refreshing: true }));
+                                getHomeFeedHelper(false)
+                            } else {
+                                getHomeFeedHelper(offset)
+                            };
+                        }} />}
         </View>
     );
 };

@@ -3,10 +3,12 @@ import { EndPoints } from '../utils/AppEndpoints';
 import { AppLogger, AppShowToast } from '../utils/AppHelperMethods';
 import Interceptor from '../utils/Interceptor';
 const LIMIT = 50;
-function GetGamesList(callback, CURSOR) {
-    fetch(EndPoints.GET_GAMES_LIST, {
-        method: 'GET',
+function GetGamesList(callback, CURSOR, BODY = {}) {
+    AppLogger('-----BODY OF GAME LIST--------', BODY)
+    fetch(`${EndPoints.GET_GAMES_LIST}?limit=${LIMIT}${CURSOR ? ('&cursor=' + CURSOR) : ''}`, {
+        method: 'POST',
         headers: Interceptor.getHeaders(),
+        body: JSON.stringify(BODY)
     }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
         AppLogger('-----------GAMES LIST RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {

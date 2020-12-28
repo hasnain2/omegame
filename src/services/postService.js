@@ -6,7 +6,7 @@ import { AppLogger, AppShowToast } from '../utils/AppHelperMethods';
 import Interceptor from '../utils/Interceptor';
 import { UploadMedia } from './mediaUploader';
 import { RemovePostFromReduxStore, UpdatePostFromReduxStore } from './mutateReduxState';
-const LIMIT = 5;
+const LIMIT = 100;
 function creatPostHelper(callback, formData) {
     fetch(EndPoints.CREATE_POST, {
         method: 'POST',
@@ -63,7 +63,7 @@ const CreatePostService = (callback, formData) => {
 }
 
 const GetHomeFeed = (callback, cursor) => {
-    fetch(`${EndPoints.HOME_FEED}${cursor ? ("?cursor=" + cursor + "&limit=" + LIMIT) : ''}`, {
+    fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {

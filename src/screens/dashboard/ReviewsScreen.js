@@ -10,7 +10,7 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_CONSOLE_TYPES, MOCK_GAMES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
 import { GetGamesList } from '../../services/gamesService';
-import { AppLogger } from '../../utils/AppHelperMethods';
+import { AppLogger, GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
 import { AntDesign, MaterialIcons } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const ReviewsScreen = ({ navigation }) => {
@@ -26,23 +26,46 @@ const ReviewsScreen = ({ navigation }) => {
         data: []
 
     })
-    function getgameshelper(offset) {
+    function getgameshelper(offset, query) {
         GetGamesList((gamesRes) => {
             if (gamesRes) {
                 setState(prev => ({ ...prev, loading: false, data: gamesRes }))
             } else {
                 setState(prev => ({ ...prev, loading: false }))
             }
-        }, offset)
+        }, offset, query)
     }
 
     useEffect(() => {
-        getgameshelper(0);
+        getgameshelper(false, {});
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
             <View style={{ padding: RFValue(10) }}>
-                <AppSearchBar onChangeText={(val) => { setState(prev => ({ ...prev, searchTerm: val })) }} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
+                <AppSearchBar onChangeText={(val) => {
+                    let tempObj = {
+                        from: state.releaseDate === 'Newest' ? GetLastMonthStartOf()
+                            : state.releaseDate === 'Past week' ? GetLastWeekStartOf()
+                                : state.releaseDate === 'Past month' ? GetLastMonthStartOf()
+                                    : state.releaseDate === 'Past year' ? GetLastYearStartOf()
+                                        : GetLastYearStartOf(),
+                        to: state.releaseDate === 'Newest' ? GetCurrentDate()
+                            : state.releaseDate === 'Past week' ? GetLastWeekEndOf()
+                                : state.releaseDate === 'Past month' ? GetLastMonthEndOf()
+                                    : state.releaseDate === 'Past year' ? GetLastYearEndOf()
+                                        : GetCurrentDate(),
+                    }
+                    if (state.selectedConsoleTypes.length > 0)
+                        tempObj["console"] = state.selectedConsoleTypes
+
+                    if (state.selectedGenreTypes.length > 0)
+                        tempObj["genre"] = state.selectedGenreTypes
+
+                    if (val)
+                        tempObj["search"] = val
+                    getgameshelper(false, tempObj)
+                    setState(prev => ({ ...prev, searchTerm: val }))
+                }} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
             </View>
             {state.loading ?
                 <AppLoadingView />
@@ -89,7 +112,7 @@ const ReviewsScreen = ({ navigation }) => {
                     }}>
                         <View style={{ borderBottomWidth: 0.4, borderBottomColor: AppTheme.colors.lightGrey, paddingBottom: RFValue(15) }}>
                             <AppText size={2} >Console:</AppText>
-                            <AppText size={2} color={AppTheme.colors.primary} style={{ paddingTop: RFValue(10) }}>{state.selectedConsoleTypes.length > 0 ? state.selectedConsoleTypes.map(ii => ii + '; ') : "All"}</AppText>
+                            <AppText size={2} color={AppTheme.colors.primary} style={{ paddingTop: RFValue(10) }}>{state.selectedConsoleTypes.length > 0 ? state.selectedConsoleTypes.map(ii => ii + '; ') : "Select Console"}</AppText>
                         </View>
                     </TouchableOpacity>
                     {state.visibleFilter === 'console' ?
@@ -115,6 +138,28 @@ const ReviewsScreen = ({ navigation }) => {
                                             tempArr.push(item.name)
                                         }
                                         setState(prev => ({ ...prev, selectedConsoleTypes: tempArr }))
+                                        let tempObj = {
+                                            from: state.releaseDate === 'Newest' ? GetLastMonthStartOf()
+                                                : state.releaseDate === 'Past week' ? GetLastWeekStartOf()
+                                                    : state.releaseDate === 'Past month' ? GetLastMonthStartOf()
+                                                        : state.releaseDate === 'Past year' ? GetLastYearStartOf()
+                                                            : GetLastYearStartOf(),
+                                            to: state.releaseDate === 'Newest' ? GetCurrentDate()
+                                                : state.releaseDate === 'Past week' ? GetLastWeekEndOf()
+                                                    : state.releaseDate === 'Past month' ? GetLastMonthEndOf()
+                                                        : state.releaseDate === 'Past year' ? GetLastYearEndOf()
+                                                            : GetCurrentDate(),
+                                        }
+                                        if (tempArr.length > 0)
+                                            tempObj["console"] = tempArr
+
+                                        if (state.selectedGenreTypes.length > 0)
+                                            tempObj["genre"] = state.selectedGenreTypes
+
+                                        if (state.searchTerm)
+                                            tempObj["search"] = state.searchTerm
+                                        getgameshelper(false, tempObj)
+
                                         AppLogger('', state.selectedConsoleTypes)
                                     }} size={20} label={item.name} />
                                 </View>
@@ -125,7 +170,7 @@ const ReviewsScreen = ({ navigation }) => {
                     }}>
                         <View style={{ borderBottomWidth: 0.4, borderBottomColor: AppTheme.colors.lightGrey, paddingVertical: RFValue(15) }}>
                             <AppText size={2} >Genre:</AppText>
-                            <AppText size={2} color={AppTheme.colors.primary} style={{ paddingTop: RFValue(10) }}>{state.selectedGenreTypes.length > 0 ? state.selectedGenreTypes.map(ii => ii + '; ') : "All"}</AppText>
+                            <AppText size={2} color={AppTheme.colors.primary} style={{ paddingTop: RFValue(10) }}>{state.selectedGenreTypes.length > 0 ? state.selectedGenreTypes.map(ii => ii + '; ') : "Select Genre"}</AppText>
                         </View>
                     </TouchableOpacity>
                     {state.visibleFilter === 'genre' ?
@@ -151,6 +196,30 @@ const ReviewsScreen = ({ navigation }) => {
                                             tempArr.push(item.name)
                                         }
                                         setState(prev => ({ ...prev, selectedGenreTypes: tempArr }))
+
+
+                                        let tempObj = {
+                                            from: state.releaseDate === 'Newest' ? GetLastMonthStartOf()
+                                                : state.releaseDate === 'Past week' ? GetLastWeekStartOf()
+                                                    : state.releaseDate === 'Past month' ? GetLastMonthStartOf()
+                                                        : state.releaseDate === 'Past year' ? GetLastYearStartOf()
+                                                            : GetLastYearStartOf(),
+                                            to: state.releaseDate === 'Newest' ? GetCurrentDate()
+                                                : state.releaseDate === 'Past week' ? GetLastWeekEndOf()
+                                                    : state.releaseDate === 'Past month' ? GetLastMonthEndOf()
+                                                        : state.releaseDate === 'Past year' ? GetLastYearEndOf()
+                                                            : GetCurrentDate(),
+                                        }
+                                        if (state.selectedConsoleTypes.length > 0)
+                                            tempObj["console"] = state.selectedConsoleTypes
+
+                                        if (tempArr.length > 0)
+                                            tempObj["genre"] = tempArr
+
+                                        if (state.searchTerm)
+                                            tempObj["search"] = state.searchTerm
+                                        getgameshelper(false, tempObj)
+
                                         AppLogger('', state.selectedGenreTypes)
                                     }} size={20} label={item.name} />
                                 </View>
@@ -180,6 +249,29 @@ const ReviewsScreen = ({ navigation }) => {
                                 <View style={{ flex: 1, paddingVertical: RFValue(6) }}>
                                     <AppRadioButton val={state.releaseDate === item.name} onPress={() => {
                                         setState(prev => ({ ...prev, releaseDate: item.name }))
+
+                                        let tempObj = {
+                                            from: item.name === 'Newest' ? GetLastMonthStartOf()
+                                                : item.name === 'Past week' ? GetLastWeekStartOf()
+                                                    : item.name === 'Past month' ? GetLastMonthStartOf()
+                                                        : item.name === 'Past year' ? GetLastYearStartOf()
+                                                            : GetLastYearStartOf(),
+                                            to: item.name === 'Newest' ? GetCurrentDate()
+                                                : item.name === 'Past week' ? GetLastWeekEndOf()
+                                                    : item.name === 'Past month' ? GetLastMonthEndOf()
+                                                        : item.name === 'Past year' ? GetLastYearEndOf()
+                                                            : GetCurrentDate(),
+                                        }
+                                        if (state.selectedConsoleTypes.length > 0)
+                                            tempObj["console"] = state.selectedConsoleTypes
+
+                                        if (state.selectedGenreTypes.length > 0)
+                                            tempObj["genre"] = state.selectedGenreTypes
+
+                                        if (state.searchTerm)
+                                            tempObj["search"] = state.searchTerm
+                                        getgameshelper(false, tempObj)
+
                                     }} size={20} label={item.name} />
                                 </View>
                             )} />

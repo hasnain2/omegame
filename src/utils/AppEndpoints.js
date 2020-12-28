@@ -34,7 +34,7 @@ const EndPoints = {
     GET_COMMENT_REPLIES: BASE_URL + 'comments/replies?', // gett comment replies
 
     //-----GAMES AND REVIEWS------
-    GET_GAMES_LIST: BASE_URL + 'games',
+    GET_GAMES_LIST: BASE_URL + 'games/list',
     GET_GAME_REVIEWS: BASE_URL + 'games/reviews?gameId=', // get specific game reviews by gameID
     POST_GAME_REVIEW: BASE_URL + 'games/action/review', // post review for a game
 

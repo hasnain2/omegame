@@ -1,13 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, Platform, View } from 'react-native';
+import { Dimensions, FlatList, Platform, RefreshControl, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppTheme } from '../config';
 import { AppBlurView } from './AppBlurView';
 import { AppBoxCard } from './AppBoxCard';
+import { AppLoadingView } from './AppLoadingView';
 import { AppModal } from './AppModal';
+import { AppNoDataFound } from './AppNoDataFound';
 import { AppVideoPlayer } from './AppVideoPlayer';
 import { PostPoolBottomBar } from './PostPoolBottomBar';
 import { PostPoolTopBar } from './PostPoolTopBar';
@@ -16,7 +18,7 @@ let currentItemBeingUpdated = 0;
 const { height, width } = Dimensions.get('screen')
 let POST_DATA = null;
 const NUMBER_OF_COLUMNS = 3;
-const AppPostsListingsGrid = ({ navigation, data, style, }) => {
+const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, loadMore }) => {
     const PADDING = RFValue(2);
     const CARD_SIZE = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(2))
 
@@ -54,6 +56,12 @@ const AppPostsListingsGrid = ({ navigation, data, style, }) => {
 
     return (
         <View style={[{ flex: 1, paddingTop: RFValue(10), backgroundColor: AppTheme.colors.background }, style ? style : null]}>
+            {!loading && data.length < 1 ?
+                <AppNoDataFound />
+                : null}
+            {loading ?
+                <AppLoadingView />
+                : null}
             <FlatList
                 data={data}
                 numColumns={NUMBER_OF_COLUMNS}
@@ -68,6 +76,23 @@ const AppPostsListingsGrid = ({ navigation, data, style, }) => {
                 keyboardShouldPersistTaps={'always'}
                 // onViewableItemsChanged={onViewRef.current}
                 // viewabilityConfig={viewConfigRef.current}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => {
+                            if (loadMore)
+                                loadMore(false, true)
+                        }}
+                    />
+                }
+
+                onEndReached={() => {
+                    if (loadMore) {
+                        loadMore(data[data.length - 1]?._id, false)
+                    }
+                }}
+                onEndReachedThreshold={0.5}
 
                 keyExtractor={ii => ii._id + ''}
                 renderItem={({ item, index }) => (

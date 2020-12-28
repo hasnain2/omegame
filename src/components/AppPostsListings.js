@@ -1,10 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
+import { AppLoadingView } from './AppLoadingView';
+import { AppNoDataFound } from './AppNoDataFound';
 import { PoolCard } from './PoolCard';
 import { PostCard } from './PostCard';
 
-const AppPostsListings = ({ navigation, data, style, loadMore, refreshing, autoPlay = true }) => {
+const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshing, autoPlay = true }) => {
     let [state, setState] = useState({
         showMenu: '',
         currentItemIndex: 0,
@@ -36,14 +38,15 @@ const AppPostsListings = ({ navigation, data, style, loadMore, refreshing, autoP
 
     return (
         <View style={[{ flex: 1, backgroundColor: 'black' }, style ? style : null]}>
+            {!loading && data.length < 1 ?
+                <AppNoDataFound />
+                : null}
+
+            {loading ?
+                <AppLoadingView />
+                : null}
             <FlatList
                 nestedScrollEnabled={true}
-                // onScroll={(e) => {
-                //     if (e?.nativeEvent?.contentOffset?.y) {
-                //         e.persist();
-                //         scrollPosition ? scrollPosition({ scroll: e?.nativeEvent?.contentOffset?.y, index: state.currentItemIndex }) : null
-                //     }
-                // }}
                 data={data}
                 refreshControl={
                     <RefreshControl

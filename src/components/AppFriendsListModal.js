@@ -27,18 +27,18 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
     })
     let friends = useSelector(state => state.root.friends)
     let disp = useDispatch();
-    function getfriendshelper(cursor) {
+    function getfriendshelper(cursor, searchQuery) {
         GerUserListByType((response) => {
             if (response) {
                 disp(setFriends(response))
                 setState(prev => ({ ...prev, loading: false }));
             } else
                 setState(prev => ({ ...prev, loading: false }));
-        }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND)
+        }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND, cursor, searchQuery)
     }
 
     useEffect(() => {
-        getfriendshelper(0)
+        getfriendshelper(false, '')
     }, [])
     return (
         <AppModal show={show} toggle={toggle}>
@@ -55,6 +55,7 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
 
                 <View style={{ paddingHorizontal: RFValue(20) }}>
                     <AppSearchBar hideFilter={true} onChangeText={(val) => {
+                        getfriendshelper(false, val ? ('&search=' + val) : '')
                         setState(prev => ({ ...prev, searchTerm: val }))
                     }} />
                 </View>

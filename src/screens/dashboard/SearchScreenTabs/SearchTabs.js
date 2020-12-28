@@ -4,60 +4,95 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
 import { ICON_ADD_FRIEND, ICON_PHOTO, ICON_TEXT } from '../../../../assets/icons';
 import { AppPostsListings, AppPostsListingsGrid, AppUserListingWithFollowButtons } from '../../../components';
 import { AppTheme } from '../../../config';
-import { GetAllTrendingUsers, GetExploreMediaOnlyPosts, GetExplorePosts, GetMediaOnlyPosts } from '../../../services';
-import { AppLogger } from '../../../utils/AppHelperMethods';
+import { GetAllTrendingUsers, GetExploreMediaOnlyPosts, GetExplorePosts } from '../../../services';
+import { AppLogger, RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
 const Tab = createMaterialTopTabNavigator();
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
-const ICON_SIZE = RFValue(36)
+const ICON_SIZE = RFValue(36);
+
+let cursorArrPosts = [];
+let cursorArrMedia = [];
+let cursorArrUsers = [];
 const SearchTabs = ({ navigation, query }) => {
     // query = query.replaceAll(':', "%")
     AppLogger('----QUERY----', query)
     let [state, setState] = useState({
         loading: false,
+        loadingPosts: true, refreshingPosts: false,
+        loadingMedia: true, refreshingMedia: false,
+        loadingAllUsers: true, refreshingAllUsers: false,
         mediaPosts: [],
         allPosts: [],
         usersList: []
     });
 
     function getexploremediaonlypostshelper(cursor, searchQuery) {
-        GetExploreMediaOnlyPosts((postResponse) => {
-            if (postResponse) {
-                setState(prev => ({ ...prev, loading: false, mediaPosts: postResponse }))
-            } else {
-                setState(prev => ({ ...prev, loading: false }))
-            }
-        }, cursor, searchQuery)
+        if (!cursor)
+            cursorArrMedia = []
+
+        if (!cursorArrMedia.includes(cursor)) {
+            GetExploreMediaOnlyPosts((postResponse) => {
+                if (postResponse && postResponse.length > 0) {
+                    let tempData = postResponse
+                    setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false, mediaPosts: RemoveDuplicateObjectsFromArray(tempData) }))
+                } else {
+                    setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false }))
+                }
+            }, cursor, searchQuery);
+            cursorArrMedia.push(cursor)
+        } else {
+            setState(prev => ({ ...prev, refreshingMedia: false }))
+        }
     }
 
     function getexplorepostshelper(cursor, searchQuery) {
-        GetExplorePosts((postResponse) => {
-            if (postResponse) {
-                setState(prev => ({ ...prev, loading: false, allPosts: postResponse }))
-            } else {
-                setState(prev => ({ ...prev, loading: false }))
-            }
-        }, cursor, searchQuery)
+        if (!cursor)
+            cursorArrPosts = []
+
+        if (!cursorArrPosts.includes(cursor)) {
+            GetExplorePosts((postResponse) => {
+                if (postResponse && postResponse.length > 0) {
+                    let tempData = postResponse
+                    setState(prev => ({ ...prev, loadingPosts: false, refreshingPosts: false, loading: false, allPosts: RemoveDuplicateObjectsFromArray(tempData) }))
+                } else {
+                    setState(prev => ({ ...prev, loadingPosts: false, refreshingPosts: false, loading: false }))
+                }
+            }, cursor, searchQuery);
+
+            cursorArrPosts.push(cursor)
+        } else {
+            setState(prev => ({ ...prev, refreshingPosts: false }))
+        }
     }
 
     function getalltrendingusers(cursor, searchQuery) {
         let newQuery = searchQuery.split('&')
         let newQuery2 = newQuery.find(ii => ii.includes('search'));
+        if (!cursor)
+            cursorArrPosts = []
 
-        GetAllTrendingUsers((postResponse) => {
-            if (postResponse) {
-                setState(prev => ({ ...prev, loading: false, usersList: postResponse }))
-            } else {
-                setState(prev => ({ ...prev, loading: false }))
-            }
-        }, cursor, newQuery2)
+        if (!cursorArrUsers.includes(cursor)) {
+            GetAllTrendingUsers((postResponse) => {
+                if (postResponse && postResponse.length > 0) {
+                    let tempData = postResponse;
+                    setState(prev => ({ ...prev, loadingAllUsers: false, loading: false, refreshingAllUsers: false, usersList: RemoveDuplicateObjectsFromArray(tempData) }))
+                } else {
+                    setState(prev => ({ ...prev, loadingAllUsers: false, loading: false, refreshingAllUsers: false, }))
+                }
+            }, cursor, newQuery2)
+
+        } else {
+            setState(prev => ({ ...prev, refreshingPosts: false }))
+        }
     }
 
     useEffect(() => {
-
+        cursorArrPosts = [];
+        cursorArrMedia = [];
+        cursorArrUsers = [];
         AppLogger('--------QUERY-------\n', query)
         getexploremediaonlypostshelper(false, query)
         getexplorepostshelper(false, query)
@@ -99,21 +134,58 @@ const SearchTabs = ({ navigation, query }) => {
             <Tab.Screen name="TabPosts"  >
                 {(props) => (
                     <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
-                        <AppPostsListings {...props} data={state.allPosts} style={{ backgroundColor: AppTheme.colors.background }} />
+                        <AppPostsListings {...props}
+                            data={state.allPosts}
+                            loading={state.loadingPosts}
+                            refreshing={state.refreshingPosts}
+                            // loadMore={(cursor, refreshControl) => {
+                            //     if (refreshControl) {
+                            //         setState(prev => ({ ...prev, refreshingPosts: true }));
+                            //         getexplorepostshelper(false, query)
+                            //     } else {
+                            //         getexplorepostshelper(cursor, query)
+                            //     };
+                            // }}
+                            style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}
             </Tab.Screen>
             <Tab.Screen name="TabMedia"  >
                 {(props) => (
                     <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
-                        <AppPostsListingsGrid {...props} data={state.mediaPosts} style={{ backgroundColor: AppTheme.colors.background }} />
+                        <AppPostsListingsGrid {...props}
+                            data={state.mediaPosts}
+                            loading={state.loadingMedia}
+                            refreshing={state.refreshingMedia}
+                            // loadMore={(cursor, refreshControl) => {
+                            //     if (refreshControl) {
+                            //         setState(prev => ({ ...prev, refreshingMedia: true }));
+                            //         getexploremediaonlypostshelper(false, query)
+                            //     } else {
+                            //         getexploremediaonlypostshelper(cursor, query)
+                            //     };
+                            // }}
+                            style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}
             </Tab.Screen>
             <Tab.Screen name="TabUsers"  >
                 {(props) => (
                     <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
-                        <AppUserListingWithFollowButtons data={state.usersList} {...props} style={{ backgroundColor: AppTheme.colors.background }} />
+                        <AppUserListingWithFollowButtons
+                            {...props}
+                            data={state.usersList}
+                            loading={state.loadingAllUsers}
+                            refreshing={state.refreshingAllUsers}
+                            // loadMore={(cursor, refreshControl) => {
+                            //     if (refreshControl) {
+                            //         setState(prev => ({ ...prev, refreshingAllUsers: true }));
+                            //         getalltrendingusers(false, query)
+                            //     } else {
+                            //         getalltrendingusers(cursor, query)
+                            //     };
+                            // }}
+                            style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}
             </Tab.Screen>

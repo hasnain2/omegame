@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { DEFAULT_USER_PIC } from '../../assets/images';
@@ -10,11 +10,13 @@ import { ActionsOnUsers } from '../services';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
 import { largeNumberShortify } from '../utils/AppHelperMethods';
 import { AppGradientContainer } from './AppGradientContainer';
+import { AppLoadingView } from './AppLoadingView';
+import { AppNoDataFound } from './AppNoDataFound';
 import { AppText } from './AppText';
 import { IsUserVerifiedCheck } from './IsUserVerifiedCheck';
 import { UserAvatar } from './UserAvatar';
 
-const AppUserListingWithFollowButtons = ({ navigation, data, style }) => {
+const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, refreshing, loadMore }) => {
     let { user } = useSelector(state => state.root);
     let [state, setState] = useState({
         usersData: data
@@ -35,6 +37,12 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style }) => {
     }, [data])
     return (
         <View style={[{ flex: 1, backgroundColor: AppTheme.colors.background }, style ? style : null]}>
+            {!loading && state.usersData.length < 1 ?
+                <AppNoDataFound />
+                : null}
+            {loading ?
+                <AppLoadingView />
+                : null}
             <FlatList
                 data={state.usersData || MOCKUP_POSTS}
                 initialNumToRender={2}
@@ -42,6 +50,23 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style }) => {
                 // removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 // bounces={false}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => {
+                            if (loadMore)
+                                loadMore(false, true)
+                        }}
+                    />
+                }
+
+                onEndReached={() => {
+                    if (loadMore) {
+                        loadMore(state.usersData[state.usersData.length - 1]?._id, false)
+                    }
+                }}
+                onEndReachedThreshold={0.5}
                 keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <View style={{ flexDirection: 'row', borderBottomColor: AppTheme.colors.darkGrey, borderBottomWidth: 1, flex: 1, padding: RFValue(7), alignItems: 'center' }}>

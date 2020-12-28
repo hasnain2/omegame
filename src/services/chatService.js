@@ -2,7 +2,7 @@ import { JSONBodyHelper } from '.';
 import { EndPoints } from '../utils/AppEndpoints';
 import { AppLogger } from '../utils/AppHelperMethods';
 import Interceptor from '../utils/Interceptor';
-const LIMIT = 50;
+const LIMIT = 100;
 function GetInboxList(callback, CURSOR) {
     fetch(EndPoints.GET_INBOX_LIST + '?limit=' + LIMIT + '&cursor=' + CURSOR + '&sort=desc', {
         method: 'GET',

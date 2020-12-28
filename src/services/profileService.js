@@ -98,9 +98,9 @@ const ActionsOnUsers = (callback, id, TYPE) => {
 }
 
 
-const GerUserListByType = (callback, id, TYPE) => {
+const GerUserListByType = (callback, id, TYPE, CURSOR, query) => {
     AppLogger('-----------------FRIENDS FOLLOWERS OR FOLLOWING----------', EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id)
-    fetch(EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id, {
+    fetch(EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id + query, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
     }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {

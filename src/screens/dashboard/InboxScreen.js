@@ -15,6 +15,8 @@ import { store } from '../../redux/store';
 import { GetInboxList } from '../../services';
 import { AppLogger, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
+
+let originalInboxList = [];
 const InboxScreen = ({ navigation, route, }) => {
     let user = useSelector(state => state.root.user)
     let inbox = useSelector(state => state.root.inbox)
@@ -23,11 +25,30 @@ const InboxScreen = ({ navigation, route, }) => {
         loading: false,
         deletionEnabled: '',
         showFriendsListModal: false
-    })
+    });
+
+    const searchText = (e) => {
+        let text = e?.toLowerCase() || ''
+        let inboxx = originalInboxList
+        let filteredName = inboxx.filter((item) => {
+            return (item?.message?.from?.firstName?.toLowerCase().match(text) || item?.message?.from?.userName?.toLowerCase().match(text) || item?.message?.to?.firstName?.toLowerCase().match(text) || item?.message?.to?.userName?.toLowerCase().match(text));
+        })
+        if (!text || text === '') {
+            dipatch(setInbox(originalInboxList));
+        } else if (!Array.isArray(filteredName) && !filteredName.length) {
+            // set no data flag to true so as to render flatlist conditionally
+            dipatch(setInbox([]));
+        } else if (Array.isArray(filteredName)) {
+            dipatch(setInbox(filteredName));
+        }
+    }
+
+
     getinboxlisthelper = (cursor) => {
         GetInboxList((inboxListRes) => {
             if (inboxListRes) {
-                dipatch(setInbox(inboxListRes))
+                dipatch(setInbox(inboxListRes));
+                originalInboxList = inboxListRes
             }
         }, cursor)
     }
@@ -79,7 +100,9 @@ const InboxScreen = ({ navigation, route, }) => {
             </View>
 
             <View style={{ padding: RFValue(15) }}>
-                <AppSearchBar onChangeText={() => { }} hideFilter={true} />
+                <AppSearchBar onChangeText={(val) => {
+                    searchText(val)
+                }} hideFilter={true} />
             </View>
 
             <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{ padding: RFValue(15) }} >MESSAGES:</AppText>
