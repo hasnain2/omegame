@@ -19,12 +19,12 @@ const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BL
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' };
 
 const CustomDrawer = ({ state: { routeNames }, navigation }) => {
-    let user = useSelector(state => state.root.user);
+    let { user } = useSelector(state => state.root);
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <FastImage source={user?.cover ? { uri: user.cover } : BACKGROUND_IMG} style={{ height: LHeight, width: LWidth, }} >
                 <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <UserAvatar corner={user?.corner || ''}  source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={75} />
+                    <UserAvatar corner={user?.corner || ''} color={user?.cornerColor}  source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={75} />
                     <View style={{ flexDirection: 'row', padding: RFValue(15), alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                             <AppGoldCoin />
@@ -73,20 +73,20 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
                     let NAV_NAME = '';
                     if (itm === "Home") {
                         NAV_NAME = ""
-                        ICON = () => <Image source={ICON_HOME} style={ICONSTYLE} />
+                        ICON = () => <Image key={`${indx}key`} source={ICON_HOME} style={ICONSTYLE} />
                     } else if (itm === "UserProfileCustomizeScreen") {
-                        ICON = () => <Image source={ICON_CUSTOMIZE} style={ICONSTYLE} />
+                        ICON = () => <Image key={`${indx}key`} source={ICON_CUSTOMIZE} style={ICONSTYLE} />
                     } else if (itm === "OmegaStore") {
-                        ICON = () => <Image source={ICON_SHOP} style={ICONSTYLE} />
+                        ICON = () => <Image key={`${indx}key`} source={ICON_SHOP} style={ICONSTYLE} />
                     } else if (itm === "UserSavedPosts") {
-                        ICON = () => <Image source={ICON_SAVE_POST} style={ICONSTYLE} />
+                        ICON = () => <Image key={`${indx}key`} source={ICON_SAVE_POST} style={ICONSTYLE} />
                     } else if (itm === "AppSettingsScreen") {
-                        ICON = () => <Image source={ICON_ACCOUNT_SETTINGS} style={ICONSTYLE} />
+                        ICON = () => <Image key={`${indx}key`} source={ICON_ACCOUNT_SETTINGS} style={ICONSTYLE} />
                     } else if (itm === "TermsAndConditions") {
-                        ICON = () => <Image source={ICON_FEEDBACK} style={ICONSTYLE} />
+                        ICON = () => <Image key={`${indx}key`} source={ICON_FEEDBACK} style={ICONSTYLE} />
                     }
                     return (
-                        <TouchableOpacity key={indx + itm} activeOpacity={0.7} onPress={() => {
+                        <TouchableOpacity key={`${indx}key`} activeOpacity={0.7} onPress={() => {
                             navigation.push(NAV_NAME || itm)
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(13) }}>

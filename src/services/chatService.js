@@ -4,10 +4,10 @@ import { AppLogger } from '../utils/AppHelperMethods';
 import Interceptor from '../utils/Interceptor';
 const LIMIT = 100;
 function GetInboxList(callback, CURSOR) {
-    fetch(EndPoints.GET_INBOX_LIST + '?limit=' + LIMIT + '&cursor=' + CURSOR + '&sort=desc', {
+    fetch(`${EndPoints.GET_INBOX_LIST}?limit=${LIMIT}&cursor=${CURSOR}&sort=desc`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------CHAT INBOX RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data || [])
@@ -20,10 +20,10 @@ function GetInboxList(callback, CURSOR) {
 }
 
 function GetChatMessages(callback, CURSOR, friendID) {
-    fetch(EndPoints.GET_CHAT_MESSAGES + '?limit=' + LIMIT + '&cursor=' + CURSOR + '&sort=desc' + '&friendId=' + friendID, {
+    fetch(`${EndPoints.GET_CHAT_MESSAGES}?limit=${LIMIT}&cursor=${CURSOR}&sort=desc&friendId=${friendID}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         if (status === 201 || status === 200) {
             callback(data?.data || [])
         } else
@@ -34,10 +34,10 @@ function GetChatMessages(callback, CURSOR, friendID) {
     });
 }
 function DeleteChat(callback, chatID) {
-    fetch(EndPoints.DELETE_CHAT_MESSAGES + chatID, {
+    fetch(`${EndPoints.DELETE_CHAT_MESSAGES}${chatID}`, {
         method: 'DELETE',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------CHAT DELETE RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)

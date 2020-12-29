@@ -1,3 +1,4 @@
+import { firebase } from '@react-native-firebase/messaging'
 import { JSONBodyHelper } from '.'
 import { resetHomeFeed } from '../redux/reducers/homeFeedSlice'
 import { resetSavedPosts } from '../redux/reducers/savedPostsSlice'
@@ -13,7 +14,7 @@ const LogInUser = (callback, formData) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         if (status === 201 || status === 200) {
             Interceptor.setToken(data?.data?.access_token || "");
             let UserObj = { ...data.data.user, ...data?.data?.user?.profile, token: data.data.access_token, email: formData?.userName };
@@ -40,7 +41,7 @@ const SignUpUser = (callback, formedData) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formedData)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------SIGN UP RESPONSE----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)
@@ -58,7 +59,7 @@ const ForgotPasswordCall = (callback, formedData) => {
     fetch(EndPoints.FORGOT_PASSWORD + '?email=' + formedData, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('---------------FORGOT PASS RES-------------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)
@@ -77,7 +78,7 @@ const ChangePassword = (callback, formedData) => {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formedData)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('---------------CHANGE PASS RES-------------', data)
         if (status === 201 || status === 200) {
             callback(true)
@@ -92,6 +93,8 @@ const ChangePassword = (callback, formedData) => {
 }
 
 const LogOutUser = (callback) => {
+    if (store.getState()?.root?.user?._id)
+        firebase.messaging().unsubscribeFromTopic(store.getState()?.root?.user?._id)
     getData('rememberMe', (dta) => {
         if (dta) {
             removeItemsFromLocalStorage(['user']);

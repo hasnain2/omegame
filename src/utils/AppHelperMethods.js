@@ -3,6 +3,7 @@ import Share from 'react-native-share';
 import Toast from 'react-native-simple-toast';
 import { DEEP_LINK_TYPES } from './AppConstants';
 
+// get numbers like 23.3K 32.1M etc
 const largeNumberShortify = (num) => {
     return Math.abs(num) > 999999 ?
         Math.sign(num) * ((Math.abs(num) / 1000000).toFixed(1)) + ' M'
@@ -11,6 +12,7 @@ const largeNumberShortify = (num) => {
             : Math.sign(num) * Math.abs(num)
 }
 
+// get numbers like 3,32,123
 const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 function AppShowToast(msg) {
@@ -20,6 +22,7 @@ function AppShowToast(msg) {
 var special = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
 var deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
 
+// get number like first, second, third and so on
 function stringifyNumber(n) {
     if (n < 20) return special[n];
     if (n % 10 === 0) return deca[Math.floor(n / 10) - 2] + 'ieth';
@@ -109,23 +112,28 @@ const DynamicLinkHelper = async (navigation, link) => {
 
 const RemoveDuplicateObjectsFromArray = (arrayToProcess) => {
     return arrayToProcess.filter((item, index, self) =>
-        index === self.findIndex((t) => (
-            t._id === item._id
+        index === self?.findIndex((t) => (
+            t?._id === item?._id
         )));
 }
 
 function AppLogger(identifier, msgOrError) {
-    if (__DEV__)
+    if (__DEV__) {
         console.log(identifier, msgOrError)
+    }
 }
 
-const GetLastWeekStartOf = () => moment().subtract(1, 'weeks').startOf('week').toISOString() + '';
-const GetLastWeekEndOf = () => moment().subtract(1, 'weeks').endOf('week').toISOString() + '';
-const GetLastMonthStartOf = () => moment().subtract(1, 'months').startOf('month').toISOString() + '';
-const GetLastMonthEndOf = () => moment().subtract(1, 'months').endOf('month').toISOString() + '';
-const GetLastYearStartOf = () => moment().subtract(1, 'years').startOf('year').toISOString() + '';
-const GetLastYearEndOf = () => moment().subtract(1, 'years').endOf('year').toISOString() + '';
 const GetCurrentDate = () => moment().toISOString() + '';
+
+// Starting date of WEEK , MONTH AND YEAR
+const GetLastWeekStartOf = () => moment().subtract(1, 'weeks').startOf('week').toISOString() + '';
+const GetLastMonthStartOf = () => moment().subtract(1, 'months').startOf('month').toISOString() + '';
+const GetLastYearStartOf = () => moment().subtract(1, 'years').startOf('year').toISOString() + '';
+
+// Ending date of WEEK , MONTH AND YEAR
+const GetLastWeekEndOf = () => moment().subtract(1, 'weeks').endOf('week').toISOString() + '';
+const GetLastMonthEndOf = () => moment().subtract(1, 'months').endOf('month').toISOString() + '';
+const GetLastYearEndOf = () => moment().subtract(1, 'years').endOf('year').toISOString() + '';
 
 export {
     largeNumberShortify,

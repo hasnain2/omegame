@@ -1,11 +1,13 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButton, AppModal, AppRadioButton, AppSearchBar, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
+import { setSettings } from '../../redux/reducers/settingsSlice';
+import { store } from '../../redux/store';
 import { GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 import { SearchTabs } from './SearchScreenTabs/SearchTabs';
@@ -17,7 +19,21 @@ const SearchScreen = ({ route, navigation }) => {
         showFilter: false,
         sortPostBy: 'Best',
         sortPostByTime: 'Newest'
-    })
+    });
+
+    useEffect(() => {
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.background }));
+        });
+        const unsubscribeBlur = navigation.addListener('blur', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
+        });
+
+        return () => {
+            unsubscribeFocus();
+            unsubscribeBlur();
+        }
+    }, [])
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
             <View style={{ padding: RFValue(10), paddingBottom: 0 }}>

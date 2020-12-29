@@ -76,7 +76,7 @@ const CustomizeBackgroundTab = ({ navigation }) => {
                                         storeData('user', tempUser)
                                     }
                                     setState(prev => ({ ...prev, loading: false }))
-                                }, ASSET_TYPES.BACKGROUND, item._id)
+                                }, ASSET_TYPES.BACKGROUND, item._id, false)
                             }}>
                                 <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                     <FastImage source={{ uri: item?.attachment?.url }} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} />

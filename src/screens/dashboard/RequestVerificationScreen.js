@@ -16,7 +16,7 @@ import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 
 const VERIFICATION_INFO = "The verification badge appears next to the name on an account's profile and next to the account name in search results. \n \nAn account may be verified if it is determined to be an account of a notable public figure, celebrity, global brand or entity it represents. \n\nVerified badges must be applied by Omegame, and accounts that use a badge as a part of profile photos, or in any other way that implies verified status, are subject to permanent account suspension."
 const RequestVerificationScreen = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: false,
         imageLoading: false,

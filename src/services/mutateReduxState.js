@@ -68,6 +68,13 @@ const AddAssetBackground = (newBackground) => {
     store.dispatch(setMyAssets(tempBackgrounds));
 }
 
+const AddAssetNickname = (newNickname) => {
+    let tempNicknames = { ...store.getState().root.myAssets };
+    tempNicknames.nicknames = [newNickname, ...tempNicknames.nicknames]
+
+    store.dispatch(setMyAssets(tempNicknames));
+}
+
 const AddAssetCorner = (newCorner) => {
     let tempCorners = { ...store.getState().root.myAssets };
     tempCorners.corners = [newCorner, ...tempCorners.corners];
@@ -76,4 +83,4 @@ const AddAssetCorner = (newCorner) => {
 }
 
 
-export { AddAssetBackground, AddAssetCorner, UpdatePostIsLikedCheck, AddPostToReduxStore, UpdatePostIsSaveCheck, RemovePostFromReduxStore, UpdatePostFromReduxStore, RemovePostsOfUserFromReduxStore }
+export { AddAssetBackground, AddAssetCorner, AddAssetNickname, UpdatePostIsLikedCheck, AddPostToReduxStore, UpdatePostIsSaveCheck, RemovePostFromReduxStore, UpdatePostFromReduxStore, RemovePostsOfUserFromReduxStore }

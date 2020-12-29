@@ -22,7 +22,7 @@ const PoolCard = ({ item, navigation, onMenuPress, bookmarkPress, likePress }) =
             {state.voded ?
                 <View style={{ paddingHorizontal: RFValue(15) }}>
                     {item.options.map((itm, ind) => (
-                        <View style={{ paddingVertical: RFValue(10) }}>
+                        <View key={`${ind}key`} style={{ paddingVertical: RFValue(10) }}>
                             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
                                 <View style={{ flex: 0.16, }}>
                                     <AppText color={AppTheme.colors.lightGrey} size={2}>{itm.votes + "%"}</AppText>
@@ -44,7 +44,7 @@ const PoolCard = ({ item, navigation, onMenuPress, bookmarkPress, likePress }) =
                 <>
                     <View style={{ paddingHorizontal: RFValue(15) }}>
                         {item.options.map((itm, ind) => (
-                            <AppRadioButton key={ind + 'sd'} onPress={() => { setState(prev => ({ ...prev, selectedOption: ind })) }} val={state.selectedOption === ind} size={16} label={itm.label} style={{ paddingVertical: RFValue(10) }} />
+                            <AppRadioButton key={`${ind}sd`} onPress={() => { setState(prev => ({ ...prev, selectedOption: ind })) }} val={state.selectedOption === ind} size={16} label={itm.label} style={{ paddingVertical: RFValue(10) }} />
                         ))}
                     </View>
 

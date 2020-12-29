@@ -12,7 +12,7 @@ function creatPostHelper(callback, formData) {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------CREATE POST RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -66,7 +66,7 @@ const GetHomeFeed = (callback, cursor) => {
     fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         // AppLogger('-----------HOME FEED RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -82,7 +82,7 @@ const GetExplorePosts = (callback, cursor, query) => {
     fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ""}${query ? ('&' + query) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------EXPLORE POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -98,7 +98,7 @@ const GetExploreMediaOnlyPosts = (callback, cursor, query) => {
     fetch(`${EndPoints.HOME_FEED}?mediaOnly=true${query ? ("&" + query) : ""}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------EXPLORE MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -115,7 +115,7 @@ const GetPostsOfSpecificUser = (callback, userID) => {
     fetch(EndPoints.GET_POSTS_OF_SPECIFIC_USER + 'userId=' + userID, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -143,11 +143,7 @@ const DeletePost = (callback, postID) => {
                 fetch(EndPoints.GET_OR_DELETE_POST + postID, {
                     method: 'DELETE',
                     headers: Interceptor.getHeaders()
-                }).then((response) => {
-                    const statusCode = response.status;
-                    const data = response.json();
-                    return Promise.all([statusCode, data]);
-                }).then(([status, data]) => {
+                }).then(JSONBodyHelper).then(([status, data]) => {
                     AppLogger('-----------POST DELETE RESPONSE-----------', JSON.stringify(data))
                     if (status === 201 || status === 200) {
                         callback(true)
@@ -165,7 +161,7 @@ const GetSinglePost = (callback, postID) => {
     fetch(EndPoints.GET_OR_DELETE_POST + postID, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GETTING SINGLE POST BY ID RESPONSE-----------', JSON.stringify(data))
         if ((status === 201 || status === 200) && data?.data) {
             UpdatePostFromReduxStore(data?.data)
@@ -182,7 +178,7 @@ const GetMediaOnlyPosts = (callback, userID) => {
     fetch(`${EndPoints.GET_ONLY_MEDIA_POSTS}${userID ? ("&userId=" + userID) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -199,7 +195,7 @@ const CommentPost = (callback, PAYLOAD) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(PAYLOAD)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------COMMENTING ON POST BY ID RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data)
@@ -216,7 +212,7 @@ const CommentReaction = (callback, commentID, PAYLOAD) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(PAYLOAD)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------REACTION ON COMMENT LIKE ETC RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -232,7 +228,7 @@ const GetCommentsOfPost = (callback, CURSOR, LIMIT, postID) => {
     fetch(EndPoints.COMMENT_POST + (CURSOR ? ('cursor=' + CURSOR + '&') : '') + (LIMIT ? ('&limit=' + LIMIT + '&') : '') + ('postId=' + postID), {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         // AppLogger('-----------GETTING POST COMMENTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data.data)
@@ -248,7 +244,7 @@ const GetCommentsReplies = (callback, CURSOR, LIMIT, parentCommentID) => {
     fetch(EndPoints.GET_COMMENT_REPLIES + (CURSOR ? ('cursor=' + CURSOR + '&') : '') + (LIMIT ? ('&limit=' + LIMIT + '&') : '') + ('parentComment=' + parentCommentID), {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         // AppLogger('-----------GETTING COMMENTS REPLIES RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data.data)
@@ -261,11 +257,11 @@ const GetCommentsReplies = (callback, CURSOR, LIMIT, parentCommentID) => {
 }
 
 const LikePost = (callback, postID, PAYLOAD) => {
-    fetch(EndPoints.LIKE_POST + postID, {
+    fetch(`${EndPoints.LIKE_POST}${postID}`, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(PAYLOAD)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------LIKE POST RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -278,11 +274,11 @@ const LikePost = (callback, postID, PAYLOAD) => {
 }
 
 const SharePost = (callback, postID, payload) => {
-    fetch(EndPoints.SHARE_POST + postID, {
+    fetch(`${EndPoints.SHARE_POST}${postID}`, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(payload)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------SHARE POST RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -295,11 +291,11 @@ const SharePost = (callback, postID, payload) => {
 }
 
 const FollowPost = (callback, postID, payload) => {
-    fetch(EndPoints.FOLLOW_POST + postID, {
+    fetch(`${EndPoints.FOLLOW_POST}${postID}`, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(payload)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------FOLLOW POST RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -313,11 +309,11 @@ const FollowPost = (callback, postID, payload) => {
 
 
 const SaveOrBookMarkPost = (callback, postID, PAYLOAD) => { // bookmark: true 
-    fetch(EndPoints.BOOKMARK_POST + postID, {
+    fetch(`${EndPoints.BOOKMARK_POST}${postID}`, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(PAYLOAD)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------SAVE OR BOOKMARK POST RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -333,7 +329,7 @@ const GetBookmarkPosts = (callback, CURSOR) => {
     fetch(`${EndPoints.GET_BOOKMARKED_OR_SAVED_POST}?limit=${LIMIT}${CURSOR ? ("&cursor=" + CURSOR) : ""}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('----------- GET SAVE OR BOOKMARK POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback({ data: data?.data?.data || false, cursor: data?.data?.cursor || false })

@@ -35,7 +35,7 @@ const UserProfileReviews = ({ navigation, userID }) => {
                 renderItem={({ item, index }) => (
                     <View style={{ borderBottomColor: AppTheme.colors.lightGrey, borderBottomWidth: 0.5, padding: RFValue(15) }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <UserAvatar corner={item?.corner || ''} source={{ uri: item.gameImage }} size={55} />
+                            <UserAvatar corner={item?.corner || ''} color={item?.cornerColor} source={{ uri: item.gameImage }} size={55} />
                             <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
                                 <AppText bold={true} size={2}>{item?.name || item?.gameName || ''}</AppText>
                                 <AppText color={AppTheme.colors.lightGrey} size={2}>{item.forEntity}</AppText>

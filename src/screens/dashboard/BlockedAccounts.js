@@ -11,7 +11,7 @@ import { AppTheme } from '../../config';
 import { ActionsOnUsers, GerUserListByType } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
 const BlockedAccounts = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: true,
         data: []
@@ -45,7 +45,7 @@ const BlockedAccounts = ({ navigation, route, }) => {
                     keyExtractor={ii => (ii?._id || '') + 'you'}
                     renderItem={({ item, index }) => (
                         <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: AppTheme.colors.lightGrey, borderBottomWidth: 0.5, padding: RFValue(20) }}>
-                            <UserAvatar corner={item?.corner || ''}  source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
+                            <UserAvatar corner={item?.corner || ''} color={item?.cornerColor} source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
                             <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                                     <AppText bold={true} size={2} >{item?.firstName || item?.userName} </AppText>

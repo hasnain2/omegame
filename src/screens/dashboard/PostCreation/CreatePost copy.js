@@ -46,7 +46,7 @@ const CreatePost = ({ navigation, route }) => {
                 {state.postTypeIsPool ?
                     <View style={{ padding: RFValue(10) }}>
                         {state.answersArr.map((item, index) => (
-                            <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10) }}>
+                            <View key={`${index}key`} style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10) }}>
                                 <AppRadioButton size={15} val={false} onPress={() => { }} />
                                 <TextInput placeholder={CapitalizeFirstLetter(stringifyNumber(index) || '') + " answer"}
                                     value={state.answersArr[index]}

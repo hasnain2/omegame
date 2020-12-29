@@ -5,35 +5,55 @@ import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../../components";
 import { AppTheme } from '../../../config';
 import { MOCK_CORNERS } from '../../../mockups/Mockups';
+import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
+import { setUser } from '../../../redux/reducers/userSlice';
+import { store } from '../../../redux/store';
+import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
+import { ASSET_TYPES, COLORS, COLOR_BUBBLE_SIZE } from '../../../utils/AppConstants';
+import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
 import { AntDesign } from '../../../utils/AppIcons';
+import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 2;
 
 const PADDING = RFValue(3);
 const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
-const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
-const BUBBLE_SIZE = RFValue(25);
+
+
 
 const CustomizeNicknameTab = ({ navigation }) => {
-    let { user } = useSelector(state => state.root)
+    let { user, myAssets } = useSelector(state => state.root)
     let [state, setState] = React.useState({
         isModalVisible: null,
         selectedColor: '#ff1a4a'
     })
-  
+
+    function getmyassetshelper() {
+        GetMyAssets((nicknamesResponse) => {
+            if (nicknamesResponse) {
+                store.dispatch(setMyAssets({ nicknames: RemoveDuplicateObjectsFromArray(nicknamesResponse) }));
+            }
+            setState(prev => ({ ...prev, loading: false }))
+        }, ASSET_TYPES.NICKNAME)
+    }
+
+    React.useEffect(() => {
+        getmyassetshelper()
+    }, [])
+
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <View style={{ flexDirection: 'row', padding: RFValue(10) }}>
                 {/* <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} /> */}
                 <ScrollView horizontal={true}>
-                    {COLORS.map((itm) => (
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
-                            <View style={{ height: BUBBLE_SIZE, width: BUBBLE_SIZE, margin: RFValue(10), backgroundColor: itm, borderRadius: 90, }} />
+                    {COLORS.map((itm, indx) => (
+                        <TouchableOpacity key={`${indx}key`} activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
+                            <View style={{ height: COLOR_BUBBLE_SIZE, width: COLOR_BUBBLE_SIZE, margin: RFValue(10), backgroundColor: itm, borderRadius: 90, }} />
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
             </View>
             <FlatList
-                data={MOCK_CORNERS}
+                data={myAssets.nicknames}
                 numColumns={NUMBER_OF_COLUMNS}
 
                 initialNumToRender={2}
@@ -45,11 +65,21 @@ const CustomizeNicknameTab = ({ navigation }) => {
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                            // navigation.navigate("OmegaStore", { name: "Corners" })
+                            setState(prev => ({ ...prev, loading: true }))
+                            PromtToSetAsDefault((setNicknameresponse) => {
+                                if (setNicknameresponse) {
+                                    let tempUser = { ...store.getState().root.user };
+                                    tempUser.nickName = item?.nickName
+                                    tempUser.nickNameColor = state.selectedColor
+                                    store.dispatch(setUser(tempUser));
+                                    storeData('user', tempUser)
+                                }
+                                setState(prev => ({ ...prev, loading: false }))
+                            }, ASSET_TYPES.NICKNAME, item._id, state.selectedColor)
                         }}>
                             <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                 <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(20), alignItems: 'center' }}>
-                                    <AppText size={3} color={state.selectedColor}>{user?.userName || ''}</AppText>
+                                    <AppText size={3} color={state.selectedColor}>{item?.nickName || ''}</AppText>
                                 </View>
                             </View>
                         </TouchableOpacity>

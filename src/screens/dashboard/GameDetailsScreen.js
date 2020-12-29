@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Linking, ScrollView, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FlatList } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -54,7 +54,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', position: 'absolute', backgroundColor: 'rgba(0,0,0,0.5)', top: 0, left: 0, right: 0, zIndex: 10 }}>
                 <AppBackButton navigation={navigation} />
                 <TouchableOpacity activeOpacity={0.7} style={{ flex: 1 }} onPress={() => {
-                    setState(prev => ({ ...prev, showBuyModal: true }));
+                    Linking.openURL(gameData?.referralLink || '')
                 }}>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={ICON_SHOP} style={{ height: RFValue(30), width: RFValue(30), tintColor: AppTheme.colors.yellow }} />
@@ -67,7 +67,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
                     <FastImage source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                         <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <UserAvatar corner={gameData?.corner || ''}  source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} size={140} />
+                            <UserAvatar corner={gameData?.corner || ''} color={false} source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} size={140} />
 
                             <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingVertical: RFValue(10), justifyContent: 'space-between', }}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -151,12 +151,14 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                         renderItem={({ item, index }) => (
                             <View style={{ padding: RFValue(15), borderBottomWidth: 0.3, borderBottomColor: AppTheme.colors.lightGrey }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: RFValue(15) }}>
-                                    <UserAvatar corner={item?.createdBy?.corner || ''}  onPress={() => {
-                                        navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+                                    <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} onPress={() => {
+                                        if (item?.createdBy?._id)
+                                            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
                                     }} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : false} />
 
                                     <TouchableOpacity activeOpacity={0.9} style={{ flex: 1, justifyContent: 'center' }} onPress={() => {
-                                        navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+                                        if (item?.createdBy?._id)
+                                            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
                                     }}>
                                         <View style={{ paddingLeft: RFValue(14) }} >
                                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>

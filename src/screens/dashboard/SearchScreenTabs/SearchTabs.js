@@ -97,6 +97,7 @@ const SearchTabs = ({ navigation, query }) => {
         getexploremediaonlypostshelper(false, query)
         getexplorepostshelper(false, query)
         getalltrendingusers(false, query)
+
     }, [query])
     return (
         <Tab.Navigator

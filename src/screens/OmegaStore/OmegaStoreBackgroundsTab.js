@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../components';
 import { AppTheme } from '../../config/index';
 import { AddAssetBackground } from '../../services';
@@ -14,7 +15,8 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
     let [state, setState] = React.useState({
         isModalVisible: null,
         data: []
-    })
+    });
+    let { myAssets } = useSelector(state => state.root)
     const PADDING = RFValue(3);
     const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
     const CARD_HEIGHT = CARD_WIDTH + RFValue(50);
@@ -31,6 +33,7 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
         getallassetshelper();
     }, [])
 
+    const isPurchased = state?.isModalVisible?.isPurchased || !!myAssets?.backgrounds?.find(ii => ii?._id === state?.isModalVisible?._id)
     return (
         <View style={{ backgroundColor: 'black', flex: 1, }}>
             <FlatList
@@ -78,16 +81,21 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                                     <AppText size={2}>  x  {state.isModalVisible.priceInCoins}</AppText>
                                 </View>
                                 <AppButtonPlane onPress={() => {
-                                    setState(prev => ({ ...prev, isModalVisible: null, loading: true }));
-                                    BuyAsset((buyAssetRes) => {
-                                        setState(prev => ({ ...prev, loading: false }));
-                                        if (buyAssetRes) {
-                                            AddAssetBackground(state.isModalVisible)
-                                        } else {
-                                            AppShowToast("You dont have enough coins")
-                                        }
-                                    }, state.isModalVisible?._id)
-                                }} label={"BUY"} />
+
+                                    if (!isPurchased) {
+                                        setState(prev => ({ ...prev, isModalVisible: null, loading: true }));
+                                        BuyAsset((buyAssetRes) => {
+                                            setState(prev => ({ ...prev, loading: false }));
+                                            if (buyAssetRes) {
+                                                AddAssetBackground(state.isModalVisible)
+                                            } else {
+                                                AppShowToast("You dont have enough coins")
+                                            }
+                                        }, state.isModalVisible?._id)
+                                    } else {
+                                        AppShowToast("You already own this background");
+                                    }
+                                }} label={isPurchased ? "PURCHASED" : "BUY"} />
                             </View>
                         </View>
                     </View>

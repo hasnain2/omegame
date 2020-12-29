@@ -4,26 +4,44 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../components";
 import { AppTheme } from '../../config';
-import { MOCK_CORNERS } from '../../mockups/Mockups';
-import { AntDesign, FontAwesome } from '../../utils/AppIcons';
+import { AddAssetNickname } from '../../services';
+import { BuyAsset, GetAllAssets } from '../../services/customizationService';
+import { ASSET_TYPES } from '../../utils/AppConstants';
+import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AntDesign } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const OmegaStoreNicknameTab = ({ navigation }) => {
-    let user = useSelector(state => state.root.user)
+    let { user, myAssets } = useSelector(state => state.root);
     let [state, setState] = React.useState({
         isModalVisible: null,
-        selectedColor: '#ff1a4a'
+        selectedColor: '#ff1a4a',
+        data: []
     })
     const PADDING = RFValue(3);
     const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
     const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7']
     const BUBBLE_SIZE = RFValue(25);
+
+
+    function getallassetshelper() {
+        GetAllAssets((nicknamesResponse) => {
+            if (nicknamesResponse) {
+                setState(prev => ({ ...prev, data: nicknamesResponse }))
+            }
+        }, ASSET_TYPES.NICKNAME)
+    }
+    React.useEffect(() => {
+        getallassetshelper();
+    }, [])
+
+    const isPurchased = state.isModalVisible?.isPurchased || !!myAssets?.nicknames?.find(ii => ii?._id === state?.isModalVisible?._id)
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <View style={{ flexDirection: 'row', padding: RFValue(10) }}>
                 {/* <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} /> */}
                 <ScrollView horizontal={true}>
-                    {COLORS.map((itm) => (
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
+                    {COLORS.map((itm, indx) => (
+                        <TouchableOpacity key={`${indx}key`} activeOpacity={0.7} onPress={() => setState(prev => ({ ...prev, selectedColor: itm }))}>
                             <View style={{ height: BUBBLE_SIZE, width: BUBBLE_SIZE, margin: RFValue(10), backgroundColor: itm, borderRadius: 90, }} />
                         </TouchableOpacity>
                     ))}
@@ -31,7 +49,7 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
             </View>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={MOCK_CORNERS}
+                    data={state.data}
                     numColumns={NUMBER_OF_COLUMNS}
 
                     initialNumToRender={2}
@@ -49,15 +67,15 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
                                     {/* <FastImage source={item.image} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} /> */}
 
                                     <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(30), alignItems: 'center' }}>
-                                        <AppText size={2} color={AppTheme.colors.lightGrey}>Username</AppText>
-                                        <AppText size={3} color={state.selectedColor}>{user?.userName}</AppText>
+                                        <AppText size={2} color={AppTheme.colors.lightGrey}>{user?.userName}</AppText>
+                                        <AppText size={3} color={state.selectedColor}>{item?.nickName}</AppText>
                                     </View>
                                     <View style={{ justifyContent: 'center', alignItems: 'center', borderTopWidth: 1, borderTopColor: AppTheme.colors.lightGrey, padding: RFValue(15) }}>
-                                        <AppText size={2} >{"ColorName-" + index}</AppText>
+                                        <AppText size={2} >{item?.name}</AppText>
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: RFValue(5) }}>
                                             <AppGoldCoin />
-                                            <AppText size={2}>  x  {item.coins}</AppText>
+                                            <AppText size={2}>  x  {item.priceInCoins}</AppText>
                                         </View>
 
                                     </View>
@@ -84,7 +102,23 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
                                     <AppGoldCoin />
                                     <AppText size={2}>  x  {state.isModalVisible.coins}</AppText>
                                 </View>
-                                <AppButtonPlane onPress={() => { setState(prev => ({ ...prev, isModalVisible: null })) }} label={"BUY"} />
+                                <AppButtonPlane onPress={() => {
+                                    if (!isPurchased) {
+                                        setState(prev => ({ ...prev, isModalVisible: null, loading: true }));
+                                        BuyAsset((buyAssetRes) => {
+                                            setState(prev => ({ ...prev, loading: false }));
+                                            if (buyAssetRes) {
+                                                AddAssetNickname(state.isModalVisible)
+                                            } else {
+                                                AppShowToast("You dont have enough coins")
+                                            }
+                                        }, state.isModalVisible?._id)
+                                    } else {
+                                        AppShowToast("You already own this background");
+                                    }
+
+
+                                }} label={isPurchased ? "PURCHASED" : "BUY"} />
                             </View>
                         </View>
                     </View>

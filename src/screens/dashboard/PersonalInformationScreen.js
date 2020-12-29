@@ -1,12 +1,12 @@
 
 
+import moment from 'moment';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppHeaderCommon, AppText } from '../../components';
 import { AppTheme } from '../../config';
-import moment from 'moment';
 
 const renderOptionItem = (label, value) => {
     return (
@@ -18,7 +18,7 @@ const renderOptionItem = (label, value) => {
 }
 
 const PersonalInformationScreen = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: false,
     })

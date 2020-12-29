@@ -8,7 +8,7 @@ function GetMyAssets(callback, type) {
     fetch(EndPoints.GET_MY_ASSETS + type, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET MY ASSETS RES----------' + type, JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data || [])
@@ -21,10 +21,10 @@ function GetMyAssets(callback, type) {
 }
 
 function GetAllAssets(callback, type) {
-    fetch(EndPoints.GET_ALL_ASSETS + type, {
+    fetch(`${EndPoints.GET_ALL_ASSETS}${type}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET ALL ASSETS RES----------' + type, JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -36,7 +36,7 @@ function GetAllAssets(callback, type) {
     });
 }
 
-function PromtToSetAsDefault(callback, type, assetID) {
+function PromtToSetAsDefault(callback, type, assetID, color) {
     Alert.alert(`Set ${type.toLowerCase()}`, `Do you want to set this ${type.toLowerCase()} as your default ${type.toLowerCase()}`,
         [{
             text: "No",
@@ -51,19 +51,17 @@ function PromtToSetAsDefault(callback, type, assetID) {
                         callback(true)
                     else
                         callback(false)
-                }, type, assetID)
+                }, type, assetID, color)
             }
         }], { cancelable: false });
 }
-function SetAssetAsDefault(callback, type, assetID) {
-    fetch(EndPoints.SET_ASSET_DEFAULT + type, {
+function SetAssetAsDefault(callback, type, assetID, color) {
+    fetch(`${EndPoints.SET_ASSET_DEFAULT}${type}`, {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
-        body: JSON.stringify({
-            assetId: assetID
-        })
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
-        AppLogger('-----------SETTING DEFAULT ASSET RES----------' + type, JSON.stringify(data))
+        body: JSON.stringify(color ? { assetId: assetID, color } : { assetId: assetID })
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('-----------setting default-------' + type, JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data)
         } else
@@ -81,7 +79,7 @@ function BuyAsset(callback, assetID) {
         body: JSON.stringify({
             assetId: assetID
         })
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------BUY ASSET RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)

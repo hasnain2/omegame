@@ -7,7 +7,7 @@ function GetQuests(callback, OFFSET = 0) { // PAGINATED = OFFSET BASE-
     fetch(`${EndPoints.GET_QUEST_LIST}?offset=${OFFSET}&limit=${LIMIT}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET QUEST LIST RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data || [])
@@ -23,7 +23,7 @@ function GetSpecificQuestById(callback, questID) {
     fetch(`${EndPoints.GET_SPECIFIC_QUEST_BY_ID}${questID}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET SPECIFIC QUEST RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])

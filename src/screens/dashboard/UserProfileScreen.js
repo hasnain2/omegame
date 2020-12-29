@@ -31,7 +31,7 @@ const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BL
 
 const UserProfileScreen = ({ navigation, route, }) => {
     let userID = route.params.userID || false;
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     let disp = useDispatch();
     userID = (user?._id || user?._id) === userID;
 
@@ -115,7 +115,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                         <FastImage source={userData?.cover ? { uri: userData?.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <UserAvatar corner={userData?.corner || ''}  source={userID ? user?.pic ? { uri: user.pic } : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC} size={100} />
+                                <UserAvatar corner={userData?.corner || ''} color={userData?.cornerColor} source={userID ? user?.pic ? { uri: user.pic } : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC : userData?.pic ? { uri: userData.pic } : DEFAULT_USER_PIC} size={100} />
 
                                 {userID ?
                                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
@@ -134,10 +134,10 @@ const UserProfileScreen = ({ navigation, route, }) => {
                                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                                     <View style={{ flex: 1, justifyContent: 'center' }}>
                                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                            <AppText size={3} bold={true} >{userData?.firstName || ''}</AppText>
+                                            <AppText size={3} bold={true} >{userData?.firstName || userData?.userName || ''}</AppText>
                                             <IsUserVerifiedCheck check={userData?.isVerified} />
                                         </View>
-                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{userData?.userName}</AppText>
+                                        <AppText size={1} color={userData?.nickNameColor ? userData?.nickNameColor : AppTheme.colors.lightGrey} style={{}}>{userData?.nickName || userData?.userName}</AppText>
                                     </View>
                                     <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
                                         <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>

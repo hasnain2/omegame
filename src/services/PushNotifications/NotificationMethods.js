@@ -33,7 +33,7 @@ const GetNotificationHistory = (callback, cursor) => {
     fetch(`${EndPoints.GET_NOTIFICATION_HISTORY}${cursor ? ("?cursor=" + cursor + "&limit=" + LIMIT) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------NOTIFICATION HISTORY RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -49,7 +49,7 @@ const UpdateNotificationStatus = (callback, notificationID) => {
     fetch(`${EndPoints.NOTIFICATION_STATUS_SET}${notificationID}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else

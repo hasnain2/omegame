@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -52,7 +52,7 @@ const CreatePost = ({ navigation, route }) => {
         requestReadWritePermission();
         getfriendshelper();
     }, [])
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     const onSubmit = () => {
         if (state.whatsNewText) {
             let payload = {
@@ -86,7 +86,7 @@ const CreatePost = ({ navigation, route }) => {
             </View>
             <KeyboardAvoidingScrollView nestedScrollEnabled={true} style={{ flex: 1, padding: RFValue(14) }}>
                 <View style={{ flexDirection: 'row' }}>
-                    <UserAvatar corner={user?.corner || ''} source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
+                    <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={30} />
                     <TextInput placeholder={state.postTypeIsPool ? "Ask a question" : "What's new?"}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}

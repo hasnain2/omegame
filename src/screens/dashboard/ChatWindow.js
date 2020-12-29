@@ -21,7 +21,7 @@ const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' 
 const ChatWindow = ({ navigation, route, }) => {
     let friend = route?.params?.friend;
 
-    let user = useSelector(state => state.root.user);
+    let { user } = useSelector(state => state.root);
 
     const [messages, setMessages] = useState([]);
     let [state, setState] = useState({
@@ -112,8 +112,9 @@ const ChatWindow = ({ navigation, route, }) => {
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: LIGHT_GREY }}>
                     <AppBackButton navigation={navigation} />
-                    <UserAvatar corner={friend?.corner || ''} onPress={() => {
-                        navigation.push("UserProfileScreen", { userID: friend?._id })
+                    <UserAvatar corner={friend?.corner || ''} color={friend?.cornerColor} onPress={() => {
+                        if (friend?._id)
+                            navigation.push("UserProfileScreen", { userID: friend?._id })
                     }} source={friend?.pic ? { uri: friend?.pic } : DEFAULT_USER_PIC} size={35} />
                     <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                         <View style={{ flexDirection: 'row', alignItems: 'center', }}>

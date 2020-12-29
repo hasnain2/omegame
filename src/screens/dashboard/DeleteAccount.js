@@ -9,7 +9,7 @@ import { AppTheme } from '../../config';
 import { Ionicons } from '../../utils/AppIcons';
 
 const DeleteAccount = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: false,
     })

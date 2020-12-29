@@ -8,7 +8,7 @@ import { Divider, ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { ICON_SHOP } from '../../../assets/icons';
-import { BACKGROUND_IMG } from '../../../assets/images';
+import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
@@ -69,7 +69,7 @@ const QuestScreen = ({ route, navigation }) => {
                                     <View style={{ height: state.LHeight, width: state.LWidth }}>
                                         <FastImage source={BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                                             <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                                <UserAvatar corner={user?.corner || ''} size={100} />
+                                                <UserAvatar corner={user?.corner || ''} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} color={user?.cornerColor} size={100} />
                                                 <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                                         <AppGoldCoin />

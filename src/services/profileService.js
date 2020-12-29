@@ -11,7 +11,7 @@ const UpdateProfile = (callback, formData) => {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------PROFILE UPDATE RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             store.dispatch(setUser({ ...data.data }))
@@ -32,7 +32,7 @@ const RequestVerification = (callback, formData) => {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------RequestVerification RES----------', data)
         if (status === 201 || status === 200) {
             callback(true)
@@ -49,7 +49,7 @@ const GetAllTrendingUsers = (callback, cursor, query) => {
     fetch(`${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET ALL TRENDING USERS RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
@@ -65,7 +65,7 @@ const GetSingleUserProfile = (callback, id) => {
     fetch(EndPoints.GET_SINGLE_USER_PROFILE + id, {
         method: 'GET',
         headers: Interceptor.getHeaders()
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET SINGLE USER PROFILE RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data)
@@ -85,7 +85,7 @@ const ActionsOnUsers = (callback, id, TYPE) => {
             accountIds: [id],
             status: TYPE
         })
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------ACTIONS ON FRIENDS RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
@@ -99,11 +99,10 @@ const ActionsOnUsers = (callback, id, TYPE) => {
 
 
 const GerUserListByType = (callback, id, TYPE, CURSOR, query) => {
-    AppLogger('-----------------FRIENDS FOLLOWERS OR FOLLOWING----------', EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id)
-    fetch(EndPoints.GET_USER_LIST_BY_TYPE + TYPE + '?id=' + id + query, {
+    fetch(`${EndPoints.GET_USER_LIST_BY_TYPE}${TYPE}?id=${id}${CURSOR ? ("&cursor=" + CURSOR) : ''}${query}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GETTING USER LIST OF ' + TYPE + ' RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data)

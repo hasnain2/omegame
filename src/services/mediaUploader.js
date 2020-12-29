@@ -58,7 +58,7 @@ function postFiles(callback, fileName, bucket, data) {
         method: 'POST',
         headers: Interceptor.getHeadersMultiPart(),
         body: data
-    }).then((response) => JSONBodyHelper(response)).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('---------IMAGE UPLOADER RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             let uploaderResponse = data?.data?.media[0]

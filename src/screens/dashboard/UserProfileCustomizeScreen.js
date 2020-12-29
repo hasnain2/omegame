@@ -15,7 +15,7 @@ import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { CustomizeTabs } from './CustomizeProfileTabs/CustomizeTabs';
 const UserProfileCustomizeScreen = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user);
+    let { user } = useSelector(state => state.root);
 
     let [state, setState] = useState({
         loading: false,
@@ -44,7 +44,7 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
                     <FastImage source={user?.cover ? { uri: user.cover } : BACKGROUND_IMG} style={{ height: state.LHeight, width: state.LWidth, }} >
                         <LinearGradient colors={COLORS_ARR} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <UserAvatar corner={user?.corner || ''}  source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={100} />
+                            <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={100} />
                             <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
                                     <AppGoldCoin />

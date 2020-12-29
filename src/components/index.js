@@ -9,6 +9,7 @@ export * from './AppButtonPlane';
 export * from './AppGradientContainer';
 export * from './HomeScreenHeader';
 export * from './AppBadge';
+export * from './AppUserBoxNameAvatar';
 export * from './AppGallery';
 export * from './AppBlurView';
 export * from './AppDateTimePicker';

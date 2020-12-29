@@ -25,7 +25,7 @@ const RateGameScreen = ({ navigation, route, }) => {
         selectedConsole: 'Ps4',
         showFilter: false
     })
-    let user = useSelector(state => state.root.user);
+    let { user } = useSelector(state => state.root);
 
 
     const onSubmit = () => {
@@ -61,7 +61,7 @@ const RateGameScreen = ({ navigation, route, }) => {
             <KeyboardAvoidingScrollView >
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(15) }}>
-                    <UserAvatar corner={gameData?.corner || ''} source={BACKGROUND_IMG} size={50} />
+                    <UserAvatar corner={gameData?.corner || ''} color={gameData?.cornerColor} source={BACKGROUND_IMG} size={50} />
 
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingVertical: RFValue(10), justifyContent: 'space-between', }}>
                         <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -92,7 +92,7 @@ const RateGameScreen = ({ navigation, route, }) => {
 
 
                 <View style={{ flexDirection: 'row', padding: RFValue(20) }}>
-                    <UserAvatar corner={user?.corner || ''} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />
+                    <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />
                     <TextInput placeholder={"Let us know what do you think about this game..."}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}

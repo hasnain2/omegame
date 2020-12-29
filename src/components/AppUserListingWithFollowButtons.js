@@ -70,9 +70,11 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                 keyExtractor={ii => (ii._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <View style={{ flexDirection: 'row', borderBottomColor: AppTheme.colors.darkGrey, borderBottomWidth: 1, flex: 1, padding: RFValue(7), alignItems: 'center' }}>
-                        <UserAvatar onPress={() => {
-                            navigation.navigate('UserProfileScreen', { userID: item?._id })
-                        }} corner={item?.user?.corner || ''} size={50} source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} />
+                        <UserAvatar
+                            color={item?.user?.cornerColor || item?.cornerColor || false}
+                            onPress={() => {
+                                navigation.navigate('UserProfileScreen', { userID: item?._id })
+                            }} corner={item?.user?.corner || ''} size={50} source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} />
                         <TouchableOpacity activeOpacity={7} style={{ flex: 1 }} onPress={() => {
                             navigation.navigate('UserProfileScreen', { userID: item?._id })
                         }}>

@@ -7,6 +7,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppGoldCoin, AppText } from '../../components';
 import { AppTheme } from '../../config';
+import { setSettings } from '../../redux/reducers/settingsSlice';
+import { store } from '../../redux/store';
 import { largeNumberShortify } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { OmegaStoreBackgroundsTab } from './OmegaStoreBackgroundsTab';
@@ -15,12 +17,20 @@ import { OmegaStoreNicknameTab } from './OmegaStoreNicknameTab';
 const Tab = createMaterialTopTabNavigator();
 
 const OmegaStoreTabs = ({ navigation, route }) => {
-    let user = useSelector(state => state.root.user)
+    let { user } = useSelector(state => state.root)
 
     useEffect(() => {
-        // if (route?.params?.corner) {
-        //     navigation.jumpTo("Corners")
-        // }
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            store.dispatch(setSettings({ bgColor: 'black' }));
+        });
+        const unsubscribeBlur = navigation.addListener('blur', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
+        });
+
+        return () => {
+            unsubscribeFocus();
+            unsubscribeBlur();
+        }
     }, [])
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>

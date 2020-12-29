@@ -5,7 +5,7 @@ import { Alert, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 're
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MODIFY, ICON_MUTE, ICON_REPORT, ICON_UNFOLLOW } from '../../assets/icons';
-import { AppText } from '../components';
+import { AppText, AppUserBoxNameAvatar } from '../components';
 import { AppTheme } from '../config';
 import { ActionsOnUsers } from '../services';
 import { RemovePostFromReduxStore, RemovePostsOfUserFromReduxStore } from '../services/mutateReduxState';
@@ -24,33 +24,13 @@ const PostPoolTopBar = ({ item, navigation }) => {
     return (
         <>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ padding: RFValue(15) }}>
-                    <UserAvatar corner={item?.createdBy?.corner || ''} onPress={() => {
-                        navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
-                    }} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : false} />
-                </View>
-                <TouchableOpacity activeOpacity={0.9} style={{ flex: 1 }} onPress={() => {
-                    navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
-                }}>
-                    <View style={{ flex: 1, justifyContent: 'center' }} >
-                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{item?.createdBy?.firstName || item?.createdBy?.userName || ""} {item?.createdBy?.lastName}</AppText>
-                            <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.createdBy?.level || item?.createdBy?.xp || 0)}</AppText>
-                            <AppText size={1} color={AppTheme.colors.lightGrey}> - {moment(item.createdAt).fromNow(true)}</AppText>
-                        </View>
-                        <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.createdBy?.userName || item?.createdBy?.userName || ""}</AppText>
-                    </View>
-                </TouchableOpacity>
+                <AppUserBoxNameAvatar navigation={navigation} item={item?.createdBy} />
                 <TouchableOpacity onPress={() => {
                     setState(prev => ({ ...prev, showMenu: item._id }))
                 }}>
                     <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} />
                 </TouchableOpacity>
             </View>
-
-
-
 
             <AppModal show={state.showMenu === item._id}
                 type={"bottom"}

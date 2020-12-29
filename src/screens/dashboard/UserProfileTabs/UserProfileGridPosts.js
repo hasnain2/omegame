@@ -15,7 +15,7 @@ const UserProfileGridPosts = ({ navigation, userID }) => {
                 setState(prev => ({ ...prev, loading: false, data: userPosts }))
         }, userID)
     }, [])
-    let homeFeed = useSelector(state => state.root.homeFeed)
+    let { homeFeed } = useSelector(state => state.root)
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <AppPostsListingsGrid navigation={navigation}

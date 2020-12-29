@@ -13,6 +13,7 @@ import { AuthLoading } from './src/screens';
 import { getData } from './src/utils/AppStorage';
 import Interceptor from './src/utils/Interceptor';
 import NotificationPopup from 'react-native-push-notification-popup';
+import { firebase } from '@react-native-firebase/messaging';
 
 const App = ({ }) => {
   let [state, setState] = useState({
@@ -20,16 +21,16 @@ const App = ({ }) => {
   });
   let navRef = useRef(null)
   let { user, settings } = useSelector(state => state.root);
-
+  if (user?._id) {
+    firebase.messaging().subscribeToTopic(user?._id);
+  }
   useEffect(() => {
     getData('user', (storageUser) => {
+      setState({ loading: false })
       if (storageUser) {
         Interceptor.setToken(storageUser.token);
-        store.dispatch(setUser(storageUser))
-        debugger
-        setState({ loading: false })
-      } else
-        setState({ loading: false, })
+        store.dispatch(setUser(storageUser));
+      }
     })
   }, [])
   return (

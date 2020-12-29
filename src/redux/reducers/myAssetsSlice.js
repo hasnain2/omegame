@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initState = {
     backgrounds: [],
     corners: [],
-    nickname: []
+    nicknames: []
 }
 
 export const myAssetsSlice = createSlice({

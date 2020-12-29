@@ -18,8 +18,7 @@ import { AntDesign } from '../../utils/AppIcons';
 
 let originalInboxList = [];
 const InboxScreen = ({ navigation, route, }) => {
-    let user = useSelector(state => state.root.user)
-    let inbox = useSelector(state => state.root.inbox)
+    let { user, inbox } = useSelector(state => state.root);
     let dipatch = useDispatch()
     let [state, setState] = useState({
         loading: false,
@@ -36,7 +35,6 @@ const InboxScreen = ({ navigation, route, }) => {
         if (!text || text === '') {
             dipatch(setInbox(originalInboxList));
         } else if (!Array.isArray(filteredName) && !filteredName.length) {
-            // set no data flag to true so as to render flatlist conditionally
             dipatch(setInbox([]));
         } else if (Array.isArray(filteredName)) {
             dipatch(setInbox(filteredName));
@@ -141,7 +139,7 @@ const InboxScreen = ({ navigation, route, }) => {
                                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10) }}>
                                     <View style={{ flex: 1 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <UserAvatar corner={inboxItem?.user?.corner || ''} source={inboxItem?.user?.pic ? { uri: inboxItem?.user?.pic } : DEFAULT_USER_PIC} size={50} />
+                                            <UserAvatar corner={inboxItem?.user?.corner || ''} color={inboxItem?.user?.cornerColor} source={inboxItem?.user?.pic ? { uri: inboxItem?.user?.pic } : DEFAULT_USER_PIC} size={50} />
                                             <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                                     <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{inboxItem?.user?.firstName || inboxItem?.user?.userName}</AppText>
@@ -149,7 +147,7 @@ const InboxScreen = ({ navigation, route, }) => {
                                                     <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(inboxItem?.user?.earnedXps)}</AppText>
                                                     <AppText size={1} color={AppTheme.colors.lightGrey}> - {moment(inboxItem.createdAt).fromNow(true)}</AppText>
                                                 </View>
-                                                <AppText size={1} color={AppTheme.colors.lightGrey} >{inboxItem?.user?.userName}</AppText>
+                                                <AppText size={1} color={inboxItem?.user?.nickNameColor ? inboxItem?.user?.nickNameColor : AppTheme.colors.lightGrey} >{inboxItem?.user?.nickName || inboxItem?.user?.userName}</AppText>
                                             </View>
                                             {state.deletionEnabled ?
                                                 <AppRadioButton color={AppTheme.colors.red} val={state.deletionEnabled === index + ''} onPress={() => { setState(prev => ({ ...prev, deletionEnabled: index + '' })) }} size={20} />
