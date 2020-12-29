@@ -45,7 +45,6 @@ const RequestVerification = (callback, formData) => {
 }
 
 const GetAllTrendingUsers = (callback, cursor, query) => {
-    AppLogger('------GETITING ALL USERS URL-------', `${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`)
     fetch(`${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
@@ -62,7 +61,7 @@ const GetAllTrendingUsers = (callback, cursor, query) => {
 }
 
 const GetSingleUserProfile = (callback, id) => {
-    fetch(EndPoints.GET_SINGLE_USER_PROFILE + id, {
+    fetch(`${EndPoints.GET_SINGLE_USER_PROFILE}${id}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
@@ -78,11 +77,11 @@ const GetSingleUserProfile = (callback, id) => {
 }
 
 const ActionsOnUsers = (callback, id, TYPE) => {
-    fetch(EndPoints.ACTIONS_ON_FRIENDS, {
+    fetch(`${EndPoints.ACTIONS_ON_FRIENDS}`, {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify({
-            accountIds: [id],
+            accountId: id,
             status: TYPE
         })
     }).then(JSONBodyHelper).then(([status, data]) => {

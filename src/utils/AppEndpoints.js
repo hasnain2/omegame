@@ -18,7 +18,7 @@ const EndPoints = {
     HOME_FEED: BASE_URL + 'posts/homeFeed', //-------
     CREATE_POST: BASE_URL + 'posts',
 
-    ACTIONS_ON_FRIENDS: BASE_URL + 'profile/friendStatus', //FOLLOW / UNFOLLOW / BLOCK ETC
+    ACTIONS_ON_FRIENDS: BASE_URL + 'profile/updateFriendStatus', //FOLLOW / UNFOLLOW / BLOCK ETC
     GET_USER_LIST_BY_TYPE: BASE_URL + 'profile/friendStatus/', // TYPE FOLLOWER/FOLLOWING/BLOCKED
     GET_OR_DELETE_POST: BASE_URL + 'posts/id/', // METHODS -> DELETE/GET
 

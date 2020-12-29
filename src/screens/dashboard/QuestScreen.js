@@ -110,7 +110,7 @@ const QuestScreen = ({ route, navigation }) => {
 
                                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: RFValue(5), justifyContent: 'space-between', }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                            <AppText lines={1} color={AppTheme.colors.primary} size={1} >8</AppText>
+                                            <AppText lines={1} color={AppTheme.colors.primary} size={1} >{item?.userProgress?.startCount || 0}</AppText>
                                             <AppText lines={1} color={AppTheme.colors.lightGrey} size={1} > / {item?.tasks[0]?.taskGoal} COMPLETED</AppText>
                                         </View>
 
