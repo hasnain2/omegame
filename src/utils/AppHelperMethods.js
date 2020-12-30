@@ -50,10 +50,10 @@ function timeRemaining(date) {
     var a = moment(date);
     var b = moment(new Date());
 
-    let days = a.diff(b, 'days') // 1
-    let hours = a.diff(b, 'hours') // 1
-    let minutes = a.diff(b, 'minutes') // 1
-    let seconds = a.diff(b, 'seconds') // 1
+    let days = a.diff(b, 'days') || 0; // 1
+    let hours = a.diff(b, 'hours') || 0; // 1
+    let minutes = a.diff(b, 'minutes') || 0;// 1
+    let seconds = a.diff(b, 'seconds') || 0;// 1
 
     let obj = { days, hours, minutes, seconds, txt: days + 'd ' + hours + 'h ' + minutes + 'm' }
     AppLogger('-----CALCULATED TIME------', obj)

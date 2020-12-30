@@ -74,6 +74,8 @@ async function notificationHandler(noti, navigation) {
     navigation.push("PostDetailScreenWithComments", { post })
   } else if (noti?.post) {
     navigation.push("PostDetailScreenWithComments", { postID: noti?.post })
+  } else if (noti?.message && noti?.from) {
+    navigation.push("ChatWindow", { friend: noti?.from })
   } else if (noti?.createdBy?._id) {
     navigation.push("UserProfileScreen", { userID: noti?.createdBy?._id })
   }
@@ -91,10 +93,21 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
     })
 
     /* NOTIFICATION HANDLERS */
+
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      if (remoteMessage) {
+        let newData = JSON.parse(remoteMessage?.data?.payload)
+        AppLogger('----set backgrou mssge handler-------:', newData);
+
+        notificationHandler(newData, navigation);
+      }
+    });
+
+
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
         let newData = JSON.parse(remoteMessage?.data?.payload)
-        AppLogger('Notification caused app to open from background state:', newData);
+        AppLogger('---------onNotificationOpenedApp----------:', newData);
 
         notificationHandler(newData, navigation);
       }
@@ -105,12 +118,11 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
       .then(remoteMessage => {
         if (remoteMessage) {
           let newData = JSON.parse(remoteMessage?.data?.payload)
-          AppLogger('Notification caused app to open from background state:', newData);
+          AppLogger('------------------getInitialNotification--------------------', newData);
 
           notificationHandler(newData, navigation);
         }
       });
-
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       if (remoteMessage) {

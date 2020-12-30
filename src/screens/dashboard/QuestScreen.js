@@ -14,6 +14,12 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { GetQuests } from '../../services';
 import { largeNumberShortify, timeRemaining } from '../../utils/AppHelperMethods';
+
+const TRANS_BLACK = 'rgba(0,0,0,0.0)';
+const BLACK = 'black';
+const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, BLACK, BLACK];
+
+
 const QuestScreen = ({ route, navigation }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
@@ -23,10 +29,6 @@ const QuestScreen = ({ route, navigation }) => {
         visibleDescriptionOfIndex: 999999,
         data: []
     });
-
-    const TRANS_BLACK = 'rgba(0,0,0,0.0)';
-    const BLACK = 'black';
-    const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, BLACK, BLACK];
 
     function getquesthelper(offset) {
         GetQuests((questListResponse) => {
@@ -55,7 +57,7 @@ const QuestScreen = ({ route, navigation }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => (ii._id || '') + 'you'}
+                keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} activeOpacity={1} onPress={() => {

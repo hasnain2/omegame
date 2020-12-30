@@ -46,7 +46,7 @@ const CreatePost = ({ navigation, route }) => {
                 setState(prev => ({ ...prev, loading: false }));
             } else
                 setState(prev => ({ ...prev, loading: false }));
-        }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND)
+        }, store.getState().root.user?._id, GET_FRIEND_LIST_TYPES.FRIEND, cursor, '')
     }
     useEffect(() => {
         requestReadWritePermission();

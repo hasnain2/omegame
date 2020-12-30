@@ -94,7 +94,7 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
                 }}
                 onEndReachedThreshold={0.5}
 
-                keyExtractor={ii => ii._id + ''}
+                keyExtractor={ii => ii?._id + ''}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7}
                         onPress={() => {

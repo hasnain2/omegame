@@ -47,16 +47,16 @@ const RemovePostFromReduxStore = (postID) => {
     const tempHomeFeeds = [...store.getState().root.homeFeed];
     const tempSavedPosts = [...store.getState().root.savedPosts];
 
-    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii._id != postID)));
-    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii._id != postID)));
+    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii?._id != postID)));
+    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii?._id != postID)));
 }
 
 const RemovePostsOfUserFromReduxStore = (userID) => {
     const tempHomeFeeds = [...store.getState().root.homeFeed];
     const tempSavedPosts = [...store.getState().root.savedPosts];
 
-    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii.createdBy._id != userID)));
-    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii.createdBy._id != userID)));
+    store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii?.createdBy?._id != userID)));
+    store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii?.createdBy?._id != userID)));
 }
 
 

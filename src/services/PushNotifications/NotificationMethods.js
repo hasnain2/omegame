@@ -30,7 +30,7 @@ const AppShowPushNotification = (title, body, onPress) => {
 
 
 const GetNotificationHistory = (callback, cursor) => {
-    fetch(`${EndPoints.GET_NOTIFICATION_HISTORY}${cursor ? ("?cursor=" + cursor + "&limit=" + LIMIT) : ''}`, {
+    fetch(`${EndPoints.GET_NOTIFICATION_HISTORY}${cursor ? ("?cursor=" + cursor + "&limit=" + 3) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {

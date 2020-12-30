@@ -65,6 +65,9 @@ const EndPoints = {
     //----------QUESTS LIST----------
     GET_QUEST_LIST: BASE_URL + 'quests', // --- get list of quests
     GET_SPECIFIC_QUEST_BY_ID: BASE_URL + 'quests/', // --- get SPECIFIC QUEST BY ID
+
+
+    APP_SETTINGS_SET_OR_GET: BASE_URL + 'account-settings' // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
 };
 
 export { DOMAIN, EndPoints };

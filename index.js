@@ -1,11 +1,14 @@
+import messaging from '@react-native-firebase/messaging';
 import * as React from 'react';
-import { AppRegistry, LogBox } from 'react-native';
+import { AppRegistry } from 'react-native';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import App from './App';
 import { name as appName } from './app.json';
 import { store } from './src/redux/store';
-// LogBox.ignoreAllLogs();
+
+// messaging().setBackgroundMessageHandler(async () => { });
+
 const EntryPoint = () => {
     return (
         <Provider store={store}>
@@ -13,4 +16,5 @@ const EntryPoint = () => {
         </Provider>
     )
 }
+
 AppRegistry.registerComponent(appName, () => EntryPoint);

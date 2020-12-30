@@ -29,6 +29,7 @@ const CHAT_SOCKET_EVENTS = {
     SEEN: 'seen',
     ERROR: 'error',
     MIRROR: 'mirror',
+    CONNECTED_WITH: 'connectedWith'
 }
 
 const FRIEND_STATUSES_ACTIONS = { // action on friends weather to 
@@ -39,7 +40,8 @@ const FRIEND_STATUSES_ACTIONS = { // action on friends weather to
     FOLLOW: 'FOLLOW',
     UNFOLLOW: 'UN_FOLLOW',
     ACCEPT: 'ACCEPT',
-    DENY: 'DENY',
+    DENY_FOLLOW_REQUEST: 'DENY_FOLLOW_REQUEST',
+    ACCEPT_FOLLOW_REQUEST: 'ACCEPT_FOLLOW_REQUEST',
     ACCEPT_FRIEND_REQUEST: 'ACCEPT_FRIEND_REQUEST'
 }
 

@@ -45,7 +45,7 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                 // removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 // bounces={false}
-                keyExtractor={ii => (ii._id || '') + 'you'}
+                keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {

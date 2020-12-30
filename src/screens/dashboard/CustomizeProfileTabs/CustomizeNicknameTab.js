@@ -61,7 +61,7 @@ const CustomizeNicknameTab = ({ navigation }) => {
                 // removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 // bounces={false}
-                keyExtractor={ii => (ii._id || '') + 'you'}
+                keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
@@ -75,7 +75,7 @@ const CustomizeNicknameTab = ({ navigation }) => {
                                     storeData('user', tempUser)
                                 }
                                 setState(prev => ({ ...prev, loading: false }))
-                            }, ASSET_TYPES.NICKNAME, item._id, state.selectedColor)
+                            }, ASSET_TYPES.NICKNAME, item?._id, state.selectedColor)
                         }}>
                             <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                 <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(20), alignItems: 'center' }}>

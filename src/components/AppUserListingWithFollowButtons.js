@@ -25,7 +25,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
         let tempUserObj = { ...item };
         ActionsOnUsers((actionsRes) => {
 
-        }, item._id, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW);
+        }, item?._id, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW);
         tempUserObj.isFollowing = !tempUserObj?.isFollowing;
         let tempData = state.usersData;
         tempData[index] = tempUserObj;
@@ -65,7 +65,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                     }
                 }}
                 onEndReachedThreshold={0.5}
-                keyExtractor={ii => (ii._id || '') + 'you'}
+                keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     AppLogger('-------ITEM-----', JSON.stringify(item.isFollowing))
                     return (

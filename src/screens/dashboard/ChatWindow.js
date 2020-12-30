@@ -23,7 +23,7 @@ const ChatWindow = ({ navigation, route, }) => {
 
     let { user } = useSelector(state => state.root);
     let chatID = getChatId(user?._id, friend?._id);
-
+    friend["chatId"] = chatID;
     const [messages, setMessages] = useState([]);
     let [state, setState] = useState({
         showMenu: false,
@@ -44,10 +44,14 @@ const ChatWindow = ({ navigation, route, }) => {
         getChatmsgeshelper();
 
         let messagesListner = socket.on(CHAT_SOCKET_EVENTS.NEW_MESSAGE, msg => {
+            AppLogger('---------------HELLOOOOOO----------', '0-------0')
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg));
         });
 
+        socket.emit(CHAT_SOCKET_EVENTS.CONNECTED_WITH, { connectWith: friend?._id });
+
         return () => {
+            socket.emit(CHAT_SOCKET_EVENTS.CONNECTED_WITH, { connectWith: '' });
             messagesListner.removeListener(CHAT_SOCKET_EVENTS.NEW_MESSAGE);
         }
     }, [])
@@ -219,6 +223,8 @@ const ChatWindow = ({ navigation, route, }) => {
                                 }, {
                                     text: "OK", onPress: () => {
                                         ActionsOnUsers(() => {
+                                            setState(prev => ({ ...prev, showMenu: false }));
+                                            navigation.goBack();
                                             AppShowToast((friend?.userName || 'User') + ' has been blocked.')
                                         }, friend?._id, FRIEND_STATUSES_ACTIONS.BLOCKED)
                                     }

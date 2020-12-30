@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Image, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { AppTheme } from '../../config';
 import { setUser } from '../../redux/reducers/userSlice';
 import { store } from '../../redux/store';
 import { UpdateProfile } from '../../services';
+import { GetAppSettings } from '../../services/appSettingsService';
 import { LogOutUser } from '../../services/authService';
 import { AppLogger } from '../../utils/AppHelperMethods';
 import { EvilIcons } from '../../utils/AppIcons';
@@ -19,11 +20,22 @@ const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' 
 const AppSettingsScreen = ({ navigation, route, }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
-        loading: false,
+        loading: true,
         isNotificationOn: true,
         accountSettingDetails: false,
         infoHelpDetails: false,
     })
+
+    useEffect(() => {
+        GetAppSettings((appSettingsResponse) => {
+            if (appSettingsResponse) {
+                setState(prev => ({ ...prev, settingsData: appSettingsResponse }))
+            } else {
+                setState(prev => ({ ...prev, loading: false }))
+            }
+        })
+    }, [])
+
     const rendListItem = (Iconn, name, toggle) => {
         return (
             <View pointerEvents={'none'} style={{ flexDirection: 'row', alignItems: 'center' }}>

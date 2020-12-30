@@ -23,13 +23,13 @@ const PostPoolTopBar = ({ item, navigation }) => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <AppUserBoxNameAvatar navigation={navigation} createdAt={item?.createdAt} item={item?.createdBy} />
                 <TouchableOpacity onPress={() => {
-                    setState(prev => ({ ...prev, showMenu: item._id }))
+                    setState(prev => ({ ...prev, showMenu: item?._id }))
                 }}>
                     <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} />
                 </TouchableOpacity>
             </View>
 
-            <AppModal show={state.showMenu === item._id}
+            <AppModal show={state.showMenu === item?._id}
                 type={"bottom"}
                 toggle={() => { setState(prev => ({ ...prev, showMenu: '' })) }}
             >
@@ -82,7 +82,7 @@ const PostPoolTopBar = ({ item, navigation }) => {
                             <TouchableOpacity onPress={() => {
                                 FollowPost(() => {
 
-                                }, item._id, { follow: !state.isFollowing })
+                                }, item?._id, { follow: !state.isFollowing })
                                 setState(prev => ({ ...prev, showMenu: '', isFollowing: !state.isFollowing }))
                             }} style={styles.modalListItemStyle}>
                                 <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>

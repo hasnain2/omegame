@@ -23,7 +23,7 @@ const BlockedAccounts = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, data: response, loading: false }))
             else
                 setState(prev => ({ ...prev, loading: false }))
-        }, user?._id, GET_FRIEND_LIST_TYPES.BLOCKED)
+        }, user?._id, GET_FRIEND_LIST_TYPES.BLOCKED, false, '')
     }, [])
 
     return (

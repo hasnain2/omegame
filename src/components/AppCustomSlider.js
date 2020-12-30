@@ -20,8 +20,9 @@ const AppCustomSlider = ({ onChange }) => {
             <View style={{}} >
                 <Slider
                     value={state.value}
-                    thumbImage={() => <FastImage source={BACKGROUND_IMG} style={{ height: 10, width: 10 }} />}
+                    // thumbImage={() => <FastImage source={BACKGROUND_IMG} style={{ height: 10, width: 10 }} />}
                     step={0.5}
+                    thumbTintColor={state.value<=5?AppTheme.colors.red:AppTheme.colors.green}
                     tapToSeek={true}
                     maximumValue={10}
                     minimumValue={0}

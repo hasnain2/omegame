@@ -52,22 +52,22 @@ const UserSavedPosts = ({ navigation, route }) => {
                 : null}
 
             {!state.loading && savedPosts.length < 1 ?
-                <AppNoDataFound />
-                :
-                <View style={{ flex: 1, }}>
-                    <AppPostsListings navigation={navigation}
-                        route={route} style={{ backgroundColor: 'black' }}
-                        refreshing={state.refreshing}
-                        loadMore={(offset, refreshControl) => {
-                            if (refreshControl) {
-                                setState(prev => ({ ...prev, refreshing: true }));
-                                getbookmarkpostshelper(false)
-                            } else {
-                                getbookmarkpostshelper(state.cursor)
-                            };
-                        }}
-                        data={savedPosts} />
-                </View>}
+                <AppNoDataFound /> : null}
+
+            <View style={{ flex: 1, }}>
+                <AppPostsListings navigation={navigation}
+                    route={route} style={{ backgroundColor: 'black' }}
+                    refreshing={state.refreshing}
+                    loadMore={(offset, refreshControl) => {
+                        if (refreshControl) {
+                            setState(prev => ({ ...prev, refreshing: true }));
+                            getbookmarkpostshelper(false)
+                        } else {
+                            getbookmarkpostshelper(state.cursor)
+                        };
+                    }}
+                    data={savedPosts} />
+            </View>
         </View>
     );
 };

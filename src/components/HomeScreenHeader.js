@@ -17,7 +17,7 @@ const HomeScreenHeader = ({ route, navigation }) => {
         <View style={{ backgroundColor: AppTheme.colors.darkGrey, padding: RFValue(10), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
                 if (user?._id)
-                    navigation.navigate("UserProfileScreen", { userID: user._id })
+                    navigation.navigate("UserProfileScreen", { userID: user?._id })
             }}>
                 <View pointerEvents={'none'} style={{ padding: RFValue(5) }}>
                     <AppBadge count={0} />
