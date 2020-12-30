@@ -3,15 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../../assets/images';
 import { AppText } from '../components';
 import { AppTheme } from '../config';
+import { AppLogger } from '../utils/AppHelperMethods';
 import { AppVideoPlayer } from './AppVideoPlayer';
 import { PostPoolBottomBar } from './PostPoolBottomBar';
 import { PostPoolTopBar } from './PostPoolTopBar';
 
 const PostCard = ({ item, startPlaying, navigation }) => {
     let [state, setState] = useState({
-        stopPlaying: false
+        stopPlaying: false,
+        imageLoaded: false,
     })
     useEffect(() => {
 
@@ -44,10 +47,15 @@ const PostCard = ({ item, startPlaying, navigation }) => {
                             <AppVideoPlayer source={{ uri: item?.attachments[0]?.url }} startPlaying={startPlaying && !state.stopPlaying} />
                             :
                             <FastImage
-                                source={{
-                                    uri: item?.attachments[0]?.url,
-                                    // cache: FastImage.cacheControl.cacheOnly
-                                }} style={{ height: RFValue(300) }} resizeMode="cover" />
+                                source={state.imageLoaded ? {
+                                    uri: item?.attachments[0]?.url
+                                } : DEFAULT_IMAGE_PLACEHOLDER} style={{ height: RFValue(300) }}
+                                // fallback
+                                onLoadEnd={(res) => {
+                                    setState(prev => ({ ...prev, imageLoaded: true }))
+                                }}
+                                // defaultSource={DEFAULT_IMAGE_PLACEHOLDER}
+                                resizeMode="cover" />
                         }
                     </View>
                 </TouchableOpacity>

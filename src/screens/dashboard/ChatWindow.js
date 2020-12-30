@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import { AppTheme } from '../../config';
 import { ActionsOnUsers, DeleteChat, GetChatMessages } from '../../services';
 import { socket } from '../../services/socketService';
 import { CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
-import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast, getChatId } from '../../utils/AppHelperMethods';
 var uuid = require('react-native-uuid');
 
 const LIGHT_GREY = '#4d4d4d'
@@ -22,6 +22,7 @@ const ChatWindow = ({ navigation, route, }) => {
     let friend = route?.params?.friend;
 
     let { user } = useSelector(state => state.root);
+    let chatID = getChatId(user?._id, friend?._id);
 
     const [messages, setMessages] = useState([]);
     let [state, setState] = useState({

@@ -343,8 +343,24 @@ const GetBookmarkPosts = (callback, CURSOR) => {
     });
 }
 
+const GetPostByCommentID = async (commentID) => {
+    return await fetch(`${EndPoints.GET_POST_BY_COMMENT_ID}${commentID}`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('----------- GET POST BY COMMENT ID RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            return data?.data || false;
+        } else
+            return false
+    }).catch((error) => {
+        AppLogger('--------- GET POST BY COMMENT ID ERROR-----------', error)
+        return false
+    });
+}
 export {
     GetCommentsOfPost,
+    GetPostByCommentID,
     CommentReaction,
     GetCommentsReplies,
     GetPostsOfSpecificUser,

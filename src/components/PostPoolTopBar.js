@@ -1,5 +1,4 @@
 
-import moment from 'moment';
 import React, { useState } from 'react';
 import { Alert, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -8,13 +7,11 @@ import { ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MODIFY, ICON_MUTE, ICON_REPORT
 import { AppText, AppUserBoxNameAvatar } from '../components';
 import { AppTheme } from '../config';
 import { ActionsOnUsers } from '../services';
-import { RemovePostFromReduxStore, RemovePostsOfUserFromReduxStore } from '../services/mutateReduxState';
+import { RemovePostsOfUserFromReduxStore } from '../services/mutateReduxState';
 import { DeletePost, FollowPost } from '../services/postService';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
-import { AppLogger, largeNumberShortify } from '../utils/AppHelperMethods';
+import { AppLogger } from '../utils/AppHelperMethods';
 import { AppModal } from './AppModal';
-import { IsUserVerifiedCheck } from './IsUserVerifiedCheck';
-import { UserAvatar } from './UserAvatar';
 const PostPoolTopBar = ({ item, navigation }) => {
     const user = useSelector(state => state.root.user)
     let [state, setState] = useState({
@@ -24,7 +21,7 @@ const PostPoolTopBar = ({ item, navigation }) => {
     return (
         <>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AppUserBoxNameAvatar navigation={navigation} item={item?.createdBy} />
+                <AppUserBoxNameAvatar navigation={navigation} createdAt={item?.createdAt} item={item?.createdBy} />
                 <TouchableOpacity onPress={() => {
                     setState(prev => ({ ...prev, showMenu: item._id }))
                 }}>
@@ -51,9 +48,8 @@ const PostPoolTopBar = ({ item, navigation }) => {
                                 <AppText size={2} color="white" style={{ flex: 1 }}>Modify</AppText>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
-                                // delete post
-                                // setState(prev => ({ ...prev, showMenu: '' }))
-                                DeletePost((res) => { }, item._id)
+                                setState(prev => ({ ...prev, showMenu: '' }))
+                                DeletePost((res) => { }, item?._id)
                             }} style={styles.modalListItemStyle}>
                                 <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                     <Image source={ICON_DELETE} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />

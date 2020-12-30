@@ -135,9 +135,15 @@ const GetLastWeekEndOf = () => moment().subtract(1, 'weeks').endOf('week').toISO
 const GetLastMonthEndOf = () => moment().subtract(1, 'months').endOf('month').toISOString() + '';
 const GetLastYearEndOf = () => moment().subtract(1, 'years').endOf('year').toISOString() + '';
 
+
+
+function getChatId(user1, user2) {
+    return [user1, user2].sort().join('-');
+}
 export {
     largeNumberShortify,
     AppLogger,
+    getChatId,
     RemoveDuplicateObjectsFromArray,
     DynamicLinkHelper,
     generateRandomString,

@@ -30,6 +30,7 @@ const EndPoints = {
     GET_POSTS_OF_SPECIFIC_USER: BASE_URL + 'posts/user?', // get all posts of specific user
     COMMENT_POST: BASE_URL + 'comments?', // POSTING COMMENT // OR GETTING COMMENTS
 
+    GET_POST_BY_COMMENT_ID: BASE_URL + 'comments/post/',
     COMMENT_REACTIONS: BASE_URL + 'comments/action/react/', // get comments of specific post
     GET_COMMENT_REPLIES: BASE_URL + 'comments/replies?', // gett comment replies
 

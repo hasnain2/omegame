@@ -1,3 +1,4 @@
+import messaging from '@react-native-firebase/messaging';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,10 +10,9 @@ import { ICON_ADD, ICON_GAME, ICON_HOME, ICON_QUEST, ICON_SEARCH } from '../../a
 import { AppTheme } from '../config';
 import { AppContactsSearch, AppFollowersAndFollowingList, AppSettingsScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen, DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen, PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen, ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen } from '../screens';
 import { UserSavedPosts } from '../screens/dashboard/UserSavedPosts';
-import { requestPushNotificationPermission } from '../services';
+import { AppShowPushNotification, GetPostByCommentID, requestPushNotificationPermission } from '../services';
 import { AppLogger, DynamicLinkHelper } from '../utils/AppHelperMethods';
 import { CustomDrawer } from './CustomDrawer';
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -65,6 +65,20 @@ function DashboardTabsExtra({ navigation }) {
   );
 }
 
+async function notificationHandler(noti, navigation) {
+  if (noti?.message && noti?.createdBy) {
+    navigation.push("ChatWindow", { friend: noti?.createdBy })
+  } else if (noti?.comment) {
+    const post = await GetPostByCommentID(noti?.comment);
+    AppLogger('-----------POST BY COMMENT ID RESPONSE-------', post)
+    navigation.push("PostDetailScreenWithComments", { post })
+  } else if (noti?.post) {
+    navigation.push("PostDetailScreenWithComments", { postID: noti?.post })
+  } else if (noti?.createdBy?._id) {
+    navigation.push("UserProfileScreen", { userID: noti?.createdBy?._id })
+  }
+}
+
 const DrawerDashboardTabsExtra = ({ navigation }) => {
   React.useEffect(() => {
     Linking.addEventListener('url', (link) => {
@@ -75,7 +89,42 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
     }).catch(err => {
       AppLogger('----------ERROR LINK GETTING INITIAL URL DEEP LINK----------', err)
     })
+
+    /* NOTIFICATION HANDLERS */
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      if (remoteMessage) {
+        let newData = JSON.parse(remoteMessage?.data?.payload)
+        AppLogger('Notification caused app to open from background state:', newData);
+
+        notificationHandler(newData, navigation);
+      }
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          let newData = JSON.parse(remoteMessage?.data?.payload)
+          AppLogger('Notification caused app to open from background state:', newData);
+
+          notificationHandler(newData, navigation);
+        }
+      });
+
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      if (remoteMessage) {
+        AppShowPushNotification(remoteMessage?.notification?.title, remoteMessage?.notification?.body, () => {
+          let newData = JSON.parse(remoteMessage?.data?.payload)
+
+          AppLogger('A new FCM message arrived!', newData);
+          notificationHandler(newData, navigation);
+        });
+      }
+    });
+
     return () => {
+      unsubscribe();
       Linking.removeEventListener('url', (link) => {
         DynamicLinkHelper(navigation, link);
       });

@@ -1,9 +1,11 @@
 
+import { firebase } from '@react-native-firebase/messaging';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MenuProvider } from 'react-native-popup-menu';
+import NotificationPopup from 'react-native-push-notification-popup';
 import { useSelector } from 'react-redux';
 import { AppTheme } from './src/config';
 import { AuthStack, DashboardTabs } from './src/navigations';
@@ -12,8 +14,6 @@ import { store } from './src/redux/store';
 import { AuthLoading } from './src/screens';
 import { getData } from './src/utils/AppStorage';
 import Interceptor from './src/utils/Interceptor';
-import NotificationPopup from 'react-native-push-notification-popup';
-import { firebase } from '@react-native-firebase/messaging';
 
 const App = ({ }) => {
   let [state, setState] = useState({
@@ -31,7 +31,8 @@ const App = ({ }) => {
         Interceptor.setToken(storageUser.token);
         store.dispatch(setUser(storageUser));
       }
-    })
+    });
+
   }, [])
   return (
     <PaperProvider theme={AppTheme}>

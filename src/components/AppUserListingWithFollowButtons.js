@@ -25,7 +25,6 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
         let tempUserObj = { ...item };
         ActionsOnUsers((actionsRes) => {
 
-            debugger
         }, item._id, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW);
         tempUserObj.isFollowing = !tempUserObj?.isFollowing;
         let tempData = state.usersData;

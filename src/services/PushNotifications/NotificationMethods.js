@@ -7,17 +7,17 @@ import Interceptor from '../../utils/Interceptor';
 
 const getFCMToken = (callback) => {
     iid().getToken().then(token => {
-        AppLogger('------|||||||---FCM TOKEN---|||||||------','')
+        AppLogger('------|||||||---FCM TOKEN---|||||||------', '')
         callback(token)
     }).catch(err => {
         AppLogger('-------ERROR GETTING FCM TOKEN-----', err)
     });
 }
 
-const AppShowPushNotification = (title, body) => {
+const AppShowPushNotification = (title, body, onPress) => {
     if (global.popupRef) {
         global.popupRef.show({
-            onPress: function () { AppLogger('','Pressed') },
+            onPress: onPress ? onPress : () => { },
             // appIconSource: require('./assets/icon.jpg'),
             appTitle: AppConfig.appName,
             timeText: 'Now',

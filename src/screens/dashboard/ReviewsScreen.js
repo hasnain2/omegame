@@ -5,7 +5,7 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppButton, AppLoadingView, AppModal, AppRadioButton, AppSearchBar, AppText } from '../../components';
+import { AppButton, AppLoadingView, AppModal, AppNoDataFound, AppRadioButton, AppSearchBar, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_CONSOLE_TYPES, MOCK_GAMES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
@@ -84,15 +84,18 @@ const ReviewsScreen = ({ navigation }) => {
             {state.loading ?
                 <AppLoadingView />
                 : null}
+            {!state.loading && state.data?.length < 1 ?
+                <AppNoDataFound />
+                : null}
             <View style={{ flex: 1 }}>
                 <FlatList
                     data={state.data}
 
-                    initialNumToRender={2}
-                    windowSize={2}
-                    removeClippedSubviews={true}
-                    maxToRenderPerBatch={2}
-                    bounces={false}
+                    initialNumToRender={10}
+                    windowSize={3}
+                    // removeClippedSubviews={true}
+                    maxToRenderPerBatch={10}
+                    // bounces={false}
                     keyExtractor={ii => (ii._id || '') + 'you'}
                     renderItem={({ item, index }) => {
                         return (
