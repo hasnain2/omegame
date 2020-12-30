@@ -79,6 +79,7 @@ const GetHomeFeed = (callback, cursor) => {
 }
 
 const GetExplorePosts = (callback, cursor, query) => {
+    debugger
     fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ""}${query ? query : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
@@ -95,7 +96,7 @@ const GetExplorePosts = (callback, cursor, query) => {
 }
 
 const GetExploreMediaOnlyPosts = (callback, cursor, query) => {
-    AppLogger('------------QUERYY---------', `${EndPoints.HOME_FEED}?mediaOnly=true${query ? query : ""}`)
+    debugger
     fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}&mediaOnly=true${query ? query : ""}${cursor ? ('&cursor=' + cursor) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()

@@ -42,7 +42,7 @@ const SearchScreen = ({ route, navigation }) => {
             <View style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>
                 <SearchTabs navigation={navigation}
                     // &sort=${state.sortPostBy.toUpperCase()}
-                    query={`${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
+                    query={`&sort=${state.sortPostBy.toUpperCase()}${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
                         : state.sortPostByTime === 'Past week' ? GetLastWeekStartOf()
                             : state.sortPostByTime === 'Past month' ? GetLastMonthStartOf()
                                 : state.sortPostByTime === 'Past year' ? GetLastYearStartOf()

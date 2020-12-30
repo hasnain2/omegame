@@ -5,7 +5,6 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { DEFAULT_USER_PIC } from '../../assets/images';
 import { AppTheme } from '../config';
-import { MOCKUP_POSTS } from '../mockups/Mockups';
 import { ActionsOnUsers } from '../services';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
 import { AppLogger, largeNumberShortify } from '../utils/AppHelperMethods';
@@ -24,8 +23,9 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
 
     function followUnfollowUser(item, index) {
         let tempUserObj = { ...item };
-        ActionsOnUsers(() => {
+        ActionsOnUsers((actionsRes) => {
 
+            debugger
         }, item._id, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW);
         tempUserObj.isFollowing = !tempUserObj?.isFollowing;
         let tempData = state.usersData;
@@ -44,7 +44,8 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                 <AppLoadingView />
                 : null}
             <FlatList
-                data={state.usersData || MOCKUP_POSTS}
+                data={state.usersData}
+                extraData={state.usersData}
                 initialNumToRender={2}
                 windowSize={2}
                 // removeClippedSubviews={true}

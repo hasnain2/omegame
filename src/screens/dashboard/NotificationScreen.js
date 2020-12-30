@@ -23,8 +23,9 @@ const NotificationScreen = ({ navigation, route, }) => {
     });
     function getnotificationhistoryhelper(cursor) {
         GetNotificationHistory((notificatioHistoryResponse) => {
+            debugger
             if (notificatioHistoryResponse) {
-                setState(prev => ({ ...prev, loading: false, notificationData: notificatioHistoryResponse }))
+                setState(prev => ({ ...prev, loading: false, notificationData: notificatioHistoryResponse }));
             } else {
                 setState(prev => ({ ...prev, loading: false }))
             }

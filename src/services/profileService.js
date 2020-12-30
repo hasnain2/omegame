@@ -45,6 +45,7 @@ const RequestVerification = (callback, formData) => {
 }
 
 const GetAllTrendingUsers = (callback, cursor, query) => {
+    AppLogger('-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\---', `${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`)
     fetch(`${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),

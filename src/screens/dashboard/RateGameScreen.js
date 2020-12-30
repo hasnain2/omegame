@@ -61,7 +61,7 @@ const RateGameScreen = ({ navigation, route, }) => {
             <KeyboardAvoidingScrollView >
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(15) }}>
-                    <UserAvatar corner={gameData?.corner || ''} color={gameData?.cornerColor} source={BACKGROUND_IMG} size={50} />
+                    <UserAvatar corner={gameData?.corner || ''} color={gameData?.cornerColor} source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} size={50} />
 
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingVertical: RFValue(10), justifyContent: 'space-between', }}>
                         <View style={{ flex: 1, justifyContent: 'center' }}>

@@ -70,19 +70,21 @@ const SearchTabs = ({ navigation, query }) => {
 
     function getalltrendingusers(cursor, searchQuery) {
         let newQuery = searchQuery.split('&')
-        let newQuery2 = newQuery.find(ii => ii.includes('search'));
+        let newQuery2 = newQuery.find(ii => ii.includes('search')) || '';
+
         if (!cursor)
             cursorArrPosts = []
 
         if (!cursorArrUsers.includes(cursor)) {
             GetAllTrendingUsers((postResponse) => {
-                if (postResponse && postResponse.length > 0) {
+                if (postResponse) {
                     let tempData = postResponse;
                     setState(prev => ({ ...prev, loadingAllUsers: false, loading: false, refreshingAllUsers: false, usersList: RemoveDuplicateObjectsFromArray(tempData) }))
                 } else {
                     setState(prev => ({ ...prev, loadingAllUsers: false, loading: false, refreshingAllUsers: false, }))
                 }
-            }, cursor, newQuery2)
+                debugger
+            }, cursor, `${newQuery2}`)
 
         } else {
             setState(prev => ({ ...prev, refreshingPosts: false }))

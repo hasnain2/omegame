@@ -38,6 +38,8 @@ const FRIEND_STATUSES_ACTIONS = { // action on friends weather to
     UNFRIEND: 'UN_FRIEND',
     FOLLOW: 'FOLLOW',
     UNFOLLOW: 'UN_FOLLOW',
+    ACCEPT: 'ACCEPT',
+    DENY: 'DENY',
     ACCEPT_FRIEND_REQUEST: 'ACCEPT_FRIEND_REQUEST'
 }
 
