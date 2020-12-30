@@ -9,7 +9,7 @@ const SetAppSettings = (callback, formData) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('---------SET APP SETTINGS-- ERROR-----------', error)
+        AppLogger('---------SET APP SETTINGS-- ERROR-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true);
         } else
@@ -28,7 +28,7 @@ const GetAppSettings = (callback) => {
     }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET APP SETTINGS RESPONSE----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
-            callback(data)
+            callback(data?.data)
         } else {
             callback(false)
         }

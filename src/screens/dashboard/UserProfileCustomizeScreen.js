@@ -60,7 +60,7 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                             <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                     <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>{user?.userName} <IsUserVerifiedCheck check={user?.isVerified} /></AppText>
-                                    <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{user?.firstName || user?.userName}</AppText>
+                                    <AppText size={1} color={user?.nickNameColor ? user?.nickNameColor : AppTheme.colors.lightGrey}>{user?.nickName || user?.firstName || user?.userName}</AppText>
                                 </View>
                                 <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
                                     <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>

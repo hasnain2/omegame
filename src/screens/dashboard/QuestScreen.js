@@ -81,20 +81,20 @@ const QuestScreen = ({ route, navigation }) => {
                                                         <ProgressBar style={{ height: RFValue(10), borderRadius: 3 }} progress={(user?.earnedXps || 0) / 100} color={AppTheme.colors.primary} />
                                                     </View>
                                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                                        <AppText size={1} bold={true} style={{}}>XP {largeNumberShortify(user?.earnedXps || 0)}/100</AppText>
+                                                        <AppText size={1} bold={true} >XP {largeNumberShortify(user?.earnedXps || 0)}/100</AppText>
                                                     </View>
                                                 </View>
                                                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(10), paddingBottom: RFValue(10), justifyContent: 'space-between', }}>
                                                     <View style={{ flex: 1, justifyContent: 'center' }}>
                                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                            <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>{user?.firstName || user?.userName}</AppText>
+                                                            <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} >{user?.firstName || user?.userName}</AppText>
                                                             <IsUserVerifiedCheck check={user?.isVerified} />
                                                         </View>
-                                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>{user?.userName}</AppText>
+                                                        <AppText size={1} color={user?.nickNameColor ? user?.nickNameColor : AppTheme.colors.lightGrey} >{user?.nickName || user?.userName}</AppText>
                                                     </View>
                                                     <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.primary }}>
-                                                        <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>LEVEL</AppText>
-                                                        <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>{user?.level}</AppText>
+                                                        <AppText size={1} color={AppTheme.colors.primary} bold={true} >LEVEL</AppText>
+                                                        <AppText size={4} color={AppTheme.colors.primary} bold={true} >{user?.level}</AppText>
                                                     </View>
                                                 </View>
                                             </LinearGradient>

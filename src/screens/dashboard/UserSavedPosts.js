@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppLoadingView, AppNoDataFound, AppPostsListings, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { setSavedPosts } from '../../redux/reducers/savedPostsSlice';
+import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { GetBookmarkPosts } from '../../services/postService';
 import { RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
@@ -37,7 +38,20 @@ const UserSavedPosts = ({ navigation, route }) => {
         cursorArr.push(cursor);
     }
     useEffect(() => {
-        getbookmarkpostshelper(false)
+        getbookmarkpostshelper(false);
+
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.background }));
+        });
+        const unsubscribeBlur = navigation.addListener('blur', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
+        });
+
+        return () => {
+            unsubscribeFocus();
+            unsubscribeBlur();
+        }
+
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>

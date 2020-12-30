@@ -7,10 +7,11 @@ import { useSelector } from 'react-redux';
 import { ICON_ACCOUNT_SETTINGS, ICON_GAMEOVER, ICON_INFO, ICON_NOTIFICATION, ICON_PRIVATE, ICON_SAVE_POST } from '../../../assets/icons';
 import { AppBackButton, AppSwitchButton, AppText } from '../../components';
 import { AppTheme } from '../../config';
+import { setSettings } from '../../redux/reducers/settingsSlice';
 import { setUser } from '../../redux/reducers/userSlice';
 import { store } from '../../redux/store';
 import { UpdateProfile } from '../../services';
-import { GetAppSettings } from '../../services/appSettingsService';
+import { GetAppSettings, SetAppSettings } from '../../services/appSettingsService';
 import { LogOutUser } from '../../services/authService';
 import { AppLogger } from '../../utils/AppHelperMethods';
 import { EvilIcons } from '../../utils/AppIcons';
@@ -21,7 +22,7 @@ const AppSettingsScreen = ({ navigation, route, }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: true,
-        isNotificationOn: true,
+        isNotificationOn: false,
         accountSettingDetails: false,
         infoHelpDetails: false,
     })
@@ -29,12 +30,30 @@ const AppSettingsScreen = ({ navigation, route, }) => {
     useEffect(() => {
         GetAppSettings((appSettingsResponse) => {
             if (appSettingsResponse) {
-                setState(prev => ({ ...prev, settingsData: appSettingsResponse }))
+                setState(prev => ({ ...prev, isNotificationOn: appSettingsResponse?.notificationsAllowed }))
             } else {
                 setState(prev => ({ ...prev, loading: false }))
             }
-        })
+        });
+
+
+
+
+
+
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.background }));
+        });
+        const unsubscribeBlur = navigation.addListener('blur', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
+        });
+
+        return () => {
+            unsubscribeFocus();
+            unsubscribeBlur();
+        }
     }, [])
+
 
     const rendListItem = (Iconn, name, toggle) => {
         return (
@@ -76,6 +95,9 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                        SetAppSettings(() => {
+
+                        }, { notificationsAllowed: !state.isNotificationOn })
                         setState(prev => ({ ...prev, isNotificationOn: !state.isNotificationOn }))
                     }}>
                         {rendListItem(ICON_NOTIFICATION, "Notifications", state.isNotificationOn)}
