@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -28,6 +29,7 @@ const CreatePost = ({ navigation, route }) => {
 
         privacy: 'Public',
         selectedMedia: null,
+        uploadedMedia: postData?.attachments[0] || null,
         answersArr: ['', ''],
         location: postData?.location ? { addressName: postData?.location?.addressName || '', country: postData?.location?.country || '', streetAddress: postData?.location?.streetAddress || '', coordinates: `${postData?.location?.location?.coordinates[0] || ''}, ${postData?.location?.location?.coordinates[1] || ''}` } : null,
         chosenContacts: postData?.tagged || [],
@@ -77,6 +79,11 @@ const CreatePost = ({ navigation, route }) => {
             AppLogger('------------POST CREATION PAYLOAD-----------', JSON.stringify(payload))
 
             if (postData) {
+                if (postData?.attachments?.length > 0 && !state.uploadedMedia && !state.selectedMedia)
+                    payload.removeMedia = true;
+                else {
+                    payload.removeMedia = false
+                }
                 EditModifyPostService((result) => {
                     setState(prev => ({ ...prev, loading: false }))
                     if (result) {
@@ -183,7 +190,22 @@ const CreatePost = ({ navigation, route }) => {
                                 style={{ fontSize: RFValue(40), color: 'white', ...AppTheme.textShadow }} />
                         </View>
                     </View>
-                    : null}
+                    : state.uploadedMedia && state.uploadedMedia.url ?
+                        <View style={{ marginTop: RFValue(15) }}>
+                            {state.uploadedMedia?.type?.includes('image') ?
+                                <FastImage source={{ uri: state.uploadedMedia?.url }} style={{ height: RFValue(300), width: '100%' }} resizeMode={'cover'} />
+                                :
+                                <View style={{ height: RFValue(300), width: '100%' }}>
+                                    <AppVideoPlayer source={{ uri: state.uploadedMedia?.url }} startPlaying={!state.showGallery} />
+                                </View>}
+                            <View style={{ position: 'absolute', top: 0, right: 0, height: 50, width: 50, }}>
+                                <EvilIcons
+                                    onPress={() => {
+                                        setState(prev => ({ ...prev, uploadedMedia: null }))
+                                    }} name={"close"}
+                                    style={{ fontSize: RFValue(40), color: 'white', ...AppTheme.textShadow }} />
+                            </View>
+                        </View> : null}
 
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: RFValue(25) }}>
@@ -271,7 +293,7 @@ const CreatePost = ({ navigation, route }) => {
                     loading={state.loading}
                     bgColor="black" onPress={() => {
                         onSubmit()
-                    }} label={"SHARE"} />
+                    }} label={postData ? "UPDATE" : "SHARE"} />
                 <View style={{ margin: RFValue(30) }} />
 
             </KeyboardAvoidingScrollView>

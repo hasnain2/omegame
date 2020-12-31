@@ -84,40 +84,49 @@ const CreatePostService = (callback, formData) => {
 
 const EditModifyPostService = (callback, postID, formData) => {
     if (formData.file) {
-        UploadMedia((results) => {
-            if (results) {
-                editModifyPostHelper((creatResults) => {
-                    if (creatResults)
-                        callback(creatResults)
-                    else
-                        callback(false)
-                }, postID, {
-                    ...formData,
-                    attachments: [{
-                        name: results?.name,
-                        type: results?.oType,
-                        url: results?.url,
-                        bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
-                        meta: results?.thumbnail?.thumbnail ? [{
-                            type: results?.thumbnail?.oType || results?.thumbnail?.type,
-                            url: results?.thumbnail?.url,
-                            isThumbnail: results?.thumbnail?.thumbnail ? true : false
-                        }] : null
-                    }]
-                })
-                AppLogger('---------CREATE POST UPLOAD MEDIA RESPONSE---------->', results)
-            } else {
-                callback(false)
-                AppShowToast("Failed to upload media")
-            }
-        }, formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC, formData.file)
+        if (formData?.removeMedia) {
+            editModifyPostHelper((creatResults) => {
+                if (creatResults)
+                    callback(creatResults)
+                else
+                    callback(false)
+            }, postID, { ...formData, attachments: [] })
+        } else {
+            UploadMedia((results) => {
+                if (results) {
+                    editModifyPostHelper((creatResults) => {
+                        if (creatResults)
+                            callback(creatResults)
+                        else
+                            callback(false)
+                    }, postID, {
+                        ...formData,
+                        attachments: [{
+                            name: results?.name,
+                            type: results?.oType,
+                            url: results?.url,
+                            bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
+                            meta: results?.thumbnail?.thumbnail ? [{
+                                type: results?.thumbnail?.oType || results?.thumbnail?.type,
+                                url: results?.thumbnail?.url,
+                                isThumbnail: results?.thumbnail?.thumbnail ? true : false
+                            }] : null
+                        }]
+                    })
+                    AppLogger('---------CREATE POST UPLOAD MEDIA RESPONSE---------->', results)
+                } else {
+                    callback(false)
+                    AppShowToast("Failed to upload media")
+                }
+            }, formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC, formData.file)
+        }
     } else {
         editModifyPostHelper((creatResults) => {
             if (creatResults)
                 callback(creatResults)
             else
                 callback(false)
-        }, postID, { ...formData })
+        }, postID, formData?.removeMedia ? { ...formData, attachments: [] } : { ...formData })
     }
 }
 

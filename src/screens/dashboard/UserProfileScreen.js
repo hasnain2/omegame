@@ -258,7 +258,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        // modify post
                         RemovePostsOfUserFromReduxStore(route.params.userID)
                         navigation.goBack();
                         ActionsOnUsers(() => {

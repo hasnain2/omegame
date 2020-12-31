@@ -5,7 +5,7 @@ import { AppText } from './AppText';
 const AppNoDataFound = ({ msg }) => {
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-            <AppText size={2} >{msg ? msg : "No Data Found"}</AppText>
+            <AppText size={2} color={"grey"}>{msg ? msg : "No Data Found"}</AppText>
         </View>
     );
 };
