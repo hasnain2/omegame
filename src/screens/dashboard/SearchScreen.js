@@ -60,7 +60,7 @@ const SearchScreen = ({ route, navigation }) => {
                 <View style={{ backgroundColor: '#1b1b1b', padding: RFValue(15), width: '85%', maxHeight: '90%', borderRadius: 15 }}>
                     <AntDesign onPress={() => setState(prev => ({ ...prev, showFilter: false }))} name="close" style={{ fontSize: RFValue(25), padding: RFValue(5), textAlign: 'right', color: 'white' }} />
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter != 'sortPostBy' ? 'sortPostBy' : '' }))
+                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter !== 'sortPostBy' ? 'sortPostBy' : '' }))
                     }}>
                         <View style={{ borderBottomWidth: 0.4, borderBottomColor: AppTheme.colors.lightGrey, paddingBottom: RFValue(15) }}>
                             <AppText size={2} >Sort Post by:</AppText>
@@ -88,7 +88,7 @@ const SearchScreen = ({ route, navigation }) => {
                         : null}
 
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter != 'sortPostByTime' ? 'sortPostByTime' : '' }))
+                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter !== 'sortPostByTime' ? 'sortPostByTime' : '' }))
                     }}>
                         <View style={{ paddingVertical: RFValue(15) }}>
                             <AppText size={2} >Release date:</AppText>

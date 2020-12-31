@@ -180,14 +180,14 @@ const SearchTabs = ({ navigation, query }) => {
                             data={state.usersList}
                             loading={state.loadingAllUsers}
                             refreshing={state.refreshingAllUsers}
-                            // loadMore={(cursor, refreshControl) => {
-                            //     if (refreshControl) {
-                            //         setState(prev => ({ ...prev, refreshingAllUsers: true }));
-                            //         getalltrendingusers(false, query)
-                            //     } else {
-                            //         getalltrendingusers(cursor, query)
-                            //     };
-                            // }}
+                            loadMore={(cursor, refreshControl) => {
+                                if (refreshControl) {
+                                    setState(prev => ({ ...prev, refreshingAllUsers: true }));
+                                    getalltrendingusers(false, query)
+                                } else {
+                                    getalltrendingusers(cursor, query)
+                                };
+                            }}
                             style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}

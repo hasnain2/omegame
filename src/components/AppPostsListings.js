@@ -51,6 +51,7 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
+                        tintColor={'white'}
                         onRefresh={() => {
                             if (loadMore)
                                 loadMore(0, true)

@@ -12,14 +12,16 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { UploadMedia } from '../../services';
 import { UpdateProfile } from '../../services/profileService';
 import { BUCKETS, GENDERS_OF_USERS } from '../../utils/AppConstants';
-import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 const EditUserProfileScreen = ({ navigation, route, }) => {
     let routeUser = route?.params?.data;
+    let changeUserName = route?.params?.userName || false;
     let reduxUser = useSelector(state => state.root.user);
     let user = { ...routeUser, ...reduxUser };
     let [state, setState] = useState({
-        name: user.firstName,
+        name: user.firstName || '',
+        userName: user.userName || '',
         bio: user?.bio,
         dateOfBirth: user.dateOfBirth || '',
         favoriteGame: user?.favouriteGame || '',
@@ -46,11 +48,15 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
     })
 
     const onSubmit = () => {
-        if (!state.name) {
+        if (changeUserName && !state.userName?.trim()) {
+            AppShowToast("Please provide userName")
+            return
+        }
+        if (!state.name?.trim()) {
             AppShowToast("Please provide name")
             return
         }
-        if (!state.bio) {
+        if (!state.bio?.trim()) {
             AppShowToast("Please provide bio")
             return
         }
@@ -58,10 +64,10 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
             AppShowToast("Please provide date of birth")
             return
         }
-        if (!state.favoriteGame) {
+        if (!state.favoriteGame?.trim()) {
             AppShowToast("Please provide favourite game")
             return
-        } if (!state.favoriteConsole) {
+        } if (!state.favoriteConsole?.trim()) {
             AppShowToast("Please provide favourite console")
             return
         }
@@ -78,6 +84,8 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                 // nickName: "" || null,
                 isPrivate: false
             };
+            if (changeUserName && state.userName.trim())
+                formedData.userName = state.userName.trim()
             if (state.imageToUpload)
                 formedData = { ...formedData, pic: state.imageToUpload }
             setState(prev => ({ ...prev, loading: true }))
@@ -91,72 +99,77 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                 }
             }, formedData)
         } else {
-            AppShowToast(`Please provide ${state.gamingAccounts[0].gamingAccountProvider || state.gamingAccounts[1].gamingAccountProvider || state.gamingAccounts[2].gamingAccountProvider || state.gamingAccounts[3].gamingAccountProvider} account`)
+            let GAMING = state.gamingAccounts;
+            let errors = GAMING.map((ii => (!ii.account) ? ii.gamingAccountProvider : '')).filter(iii => iii)
+            AppLogger('------', errors)
+            AppShowToast(`Please provide ${errors[0]?.toLowerCase()} accounts`)
         }
-
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }} >
             <AppHeaderCommon navigation={navigation} label={"PROFILE INFORMATION"} />
 
-            <KeyboardAvoidingScrollView style={{ paddingHorizontal: RFValue(20) }}>
-                <View style={{ alignSelf: 'center', paddingVertical: RFValue(20) }}>
-                    <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
-                    <View style={{ position: 'absolute', bottom: RFValue(20), right: RFValue(3), borderRadius: 90 }}>
-                        <TouchableOpacity
-                            style={{ flex: 1 }}
-                            onPress={() => {
-                                OpenCameraGalleryPromptPicker((res) => {
-                                    if (res) {
-                                        setState(prev => ({ ...prev, imageLoading: true }))
-                                        UploadMedia((uploaderRes) => {
-                                            setState(prev => ({ ...prev, imageLoading: false, imageToUpload: uploaderRes.url }))
-                                        }, BUCKETS.PROFILE, res)
-                                        setState(prev => ({ ...prev, photo: res.uri }))
-                                    }
-                                }, false)
-                            }}>
-                            <View style={{ borderRadius: 90, backgroundColor: 'rgba(0, 72, 255,0.6)', padding: RFValue(10) }}>
-                                <Image source={ICON_PHOTO} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
+            <KeyboardAvoidingScrollView style={{ flex: 1 }} scrollEventThrottle={100}>
+                <View style={{ flex: 1, paddingHorizontal: RFValue(20) }}>
+                    <View style={{ alignSelf: 'center', paddingVertical: RFValue(20) }}>
+                        <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
+                        <View style={{ position: 'absolute', bottom: RFValue(20), right: RFValue(3), borderRadius: 90 }}>
+                            <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={() => {
+                                    OpenCameraGalleryPromptPicker((res) => {
+                                        if (res) {
+                                            setState(prev => ({ ...prev, imageLoading: true }))
+                                            UploadMedia((uploaderRes) => {
+                                                setState(prev => ({ ...prev, imageLoading: false, imageToUpload: uploaderRes.url }))
+                                            }, BUCKETS.PROFILE, res)
+                                            setState(prev => ({ ...prev, photo: res.uri }))
+                                        }
+                                    }, false)
+                                }}>
+                                <View style={{ borderRadius: 90, backgroundColor: 'rgba(0, 72, 255,0.6)', padding: RFValue(10) }}>
+                                    <Image source={ICON_PHOTO} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
+                    <AppInput label={"Username"} value={state.userName} editable={changeUserName || !state.userName} onChangeText={(val) => { setState(prev => ({ ...prev, userName: val })) }} />
+                    <AppInput label={"Name"} value={state.name} onChangeText={(val) => { setState(prev => ({ ...prev, name: val })) }} />
+                    <AppInput lines={2} maxLength={200} label={"Bio"} value={state.bio} onChangeText={(val) => { setState(prev => ({ ...prev, bio: val })) }} />
+                    <TouchableOpacity onPress={() => {
+                        setState(prev => ({ ...prev, showDatePicker: true, showGenderPicker: false }))
+                    }}>
+                        <View pointerEvents={"none"}>
+                            <AppInput editable={false} value={state.dateOfBirth ? (moment(state.dateOfBirth).format('DD MMM, yyyy') + '') : ''} label={"Date of birth"} onChangeText={(val) => { }} />
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                        setState(prev => ({ ...prev, showDatePicker: false, showGenderPicker: true }))
+                    }}>
+                        <View pointerEvents={"none"}>
+                            <AppInput editable={false} value={state.gender || "Select gender"} label={"Gender"} onChangeText={(val) => { }} />
+                        </View>
+                    </TouchableOpacity>
+
+                    <AppInput label={"Favorite game"} value={state.favoriteGame} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteGame: val })) }} />
+                    <AppInput label={"Favorite console"} value={state.favoriteConsole} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteConsole: val })) }} />
+
+                    {state.gamingAccounts.map((item, index) => {
+                        return (
+                            <AppInput key={`${index}key`} label={item.gamingAccountProvider} value={item.account}
+                                onChangeText={(val) => {
+                                    let tempArr = state.gamingAccounts.slice();
+                                    tempArr[index] = { ...tempArr[index], account: val };
+
+                                    setState(prev => ({ ...prev, gamingAccounts: tempArr }))
+                                }} />
+                        )
+                    })}
                 </View>
-
-                <AppInput label={"Name"} value={state.name} onChangeText={(val) => { setState(prev => ({ ...prev, name: val })) }} />
-                <AppInput label={"Bio"} value={state.bio} onChangeText={(val) => { setState(prev => ({ ...prev, bio: val })) }} />
-                <TouchableOpacity onPress={() => {
-                    setState(prev => ({ ...prev, showDatePicker: true, showGenderPicker: false }))
-                }}>
-                    <View pointerEvents={"none"}>
-                        <AppInput editable={false} value={state.dateOfBirth ? (moment(state.dateOfBirth).format('DD MMM, yyyy') + '') : ''} label={"Date of birth"} onChangeText={(val) => { }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => {
-                    setState(prev => ({ ...prev, showDatePicker: false, showGenderPicker: true }))
-                }}>
-                    <View pointerEvents={"none"}>
-                        <AppInput editable={false} value={state.gender || "Select gender"} label={"Gender"} onChangeText={(val) => { }} />
-                    </View>
-                </TouchableOpacity>
-
-                <AppInput label={"Favorite game"} value={state.favoriteGame} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteGame: val })) }} />
-                <AppInput label={"Favorite console"} value={state.favoriteConsole} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteConsole: val })) }} />
-
-                {state.gamingAccounts.map((item, index) => {
-                    return (
-                        <AppInput key={`${index}key`} label={item.gamingAccountProvider} value={item.account}
-                            onChangeText={(val) => {
-                                let tempArr = state.gamingAccounts.slice();
-                                tempArr[index] = { ...tempArr[index], account: val };
-
-                                setState(prev => ({ ...prev, gamingAccounts: tempArr }))
-                            }} />
-                    )
-                })}
-            </KeyboardAvoidingScrollView>
+            </KeyboardAvoidingScrollView >
 
             <View style={{ padding: RFValue(15) }}>
                 <AppButton loading={state.loading || state.imageLoading} bgColor="black" onPress={onSubmit} label={"SAVE"} />
@@ -187,7 +200,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
 
                 </View>
             </AppModal>
-        </View>
+        </View >
     );
 };
 

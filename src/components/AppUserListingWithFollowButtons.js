@@ -54,6 +54,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
+                        tintColor={'white'}
                         onRefresh={() => {
                             if (loadMore)
                                 loadMore(false, true)
@@ -91,7 +92,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                                 </View>
                             </TouchableOpacity>
 
-                            {user?._id != item?._id ?
+                            {user?._id !== item?._id ?
                                 <View style={{ flex: 0.7 }}>
                                     {item?.isFollowing ?
                                         <TouchableOpacity activeOpacity={0.7} onPress={() => {

@@ -45,7 +45,7 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
     const onViewRef = React.useRef((viewableItems) => {
         if (viewableItems && viewableItems?.changed?.length > 0) {
             let currentIndex = viewableItems?.changed[0]?.index;
-            if (currentIndex != state.currentItemIndex && currentIndex != currentItemBeingUpdated) {
+            if (currentIndex !== state.currentItemIndex && currentIndex !== currentItemBeingUpdated) {
                 setState(prev => ({ ...prev, currentItemIndex: currentIndex }))
                 currentItemBeingUpdated = currentIndex;
             }
@@ -80,6 +80,7 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
+                        tintColor={'white'}
                         onRefresh={() => {
                             if (loadMore)
                                 loadMore(false, true)

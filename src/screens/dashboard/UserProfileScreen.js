@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, Platform, StyleSheet, TouchableOpacity, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -14,10 +14,10 @@ import { AppBackButton, AppButton, AppGoldCoin, AppLoadingView, AppModal, AppTex
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setUser } from '../../redux/reducers/userSlice';
-import { GetPostsOfSpecificUser, RemovePostsOfUserFromReduxStore } from '../../services';
+import { RemovePostsOfUserFromReduxStore } from '../../services';
 import { ActionsOnUsers, GetSingleUserProfile } from '../../services/profileService';
 import { FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
-import { largeNumberShortify } from '../../utils/AppHelperMethods';
+import { AppShowToast, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { MaterialIcons } from '../../utils/AppIcons';
 import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
 
@@ -45,10 +45,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
         enableScrollViewScroll: true,
         userData: userID ? user : null
     });
-
-
-    let ScrollRef = useRef(null);
-    useEffect(() => {
+    function getsingleuserprofilehelper() {
         GetSingleUserProfile((profileRes) => {
             if (profileRes) {
                 setState(prev => ({ ...prev, loading: false, userData: profileRes }))
@@ -58,19 +55,33 @@ const UserProfileScreen = ({ navigation, route, }) => {
             } else
                 setState(prev => ({ ...prev, loading: false }))
         }, route.params.userID)
-        GetPostsOfSpecificUser((postsOfUser) => {
+    }
+    useEffect(() => {
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            getsingleuserprofilehelper();
+        });
 
-        }, route.params.userID)
-    }, [ScrollRef])
+        return () => {
+            unsubscribeFocus();
+        }
+    }, [])
 
+    function acceptOrDenyRequest(accept) {
+        let tempData = state.userData;
+        tempData.requestStatus = false;
+        setState(prev => ({ ...prev, userData: tempData }))
+        AppShowToast(accept ? "Request accepted!" : "Request denied!");
+        ActionsOnUsers(() => { }, route.params.userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
+    }
 
     function followuser() {
         let tempUserObj = state.userData;
-        ActionsOnUsers(() => {
+        ActionsOnUsers(() => { }, route.params.userID, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
 
-        }, route.params.userID, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
-
-        tempUserObj["isFollowing"] = !(tempUserObj?.isFollowing || false);
+        if (tempUserObj?.isFollowing)
+            tempUserObj["isFollowing"] = false;
+        else
+            tempUserObj["isRequested"] = true;
         setState(prev => ({ ...prev, userData: tempUserObj }));
     }
     userData = userID ? user : state.userData;
@@ -107,7 +118,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
 
             <ScrollView
                 style={{ flex: 1 }}
-                ref={ref => ScrollRef = ref}
                 decelerationRate={0.2}
                 nestedScrollEnabled={true}
                 scrollEventThrottle={1}>
@@ -184,20 +194,40 @@ const UserProfileScreen = ({ navigation, route, }) => {
                             </View>
                         </TouchableOpacity>
                         :
-                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
-                            <View style={{ flex: 1, paddingRight: RFValue(10) }}>
-                                <AppButton onPress={() => {
-                                    if (!userData?.isRequested)
-                                        followuser();
-                                }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : userData?.isRequested ? "REQUESTED" : "FOLLOW"} />
-                            </View>
-                            <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
-                                <AppButton onPress={() => {
-                                    if (userData)
-                                        navigation.push('ChatWindow', { friend: userData })
-                                }} label={"MESSAGE"} />
-                            </View>
-                        </View>
+                        <>
+                            {!userData?.requestStatus ?
+                                <>
+                                    <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{ paddingHorizontal: RFValue(25) }}>{userData?.firstName || userData?.userName} requested to follow you.</AppText>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
+                                        <View style={{ flex: 0.5, paddingRight: RFValue(10) }}>
+                                            <AppButton onPress={() => {
+                                                acceptOrDenyRequest(true)
+                                            }} fill={true} label={"ACCEPT"} />
+                                        </View>
+                                        <View style={{ flex: 0.5, paddingLeft: RFValue(5) }}>
+                                            <AppButton onPress={() => {
+                                                acceptOrDenyRequest(false)
+                                            }} label={"DENY"} />
+                                        </View>
+                                    </View>
+                                </>
+                                :
+                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
+                                    <View style={{ flex: 1, paddingRight: RFValue(10) }}>
+                                        <AppButton onPress={() => {
+                                            if (!userData?.isRequested)
+                                                followuser();
+                                        }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : userData?.isRequested ? "REQUESTED" : "FOLLOW"} />
+                                    </View>
+                                    <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
+                                        <AppButton onPress={() => {
+                                            if (userData)
+                                                navigation.push('ChatWindow', { friend: userData })
+                                        }} label={"MESSAGE"} />
+                                    </View>
+                                </View>}
+
+                        </>
                     }
                 </View>
 

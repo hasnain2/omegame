@@ -129,7 +129,7 @@ const s3fileupload = async (file) => {
         const options = appConfig.S3_CONFIGURATION;
         return new Promise((resolve, reject) => {
             RNS3.put(file, options).then(response => {
-                if (response.status != 201)
+                if (response.status !== 201)
                     throw new Error("Failed to upload image to S3");
 
                 resolve({ ...response.body.postResponse, cover: file.cover, unlock: file.unlock, type: file.typ, preview: file.preview });
@@ -143,7 +143,7 @@ const s3fileupload = async (file) => {
         const options = appConfig.S3_CONFIGURATION;
         return new Promise((resolve, reject) => {
             RNS3.put(file, options).then(response => {
-                if (response.status != 201)
+                if (response.status !== 201)
                     throw new Error("Failed to upload image to S3");
 
                 resolve({ ...response.body.postResponse, cover: file.cover, unlock: file.unlock, type: file.typ, preview: file.preview });

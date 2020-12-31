@@ -125,7 +125,7 @@ const ReviewsScreen = ({ navigation }) => {
                 <View style={{ backgroundColor: '#1b1b1b', padding: RFValue(15), width: '85%', maxHeight: '90%', borderRadius: 15 }}>
                     <AntDesign onPress={() => setState(prev => ({ ...prev, showFilter: false }))} name="close" style={{ fontSize: RFValue(25), padding: RFValue(5), textAlign: 'right', color: 'white' }} />
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter != 'console' ? 'console' : '' }))
+                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter !== 'console' ? 'console' : '' }))
                     }}>
                         <View style={{ borderBottomWidth: 0.4, borderBottomColor: AppTheme.colors.lightGrey, paddingBottom: RFValue(15) }}>
                             <AppText size={2} >Console:</AppText>
@@ -183,7 +183,7 @@ const ReviewsScreen = ({ navigation }) => {
                             )} />
                         : null}
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter != 'genre' ? 'genre' : '' }))
+                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter !== 'genre' ? 'genre' : '' }))
                     }}>
                         <View style={{ borderBottomWidth: 0.4, borderBottomColor: AppTheme.colors.lightGrey, paddingVertical: RFValue(15) }}>
                             <AppText size={2} >Genre:</AppText>
@@ -243,7 +243,7 @@ const ReviewsScreen = ({ navigation }) => {
                             )} />
                         : null}
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter != 'releasedate' ? 'releasedate' : '' }))
+                        setState(prev => ({ ...prev, visibleFilter: state.visibleFilter !== 'releasedate' ? 'releasedate' : '' }))
                     }}>
                         <View style={{ paddingVertical: RFValue(15) }}>
                             <AppText size={2} >Release date:</AppText>

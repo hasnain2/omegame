@@ -71,7 +71,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                     <View style={{ height: '100%', alignItems: 'center' }}>
                         <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
 
-                        {(state?.replies?._id === item?.parentComment && state.replies?.data?.length - 1 != index) || state?.replies?._id === item?._id ?
+                        {(state?.replies?._id === item?.parentComment && state.replies?.data?.length - 1 !== index) || state?.replies?._id === item?._id ?
                             <View style={{ width: 2, flex: 1, backgroundColor: AppTheme.colors.lightGrey }} />
                             : null}
                     </View>

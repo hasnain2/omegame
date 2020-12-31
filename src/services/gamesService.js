@@ -41,7 +41,7 @@ function GetUserReviews(callback, userID) {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------GET USER REVIEWS RESPONSE----------', JSON.stringify(data))
+        // AppLogger('-----------GET USER REVIEWS RESPONSE----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data)
         } else

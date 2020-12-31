@@ -12,11 +12,12 @@ const UpdateProfile = (callback, formData) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------PROFILE UPDATE RES----------', JSON.stringify(data))
+        AppLogger('-----------PROFILE UPDATE RES----------', JSON.stringify({ ...data.data, userName: formData?.userName }))
         if (status === 201 || status === 200) {
-            store.dispatch(setUser({ ...data.data }))
-            storeData('user', { ...store.getState().root.user, ...data.data })
-            callback(data)
+            let userObj = { ...data.data, userName: formData?.userName }
+            store.dispatch(setUser(userObj))
+            storeData('user', { ...store.getState().root.user, ...data.data, ...userObj })
+            callback({ ...store.getState().root.user, ...data.data, ...userObj })
         } else
             callback(false);
     }).catch((error) => {

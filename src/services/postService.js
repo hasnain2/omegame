@@ -57,7 +57,7 @@ const CreatePostService = (callback, formData) => {
                         name: results?.name,
                         type: results?.oType,
                         url: results?.url,
-                        bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
+                        bucket: formData.privacy !== 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
                         meta: results?.thumbnail?.thumbnail ? [{
                             type: results?.thumbnail?.oType || results?.thumbnail?.type,
                             url: results?.thumbnail?.url,
@@ -70,7 +70,7 @@ const CreatePostService = (callback, formData) => {
                 callback(false)
                 AppShowToast("Failed to upload media")
             }
-        }, formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC, formData.file)
+        }, formData.privacy !== 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC, formData.file)
     } else {
         creatPostHelper((creatResults) => {
             if (creatResults)
@@ -105,7 +105,7 @@ const EditModifyPostService = (callback, postID, formData) => {
                             name: results?.name,
                             type: results?.oType,
                             url: results?.url,
-                            bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
+                            bucket: formData.privacy !== 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
                             meta: results?.thumbnail?.thumbnail ? [{
                                 type: results?.thumbnail?.oType || results?.thumbnail?.type,
                                 url: results?.thumbnail?.url,
@@ -186,7 +186,7 @@ const GetPostsOfSpecificUser = (callback, userID) => {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
+        // AppLogger('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -249,7 +249,7 @@ const GetMediaOnlyPosts = (callback, userID) => {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------GET MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
+        // AppLogger('-----------GET MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else

@@ -45,11 +45,12 @@ const GetNotificationHistory = (callback, cursor) => {
     });
 }
 
-const UpdateNotificationStatus = (callback, notificationID) => {
+const ReadUpdateNotificationStatus = (notificationID) => {
     fetch(`${EndPoints.NOTIFICATION_STATUS_SET}${notificationID}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('---------NOTIFICATION STATUS READ STATUS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -61,4 +62,4 @@ const UpdateNotificationStatus = (callback, notificationID) => {
 }
 
 
-export { getFCMToken, AppShowPushNotification, GetNotificationHistory, UpdateNotificationStatus }
+export { getFCMToken, AppShowPushNotification, GetNotificationHistory, ReadUpdateNotificationStatus }

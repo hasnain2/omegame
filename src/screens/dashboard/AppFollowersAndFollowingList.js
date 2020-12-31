@@ -12,7 +12,7 @@ import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { ActionsOnUsers, GerUserListByType } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
-import { AppLogger, largeNumberShortify } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast, CapitalizeFirstLetter, largeNumberShortify } from '../../utils/AppHelperMethods';
 const LIGHT_GREY = '#4d4d4d'
 const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let isFollowerMode = route.params.isFollowerMode;
@@ -42,8 +42,6 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     useEffect(() => {
 
         getuserlisthelper(false, '')
-
-
         const unsubscribeFocus = navigation.addListener('focus', e => {
             store.dispatch(setSettings({ bgColor: 'black' }));
         });
@@ -55,7 +53,6 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
             unsubscribeFocus();
             unsubscribeBlur();
         }
-
     }, []);
 
     function handleActionsOnUsers(isUserIsSame, item, index) {
@@ -65,7 +62,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
 
             setState(prev => ({
                 ...prev,
-                data: tempData.filter(itm => itm._id != item._id),
+                data: tempData.filter(itm => itm._id !== item._id),
                 loading: false
             }));
         } else { // follow unfollow user
@@ -131,8 +128,8 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                                             if (!item?.isRequested) {
                                                 if (item?.isFollowing || isFollowerMode) {
                                                     Alert.alert(
-                                                        personalizedActionType,
-                                                        "Are you sure to " + (personalizedActionType.toLowerCase()) + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
+                                                        `${CapitalizeFirstLetter(personalizedActionType)} ${item?.firstName || item?.userName || "this user"}`,
+                                                        `Are you sure to ${personalizedActionType.toLowerCase()} ${item?.firstName || item?.userName || "this user"}?`,
                                                         [{
                                                             text: "Cancel",
                                                             onPress: () => AppLogger('', "Cancel Pressed"),
@@ -145,6 +142,8 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                                                 } else {
                                                     handleActionsOnUsers(isSameUser, item, index)
                                                 }
+                                            } else {
+                                                AppShowToast('this is requested')
                                             }
                                         }} label={personalizedActionType.toUpperCase()} />}
                                 </View>

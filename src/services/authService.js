@@ -108,6 +108,24 @@ const LogOutUser = (callback) => {
         store.dispatch(resetSavedPosts())
         callback(false)
     })
-
 }
-export { LogInUser, SignUpUser, LogOutUser, ChangePassword, ForgotPasswordCall }
+
+const DeleteUserAccount = (callback) => {
+    fetch(EndPoints.DELETE_MY_ACCOUNT, {
+        method: 'DELETE',
+        headers: Interceptor.getHeaders()
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('---------------ACCOUNT DELETION RES-------------', data)
+        if (status === 201 || status === 200) {
+            LogOutUser(()=>{})
+            clearStorage().then(res => callback(true)).then(err => {
+                AppLogger('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
+            })
+        } else {
+            AppShowToast(data?.message?.message || "Wrong password provided")
+        }
+    }).catch((error) => {
+        AppLogger('--------- ACCOUNT DELETION - ERROR-----------', error)
+    });
+}
+export { LogInUser, SignUpUser, LogOutUser, ChangePassword, ForgotPasswordCall, DeleteUserAccount }

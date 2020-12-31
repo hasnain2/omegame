@@ -146,7 +146,7 @@ const CreatePost = ({ navigation, route }) => {
                                         AppLogger('', state.answersArr)
                                     }}
                                 />
-                                {index != 0 && index != 1 ?
+                                {index !== 0 && index !== 1 ?
                                     <AntDesign onPress={() => {
                                         let tempAnsArr = state.answersArr;
                                         tempAnsArr.splice(index, 1);
