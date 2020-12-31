@@ -32,7 +32,6 @@ const AppGooglePlacesAutoFill = ({ show, toggle, onChangeValue }) => {
                                 AppLogger('---------GOOGLE PLACES FAILED------', err)
                             }}
                             onPress={(data, details = null) => {
-
                                 let locationObj = {
                                     addressName: data?.terms[0]?.value || data?.description,
                                     country: data?.terms[1]?.value || data?.description,
@@ -42,7 +41,7 @@ const AppGooglePlacesAutoFill = ({ show, toggle, onChangeValue }) => {
                                 if (onChangeValue)
                                     onChangeValue(locationObj)
                             }}
-                            GooglePlacesDetailsQuery={{ fields: 'geometry', }}
+                            GooglePlacesDetailsQuery={{ fields: 'geometry' }}
                             query={{
                                 key: AppConfig.GOOGLE_PLACES_API_KEY,
                                 language: 'en',

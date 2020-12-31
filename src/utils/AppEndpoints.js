@@ -20,7 +20,7 @@ const EndPoints = {
 
     ACTIONS_ON_FRIENDS: BASE_URL + 'profile/updateFriendStatus', //FOLLOW / UNFOLLOW / BLOCK ETC
     GET_USER_LIST_BY_TYPE: BASE_URL + 'profile/friendStatus/', // TYPE FOLLOWER/FOLLOWING/BLOCKED
-    GET_OR_DELETE_POST: BASE_URL + 'posts/id/', // METHODS -> DELETE/GET
+    GET_EDIT_OR_DELETE_POST: BASE_URL + 'posts/id/', // METHODS -> DELETE/GET
 
     LIKE_POST: BASE_URL + 'posts/action/react/', // react on POST --> LIKE
     SHARE_POST: BASE_URL + 'posts/action/share/', // ACTIONS on POST --> SHARE

@@ -84,7 +84,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                 keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        if (item?._id)
+                        if (item && item?._id)
                             navigation.push("UserProfileScreen", { userID: item._id })
                     }}>
                         <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>

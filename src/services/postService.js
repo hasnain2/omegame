@@ -23,6 +23,25 @@ function creatPostHelper(callback, formData) {
         callback(false)
     });
 }
+
+function editModifyPostHelper(callback, postID, formData) {
+    fetch(`${EndPoints.GET_EDIT_OR_DELETE_POST}${postID}`, {
+        method: 'PATCH',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(formData)
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('-----------EDIT MODIFY POST RES----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        AppLogger('---------EDIT MODIFY POST ERROR-----------', error)
+        callback(false)
+    });
+}
+
+
 const CreatePostService = (callback, formData) => {
     if (formData.file) {
         UploadMedia((results) => {
@@ -62,12 +81,52 @@ const CreatePostService = (callback, formData) => {
     }
 }
 
+
+const EditModifyPostService = (callback, postID, formData) => {
+    if (formData.file) {
+        UploadMedia((results) => {
+            if (results) {
+                editModifyPostHelper((creatResults) => {
+                    if (creatResults)
+                        callback(creatResults)
+                    else
+                        callback(false)
+                }, postID, {
+                    ...formData,
+                    attachments: [{
+                        name: results?.name,
+                        type: results?.oType,
+                        url: results?.url,
+                        bucket: formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
+                        meta: results?.thumbnail?.thumbnail ? [{
+                            type: results?.thumbnail?.oType || results?.thumbnail?.type,
+                            url: results?.thumbnail?.url,
+                            isThumbnail: results?.thumbnail?.thumbnail ? true : false
+                        }] : null
+                    }]
+                })
+                AppLogger('---------CREATE POST UPLOAD MEDIA RESPONSE---------->', results)
+            } else {
+                callback(false)
+                AppShowToast("Failed to upload media")
+            }
+        }, formData.privacy != 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC, formData.file)
+    } else {
+        editModifyPostHelper((creatResults) => {
+            if (creatResults)
+                callback(creatResults)
+            else
+                callback(false)
+        }, postID, { ...formData })
+    }
+}
+
 const GetHomeFeed = (callback, cursor) => {
     fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        // AppLogger('-----------HOME FEED RESPONSE-----------', JSON.stringify(data))
+        AppLogger('-----------HOME FEED RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -142,7 +201,7 @@ const DeletePost = (callback, postID) => {
             text: "DELETE", onPress: () => {
                 RemovePostFromReduxStore(postID)
                 callback(true)
-                fetch(EndPoints.GET_OR_DELETE_POST + postID, {
+                fetch(EndPoints.GET_EDIT_OR_DELETE_POST + postID, {
                     method: 'DELETE',
                     headers: Interceptor.getHeaders()
                 }).then(JSONBodyHelper).then(([status, data]) => {
@@ -160,7 +219,7 @@ const DeletePost = (callback, postID) => {
 }
 
 const GetSinglePost = (callback, postID) => {
-    fetch(EndPoints.GET_OR_DELETE_POST + postID, {
+    fetch(EndPoints.GET_EDIT_OR_DELETE_POST + postID, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
@@ -365,6 +424,7 @@ export {
     GetCommentsReplies,
     GetPostsOfSpecificUser,
     CreatePostService,
+    EditModifyPostService,
     GetHomeFeed,
     CommentPost,
     DeletePost,

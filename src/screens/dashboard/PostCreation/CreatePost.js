@@ -12,24 +12,25 @@ import { AppButton, AppFriendsListModal, AppGallery, AppGooglePlacesAutoFill, Ap
 import { AppTheme } from '../../../config';
 import { setFriends } from '../../../redux/reducers/friendsSlice';
 import { store } from '../../../redux/store';
-import { AddPostToReduxStore, CreatePostService, GerUserListByType, requestReadWritePermission } from '../../../services';
+import { AddPostToReduxStore, CreatePostService, EditModifyPostService, GerUserListByType, requestReadWritePermission, UpdatePostFromReduxStore } from '../../../services';
 import { GET_FRIEND_LIST_TYPES, PRIVACY } from '../../../utils/AppConstants';
 import { AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
-import { AntDesign, Ionicons } from '../../../utils/AppIcons';
+import { AntDesign, EvilIcons, Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({ navigation, route }) => {
-
+    const postData = route?.params?.postData;
+    console.log('-------------POST DATA-------------', JSON.stringify(postData))
     let [state, setState] = useState({
         loading: false,
-        whatsNewText: '',
+        whatsNewText: postData?.text || '',
         postTypeIsPool: false,
 
         privacy: 'Public',
         selectedMedia: null,
         answersArr: ['', ''],
-        location: null,
-        chosenContacts: [],
+        location: postData?.location ? { addressName: postData?.location?.addressName || '', country: postData?.location?.country || '', streetAddress: postData?.location?.streetAddress || '', coordinates: `${postData?.location?.location?.coordinates[0] || ''}, ${postData?.location?.location?.coordinates[1] || ''}` } : null,
+        chosenContacts: postData?.tagged || [],
         friendList: [],
 
         showGallery: false,
@@ -58,22 +59,45 @@ const CreatePost = ({ navigation, route }) => {
             let payload = {
                 hashTags: [],
                 privacy: PRIVACY.find(ii => ii.name === state.privacy)?.key || 'PUBLIC',
-                tagged: state.chosenContacts.map(ii => ii?._id),
                 text: state.whatsNewText,
-                file: state.selectedMedia || false,
             }
+
+            if (state.chosenContacts?.length > 0)
+                payload.tagged = state.chosenContacts.map(ii => ii?._id);
+
+
+            payload.file = state.selectedMedia || false
+
+
             if (state.location)
                 payload["location"] = state.location
             setState(prev => ({ ...prev, loading: true }))
-            CreatePostService((result) => {
-                setState(prev => ({ ...prev, loading: false }))
-                if (result) {
-                    if (result.data)
-                        AddPostToReduxStore(result?.data)
-                    AppShowToast("Post created successfully");
-                    navigation.goBack();
-                }
-            }, payload)
+
+
+            AppLogger('------------POST CREATION PAYLOAD-----------', JSON.stringify(payload))
+
+            if (postData) {
+                EditModifyPostService((result) => {
+                    setState(prev => ({ ...prev, loading: false }))
+                    if (result) {
+                        if (result.data)
+                            UpdatePostFromReduxStore(result?.data)
+                        AppShowToast("Post updated successfully");
+                        navigation.goBack();
+                    }
+                }, postData?._id, payload)
+            } else {
+                CreatePostService((result) => {
+                    setState(prev => ({ ...prev, loading: false }))
+                    if (result) {
+                        if (result.data)
+                            AddPostToReduxStore(result?.data)
+                        AppShowToast("Post created successfully");
+                        navigation.goBack();
+                    }
+                }, payload)
+            }
+
         } else {
             AppShowToast("Please provide post description")
         }
@@ -90,6 +114,7 @@ const CreatePost = ({ navigation, route }) => {
                     <TextInput placeholder={state.postTypeIsPool ? "Ask a question" : "What's new?"}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}
+                        value={state.whatsNewText}
                         blurOnSubmit={true}
                         style={{ flex: 1, color: 'white', height: '100%', maxHeight: RFValue(150), marginLeft: RFValue(10) }}
                         onChangeText={(val) => { setState(prev => ({ ...prev, whatsNewText: val })) }}
@@ -143,12 +168,21 @@ const CreatePost = ({ navigation, route }) => {
                     : null}
 
                 {state.selectedMedia && state.selectedMedia.uri ?
-                    state.selectedMedia?.type === 'photo' ?
-                        <Image source={{ uri: state.selectedMedia.uri }} style={{ height: RFValue(300), width: '100%', marginTop: RFValue(15) }} resizeMode={'cover'} />
-                        :
-                        <View style={{ height: RFValue(300), width: '100%', marginTop: RFValue(15) }}>
-                            <AppVideoPlayer source={state.selectedMedia} startPlaying={!state.showGallery} />
+                    <View style={{ marginTop: RFValue(15) }}>
+                        {state.selectedMedia?.type === 'photo' ?
+                            <Image source={{ uri: state.selectedMedia.uri }} style={{ height: RFValue(300), width: '100%' }} resizeMode={'cover'} />
+                            :
+                            <View style={{ height: RFValue(300), width: '100%' }}>
+                                <AppVideoPlayer source={state.selectedMedia} startPlaying={!state.showGallery} />
+                            </View>}
+                        <View style={{ position: 'absolute', top: 0, right: 0, height: 50, width: 50, }}>
+                            <EvilIcons
+                                onPress={() => {
+                                    setState(prev => ({ ...prev, selectedMedia: null }))
+                                }} name={"close"}
+                                style={{ fontSize: RFValue(40), color: 'white', ...AppTheme.textShadow }} />
                         </View>
+                    </View>
                     : null}
 
 
@@ -244,6 +278,7 @@ const CreatePost = ({ navigation, route }) => {
 
             <AppGooglePlacesAutoFill show={state.showLocationPicker}
                 onChangeValue={(val) => {
+                    AppLogger('----------SELECTED LOCATION-----------', JSON.stringify(val))
                     setState(prev => ({ ...prev, location: val }))
                 }}
                 toggle={() => setState(prev => ({ ...prev, showLocationPicker: false }))} />
@@ -295,7 +330,7 @@ const CreatePost = ({ navigation, route }) => {
                 chosenContacts={state.chosenContacts}
                 showDone={true}
                 selectedContacts={(contact) => {
-                    let tempArr = state.chosenContacts;
+                    let tempArr = state.chosenContacts.slice();
                     let tempInd = tempArr.findIndex(ii => ii?._id === contact?._id);
 
                     if (tempInd > -1) {

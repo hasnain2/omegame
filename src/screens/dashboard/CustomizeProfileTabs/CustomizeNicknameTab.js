@@ -4,20 +4,18 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from "../../../components";
 import { AppTheme } from '../../../config';
-import { MOCK_CORNERS } from '../../../mockups/Mockups';
 import { setMyAssets } from '../../../redux/reducers/myAssetsSlice';
 import { setUser } from '../../../redux/reducers/userSlice';
 import { store } from '../../../redux/store';
 import { GetMyAssets, PromtToSetAsDefault } from '../../../services/customizationService';
 import { ASSET_TYPES, COLORS, COLOR_BUBBLE_SIZE } from '../../../utils/AppConstants';
 import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
-import { AntDesign } from '../../../utils/AppIcons';
+import { AntDesign, Ionicons } from '../../../utils/AppIcons';
 import { storeData } from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 2;
 
 const PADDING = RFValue(3);
 const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - (PADDING * RFValue(NUMBER_OF_COLUMNS));
-
 
 
 const CustomizeNicknameTab = ({ navigation }) => {
@@ -53,7 +51,7 @@ const CustomizeNicknameTab = ({ navigation }) => {
                 </ScrollView>
             </View>
             <FlatList
-                data={myAssets.nicknames}
+                data={[...myAssets.nicknames, { addMore: true }]}
                 numColumns={NUMBER_OF_COLUMNS}
 
                 initialNumToRender={2}
@@ -63,27 +61,38 @@ const CustomizeNicknameTab = ({ navigation }) => {
                 // bounces={false}
                 keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
-                    return (
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                            setState(prev => ({ ...prev, loading: true }))
-                            PromtToSetAsDefault((setNicknameresponse) => {
-                                if (setNicknameresponse) {
-                                    let tempUser = { ...store.getState().root.user };
-                                    tempUser.nickName = item?.nickName
-                                    tempUser.nickNameColor = state.selectedColor
-                                    store.dispatch(setUser(tempUser));
-                                    storeData('user', tempUser)
-                                }
-                                setState(prev => ({ ...prev, loading: false }))
-                            }, ASSET_TYPES.NICKNAME, item?._id, state.selectedColor)
-                        }}>
-                            <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
-                                <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(20), alignItems: 'center' }}>
-                                    <AppText size={3} color={state.selectedColor}>{item?.nickName || ''}</AppText>
+                    if (item.addMore)
+                        return (
+                            <TouchableOpacity activeOpacity={0.7} style={{ padding: RFValue(5) }} onPress={() => {
+                                navigation.navigate("OmegaStore", { name: "nickNames" })
+                            }}>
+                                <View style={{ width: RFValue(CARD_WIDTH / 1.35), height: RFValue(CARD_WIDTH / 1.35), borderRadius: 100, borderWidth: 1, paddingLeft: RFValue(2.4), borderColor: AppTheme.colors.primary, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Ionicons name="add-circle-outline" style={{ fontSize: RFValue(30), color: 'white' }} />
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    )
+                            </TouchableOpacity>
+                        )
+                    else
+                        return (
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                setState(prev => ({ ...prev, loading: true }))
+                                PromtToSetAsDefault((setNicknameresponse) => {
+                                    if (setNicknameresponse) {
+                                        let tempUser = { ...store.getState().root.user };
+                                        tempUser.nickName = item?.nickName
+                                        tempUser.nickNameColor = state.selectedColor
+                                        store.dispatch(setUser(tempUser));
+                                        storeData('user', tempUser)
+                                    }
+                                    setState(prev => ({ ...prev, loading: false }))
+                                }, ASSET_TYPES.NICKNAME, item?._id, state.selectedColor)
+                            }}>
+                                <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 0.5, borderRadius: RFValue(10), overflow: 'hidden' }}>
+                                    <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(20), alignItems: 'center' }}>
+                                        <AppText size={3} color={state.selectedColor}>{item?.nickName || ''}</AppText>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        )
                 }} />
 
             <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ ...prev, isModalVisible: null }))} >

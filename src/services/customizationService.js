@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { JSONBodyHelper } from '.';
 import { EndPoints } from '../utils/AppEndpoints';
-import { AppLogger } from '../utils/AppHelperMethods';
+import { AppLogger, AppShowToast } from '../utils/AppHelperMethods';
 import Interceptor from '../utils/Interceptor';
 const LIMIT = 50;
 function GetMyAssets(callback, type) {
@@ -80,8 +80,8 @@ function BuyAsset(callback, assetID) {
             assetId: assetID
         })
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------BUY ASSET RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
+            AppShowToast("Purchase successful!")
             callback(true)
         } else
             callback(false);

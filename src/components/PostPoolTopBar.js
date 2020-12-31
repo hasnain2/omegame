@@ -40,7 +40,8 @@ const PostPoolTopBar = ({ item, navigation }) => {
                         <>
                             <TouchableOpacity onPress={() => {
                                 // modify post
-                                setState(prev => ({ ...prev, showMenu: '' }))
+                                setState(prev => ({ ...prev, showMenu: '' }));
+                                navigation.push("CreatePost", { postData: item })
                             }} style={styles.modalListItemStyle}>
                                 <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                     <Image source={ICON_MODIFY} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />

@@ -28,6 +28,11 @@ const AppTheme = {
         backdrop: color('black').alpha(0.5).rgb().string(),
         notification: 'pink',
     },
+    textShadow: {
+        textShadowColor: 'rgba(0, 0, 0, 0.6)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10
+    },
     animation: {
         scale: 1.0,
     },
