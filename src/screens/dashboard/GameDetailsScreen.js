@@ -164,7 +164,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                                 <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{item?.createdBy?.firstName || item?.createdBy?.userName}</AppText>
                                                 <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.createdBy?.earnedCoins)}</AppText>
+                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.createdBy?.level)}</AppText>
                                             </View>
                                             <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.createdBy?.userName}</AppText>
                                         </View>

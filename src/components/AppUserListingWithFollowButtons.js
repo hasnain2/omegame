@@ -23,10 +23,12 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
 
     function followUnfollowUser(item, index) {
         let tempUserObj = { ...item };
-        ActionsOnUsers((actionsRes) => {
+        if (!tempUserObj?.isRequested) {
+            ActionsOnUsers((actionsRes) => {
 
-        }, item?._id, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW);
-        tempUserObj.isFollowing = !tempUserObj?.isFollowing;
+            }, item?._id, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW);
+        }
+        tempUserObj.isRequested = true;
         let tempData = state.usersData;
         tempData[index] = tempUserObj;
         setState(prev => ({ ...prev, usersData: tempData }));
@@ -83,7 +85,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                         <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName}</AppText>
                                         <IsUserVerifiedCheck check={item?.isVerified} />
-                                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.earnedXps)}</AppText>
+                                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.level || 1)}</AppText>
                                     </View>
                                     <AppText size={1} color={item?.nickNameColor ? item?.nickNameColor : AppTheme.colors.lightGrey} >{item?.nickName || item?.userName}</AppText>
                                 </View>
@@ -100,11 +102,18 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                                             </View>
                                         </TouchableOpacity>
                                         :
-                                        <AppGradientContainer onPress={() => {
-                                            followUnfollowUser(item, index)
-                                        }} style={{ justifyContent: 'center', width: '100%', alignItems: 'center', padding: RFValue(10), borderRadius: 90 }}>
-                                            <AppText size={1} bold={true} color={"white"} >FOLLOW</AppText>
-                                        </AppGradientContainer>
+                                        item?.isRequested ?
+                                            <AppGradientContainer onPress={() => {
+                                                // followUnfollowUser(item, index)
+                                            }} style={{ justifyContent: 'center', width: '100%', alignItems: 'center', padding: RFValue(10), borderRadius: 90 }}>
+                                                <AppText size={1} bold={true} color={"white"} >REQUESTED</AppText>
+                                            </AppGradientContainer>
+                                            :
+                                            <AppGradientContainer onPress={() => {
+                                                followUnfollowUser(item, index)
+                                            }} style={{ justifyContent: 'center', width: '100%', alignItems: 'center', padding: RFValue(10), borderRadius: 90 }}>
+                                                <AppText size={1} bold={true} color={"white"} >FOLLOW</AppText>
+                                            </AppGradientContainer>
                                     }
                                 </View>
                                 : null}

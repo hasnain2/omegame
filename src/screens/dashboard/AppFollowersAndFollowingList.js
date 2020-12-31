@@ -19,6 +19,8 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let userID = route.params.userID;
 
     let { user } = useSelector(state => state.root);
+
+
     let [state, setState] = useState({
         loading: true,
         searchTerm: '',
@@ -54,8 +56,30 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
             unsubscribeBlur();
         }
 
-    }, [])
+    }, []);
 
+    function handleActionsOnUsers(isUserIsSame, item, index) {
+        let tempData = state.data;
+        if (isFollowerMode && isUserIsSame) { // remove follower
+            ActionsOnUsers((res) => { }, item?._id, FRIEND_STATUSES_ACTIONS.REMOVE_FOLLOWER)
+
+            setState(prev => ({
+                ...prev,
+                data: tempData.filter(itm => itm._id != item._id),
+                loading: false
+            }));
+        } else { // follow unfollow user
+            ActionsOnUsers((res) => { }, item?._id, item?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
+            tempData[index] = { ...item, isRequested: true, isFollowing: false }
+            setState(prev => ({
+                ...prev,
+                data: tempData,
+                loading: false
+            }));
+        }
+    }
+
+    const isSameUser = user?._id === userID;
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <AppBackButton navigation={navigation} />
@@ -78,69 +102,56 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                 data={state.data}
                 initialNumToRender={2}
                 windowSize={2}
-                removeClippedSubviews={true}
+                // removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
-                bounces={false}
+                // bounces={false}
                 keyExtractor={ii => (ii?._id || '') + 'you'}
-                renderItem={({ item, index }) => (
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        if (item && item?._id)
-                            navigation.push("UserProfileScreen", { userID: item._id })
-                    }}>
-                        <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
-                            <UserAvatar corner={item?.corner || ''} color={item?.cornerColor} source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
-                            <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                    <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName} {item?.lastName}</AppText>
-                                    <IsUserVerifiedCheck check={item?.isVerified} />
-                                    <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.earnedXps)}</AppText>
+                renderItem={({ item, index }) => {
+                    let personalizedActionType = isFollowerMode && isSameUser ? "Remove" : item?.isFollowing ? "Unfollow" : item?.isRequested ? "Requested" : "Follow";
+                    return (
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            if (item && item?._id) {
+                                navigation.push("UserProfileScreen", { userID: item?._id })
+                            }
+                        }}>
+                            <View style={{ padding: RFValue(20), flexDirection: 'row', borderBottomWidth: 0.5, borderColor: AppTheme.colors.lightGrey, alignItems: 'center' }}>
+                                <UserAvatar corner={item?.corner || ''} color={item?.cornerColor} source={item?.pic ? { uri: item?.pic } : DEFAULT_USER_PIC} size={50} />
+                                <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                        <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName} {item?.lastName}</AppText>
+                                        <IsUserVerifiedCheck check={item?.isVerified} />
+                                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.level)}</AppText>
+                                    </View>
+                                    <AppText size={1} color={item?.nickNameColor ? item?.nickNameColor : AppTheme.colors.lightGrey} >{item?.nickName || item?.userName}</AppText>
                                 </View>
-                                <AppText size={1} color={item?.nickNameColor ? item?.nickNameColor : AppTheme.colors.lightGrey} >{item?.nickName || item?.userName}</AppText>
-                            </View>
-                            <View style={{ flex: 0.7 }}>
-                                {user?._id === item?.profileId ?
-                                    null :
-                                    <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
-                                        AppLogger('-----', item)
-                                        Alert.alert(
-                                            isFollowerMode ? "Remove Follower" : "Unfollow",
-                                            "Are you sure to " + (isFollowerMode ? "remove " : "unfollow ") + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
-                                            [{
-                                                text: "Cancel",
-                                                onPress: () => AppLogger('', "Cancel Pressed"),
-                                                style: "cancel"
-                                            }, {
-                                                text: "YES", onPress: () => {
-                                                    if (isFollowerMode) {
-                                                        // REMOVE FOLLOWER
-                                                        let tempData = state.data;
-
-                                                        setState(prev => ({
-                                                            ...prev,
-                                                            data: tempData.filter(itm => itm._id != item._id),
-                                                            loading: false
-                                                        }))
-                                                    } else {
-                                                        let tempData = state.data;
-
-                                                        setState(prev => ({
-                                                            ...prev,
-                                                            data: tempData.filter(itm => itm._id != item._id),
-                                                            loading: false
-                                                        }));
-
-                                                        ActionsOnUsers((FOLLOWRS) => {
-
-                                                        }, item?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)
-                                                    }
+                                <View style={{ flex: 0.7 }}>
+                                    {user?._id === item?.profileId ?
+                                        null :
+                                        <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
+                                            if (!item?.isRequested) {
+                                                if (item?.isFollowing || isFollowerMode) {
+                                                    Alert.alert(
+                                                        personalizedActionType,
+                                                        "Are you sure to " + (personalizedActionType.toLowerCase()) + ((item?.firstName + '?') || (item?.userName + '?') || 'this user?'),
+                                                        [{
+                                                            text: "Cancel",
+                                                            onPress: () => AppLogger('', "Cancel Pressed"),
+                                                            style: "cancel"
+                                                        }, {
+                                                            text: "YES", onPress: () => {
+                                                                handleActionsOnUsers(isSameUser, item, index)
+                                                            }
+                                                        }], { cancelable: false });
+                                                } else {
+                                                    handleActionsOnUsers(isSameUser, item, index)
                                                 }
-                                            }], { cancelable: false });
-
-                                    }} label={isFollowerMode ? "REMOVE" : "FOLLOWING"} />}
+                                            }
+                                        }} label={personalizedActionType.toUpperCase()} />}
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                )} />
+                        </TouchableOpacity>
+                    )
+                }} />
 
         </View>
     );

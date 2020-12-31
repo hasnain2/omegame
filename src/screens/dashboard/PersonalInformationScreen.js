@@ -18,26 +18,21 @@ const renderOptionItem = (label, value) => {
 }
 
 const PersonalInformationScreen = ({ navigation, route, }) => {
-    let { user } = useSelector(state => state.root)
-    let [state, setState] = useState({
-        loading: false,
-    })
+    let { user } = useSelector(state => state.root);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <AppHeaderCommon navigation={navigation} label={"PERSONAL INFORMATION"} />
             <View style={{ flex: 1, padding: RFValue(20) }}>
-
                 <AppText size={2} color={AppTheme.colors.lightGrey}>Your personal information won't be part of your public profile.</AppText>
                 <View style={{ paddingTop: RFValue(20) }}>
                     {renderOptionItem("Username:", user.userName)}
                     {renderOptionItem("E-mail:", user.email)}
-                    {renderOptionItem("Gender:", user.gender || user?.gender || "Male")}
+                    {renderOptionItem("Gender:", user.gender || user?.gender || "")}
                     {renderOptionItem("Date of Birth:", user?.dateOfBirth ? moment(user?.dateOfBirth).format('DD / MM / YYYY') : '')}
                 </View>
             </View>
         </View>
-
     );
 };
 

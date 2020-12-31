@@ -78,6 +78,7 @@ const GetSingleUserProfile = (callback, id) => {
 }
 
 const ActionsOnUsers = (callback, id, TYPE) => {
+    AppLogger('--------URL------\n', `${EndPoints.ACTIONS_ON_FRIENDS}--- ${id}---- ${TYPE}`)
     fetch(`${EndPoints.ACTIONS_ON_FRIENDS}`, {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),

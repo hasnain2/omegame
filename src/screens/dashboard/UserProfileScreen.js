@@ -187,8 +187,9 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
                             <View style={{ flex: 1, paddingRight: RFValue(10) }}>
                                 <AppButton onPress={() => {
-                                    followuser();
-                                }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : "FOLLOW"} />
+                                    if (!userData?.isRequested)
+                                        followuser();
+                                }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : userData?.isRequested ? "REQUESTED" : "FOLLOW"} />
                             </View>
                             <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
                                 <AppButton onPress={() => {
@@ -245,13 +246,15 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        followuser();
-                        setState(prev => ({ ...prev, showMenu: false }))
+                        if (!userData?.isRequested) {
+                            followuser();
+                            setState(prev => ({ ...prev, showMenu: false }))
+                        }
                     }} style={styles.modalListItemStyle}>
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                             <Image source={ICON_UNFOLLOW} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
                         </View>
-                        <AppText size={2} color="white" style={{ flex: 1 }}>{userData?.isFollowing ? "Unfollow" : "Follow"}</AppText>
+                        <AppText size={2} color="white" style={{ flex: 1 }}>{userData?.isFollowing ? "Unfollow" : userData?.isRequested ? "Requested" : "Follow"}</AppText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {

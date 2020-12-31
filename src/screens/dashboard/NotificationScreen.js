@@ -26,7 +26,7 @@ const NotificationScreen = ({ navigation, route, }) => {
         GetNotificationHistory((notificatioHistoryResponse) => {
             debugger
             if (notificatioHistoryResponse) {
-                let tempReq = notificatioHistoryResponse.filter(ii => !ii?.body?.toLowerCase()?.includes('a follow request'));
+                let tempReq = notificatioHistoryResponse.filter(ii => ii?.body?.toLowerCase()?.includes('a follow request'));
                 let tempNot = notificatioHistoryResponse.filter(ii => !ii?.body?.toLowerCase()?.includes('a follow request'));
                 setState(prev => ({
                     ...prev, loading: false,
@@ -43,7 +43,6 @@ const NotificationScreen = ({ navigation, route, }) => {
         let tempData = state.data;
         tempData.splice(index, 1)
         setState(prev => ({ ...prev, data: tempData }))
-        console.log(userID);
         AppShowToast(accept ? "Request accepted!" : "Request denied!");
         ActionsOnUsers(() => {
 

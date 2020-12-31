@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -34,9 +35,9 @@ const ForgotPassword = ({ route, navigation }) => {
 
             <View style={{ flex: 1, paddingHorizontal: RFValue(15), }}>
                 <AppText size={3} style={{ paddingVertical: RFValue(10) }} bold={true}>Recovery Password</AppText>
-                <AppText size={2} style={{ paddingBottom: RFValue(15) }} color={AppTheme.colors.lightGrey}>Enter your e-mail and we'll send you a link to get your account.</AppText>
+                <AppText size={2} style={{ paddingBottom: RFValue(15) }} color={AppTheme.colors.lightGrey}>Enter your username or e-mail and we'll send you a link to get your account.</AppText>
 
-                <AppInput editable={!state.loading} type={"email"} label={"E-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
+                <AppInput editable={!state.loading} type={"email"} label={"Username or e-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <AppButton loading={state.loading} onPress={onSubmit} label={"Send me a Recovery Link"} />
@@ -49,5 +50,6 @@ const ForgotPassword = ({ route, navigation }) => {
         </View>
     );
 };
+
 
 export { ForgotPassword };

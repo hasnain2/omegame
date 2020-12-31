@@ -11,7 +11,7 @@ import { AppButton, AppDateTimePicker, AppHeaderCommon, AppInput, AppModal, AppT
 import { UserAvatar } from '../../components/UserAvatar';
 import { UploadMedia } from '../../services';
 import { UpdateProfile } from '../../services/profileService';
-import { BUCKETS } from '../../utils/AppConstants';
+import { BUCKETS, GENDERS_OF_USERS } from '../../utils/AppConstants';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { OpenCameraGalleryPromptPicker } from '../../utils/AppMediaPicker';
 const EditUserProfileScreen = ({ navigation, route, }) => {
@@ -175,17 +175,16 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
             <AppModal type={'bottom'} show={state.showGenderPicker} toggle={() => setState(prev => ({ ...prev, showGenderPicker: false }))}>
                 <View style={{ backgroundColor: 'black', padding: RFValue(20), width: '100%', paddingBottom: RFValue(50) }}>
                     <AppText style={{ paddingVertical: RFValue(15), textAlign: 'center' }}>Select gender</AppText>
-                    <AppText onPress={() => {
-                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'MALE' }))
-                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Male</AppText>
-                    <Divider style={{ width: '100%', backgroundColor: 'grey' }} />
-                    <AppText onPress={() => {
-                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'FEMALE' }))
-                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Female</AppText>
-                    <Divider style={{ width: '100%', backgroundColor: 'grey' }} />
-                    <AppText onPress={() => {
-                        setState(prev => ({ ...prev, showGenderPicker: false, gender: 'OTHERS' }))
-                    }} size={3} style={{ paddingVertical: RFValue(15) }}>Others</AppText>
+
+                    {GENDERS_OF_USERS.map((genderItem, index) => (
+                        <View key={genderItem}>
+                            <AppText onPress={() => {
+                                setState(prev => ({ ...prev, showGenderPicker: false, gender: genderItem }))
+                            }} size={3} style={{ paddingVertical: RFValue(15) }}>{genderItem}</AppText>
+                            <Divider style={{ width: '100%', backgroundColor: 'grey' }} />
+                        </View>
+                    ))}
+
                 </View>
             </AppModal>
         </View>
