@@ -7,7 +7,7 @@ import App from './App';
 import { name as appName } from './app.json';
 import { store } from './src/redux/store';
 
-// messaging().setBackgroundMessageHandler(async () => { });
+messaging().setBackgroundMessageHandler(async () => { });
 
 const EntryPoint = () => {
     return (

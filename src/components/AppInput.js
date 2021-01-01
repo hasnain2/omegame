@@ -17,7 +17,7 @@ const AppInput = ({ value, label, editable, lines, maxLength, passwordVisible, p
             blurOnSubmit={true}
             numberOfLines={lines ? lines : 1}
             label={label}
-            // maxLength={maxLength || 200}
+            maxLength={maxLength || 200}
             editable={editable}
             secureTextEntry={passwordVisible || false}
             keyboardType={type === 'email' ? "email-address" : type === 'password' ? 'default' : type === 'decimal' ? 'decimal-pad' : type === 'phone' ? 'phone-pad' : 'default'}
