@@ -8,11 +8,10 @@ import { ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
+import { AppBackButton, AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { largeNumberShortify } from '../../utils/AppHelperMethods';
-import { Ionicons } from '../../utils/AppIcons';
 import { CustomizeTabs } from './CustomizeProfileTabs/CustomizeTabs';
 const UserProfileCustomizeScreen = ({ navigation, route, }) => {
     let { user } = useSelector(state => state.root);
@@ -32,13 +31,8 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
             var { x, y, width, height } = event.nativeEvent.layout;
             setState(prev => ({ ...prev, LHeight: height, LWidth: width }))
         }}>
-
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
-                <View style={{ flex: 0.3 }}>
-                    <Ionicons onPress={() => navigation.goBack()} name="arrow-back" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(10) }} />
-                </View>
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} />
-                <View style={{ flex: 0.3 }} />
+                <AppBackButton navigation={navigation} />
             </View>
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ height: state.LHeight, width: state.LWidth }}>
@@ -70,7 +64,6 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                         </LinearGradient>
                     </FastImage>
                 </View>
-
                 <CustomizeTabs navigation={navigation} route={route} />
             </ScrollView>
         </View>

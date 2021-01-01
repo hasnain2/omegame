@@ -64,6 +64,10 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
             AppShowToast("Please provide date of birth")
             return
         }
+        if (!state.gender) {
+            AppShowToast("Please provide gender")
+            return
+        }
         if (!state.favoriteGame?.trim()) {
             AppShowToast("Please provide favourite game")
             return
@@ -135,7 +139,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                         </View>
                     </View>
 
-                    <AppInput label={"Username"} value={state.userName} editable={changeUserName || !state.userName} onChangeText={(val) => { setState(prev => ({ ...prev, userName: val })) }} />
+                    <AppInput label={"Username"} value={state.userName} editable={changeUserName} onChangeText={(val) => { setState(prev => ({ ...prev, userName: val })) }} />
                     <AppInput label={"Name"} value={state.name} onChangeText={(val) => { setState(prev => ({ ...prev, name: val })) }} />
                     <AppInput lines={2} maxLength={200} label={"Bio"} value={state.bio} onChangeText={(val) => { setState(prev => ({ ...prev, bio: val })) }} />
                     <TouchableOpacity onPress={() => {

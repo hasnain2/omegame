@@ -6,15 +6,13 @@ import { AppLogger } from '../utils/AppHelperMethods'
 import { storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
 const UpdateProfile = (callback, formData) => {
-    AppLogger('---------------USER PROFILE GOING TO UPDATE RESPONSE--------------\n', formData)
     fetch(EndPoints.PROFILE_UPDATE_CREATE, {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------PROFILE UPDATE RES----------', JSON.stringify({ ...data.data, userName: formData?.userName }))
         if (status === 201 || status === 200) {
-            let userObj = { ...data.data, userName: formData?.userName }
+            let userObj = formData?.userName ? { ...data.data, userName: formData?.userName } : { ...data.data }
             store.dispatch(setUser(userObj))
             storeData('user', { ...store.getState().root.user, ...data.data, ...userObj })
             callback({ ...store.getState().root.user, ...data.data, ...userObj })

@@ -14,6 +14,7 @@ export * from './AppGallery';
 export * from './AppBlurView';
 export * from './AppDateTimePicker';
 export * from './AppBackButton';
+export * from './AppPostMenuContents';
 export * from './AppHeaderCommon';
 export * from './AppInputToolBar';
 export * from './AppLoadingView';

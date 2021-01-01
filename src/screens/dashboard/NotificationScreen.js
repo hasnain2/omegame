@@ -24,7 +24,6 @@ const NotificationScreen = ({ navigation, route, }) => {
     });
     function getnotificationhistoryhelper(cursor) {
         GetNotificationHistory((notificatioHistoryResponse) => {
-            debugger
             if (notificatioHistoryResponse) {
                 let tempRequests = notificatioHistoryResponse.filter(ii => (ii?.portion === "upper"));
                 let tempPlanNotifications = notificatioHistoryResponse.filter(ii => (ii?.portion === "lower"));
@@ -42,12 +41,16 @@ const NotificationScreen = ({ navigation, route, }) => {
 
     function acceptOrDenyRequest(userID, accept, index) {
         let tempData = notifications.requests.slice();
-        let tempNotifi = notifications.otherNotifications.slice();
-        tempNotifi.unshift(tempData[index]);
         tempData.splice(index, 1)
-        dispatch(setNotifications({ requests: tempData, otherNotifications: tempNotifi }))
+        dispatch(setNotifications({ requests: tempData }))
+        if (!accept) {
+            ActionsOnUsers((dta) => { }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
+        } else {
+            ActionsOnUsers((dta) => {
+                getnotificationhistoryhelper(false);
+            }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST);
+        }
         AppShowToast(accept ? "Request accepted!" : "Request denied!");
-        ActionsOnUsers((dta) => { }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
     }
     function handlenotificationclick(item) {
         if (!item?.read)

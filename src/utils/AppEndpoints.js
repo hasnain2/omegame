@@ -26,6 +26,7 @@ const EndPoints = {
     SHARE_POST: BASE_URL + 'posts/action/share/', // ACTIONS on POST --> SHARE
     FOLLOW_POST: BASE_URL + 'posts/action/follow/', // ACTIONS on POST --> FOLLOW
     BOOKMARK_POST: BASE_URL + 'posts/action/bookmark/', // ACTIONS on POST --> BOOKMARK OR SAVE POST
+    POST_MUTE_UNMUTE: BASE_URL + 'posts/action/mute/', //-- mute unmute any post
     GET_BOOKMARKED_OR_SAVED_POST: BASE_URL + 'posts/savedPosts', // get SAVED POST
     GET_POSTS_OF_SPECIFIC_USER: BASE_URL + 'posts/user?', // get all posts of specific user
     COMMENT_POST: BASE_URL + 'comments?', // POSTING COMMENT // OR GETTING COMMENTS

@@ -14,7 +14,7 @@ import { AppTheme } from '../../../config';
 import { setFriends } from '../../../redux/reducers/friendsSlice';
 import { store } from '../../../redux/store';
 import { AddPostToReduxStore, CreatePostService, EditModifyPostService, GerUserListByType, requestReadWritePermission, UpdatePostFromReduxStore } from '../../../services';
-import { GET_FRIEND_LIST_TYPES, PRIVACY } from '../../../utils/AppConstants';
+import { GET_FRIEND_LIST_TYPES, POST_PRIVACY, PRIVACY } from '../../../utils/AppConstants';
 import { AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
 import { AntDesign, EvilIcons, Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
@@ -27,7 +27,7 @@ const CreatePost = ({ navigation, route }) => {
         whatsNewText: postData?.text || '',
         postTypeIsPool: false,
 
-        privacy: 'Public',
+        privacy: postData?.privacy ? POST_PRIVACY.find(ii => ii?.key === postData?.privacy)?.name : 'Public',
         selectedMedia: null,
         uploadedMedia: postData?.attachments[0] || null,
         answersArr: ['', ''],

@@ -40,7 +40,10 @@ const App = ({ }) => {
       <NavigationContainer ref={navRef}>
         <StatusBar barStyle="light-content" />
         <MenuProvider>
-          <SafeAreaView style={{ flex: 1, backgroundColor: settings.bgColor }}>
+          <SafeAreaView style={{ flex: 1,
+            //  backgroundColor: settings.bgColor ,
+             backgroundColor: 'black' ,
+             }}>
             {state.loading ?
               <AuthLoading />
               : user.token ?

@@ -60,8 +60,14 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     }
 
     useEffect(() => {
-        getsinglepostbyidhelper()
-        getcommentshelper();
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            getsinglepostbyidhelper()
+            getcommentshelper();
+        });
+
+        return () => {
+            unsubscribeFocus();
+        }
     }, [])
 
     function renderCommentView(item, isCommentIsLiked, index) {

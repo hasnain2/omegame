@@ -116,8 +116,6 @@ const OmegaStoreNicknameTab = ({ navigation }) => {
                                     } else {
                                         AppShowToast("You already own this background");
                                     }
-
-
                                 }} label={isPurchased ? "PURCHASED" : "BUY"} />
                             </View>
                         </View>

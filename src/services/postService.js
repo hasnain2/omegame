@@ -377,6 +377,22 @@ const FollowPost = (callback, postID, payload) => {
     });
 }
 
+const PostMuteUnmute = (callback, postID, PAYLOAD) => {
+    fetch(`${EndPoints.POST_MUTE_UNMUTE}${postID}`, {
+        method: 'POST',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(PAYLOAD)
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('-----------POST MUTE UNMUTE RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data)
+        } else
+            callback(false);
+    }).catch((error) => {
+        AppLogger('---------POST MUTE UNMUTE ERROR-----------', error)
+        callback(false)
+    });
+}
 
 const SaveOrBookMarkPost = (callback, postID, PAYLOAD) => { // bookmark: true 
     fetch(`${EndPoints.BOOKMARK_POST}${postID}`, {
@@ -439,6 +455,7 @@ export {
     DeletePost,
     GetSinglePost,
     LikePost,
+    PostMuteUnmute,
     SharePost,
     FollowPost,
     SaveOrBookMarkPost,
