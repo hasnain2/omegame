@@ -5,11 +5,10 @@ import { resetSavedPosts } from '../redux/reducers/savedPostsSlice'
 import { resetUser, setUser } from '../redux/reducers/userSlice'
 import { store } from '../redux/store'
 import { EndPoints } from '../utils/AppEndpoints'
-import { AppLogger, AppShowToast } from '../utils/AppHelperMethods'
+import { AppLogger, AppShowToast, CapitalizeFirstLetter } from '../utils/AppHelperMethods'
 import { clearStorage, getData, removeItemsFromLocalStorage, storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
 const LogInUser = (callback, formData) => {
-
     fetch(EndPoints.LOGIN, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -64,7 +63,7 @@ const ForgotPasswordCall = (callback, formedData) => {
         if (status === 201 || status === 200) {
             callback(true)
         } else {
-            AppShowToast(data?.message?.message || "Please try again later")
+            AppShowToast(CapitalizeFirstLetter(data?.message?.message || "Please try again later"))
             callback(false)
         }
     }).catch((error) => {
@@ -117,7 +116,7 @@ const DeleteUserAccount = (callback) => {
     }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('---------------ACCOUNT DELETION RES-------------', data)
         if (status === 201 || status === 200) {
-            LogOutUser(()=>{})
+            LogOutUser(() => { })
             clearStorage().then(res => callback(true)).then(err => {
                 AppLogger('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
             })

@@ -194,41 +194,20 @@ const UserProfileScreen = ({ navigation, route, }) => {
                             </View>
                         </TouchableOpacity>
                         :
-                        <>
-                            {!userData?.requestStatus ?
-                                <>
-                                    <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{ paddingHorizontal: RFValue(25) }}>{userData?.firstName || userData?.userName} requested to follow you.</AppText>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
-                                        <View style={{ flex: 0.5, paddingRight: RFValue(10) }}>
-                                            <AppButton onPress={() => {
-                                                acceptOrDenyRequest(true)
-                                            }} fill={true} label={"ACCEPT"} />
-                                        </View>
-                                        <View style={{ flex: 0.5, paddingLeft: RFValue(5) }}>
-                                            <AppButton onPress={() => {
-                                                acceptOrDenyRequest(false)
-                                            }} label={"DENY"} />
-                                        </View>
-                                    </View>
-                                </>
-                                :
-                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
-                                    <View style={{ flex: 1, paddingRight: RFValue(10) }}>
-                                        <AppButton onPress={() => {
-                                            if (!userData?.isRequested)
-                                                followuser();
-                                        }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : userData?.isRequested ? "REQUESTED" : "FOLLOW"} />
-                                    </View>
-                                    <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
-                                        <AppButton onPress={() => {
-                                            if (userData)
-                                                navigation.push('ChatWindow', { friend: userData })
-                                        }} label={"MESSAGE"} />
-                                    </View>
-                                </View>}
-
-                        </>
-                    }
+                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
+                            <View style={{ flex: 1, paddingRight: RFValue(10) }}>
+                                <AppButton onPress={() => {
+                                    if (!userData?.isRequested)
+                                        followuser();
+                                }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : userData?.isRequested ? "REQUESTED" : "FOLLOW"} />
+                            </View>
+                            <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
+                                <AppButton onPress={() => {
+                                    if (userData)
+                                        navigation.push('ChatWindow', { friend: userData })
+                                }} label={"MESSAGE"} />
+                            </View>
+                        </View>}
                 </View>
 
                 <View

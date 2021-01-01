@@ -69,7 +69,10 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
             <View style={{ paddingHorizontal: RFValue(10) }}>
                 <View style={{ flexDirection: 'row', }}>
                     <View style={{ height: '100%', alignItems: 'center' }}>
-                        <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
+                        <UserAvatar onPress={() => {
+                            if (item?.createdBy?._id)
+                                navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+                        }} corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
 
                         {(state?.replies?._id === item?.parentComment && state.replies?.data?.length - 1 !== index) || state?.replies?._id === item?._id ?
                             <View style={{ width: 2, flex: 1, backgroundColor: AppTheme.colors.lightGrey }} />
@@ -78,25 +81,32 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
 
                     <View style={{ flex: 1 }} >
                         <View style={{ flex: 1, paddingLeft: RFValue(10) }} >
-                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{item?.createdBy?.firstName || item?.createdBy?.userName}</AppText>
-                                <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{item?.createdBy?.level}</AppText>
-                                <AppText size={1} color={AppTheme.colors.lightGrey} style={{ flex: 1 }}> - {moment(item?.createdAt || new Date()).fromNow(true)}</AppText>
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                                if (item?.createdBy?._id)
+                                    navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+                            }}>
+                                <View style={{}} >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                        <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{item?.createdBy?.firstName || item?.createdBy?.userName}</AppText>
+                                        <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
+                                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{item?.createdBy?.level}</AppText>
+                                        <AppText size={1} color={AppTheme.colors.lightGrey} style={{ flex: 1 }}> - {moment(item?.createdAt || new Date()).fromNow(true)}</AppText>
 
-                                <TouchableOpacity onPress={() => {
+                                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
 
-                                }}>
-                                    {/* <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} /> */}
-                                </TouchableOpacity>
+                                        }}>
+                                            {/* <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} /> */}
+                                        </TouchableOpacity>
 
-                            </View>
-                            <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.createdBy?.userName}</AppText>
+                                    </View>
+                                    <AppText size={1} color={AppTheme.colors.lightGrey} >{item?.createdBy?.userName}</AppText>
+                                </View>
+                            </TouchableOpacity>
                             <AppText size={2} color={'white'} style={{ paddingVertical: RFValue(10) }} >{item?.text}</AppText>
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.8} activeOpacity={0.7} onPress={() => {
                                 let tempLikesArr = state.commentLikesArr;
                                 let foundIndex = tempLikesArr?.findIndex(ii => ii === item?._id)
                                 if (foundIndex > -1)
@@ -116,7 +126,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.8} activeOpacity={0.7} onPress={() => {
                                 // setState(prev => ({ ...prev, parentID: item?._id }))
                             }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -127,7 +137,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                             </TouchableOpacity>
 
                             {item?.computed?.find(reactionVal => reactionVal.key === 'REPLIES')?.value > 0 ?
-                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                <TouchableOpacity activeOpacity={0.8} activeOpacity={0.7} onPress={() => {
                                     if (state?.replies?._id === item?._id) {
                                         setState(prev => ({ ...prev, replies: { _id: '', data: [] } }))
                                     } else {
@@ -142,7 +152,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 </TouchableOpacity>
                                 : null}
 
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.8} activeOpacity={0.7} onPress={() => {
                                 setState(prev => ({ ...prev, parentID: item }))
                             }}>
                                 <View style={{ flexDirection: 'row', padding: RFValue(10), paddingHorizontal: RFValue(20), alignItems: 'center' }}>

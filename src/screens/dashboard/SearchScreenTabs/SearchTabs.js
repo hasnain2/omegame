@@ -141,14 +141,14 @@ const SearchTabs = ({ navigation, query }) => {
                             data={state.allPosts}
                             loading={state.loadingPosts}
                             refreshing={state.refreshingPosts}
-                            // loadMore={(cursor, refreshControl) => {
-                            //     if (refreshControl) {
-                            //         setState(prev => ({ ...prev, refreshingPosts: true }));
-                            //         getexplorepostshelper(false, query)
-                            //     } else {
-                            //         getexplorepostshelper(cursor, query)
-                            //     };
-                            // }}
+                            loadMore={(cursor, refreshControl) => {
+                                if (refreshControl) {
+                                    setState(prev => ({ ...prev, refreshingPosts: true }));
+                                    getexplorepostshelper(false, query)
+                                } else {
+                                    getexplorepostshelper(cursor, query)
+                                };
+                            }}
                             style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}
@@ -160,14 +160,14 @@ const SearchTabs = ({ navigation, query }) => {
                             data={state.mediaPosts}
                             loading={state.loadingMedia}
                             refreshing={state.refreshingMedia}
-                            // loadMore={(cursor, refreshControl) => {
-                            //     if (refreshControl) {
-                            //         setState(prev => ({ ...prev, refreshingMedia: true }));
-                            //         getexploremediaonlypostshelper(false, query)
-                            //     } else {
-                            //         getexploremediaonlypostshelper(cursor, query)
-                            //     };
-                            // }}
+                            loadMore={(cursor, refreshControl) => {
+                                if (refreshControl) {
+                                    setState(prev => ({ ...prev, refreshingMedia: true }));
+                                    getexploremediaonlypostshelper(false, query)
+                                } else {
+                                    getexploremediaonlypostshelper(cursor, query)
+                                };
+                            }}
                             style={{ backgroundColor: AppTheme.colors.background }} />
                     </View>
                 )}

@@ -20,7 +20,7 @@
 		DE64C9E4546E2C57DD3C8AE1 /* libPods-OneGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D631ECF2106D534E5AE52A17 /* libPods-OneGame.a */; };
 		EEA8C7B9F9FF6FB4B6A61BDB /* libPods-OneGame-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F43C912AFA42BAE97430F73B /* libPods-OneGame-tvOSTests.a */; };
 		F17FAABD0FB3A60A677AAE17 /* libPods-OneGame-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39E1EB1DAFB4FE87FA3CB480 /* libPods-OneGame-tvOS.a */; };
-		FA417D6F256F8CE500B53F5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA417D6E256F8CE500B53F5F /* GoogleService-Info.plist */; };
+		FA408135259F135000E890AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA408134259F135000E890AF /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,7 +84,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F43C912AFA42BAE97430F73B /* libPods-OneGame-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneGame-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA417D6E256F8CE500B53F5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA408134259F135000E890AF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA40819F259F13AC00E890AF /* OneGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OneGame.entitlements; path = OneGame/OneGame.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +144,7 @@
 		13B07FAE1A68108700A75B9A /* OneGame */ = {
 			isa = PBXGroup;
 			children = (
+				FA40819F259F13AC00E890AF /* OneGame.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -192,7 +194,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				FA417D6E256F8CE500B53F5F /* GoogleService-Info.plist */,
+				FA408134259F135000E890AF /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* OneGame */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* OneGameTests */,
@@ -339,6 +341,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = Z2APUMCWUU;
 						LastSwiftMigration = 1120;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -384,9 +387,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA417D6F256F8CE500B53F5F /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				FA408135259F135000E890AF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +785,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = OneGame/OneGame.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z2APUMCWUU;
 				ENABLE_BITCODE = NO;
@@ -794,6 +799,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.OmeGame;
 				PRODUCT_NAME = OneGame;
+				PROVISIONING_PROFILE_SPECIFIER = "omegame test dev profile";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -806,6 +812,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = OneGame/OneGame.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z2APUMCWUU;
 				INFOPLIST_FILE = OneGame/Info.plist;
@@ -817,6 +825,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.OmeGame;
 				PRODUCT_NAME = OneGame;
+				PROVISIONING_PROFILE_SPECIFIER = "omegame test dev profile";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

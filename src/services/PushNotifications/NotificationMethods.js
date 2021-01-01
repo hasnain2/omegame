@@ -47,17 +47,12 @@ const GetNotificationHistory = (callback, cursor) => {
 
 const ReadUpdateNotificationStatus = (notificationID) => {
     fetch(`${EndPoints.NOTIFICATION_STATUS_SET}${notificationID}`, {
-        method: 'GET',
+        method: 'POST',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('---------NOTIFICATION STATUS READ STATUS RESPONSE-----------', JSON.stringify(data))
-        if (status === 201 || status === 200) {
-            callback(data?.data?.data || [])
-        } else
-            callback(false);
+        AppLogger('---------NOTIFICATION STATUS READ STATUS RESPONSE-----------', JSON.stringify(data));
     }).catch((error) => {
-        AppLogger('---------NOTIFICATION STATUS READ STATUS ERROR-----------', error)
-        callback(false)
+        AppLogger('---------NOTIFICATION STATUS READ STATUS ERROR-----------', error);
     });
 }
 

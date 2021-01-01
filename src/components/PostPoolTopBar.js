@@ -81,12 +81,10 @@ const PostPoolTopBar = ({ item, navigation }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                if (item?.isRequested) {
-                                    FollowPost(() => {
+                                FollowPost(() => {
 
-                                    }, item?._id, { follow: !state.isFollowing })
-                                    setState(prev => ({ ...prev, showMenu: '', isFollowing: !state.isFollowing }))
-                                }
+                                }, item?._id, { follow: !state.isFollowing })
+                                setState(prev => ({ ...prev, showMenu: '', isFollowing: !state.isFollowing }))
                             }} style={styles.modalListItemStyle}>
                                 <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                     <Image source={ICON_UNFOLLOW} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />

@@ -110,7 +110,7 @@ const ReviewsScreen = ({ navigation }) => {
                                             <AppText size={2} color={AppTheme.colors.lightGrey} >{item.supportedDevices.map(ii => (ii + ', ').toUpperCase())}</AppText>
                                             <AppText size={0} color={AppTheme.colors.lightGrey} >Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}</AppText>
                                         </View>
-                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{item?.computed[0]?.value?.toFixed(2)}</AppText>
+                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{((item?.computed[0]?.value || 0)/(item?.computed[1]?.value || 0))?.toFixed(2)}</AppText>
                                         <MaterialIcons name="arrow-forward-ios" style={{ fontSize: RFValue(18), paddingLeft: RFValue(10), color: AppTheme.colors.lightGrey }} />
                                     </View>
                                     <Divider style={{ backgroundColor: AppTheme.colors.lightGrey, height: 0.5 }} />

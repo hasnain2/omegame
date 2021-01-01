@@ -7,7 +7,7 @@ import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scrol
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButton, AppFriendsListModal, AppModal, AppRadioButton, AppText, AppVideoPlayer, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
-import { AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
+import { AppLogger, CapitalizeFirstLetter, stringifyNumber } from '../../../utils/AppHelperMethods';
 import { AntDesign, EvilIcons, FontAwesome, Fontisto, Ionicons, MaterialCommunityIcons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);

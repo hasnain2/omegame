@@ -12,7 +12,7 @@ import { AppTheme } from '../../config';
 import { setNotifications } from '../../redux/reducers/notificationsSlice';
 import { ActionsOnUsers, GetNotificationHistory, ReadUpdateNotificationStatus } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, NOTIFICATION_TYPES } from '../../utils/AppConstants';
-import { AppShowToast } from '../../utils/AppHelperMethods';
+import { AppShowToast, RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 
 const NotificationScreen = ({ navigation, route, }) => {
@@ -26,13 +26,12 @@ const NotificationScreen = ({ navigation, route, }) => {
         GetNotificationHistory((notificatioHistoryResponse) => {
             debugger
             if (notificatioHistoryResponse) {
-
-                let tempRequests = notificatioHistoryResponse.filter(ii => (ii?.type === 'FriendRequest' && ii?.status !== 'accepted'));
-                let tempPlanNotifications = notificatioHistoryResponse.filter(ii => ii?.type !== 'FriendRequest');
+                let tempRequests = notificatioHistoryResponse.filter(ii => (ii?.portion === "upper"));
+                let tempPlanNotifications = notificatioHistoryResponse.filter(ii => (ii?.portion === "lower"));
 
                 dispatch(setNotifications({
-                    requests: tempRequests,
-                    otherNotifications: tempPlanNotifications
+                    requests: RemoveDuplicateObjectsFromArray(tempRequests),
+                    otherNotifications: RemoveDuplicateObjectsFromArray(tempPlanNotifications)
                 }))
                 setState(prev => ({ ...prev, loading: false }));
             } else {
@@ -50,7 +49,19 @@ const NotificationScreen = ({ navigation, route, }) => {
         AppShowToast(accept ? "Request accepted!" : "Request denied!");
         ActionsOnUsers((dta) => { }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
     }
-
+    function handlenotificationclick(item) {
+        if (!item?.read)
+            ReadUpdateNotificationStatus(item?._id)
+        if (item?.type === NOTIFICATION_TYPES.FOLLOW_REQUESTS) {
+            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+        } else if (item?.type === NOTIFICATION_TYPES.COMMENT) {
+            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+        } else if (item?.type === NOTIFICATION_TYPES.POST) {
+            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+        } else if (item?.type === NOTIFICATION_TYPES.CHAT) {
+            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+        }
+    }
     useEffect(() => {
         getnotificationhistoryhelper(false);
     }, [])
@@ -75,10 +86,8 @@ const NotificationScreen = ({ navigation, route, }) => {
                             keyExtractor={ii => (ii?._id || '') + 'you'}
                             renderItem={({ item, index }) => {
                                 return (
-                                    <TouchableOpacity style={{ paddingBottom: RFValue(15) }} onPress={() => {
-                                        if (item?.type === NOTIFICATION_TYPES.FOLLOW_REQUESTS) {
-                                            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
-                                        }
+                                    <TouchableOpacity activeOpacity={0.8} style={{ paddingBottom: RFValue(15) }} onPress={() => {
+                                        handlenotificationclick(item)
                                     }}>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
                                             <View  >
@@ -124,34 +133,35 @@ const NotificationScreen = ({ navigation, route, }) => {
                     </TouchableOpacity> : null}
 
                 <AppText size={1} bold={true} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }}>NOTIFICATIONS</AppText>
-                <View style={{ flex: 1, minHeight: RFValue(200) }}>
-                    {!state.loading && notifications?.otherNotifications?.length < 1 ?
-                        <AppNoDataFound msg={"All caught up!"} /> :
-                        <FlatList
-                            data={notifications?.otherNotifications}
-                            initialNumToRender={2}
-                            windowSize={2}
-                            // removeClippedSubviews={true}
-                            maxToRenderPerBatch={2}
-                            // bounces={false}
-                            keyExtractor={ii => (ii._id || '') + 'you'}
-                            renderItem={({ item, index }) => (
-                                <TouchableOpacity onPress={() => {
-                                    if (!item?.read)
-                                        ReadUpdateNotificationStatus(item?._id)
-                                }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
-                                        <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={40} />
-                                        <View style={{ flex: 1, paddingHorizontal: RFValue(10) }}>
-                                            <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.body}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
-                                        </View>
-                                        {/* {item?.post && item?.post?.attatchment ?
+
+                {!state.loading && notifications?.otherNotifications?.length < 1 ?
+                    <View style={{ flex: 1, minHeight: RFValue(200) }}>
+                        <AppNoDataFound msg={"All caught up!"} />
+                    </View> :
+
+                    <FlatList
+                        data={notifications?.otherNotifications}
+                        initialNumToRender={2}
+                        windowSize={2}
+                        // removeClippedSubviews={true}
+                        maxToRenderPerBatch={2}
+                        // bounces={false}
+                        keyExtractor={ii => (ii._id || '') + 'you'}
+                        renderItem={({ item, index }) => (
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                handlenotificationclick(item)
+                            }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
+                                    <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={40} />
+                                    <View style={{ flex: 1, paddingHorizontal: RFValue(10) }}>
+                                        <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.body}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
+                                    </View>
+                                    {/* {item?.post && item?.post?.attatchment ?
                                 <FastImage source={{ uri: item.image }} style={{ height: RFValue(50), width: RFValue(60), borderRadius: 5 }} />
                                 : null} */}
-                                    </View>
-                                </TouchableOpacity>
-                            )} />}
-                </View>
+                                </View>
+                            </TouchableOpacity>
+                        )} />}
             </View>
         </View >
     );

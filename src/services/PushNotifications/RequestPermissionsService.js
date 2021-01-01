@@ -18,8 +18,13 @@ async function requestReadWritePermission() {
         return true;
 }
 
+
 async function requestPushNotificationPermission() {
-    const authStatus = await messaging().requestPermission();
+    const authStatus = await messaging().requestPermission({
+        sound: true,
+        announcement: true,
+        // ... other permission settings
+      });
     const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;

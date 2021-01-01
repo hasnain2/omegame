@@ -17,7 +17,7 @@ import { ValidateEmail } from '../../utils/AppValidators'
 const Login = ({ route, navigation }) => {
     let [state, setState] = useState({
         rememberMe: false,
-        email: '', password: '',
+        email: __DEV__?'asadalicodingpixel@gmail.com':"", password: __DEV__?'@Sad123456':"",
         loading: false,
         passwordVisible: true,
         keyboardIsVisible: false

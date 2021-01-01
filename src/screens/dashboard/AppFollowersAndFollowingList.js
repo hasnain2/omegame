@@ -67,7 +67,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
             }));
         } else { // follow unfollow user
             ActionsOnUsers((res) => { }, item?._id, item?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
-            tempData[index] = { ...item, isRequested: true, isFollowing: false }
+            tempData[index] = { ...item, isRequested: tempData[index]?.isFollowing ? false : true, isFollowing: !tempData[index]?.isFollowing }
             setState(prev => ({
                 ...prev,
                 data: tempData,

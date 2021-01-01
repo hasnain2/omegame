@@ -21,7 +21,7 @@ const ForgotPassword = ({ route, navigation }) => {
             ForgotPasswordCall((res) => {
                 if (res) AppShowToast("Recovery link has been sent to your email")
                 setState(prev => ({ ...prev, loading: false }))
-            }, state.email.toLowerCase().trim())
+            }, state.email.includes('@') ? state.email?.toLowerCase().trim() : state.email?.trim())
         } else {
             AppShowToast("Kindly provide valid username or email address")
         }

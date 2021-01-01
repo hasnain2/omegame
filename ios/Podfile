@@ -30,6 +30,9 @@ target 'OneGame' do
 
   pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
 
+  
+  pod 'Firebase/Messaging', '~> 7.1.0'
+  
   target 'OneGameTests' do
     inherit! :complete
     # Pods for testing
