@@ -72,10 +72,10 @@ const NotificationScreen = ({ navigation, route, }) => {
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <AppBackButton navigation={navigation} />
 
-            <View style={{ padding: RFValue(10) }}>
-                <AppText size={1} bold={true} style={{ paddingVertical: RFValue(10) }} color={AppTheme.colors.lightGrey}>FOLLOW REQUESTS</AppText>
+            <View style={{ padding: RFValue(10), flex: 1 }}>
+                <View style={{ flex: 0.7 }}>
+                    <AppText size={1} bold={true} style={{ paddingVertical: RFValue(10) }} color={AppTheme.colors.lightGrey}>FOLLOW REQUESTS</AppText>
 
-                <View style={{ minHeight: state.limitRequests < 4 ? RFValue(150) : RFValue(250), maxHeight: RFValue(Dimensions.get('screen')?.height / 2) }}>
                     {!state.loading && notifications?.requests?.length < 1 ?
                         <AppNoDataFound msg={"No follow requests found!"} />
                         : <FlatList
@@ -125,46 +125,50 @@ const NotificationScreen = ({ navigation, route, }) => {
                                     </TouchableOpacity>
                                 )
                             }} />}
+
+                    {notifications?.requests?.length > 3 ?
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            setState(prev => ({ ...prev, limitRequests: state.limitRequests > 2 ? 2 : 10 }));
+                        }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <AppText size={3} color={AppTheme.colors.lightGrey} style={{ textAlign: 'center', paddingVertical: RFValue(10) }}>{state.limitRequests > 2 ? "Show Less" : "Show more"}</AppText>
+                            </View>
+                        </TouchableOpacity> : null}
+
                 </View>
-                {notifications?.requests?.length > 3 ?
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        setState(prev => ({ ...prev, limitRequests: state.limitRequests > 2 ? 2 : 10 }));
-                    }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                            <AppText size={3} color={AppTheme.colors.lightGrey} style={{ textAlign: 'center', paddingVertical: RFValue(10) }}>{state.limitRequests > 2 ? "Show Less" : "Show more"}</AppText>
-                        </View>
-                    </TouchableOpacity> : null}
 
-                <AppText size={1} bold={true} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }}>NOTIFICATIONS</AppText>
+                <View style={{ flex: 1 }}>
+                    <AppText size={1} bold={true} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }}>NOTIFICATIONS</AppText>
 
-                {!state.loading && notifications?.otherNotifications?.length < 1 ?
-                    <View style={{ flex: 1, minHeight: RFValue(200) }}>
-                        <AppNoDataFound msg={"All caught up!"} />
-                    </View> :
+                    {!state.loading && notifications?.otherNotifications?.length < 1 ?
+                        <View style={{ flex: 1, minHeight: RFValue(200) }}>
+                            <AppNoDataFound msg={"All caught up!"} />
+                        </View> :
 
-                    <FlatList
-                        data={notifications?.otherNotifications}
-                        initialNumToRender={2}
-                        windowSize={2}
-                        // removeClippedSubviews={true}
-                        maxToRenderPerBatch={2}
-                        // bounces={false}
-                        keyExtractor={ii => (ii._id || '') + 'you'}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                                handlenotificationclick(item)
-                            }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
-                                    <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={40} />
-                                    <View style={{ flex: 1, paddingHorizontal: RFValue(10) }}>
-                                        <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.body}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
-                                    </View>
-                                    {/* {item?.post && item?.post?.attatchment ?
+                        <FlatList
+                            data={notifications?.otherNotifications}
+                            initialNumToRender={2}
+                            windowSize={2}
+                            // removeClippedSubviews={true}
+                            maxToRenderPerBatch={2}
+                            // bounces={false}
+                            keyExtractor={ii => (ii._id || '') + 'you'}
+                            renderItem={({ item, index }) => (
+                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                    handlenotificationclick(item)
+                                }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10), borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
+                                        <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={40} />
+                                        <View style={{ flex: 1, paddingHorizontal: RFValue(10) }}>
+                                            <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>{item.body}  <AppText color={AppTheme.colors.lightGrey} size={2}>{moment(item.createdAt).fromNow(true)}</AppText></AppText>
+                                        </View>
+                                        {/* {item?.post && item?.post?.attatchment ?
                                 <FastImage source={{ uri: item.image }} style={{ height: RFValue(50), width: RFValue(60), borderRadius: 5 }} />
                                 : null} */}
-                                </View>
-                            </TouchableOpacity>
-                        )} />}
+                                    </View>
+                                </TouchableOpacity>
+                            )} />}
+                </View>
             </View>
         </View >
     );
