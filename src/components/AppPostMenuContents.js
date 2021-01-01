@@ -7,7 +7,7 @@ import { ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MODIFY, ICON_MUTE, ICON_REPORT
 import { AppText, AppUserBoxNameAvatar } from '../components';
 import { AppTheme } from '../config';
 import { ActionsOnUsers, PostMuteUnmute } from '../services';
-import { RemovePostsOfUserFromReduxStore } from '../services/mutateReduxState';
+import { RemovePostsOfUserFromReduxStore, UpdatePostFromReduxStore } from '../services/mutateReduxState';
 import { DeletePost, FollowPost } from '../services/postService';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
 import { AppLogger } from '../utils/AppHelperMethods';
@@ -59,9 +59,8 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {  // Mute unmute post
-                            PostMuteUnmute(() => {
-
-                            }, item?._id, { mute: !state.mute })
+                            UpdatePostFromReduxStore({ ...item, mute: !state.mute })
+                            PostMuteUnmute(() => { }, item?._id, { mute: !state.mute })
                             toggle();
                             setState(prev => ({ ...prev, mute: !state.mute }))
                         }} style={styles.modalListItemStyle}>
@@ -72,9 +71,8 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            FollowPost(() => {
-
-                            }, item?._id, { follow: !state.isFollowing })
+                            UpdatePostFromReduxStore({ ...item, isFollowing: !state.isFollowing })
+                            FollowPost(() => {  }, item?._id, { follow: !state.isFollowing })
                             toggle();
                             setState(prev => ({ ...prev, isFollowing: !state.isFollowing }))
                         }} style={styles.modalListItemStyle}>
