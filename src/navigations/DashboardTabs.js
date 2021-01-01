@@ -69,9 +69,10 @@ async function notificationHandler(noti, navigation) {
   if (noti?.message && noti?.createdBy) {
     navigation.push("ChatWindow", { friend: noti?.createdBy })
   } else if (noti?.comment) {
-    const post = await GetPostByCommentID(noti?.comment);
-    AppLogger('-----------POST BY COMMENT ID RESPONSE-------', post)
-    navigation.push("PostDetailScreenWithComments", { post })
+    try {
+      const post = await GetPostByCommentID(noti?.comment);
+      navigation.push("PostDetailScreenWithComments", { post })
+    } catch (err) { }
   } else if (noti?.post) {
     navigation.push("PostDetailScreenWithComments", { postID: noti?.post })
   } else if (noti?.message && noti?.from) {

@@ -10,9 +10,9 @@ import { AppBackButton, AppButton, AppNoDataFound, AppText } from '../../compone
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setNotifications } from '../../redux/reducers/notificationsSlice';
-import { ActionsOnUsers, GetNotificationHistory, ReadUpdateNotificationStatus } from '../../services';
+import { ActionsOnUsers, GetNotificationHistory, GetPostByCommentID, ReadUpdateNotificationStatus } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, NOTIFICATION_TYPES } from '../../utils/AppConstants';
-import { AppShowToast, RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast, RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 
 const NotificationScreen = ({ navigation, route, }) => {
@@ -52,17 +52,34 @@ const NotificationScreen = ({ navigation, route, }) => {
         }
         AppShowToast(accept ? "Request accepted!" : "Request denied!");
     }
-    function handlenotificationclick(item) {
-        if (!item?.read)
+    async function handlenotificationclick(item) {
+        if (!item?.read) {
+            let tempData = [...notifications?.otherNotifications?.slice()]
+            let foundIndex = tempData?.findIndex(ii => ii?._id === item?._id)
+            if (foundIndex && foundIndex > -1) {
+                tempData[foundIndex] = { ...item, read: true }
+                dispatch(setNotifications({ otherNotifications: RemoveDuplicateObjectsFromArray(tempData) }))
+            }
             ReadUpdateNotificationStatus(item?._id)
+        }
+
         if (item?.type === NOTIFICATION_TYPES.FOLLOW_REQUESTS) {
-            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+            if (item?.createdBy?._id)
+                navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
         } else if (item?.type === NOTIFICATION_TYPES.COMMENT) {
-            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+            if (item?.comment) {
+                try {
+                    const post = await GetPostByCommentID(item?.comment);
+                    navigation.navigate("PostDetailScreenWithComments", { post })
+                } catch (err) { }
+            }
         } else if (item?.type === NOTIFICATION_TYPES.POST) {
-            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+            if (item?.post) {
+                navigation.navigate("PostDetailScreenWithComments", { postID: item?.post })
+            }
         } else if (item?.type === NOTIFICATION_TYPES.CHAT) {
-            navigation.navigate("UserProfileScreen", { userID: item?.createdBy?._id })
+            if (item?.createdBy)
+                navigation.navigate("ChatWindow", { friend: item?.createdBy })
         }
     }
     useEffect(() => {
