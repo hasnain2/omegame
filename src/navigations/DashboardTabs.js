@@ -129,7 +129,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
         AppShowPushNotification(remoteMessage?.notification?.title, remoteMessage?.notification?.body, () => {
           let newData = JSON.parse(remoteMessage?.data?.payload)
 
-          AppLogger('A new FCM message arrived!', newData);
+          AppLogger('------------------A new FCM message arrived!----------------', newData);
           notificationHandler(newData, navigation);
         });
       }

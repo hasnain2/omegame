@@ -10,6 +10,7 @@ import myAssets from './reducers/myAssetsSlice';
 import settings from './reducers/settingsSlice';
 import notifications from './reducers/notificationsSlice';
 import postData from './reducers/postDataSlice';
+import userProfileData from './reducers/userProfileDataSlice';
 
 const rootReducer = combineReducers({
     user: user,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     settings: settings,
     notifications: notifications,
     postData: postData,
+    userProfileData: userProfileData,
 });
 
 export const store = configureStore({

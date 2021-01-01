@@ -2,29 +2,29 @@ import moment from 'moment';
 import * as React from 'react';
 import { FlatList, View } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppText } from '../../../components';
 import { UserAvatar } from '../../../components/UserAvatar';
 import { AppTheme } from '../../../config';
 import { MOCK_GAMES } from '../../../mockups/Mockups';
+import { setUserProfileData } from '../../../redux/reducers/userProfileDataSlice';
 import { GetUserReviews } from '../../../services/gamesService';
 const UserProfileReviews = ({ navigation, userID }) => {
-    let [state, setState] = React.useState({
-        loading: true,
-        data: []
-    })
+
+    let { userProfileData } = useSelector(state => state.root)
+    let dispatch = useDispatch();
 
     React.useEffect(() => {
         GetUserReviews((reviewRes) => {
             if (reviewRes)
-                setState(prev => ({ ...prev, data: reviewRes, loading: false }))
-            else
-                setState(prev => ({ ...prev, loading: false }))
+                dispatch(setUserProfileData({ reviews: reviewRes }))
         }, userID)
     }, [])
+
     return (
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             <FlatList
-                data={state.data}
+                data={userProfileData.reviews}
                 nestedScrollEnabled={true}
                 initialNumToRender={2}
                 windowSize={2}
