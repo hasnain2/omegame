@@ -74,14 +74,19 @@ const UserProfileScreen = ({ navigation, route, }) => {
         ActionsOnUsers(() => { }, route.params.userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
     }
 
-    function followuser() {
+    function followOrCancelRequest(req) {
         let tempUserObj = state.userData;
-        ActionsOnUsers(() => { }, route.params.userID, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
-
-        if (tempUserObj?.isFollowing)
+        if (req) {
+            ActionsOnUsers(() => { }, route.params.userID, FRIEND_STATUSES_ACTIONS.CANCEL_FOLLOW_REQUEST)
+            tempUserObj["isRequested"] = false;
             tempUserObj["isFollowing"] = false;
-        else
-            tempUserObj["isRequested"] = true;
+        } else {
+            ActionsOnUsers(() => { }, route.params.userID, tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
+            if (tempUserObj?.isFollowing)
+                tempUserObj["isFollowing"] = false;
+            else
+                tempUserObj["isRequested"] = true;
+        }
         setState(prev => ({ ...prev, userData: tempUserObj }));
     }
     userData = userID ? user : state.userData;
@@ -197,8 +202,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
                             <View style={{ flex: 1, paddingRight: RFValue(10) }}>
                                 <AppButton onPress={() => {
-                                    if (!userData?.isRequested)
-                                        followuser();
+                                    followOrCancelRequest(userData?.isRequested);
                                 }} fill={true} label={userData?.isFollowing ? "UNFOLLOW" : userData?.isRequested ? "REQUESTED" : "FOLLOW"} />
                             </View>
                             <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
@@ -255,10 +259,8 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        if (!userData?.isRequested) {
-                            followuser();
-                            setState(prev => ({ ...prev, showMenu: false }))
-                        }
+                        followOrCancelRequest(userData?.isRequested);
+                        setState(prev => ({ ...prev, showMenu: false }))
                     }} style={styles.modalListItemStyle}>
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                             <Image source={ICON_UNFOLLOW} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
