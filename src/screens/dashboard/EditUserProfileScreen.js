@@ -162,15 +162,13 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                     <AppInput label={"Favorite console"} value={state.favoriteConsole} onChangeText={(val) => { setState(prev => ({ ...prev, favoriteConsole: val })) }} />
 
                     {state.gamingAccounts.map((item, index) => {
-                        return (
-                            <AppInput key={`${index}key`} label={item.gamingAccountProvider} value={item.account}
-                                onChangeText={(val) => {
-                                    let tempArr = state.gamingAccounts.slice();
-                                    tempArr[index] = { ...tempArr[index], account: val };
+                        return (<AppInput key={`${index}key`} label={item.gamingAccountProvider} value={item.account}
+                            onChangeText={(val) => {
+                                let tempArr = state.gamingAccounts.slice();
+                                tempArr[index] = { ...tempArr[index], account: val };
 
-                                    setState(prev => ({ ...prev, gamingAccounts: tempArr }))
-                                }} />
-                        )
+                                setState(prev => ({ ...prev, gamingAccounts: tempArr }))
+                            }} />)
                     })}
                 </View>
             </KeyboardAvoidingScrollView >

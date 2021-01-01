@@ -1,9 +1,8 @@
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Keyboard, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { APP_LOGO } from '../../../assets/images';
 import { AppButton, AppGradientContainer, AppInput, AppRadioButton, AppText } from '../../components';
@@ -13,11 +12,11 @@ import { LogInUser } from '../../services/authService';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { getData, storeData } from '../../utils/AppStorage';
-import { ValidateEmail } from '../../utils/AppValidators'
+import { ValidateEmail } from '../../utils/AppValidators';
 const Login = ({ route, navigation }) => {
     let [state, setState] = useState({
         rememberMe: false,
-        email: __DEV__?'asadalicodingpixel@gmail.com':"", password: __DEV__?'@Sad123456':"",
+        email: __DEV__ ? 'asadalicodingpixel@gmail.com' : "", password: __DEV__ ? '@Sad123456' : "",
         loading: false,
         passwordVisible: true,
         keyboardIsVisible: false
@@ -81,8 +80,8 @@ const Login = ({ route, navigation }) => {
                 </View>
                 <View style={{ flex: 1, }}>
 
-                    <AppInput editable={!state.loading} value={state.email} style={{ backgroundColor: 'black' }} type={"email"} label={"Username or e-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
-                    <AppInput editable={!state.loading} value={state.password} style={{ backgroundColor: 'black' }} type={'password'} passwordVisible={state.passwordVisible} label={"Password"} onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisible: !state.passwordVisible }))} right={<Ionicons name={state.passwordVisible ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
+                    <AppInput editable={!state.loading} value={state.email} style={{ backgroundColor: 'black' }} type={"any"} label={"Username or e-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
+                    <AppInput editable={!state.loading} value={state.password} style={{ backgroundColor: 'black' }} type={'any'} passwordVisible={state.passwordVisible} label={"Password"} onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisible: !state.passwordVisible }))} right={<Ionicons name={state.passwordVisible ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(10), justifyContent: 'space-between', alignItems: 'center', }}>
                         <AppRadioButton label={"Remember me"} size={20} val={state.rememberMe}
                             onPress={() => { setState(prev => ({ ...prev, rememberMe: !state.rememberMe })) }} />
