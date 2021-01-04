@@ -14,8 +14,8 @@ import Interceptor from '../utils/Interceptor';
 async function socialloginhelper(token, type) {
     AppLogger('------GOT TOKEN FROM ' + type, token)
     debugger
-    fetch(`${EndPoints.SOCIAL_LOGIN_TYPESIN}`, {
-        method: 'GET',
+    fetch(`${EndPoints.SOCIAL_LOGIN}`, {
+        method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify({ token, type })
     }).then(JSONBodyHelper).then(([status, data]) => {
@@ -119,5 +119,5 @@ const LoginWithInstagram = async () => {
     }
 }
 
-export { LoginWithFacebook, LoginWithApple, LoginWithGoogle, LoginWithTwitter, LoginWithInstagram };
+export { LoginWithFacebook, socialloginhelper, LoginWithApple, LoginWithGoogle, LoginWithTwitter, LoginWithInstagram };
 

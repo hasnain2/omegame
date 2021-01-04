@@ -5,6 +5,7 @@ const BASE_URL = DOMAIN + '/api/';
 
 const EndPoints = {
     SOCIAL_LOGIN: BASE_URL + 'authentication/social',
+    INSTAGRAM_REDIRECT_URL: BASE_URL + 'authentication/instagram',
     LOGIN: BASE_URL + 'authentication/login',
     SIGNUP: BASE_URL + 'authentication/signup/PLAYER',
     FORGOT_PASSWORD: BASE_URL + 'authentication/forgotPassword',

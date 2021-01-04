@@ -2,7 +2,7 @@
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, View } from 'react-native';
+import { Keyboard, Platform, TouchableHighlight, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { APP_LOGO } from '../../../assets/images';
@@ -10,14 +10,20 @@ import { AppButton, AppGradientContainer, AppInput, AppRadioButton, AppText } fr
 import { AppSocialButton } from '../../components/AppSocialButton';
 import { AppTheme } from '../../config/AppTheme';
 import { LogInUser } from '../../services/authService';
-import { LoginWithApple, LoginWithFacebook, LoginWithGoogle } from '../../services/socialAuthService';
-import { AppShowToast } from '../../utils/AppHelperMethods';
+import { LoginWithApple, LoginWithFacebook, LoginWithGoogle, socialloginhelper } from '../../services/socialAuthService';
+import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { getData, storeData } from '../../utils/AppStorage';
 import { ValidateEmail } from '../../utils/AppValidators';
+import InstagramLogin from 'react-native-instagram-login';
+import { AppConfig } from '../../config';
+import { EndPoints } from '../../utils/AppEndpoints';
+import { SOCIAL_LOGIN_TYPES } from '../../utils/AppConstants';
+const INSTA_SCOPES = ['user_profile', 'user_media', 'instagram_graph_user_profile'];
 GoogleSignin.configure();
 
 const Login = ({ route, navigation }) => {
+    let [instagramLoginRef, setInstagramLoginRef] = useState('')
     let [state, setState] = useState({
         rememberMe: false,
         email: __DEV__ ? 'asadalicodingpixel@gmail.com' : "", password: __DEV__ ? '@Sad123456' : "",
@@ -48,7 +54,16 @@ const Login = ({ route, navigation }) => {
     const _keyboardDidHide = () => {
         setState(prev => ({ ...prev, keyboardIsVisible: false }))
     };
+    const socialbuttonsclickhandler = (data) => {
+        if (data) {
+            if (true) { // got token proceen to login success and set user into redux and local storage
 
+            } else {// this is new user take him to set username screen to complete registration
+
+            }
+        }
+        setState(prev => ({ ...prev, loading: false }))
+    }
     const onsubmit = () => {
         if (state.email) {
             if (state.password) {
@@ -77,7 +92,12 @@ const Login = ({ route, navigation }) => {
         <View style={{ flex: 1, backgroundColor: 'black', }}>
             <View style={{ paddingHorizontal: RFValue(15), flex: 1 }}>
                 <View style={{ flex: 0.7, justifyContent: 'center', alignItems: 'center' }}>
-                    <FastImage style={{ width: RFValue(70), height: RFValue(70) }} source={APP_LOGO} resizeMode="contain" />
+                    <TouchableHighlight activeOpacity={9} onPress={() => {
+                        if (__DEV__)
+                            navigation.navigate("SetUserName")
+                    }}>
+                        <FastImage style={{ width: RFValue(70), height: RFValue(70) }} source={APP_LOGO} resizeMode="contain" />
+                    </TouchableHighlight>
                 </View>
                 <View style={{ flex: 1, }}>
 
@@ -97,15 +117,58 @@ const Login = ({ route, navigation }) => {
             </View>
             {/* {!state.keyboardIsVisible ? */}
             <View style={{}}>
+                <InstagramLogin
+                    ref={ref => setInstagramLoginRef(ref)}
+                    appId={AppConfig.INSTAGRAM_APP_ID}
+                    appSecret={AppConfig.INSTAGRAM_APP_SECRET}
+                    redirectUrl={EndPoints.INSTAGRAM_REDIRECT_URL}
+                    scopes={INSTA_SCOPES}
+                    onClose={() => {
+                        setState(prev => ({ ...prev, loading: false }))
+                    }}
+                    onLoginSuccess={async (data) => {
+                        setState(prev => ({ ...prev, loading: true }))
+                        let loginRes = await socialloginhelper(data.access_token, SOCIAL_LOGIN_TYPES.INSTAGRAM);
+                        AppLogger('--------INSTA LOGIN RESPONSE--------', JSON.stringify(loginRes))
+                        socialbuttonsclickhandler(loginRes)
+                    }}
+                    onLoginFailure={(data) => {
+                        AppLogger('--------INSTA LOGIN ERROR--------', JSON.stringify(data))
+                        setState(prev => ({ ...prev, loading: false }))
+                    }}
+                />
                 <View style={{ paddingBottom: RFValue(20) }}>
                     <AppText size={1} style={{ textAlign: 'center', paddingBottom: RFValue(10) }} color={AppTheme.colors.lightGrey} >or start with:</AppText>
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
-                        <AppSocialButton onPress={() => { LoginWithFacebook() }} name="facebook" />
+                        <AppSocialButton onPress={async () => {
+                            if (__DEV__) {
+                                setState(prev => ({ ...prev, loading: true }))
+                                const socialLoginRes = await LoginWithFacebook();
+                                socialbuttonsclickhandler(socialLoginRes)
+                            }
+                        }} name="facebook" />
                         <AppSocialButton name="twitter" />
-                        <AppSocialButton name="instagram" />
-                        <AppSocialButton onPress={() => { LoginWithGoogle() }} name="google" />
+                        <AppSocialButton onPress={() => {
+                            if (instagramLoginRef && __DEV__) {
+                                setState(prev => ({ ...prev, loading: true }))
+                                instagramLoginRef.show();
+                            }
+                        }} name="instagram" />
+                        <AppSocialButton onPress={async () => {
+                            if (__DEV__) {
+                                setState(prev => ({ ...prev, loading: true }))
+                                const socialLoginRes = await LoginWithGoogle();
+                                socialbuttonsclickhandler(socialLoginRes)
+                            }
+                        }} name="google" />
                         {Platform.OS === 'ios' && parseInt(Platform.Version, 10) >= 13 ?
-                            <AppSocialButton onPress={() => { LoginWithApple() }} name="apple" /> : null}
+                            <AppSocialButton onPress={async () => {
+                                if (__DEV__) {
+                                    setState(prev => ({ ...prev, loading: true }))
+                                    const socialLoginRes = await LoginWithApple();
+                                    socialbuttonsclickhandler(socialLoginRes)
+                                }
+                            }} name="apple" /> : null}
                     </View>
                 </View>
                 <AppGradientContainer onPress={() => navigation.replace("SignUp")} style={{ paddingVertical: RFValue(30), marginTop: RFValue(10), justifyContent: 'center', alignItems: 'center', marginTop: RFValue(10) }}>
@@ -117,6 +180,5 @@ const Login = ({ route, navigation }) => {
         </View>
     );
 };
-
 
 export { Login };

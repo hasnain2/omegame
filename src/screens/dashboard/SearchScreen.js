@@ -18,7 +18,7 @@ const SearchScreen = ({ route, navigation }) => {
     let [state, setState] = useState({
         searchTerm: '',
         showFilter: false,
-        sortPostBy: 'Best',
+        sortPostBy: '',
         sortPostByTime: 'Newest'
     });
 
@@ -45,7 +45,7 @@ const SearchScreen = ({ route, navigation }) => {
                 <SearchTabs navigation={navigation}
                     // &sort=${state.sortPostBy.toUpperCase()}
                     type={type}
-                    query={`&sort=${state.sortPostBy.toUpperCase()}${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
+                    query={`${state.sortPostBy ? ('&sort=' + state.sortPostBy.toUpperCase()) : ''}${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
                         : state.sortPostByTime === 'Past week' ? GetLastWeekStartOf()
                             : state.sortPostByTime === 'Past month' ? GetLastMonthStartOf()
                                 : state.sortPostByTime === 'Past year' ? GetLastYearStartOf()
@@ -67,7 +67,7 @@ const SearchScreen = ({ route, navigation }) => {
                     }}>
                         <View style={{ borderBottomWidth: 0.4, borderBottomColor: AppTheme.colors.lightGrey, paddingBottom: RFValue(15) }}>
                             <AppText size={2} >Sort Post by:</AppText>
-                            <AppText size={2} color={AppTheme.colors.primary} style={{ paddingTop: RFValue(10) }}>{state.sortPostBy}</AppText>
+                            <AppText size={2} color={AppTheme.colors.primary} style={{ paddingTop: RFValue(10) }}>{state.sortPostBy || "Select"}</AppText>
                         </View>
                     </TouchableOpacity>
                     {state.visibleFilter === 'sortPostBy' ?

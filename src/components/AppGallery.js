@@ -17,24 +17,15 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
     let CARD_SIZE = (Dimensions.get('screen').width / 3) - ((CARD_MARGIN * 2));
 
     let [loaded, setLoaded] = useState(false);
-    let [clicked, setClicked] = useState(false);
     let [albumsFirstPics, setAlbumsFirstPics] = useState([]);
-    let [showGalleryList, setShowGalleryList] = useState(false);
     let [loading, setLoading] = useState(true);
     let [params, setParams] = useState({ first: NumberOfIMagesToGet, assetType: 'All' });
-    let [selectedImages, setSelectedImages] = useState([]);
-    let [selectable, setSelectable] = useState(false);
     let [focused, setFocused] = useState(false);
-    let [selectionType, setSelectionType] = useState(1);
 
     let [coverPhoto, setCoverPhoto] = useState('');
     let [recentCameraRollLibrary, setRecentCameraRollLibrary] = useState([]);
     let [albumbs, setAlbumbs] = useState([]);
     let stopPagination = false;
-
-
-
-
 
     const getAlbumbsFirstPicture = async (albumbs) => {
         albumbs = [{ first: 1, assetType: 'All' }, ...albumbs];
@@ -135,19 +126,16 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                     } else {
                         ImagesArray.push({ image: { uri: val.node.image.uri }, type: val.node.type === 'image' ? 'photo' : 'photo', oType: val.node.type, upload: true, })
                     }
-
                 }
             });
 
             if (images.length > 0) {
                 setCoverPhoto(ImagesArray[0]);
-                selectedOne({ ...ImagesArray[0], uri: Platform.OS === 'ios' ? ImagesArray[0]?.type === 'video' ? ImagesArray[0]?.image.uri2 : ImagesArray[0]?.image.uri : ImagesArray[0]?.image.uri, type: ImagesArray[0]?.type });
                 setRecentCameraRollLibrary([...ImagesArray]);
             }
             setLoading(false);
         }
     }
-
 
     useEffect(() => {
         request(Platform.OS === 'android' ? PERMISSIONS.ANDROID.CAMERA : PERMISSIONS.IOS.PHOTO_LIBRARY).then((result) => {

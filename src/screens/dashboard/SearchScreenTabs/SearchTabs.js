@@ -35,7 +35,7 @@ const SearchTabs = ({ navigation, query, type }) => {
 
         if (!cursorArrMedia.includes(cursor)) {
             GetExploreMediaOnlyPosts((postResponse) => {
-                if (postResponse && postResponse.length > 0) {
+                if (postResponse) {
                     let tempData = postResponse
                     setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false, mediaPosts: RemoveDuplicateObjectsFromArray(tempData) }))
                 } else {
@@ -54,7 +54,7 @@ const SearchTabs = ({ navigation, query, type }) => {
 
         if (!cursorArrPosts.includes(cursor)) {
             GetExplorePosts((postResponse) => {
-                if (postResponse && postResponse.length > 0) {
+                if (postResponse) {
                     let tempData = postResponse
                     setState(prev => ({ ...prev, loadingPosts: false, refreshingPosts: false, loading: false, allPosts: RemoveDuplicateObjectsFromArray(tempData) }))
                 } else {
@@ -73,7 +73,7 @@ const SearchTabs = ({ navigation, query, type }) => {
         let newQuery2 = newQuery.find(ii => ii.includes('search')) || '';
 
         if (!cursor)
-            cursorArrPosts = []
+            cursorArrPosts = [];
 
         if (!cursorArrUsers.includes(cursor)) {
             GetAllTrendingUsers((postResponse) => {
@@ -83,9 +83,7 @@ const SearchTabs = ({ navigation, query, type }) => {
                 } else {
                     setState(prev => ({ ...prev, loadingAllUsers: false, loading: false, refreshingAllUsers: false, }))
                 }
-                debugger
             }, cursor, `${newQuery2}`)
-
         } else {
             setState(prev => ({ ...prev, refreshingPosts: false }))
         }

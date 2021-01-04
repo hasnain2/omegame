@@ -15,6 +15,9 @@ const AppConfig = {
 
     },
 
+    INSTAGRAM_APP_ID: "689483385265874",
+    INSTAGRAM_APP_SECRET: "84beb5e61fa932ce39ab4420aba8a985",
+
     App_Deep_Link: "https://omegame.page.link/omegame?",
     //----S3 SERVER CREDENTIALS
     S3_CONFIGURATION: (bucket) => {

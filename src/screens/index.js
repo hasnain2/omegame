@@ -1,6 +1,7 @@
 //--- AUTH STACK
 export * from './auth/AuthLoading';
 export * from './auth/Login';
+export * from './auth/SetUserName';
 export * from './auth/Signup';
 export * from './auth/ForgotPassword';
 

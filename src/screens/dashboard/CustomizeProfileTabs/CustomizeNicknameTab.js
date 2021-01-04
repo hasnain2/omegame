@@ -66,7 +66,7 @@ const CustomizeNicknameTab = ({ navigation }) => {
                             <TouchableOpacity activeOpacity={0.7} style={{ padding: RFValue(5) }} onPress={() => {
                                 navigation.navigate("OmegaStore", { name: "nickNames" })
                             }}>
-                                <View style={{ width: RFValue(CARD_WIDTH / 1.35), height: RFValue(CARD_WIDTH / 1.35), borderRadius: 100, borderWidth: 1, paddingLeft: RFValue(2.4), borderColor: AppTheme.colors.primary, justifyContent: 'center', alignItems: 'center' }}>
+                                <View style={{ width: RFValue(CARD_WIDTH / 3), height: RFValue(CARD_WIDTH / 3), borderRadius: 100, borderWidth: 1, paddingLeft: RFValue(2.4), borderColor: AppTheme.colors.primary, justifyContent: 'center', alignItems: 'center' }}>
                                     <Ionicons name="add-circle-outline" style={{ fontSize: RFValue(30), color: 'white' }} />
                                 </View>
                             </TouchableOpacity>
