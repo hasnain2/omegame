@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Keyboard, View } from 'react-native';
+import { Keyboard, Platform, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { APP_LOGO } from '../../../assets/images';
@@ -46,7 +46,6 @@ const Login = ({ route, navigation }) => {
     };
 
     const onsubmit = () => {
-
         if (state.email) {
             if (state.password) {
                 setState(prev => ({ ...prev, loading: true }))
@@ -61,16 +60,14 @@ const Login = ({ route, navigation }) => {
                     } else
                         AppShowToast("Invalid email or password")
                 }, {
-                    userName: ValidateEmail(state.email) ? state.email.toLowerCase().trim() : state.email.trim(),
+                    userName: ValidateEmail(state.email) ? state.email.toLowerCase().trim() : state.email.toLowerCase().trim(),
                     password: state.password.trim()
                 })
             }
             else
                 AppShowToast("Provide password")
-        } else {
+        } else
             AppShowToast('Please provide valid email address')
-        }
-
     }
     return (
         <View style={{ flex: 1, backgroundColor: 'black', }}>
@@ -103,6 +100,8 @@ const Login = ({ route, navigation }) => {
                         <AppSocialButton name="twitter" />
                         <AppSocialButton name="instagram" />
                         <AppSocialButton name="google" />
+                        {Platform.OS === 'ios' && parseInt(Platform.Version, 10) >= 13 ?
+                            <AppSocialButton name="apple" /> : null}
                     </View>
                 </View>
                 <AppGradientContainer onPress={() => navigation.replace("SignUp")} style={{ paddingVertical: RFValue(30), marginTop: RFValue(10), justifyContent: 'center', alignItems: 'center', marginTop: RFValue(10) }}>

@@ -8,6 +8,8 @@ import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_ADD, ICON_GAME, ICON_HOME, ICON_QUEST, ICON_SEARCH } from '../../assets/icons';
 import { AppTheme } from '../config';
+import { setSettings } from '../redux/reducers/settingsSlice';
+import { store } from '../redux/store';
 import { AppContactsSearch, AppFollowersAndFollowingList, AppSettingsScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen, DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen, PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen, ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen } from '../screens';
 import { UserSavedPosts } from '../screens/dashboard/UserSavedPosts';
 import { AppShowPushNotification, GetPostByCommentID, requestPushNotificationPermission } from '../services';
@@ -136,7 +138,20 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
       }
     });
 
+
+
+    const unsubscribeFocus = navigation.addListener('focus', e => {
+      store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
+    });
+    const unsubscribeBlur = navigation.addListener('blur', e => {
+      store.dispatch(setSettings({ bgColor: 'black' }));
+    });
+
+
+
     return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
       unsubscribe();
       Linking.removeEventListener('url', (link) => {
         DynamicLinkHelper(navigation, link);

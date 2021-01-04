@@ -41,8 +41,8 @@ const App = ({ }) => {
         <StatusBar barStyle="light-content" />
         <MenuProvider>
           <SafeAreaView style={{ flex: 1,
-            //  backgroundColor: settings.bgColor ,
-             backgroundColor: 'black' ,
+             backgroundColor: settings.bgColor ,
+            //  backgroundColor: 'black' ,
              }}>
             {state.loading ?
               <AuthLoading />
