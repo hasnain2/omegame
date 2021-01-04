@@ -1,5 +1,6 @@
 
 
+import { GoogleSignin } from '@react-native-community/google-signin';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Platform, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -9,10 +10,13 @@ import { AppButton, AppGradientContainer, AppInput, AppRadioButton, AppText } fr
 import { AppSocialButton } from '../../components/AppSocialButton';
 import { AppTheme } from '../../config/AppTheme';
 import { LogInUser } from '../../services/authService';
+import { LoginWithApple, LoginWithFacebook, LoginWithGoogle } from '../../services/socialAuthService';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { getData, storeData } from '../../utils/AppStorage';
 import { ValidateEmail } from '../../utils/AppValidators';
+GoogleSignin.configure();
+
 const Login = ({ route, navigation }) => {
     let [state, setState] = useState({
         rememberMe: false,
@@ -96,12 +100,12 @@ const Login = ({ route, navigation }) => {
                 <View style={{ paddingBottom: RFValue(20) }}>
                     <AppText size={1} style={{ textAlign: 'center', paddingBottom: RFValue(10) }} color={AppTheme.colors.lightGrey} >or start with:</AppText>
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
-                        <AppSocialButton name="facebook" />
+                        <AppSocialButton onPress={() => { LoginWithFacebook() }} name="facebook" />
                         <AppSocialButton name="twitter" />
                         <AppSocialButton name="instagram" />
-                        <AppSocialButton name="google" />
+                        <AppSocialButton onPress={() => { LoginWithGoogle() }} name="google" />
                         {Platform.OS === 'ios' && parseInt(Platform.Version, 10) >= 13 ?
-                            <AppSocialButton name="apple" /> : null}
+                            <AppSocialButton onPress={() => { LoginWithApple() }} name="apple" /> : null}
                     </View>
                 </View>
                 <AppGradientContainer onPress={() => navigation.replace("SignUp")} style={{ paddingVertical: RFValue(30), marginTop: RFValue(10), justifyContent: 'center', alignItems: 'center', marginTop: RFValue(10) }}>

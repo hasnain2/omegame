@@ -4,6 +4,7 @@ const DOMAIN = __DEV__ ? TESTING_DOMAIN : PRODUCTION_DOMAIN;
 const BASE_URL = DOMAIN + '/api/';
 
 const EndPoints = {
+    SOCIAL_LOGIN: BASE_URL + 'authentication/social',
     LOGIN: BASE_URL + 'authentication/login',
     SIGNUP: BASE_URL + 'authentication/signup/PLAYER',
     FORGOT_PASSWORD: BASE_URL + 'authentication/forgotPassword',

@@ -14,6 +14,7 @@ import { SearchTabs } from './SearchScreenTabs/SearchTabs';
 const POST_SORTING_TYPES = [{ id: 0, name: 'Best' }, { id: 1, name: 'Top' }, { id: 2, name: 'Hot' }, { id: 3, name: 'Controversial' }, { id: 4, name: 'Rising' },];
 const NUMBER_OF_COLUMNS = 2;
 const SearchScreen = ({ route, navigation }) => {
+    const type = route?.params?.type
     let [state, setState] = useState({
         searchTerm: '',
         showFilter: false,
@@ -37,11 +38,13 @@ const SearchScreen = ({ route, navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
             <View style={{ padding: RFValue(10), paddingBottom: 0 }}>
-                <AppSearchBar onChangeText={(val) => setState(prev => ({ ...prev, searchTerm: val }))} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
+                <AppSearchBar onChangeText={(val) => setState(prev => ({ ...prev, searchTerm: val }))}
+                    onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
             </View>
             <View style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>
                 <SearchTabs navigation={navigation}
                     // &sort=${state.sortPostBy.toUpperCase()}
+                    type={type}
                     query={`&sort=${state.sortPostBy.toUpperCase()}${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
                         : state.sortPostByTime === 'Past week' ? GetLastWeekStartOf()
                             : state.sortPostByTime === 'Past month' ? GetLastMonthStartOf()
@@ -120,7 +123,13 @@ const SearchScreen = ({ route, navigation }) => {
                         <AppButton bgColor={'#1b1b1b'} label={"START"} onPress={() => { setState(prev => ({ ...prev, showFilter: false })) }} />
                     </View>
 
-                    <AppText onPress={() => setState(prev => ({ ...prev, showFilter: false }))} color={AppTheme.colors.red} size={2} style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
+                    <AppText onPress={() => setState(prev => ({
+                        ...prev,
+                        sortPostBy: 'Best',
+                        sortPostByTime: 'Newest'
+                    }))}
+                        color={AppTheme.colors.red} size={2}
+                        style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
                 </View>
             </AppModal>
         </SafeAreaView>

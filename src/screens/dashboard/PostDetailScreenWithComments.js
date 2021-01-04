@@ -165,7 +165,6 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                     <AppText size={1} color={AppTheme.colors.lightGrey}>Reply</AppText>
                                 </View>
                             </TouchableOpacity>
-
                         </View>
                     </View>
                 </View>
@@ -219,33 +218,34 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 </>
                             )
                         }} />
+
+                    <AppInputToolBar
+                        placeholder={state.parentID?.createdBy?.userName ? ("@" + state.parentID?.createdBy?.userName) : ""}
+                        LHeight={state.LHeight}
+                        removeTag={() => {
+                            setState(prev => ({ ...prev, parentID: '' }))
+                        }}
+                        onSend={(msg) => {
+                            CommentPost((newCommentRes) => {
+                                if (newCommentRes) {
+                                    getcommentshelper();
+                                    if (state.parentID?.parentComment || state.parentID?._id)
+                                        getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id)
+                                }
+                                setState(prev => ({ ...prev, parentID: '' }))
+                                getsinglepostbyidhelper();
+                            }, state.parentID?.parentComment || state.parentID?._id ? {
+                                // mentions: [],
+                                parentComment: state.parentID?.parentComment || state.parentID?._id,
+                                text: msg,
+                                post: postData._id
+                            } : {
+                                    text: msg,
+                                    post: postData._id
+                                })
+                        }} />
                 </>
             }
-            <AppInputToolBar
-                placeholder={state.parentID?.createdBy?.userName ? ("@" + state.parentID?.createdBy?.userName) : ""}
-                LHeight={state.LHeight}
-                removeTag={() => {
-                    setState(prev => ({ ...prev, parentID: '' }))
-                }}
-                onSend={(msg) => {
-                    CommentPost((newCommentRes) => {
-                        if (newCommentRes) {
-                            getcommentshelper();
-                            if (state.parentID?.parentComment || state.parentID?._id)
-                                getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id)
-                        }
-                        setState(prev => ({ ...prev, parentID: '' }))
-                        getsinglepostbyidhelper();
-                    }, state.parentID?.parentComment || state.parentID?._id ? {
-                        // mentions: [],
-                        parentComment: state.parentID?.parentComment || state.parentID?._id,
-                        text: msg,
-                        post: postData._id
-                    } : {
-                            text: msg,
-                            post: postData._id
-                        })
-                }} />
 
             {state.loading ?
                 <AppLoadingView />

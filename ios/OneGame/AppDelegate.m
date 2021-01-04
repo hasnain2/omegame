@@ -6,6 +6,8 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import "RNFBMessagingModule.h"
+#import <RNGoogleSignin/RNGoogleSignin.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -66,12 +68,28 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 }
 
-//-------FOR HANDLING DEEP LINKS
+//-------FOR HANDLING DEEP LINKS STARTS
 - (BOOL)application:(UIApplication *)application
    openURL:(NSURL *)url
    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [RCTLinkingManager application:application openURL:url options:options];
+  // ---- FACEBOOK
+  if ([[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options]) {
+    return YES;
+  }
+
+  // ---- GOOGLE
+  if ([RNGoogleSignin application:application openURL:url options:options]){
+    return YES;
+  }
+  
+  // ---- DEEP LINKS
+  if ([RCTLinkingManager application:application openURL:url options:options]) {
+    return YES;
+  }
+ 
+  return NO;
 }
+//-------FOR HANDLING DEEP LINKS ENDS
 
 @end

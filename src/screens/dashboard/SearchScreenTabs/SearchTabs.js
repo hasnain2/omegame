@@ -16,7 +16,7 @@ const ICON_SIZE = RFValue(36);
 let cursorArrPosts = [];
 let cursorArrMedia = [];
 let cursorArrUsers = [];
-const SearchTabs = ({ navigation, query }) => {
+const SearchTabs = ({ navigation, query, type }) => {
     // query = query.replaceAll(':', "%")
     AppLogger('----QUERY----', query)
     let [state, setState] = useState({
@@ -103,6 +103,7 @@ const SearchTabs = ({ navigation, query }) => {
     }, [query])
     return (
         <Tab.Navigator
+            initialRouteName={type === 'users' ? "TabUsers" : "TabPosts"}
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused }) => {
                     if (route.name === 'TabPosts')

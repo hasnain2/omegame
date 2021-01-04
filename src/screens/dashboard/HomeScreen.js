@@ -2,10 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+    ScrollView,
+    RefreshControl,
     View
 } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppLoadingView, AppNoDataFound, AppPostsListings, HomeScreenHeader } from '../../components';
+import { AppLoadingView, AppPostsListings, AppText, HomeScreenHeader } from '../../components';
+import { AppTheme } from '../../config';
 import { setHomeFeed } from '../../redux/reducers/homeFeedSlice';
 import { store } from '../../redux/store';
 import { GetHomeFeed } from '../../services/postService';
@@ -33,6 +37,8 @@ const HomeScreen = ({ route, navigation }) => {
                 }
                 setState(prev => ({ ...prev, loading: false, refreshing: false }))
             }, cursor);
+        } else {
+            setState(prev => ({ ...prev, loading: false, refreshing: false }))
         }
         cursorArr.push(cursor)
     }
@@ -46,7 +52,25 @@ const HomeScreen = ({ route, navigation }) => {
             <HomeScreenHeader navigation={navigation} route={route} />
 
             {!state.loading && homeFeed?.length < 1 ?
-                <AppNoDataFound /> :
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={state.refreshing}
+                            tintColor={'white'}
+                            onRefresh={() => {
+                                setState(prev => ({ ...prev, refreshing: true }))
+                                getHomeFeedHelper(false);
+                            }}
+                        />
+                    }
+                    style={{}}>
+                    <View style={{ paddingVertical: RFValue(100), justifyContent: 'center', alignItems: 'center' }}>
+                        <AppText color={"grey"} >No posts found!</AppText>
+                        <AppText onPress={() => {
+                            navigation.navigate("Search", { type: 'users' });
+                        }} color={AppTheme.colors.primary} >Follow users?</AppText>
+                    </View>
+                </ScrollView> :
                 state.loading && homeFeed?.length < 1 ?
                     <AppLoadingView /> :
                     <AppPostsListings navigation={navigation}

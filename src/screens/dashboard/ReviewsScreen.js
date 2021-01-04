@@ -298,7 +298,14 @@ const ReviewsScreen = ({ navigation }) => {
                         <AppButton bgColor={'#1b1b1b'} label={"START"} onPress={() => { setState(prev => ({ ...prev, showFilter: false })) }} />
                     </View>
 
-                    <AppText onPress={() => setState(prev => ({ ...prev, showFilter: false }))} color={AppTheme.colors.red} size={2} style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
+                    <AppText onPress={() => setState(prev => ({
+                        ...prev,
+                        selectedConsoleTypes: [],
+                        selectedGenreTypes: [],
+                        releaseDate: 'All time'
+                    }))}
+                        color={AppTheme.colors.red} size={2}
+                        style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
                 </View>
             </AppModal>
         </View>
