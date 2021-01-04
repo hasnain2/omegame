@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_COMMENT } from '../../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppBackButton, AppInputToolBar, AppLoadingView, AppText, IsUserVerifiedCheck, PostCard } from '../../components';
+import { AppBackButton, AppInputToolBar, AppLoadingView, AppNoDataFound, AppText, IsUserVerifiedCheck, PostCard } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost } from '../../services';
@@ -53,7 +53,8 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     const getsinglepostbyidhelper = () => {
         GetSinglePost((updatedPost) => {
             if (updatedPost) {
-                setPostData(updatedPost)
+                setPostData(updatedPost);
+                getcommentshelper();
             }
             setState(prev => ({ ...prev, loading: false }))
         }, postID);
@@ -61,8 +62,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
 
     useEffect(() => {
         const unsubscribeFocus = navigation.addListener('focus', e => {
-            getsinglepostbyidhelper()
-            getcommentshelper();
+            getsinglepostbyidhelper();
         });
 
         return () => {
@@ -179,45 +179,48 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, LHeight: height, LWidth: width }))
             }}>
             <AppBackButton navigation={navigation} />
-            {state.comments.length < 1 && postData ?
-                <View style={{ paddingBottom: RFValue(20) }}>
-                    <PostCard item={postData} navigation={navigation} startPlaying={true} />
-                </View>
-                : null}
+            {!postData && !state.loading ?
+                <AppNoDataFound msg={"Post does not exist!"} /> :
+                <>
+                    {state.comments.length < 1 && postData ?
+                        <View style={{ paddingBottom: RFValue(20) }}>
+                            <PostCard item={postData} navigation={navigation} startPlaying={true} />
+                        </View>
+                        : null}
 
-            <FlatList
-                data={state.comments}
-                contentContainerStyle={{ paddingBottom: RFValue(100) }}
-                windowSize={2}
-                initialNumToRender={5}
-                maxToRenderPerBatch={5}
-                keyExtractor={ee => ee._id + ''}
-                renderItem={({ item, index }) => {
-                    let isCommentIsLiked = state.commentLikesArr.includes(item?._id);
-                    return (
-                        <>
-                            {index === 0 && postData ?
-                                <View style={{ paddingBottom: RFValue(20) }}>
-                                    <PostCard item={postData} navigation={navigation} startPlaying={true} />
-                                </View>
-                                : null}
-
-                            {renderCommentView(item, isCommentIsLiked, index)}
-                            {state?.replies?._id === item?._id ?
-                                state?.replies?.data.map((ittem, inndex) => {
-                                    let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
-                                    return (
-                                        <View key={`${inndex}key`} style={{}}>
-                                            { renderCommentView(ittem, isReplyIsLiked, inndex)}
+                    <FlatList
+                        data={state.comments}
+                        contentContainerStyle={{ paddingBottom: RFValue(100) }}
+                        windowSize={2}
+                        initialNumToRender={5}
+                        maxToRenderPerBatch={5}
+                        keyExtractor={ee => ee._id + ''}
+                        renderItem={({ item, index }) => {
+                            let isCommentIsLiked = state.commentLikesArr.includes(item?._id);
+                            return (
+                                <>
+                                    {index === 0 && postData ?
+                                        <View style={{ paddingBottom: RFValue(20) }}>
+                                            <PostCard item={postData} navigation={navigation} startPlaying={true} />
                                         </View>
-                                    )
-                                })
-                                : null}
+                                        : null}
 
-                        </>
-                    )
-                }} />
-
+                                    {renderCommentView(item, isCommentIsLiked, index)}
+                                    {state?.replies?._id === item?._id ?
+                                        state?.replies?.data.map((ittem, inndex) => {
+                                            let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
+                                            return (
+                                                <View key={`${inndex}key`} style={{}}>
+                                                    { renderCommentView(ittem, isReplyIsLiked, inndex)}
+                                                </View>
+                                            )
+                                        })
+                                        : null}
+                                </>
+                            )
+                        }} />
+                </>
+            }
             <AppInputToolBar
                 placeholder={state.parentID?.createdBy?.userName ? ("@" + state.parentID?.createdBy?.userName) : ""}
                 LHeight={state.LHeight}
@@ -230,7 +233,6 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                             getcommentshelper();
                             if (state.parentID?.parentComment || state.parentID?._id)
                                 getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id)
-
                         }
                         setState(prev => ({ ...prev, parentID: '' }))
                         getsinglepostbyidhelper();
