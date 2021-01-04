@@ -21,7 +21,7 @@ function GetGamesList(callback, CURSOR, BODY = {}) {
 }
 
 function GetGameReviews(callback, CURSOR, FILTER, GAMEID) {
-    fetch(`${EndPoints.GET_GAME_REVIEWS}${GAMEID}&filter=${FILTER}`, {
+    fetch(`${EndPoints.GET_GAME_REVIEWS}${GAMEID}&filter=${FILTER}${CURSOR ? ('&cursor=' + CURSOR) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
     }).then(JSONBodyHelper).then(([status, data]) => {

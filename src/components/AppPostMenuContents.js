@@ -38,8 +38,7 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
                             <AppText size={2} color="white" style={{ flex: 1 }}>Modify</AppText>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            toggle()
-                            DeletePost((res) => { }, item?._id)
+                            DeletePost((res) => { toggle(); }, item?._id)
                         }} style={styles.modalListItemStyle}>
                             <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                 <Image source={ICON_DELETE} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
@@ -72,7 +71,7 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
 
                         <TouchableOpacity onPress={() => {
                             UpdatePostFromReduxStore({ ...item, isFollowing: !state.isFollowing })
-                            FollowPost(() => {  }, item?._id, { follow: !state.isFollowing })
+                            FollowPost(() => { }, item?._id, { follow: !state.isFollowing })
                             toggle();
                             setState(prev => ({ ...prev, isFollowing: !state.isFollowing }))
                         }} style={styles.modalListItemStyle}>

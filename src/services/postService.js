@@ -131,7 +131,7 @@ const EditModifyPostService = (callback, postID, formData) => {
 }
 
 const GetHomeFeed = (callback, cursor) => {
-    fetch(`${EndPoints.HOME_FEED}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ''}`, {
+    fetch(`${EndPoints.HOME_FEED}?filter=home&limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {

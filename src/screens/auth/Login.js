@@ -60,7 +60,7 @@ const Login = ({ route, navigation }) => {
                     } else
                         AppShowToast("Invalid email or password")
                 }, {
-                    userName: ValidateEmail(state.email) ? state.email.toLowerCase().trim() : state.email.toLowerCase().trim(),
+                    userName: ValidateEmail(state.email) ? state.email.toLowerCase().trim() : state.email.trim(),
                     password: state.password.trim()
                 })
             }

@@ -1,6 +1,6 @@
 
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -8,7 +8,7 @@ import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppButton, AppLoadingView, AppModal, AppNoDataFound, AppRadioButton, AppSearchBar, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { MOCK_CONSOLE_TYPES, MOCK_GAMES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
+import { MOCK_CONSOLE_TYPES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
 import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { GetGamesList } from '../../services/gamesService';
@@ -110,7 +110,7 @@ const ReviewsScreen = ({ navigation }) => {
                                             <AppText size={2} color={AppTheme.colors.lightGrey} >{item.supportedDevices.map(ii => (ii + ', ').toUpperCase())}</AppText>
                                             <AppText size={0} color={AppTheme.colors.lightGrey} >Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}</AppText>
                                         </View>
-                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{((item?.computed[0]?.value || 0)/(item?.computed[1]?.value || 0))?.toFixed(2)}</AppText>
+                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{((item?.computed[0]?.value || 0) / (item?.computed[1]?.value || 0))?.toFixed(2)}</AppText>
                                         <MaterialIcons name="arrow-forward-ios" style={{ fontSize: RFValue(18), paddingLeft: RFValue(10), color: AppTheme.colors.lightGrey }} />
                                     </View>
                                     <Divider style={{ backgroundColor: AppTheme.colors.lightGrey, height: 0.5 }} />

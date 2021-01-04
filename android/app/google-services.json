@@ -1,43 +1,49 @@
 {
   "project_info": {
-    "project_number": "654066222620",
-    "firebase_url": "https://omegame-4d827.firebaseio.com",
-    "project_id": "omegame-4d827",
-    "storage_bucket": "omegame-4d827.appspot.com"
+    "project_number": "925262350085",
+    "project_id": "omegame-5f44e",
+    "storage_bucket": "omegame-5f44e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:654066222620:android:5621b11ed8d6ca8093c1d9",
+        "mobilesdk_app_id": "1:925262350085:android:64c0874dfc6afa5cb9596c",
         "android_client_info": {
           "package_name": "com.onegame"
         }
       },
       "oauth_client": [
         {
-          "client_id": "654066222620-gadqui551u9nafka8k9gsns5h4ida77s.apps.googleusercontent.com",
+          "client_id": "925262350085-7dhumob1ar0c36bhinph47elucccmk6a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.onegame",
-            "certificate_hash": "3e9e933d086abaaa82002685b25d5ecb1d8383f7"
+            "certificate_hash": "b51a243d74bfe1fcfe0dc5148a1063d87d1d8502"
           }
         },
         {
-          "client_id": "654066222620-r4sk69ebeahhmc71fepgd51tq6uv2mdf.apps.googleusercontent.com",
+          "client_id": "925262350085-mm4gs50j7qriqfrb05r5pe1ee1ubapn8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA7k_NSkkPg6iM5NX_wkcvtQWw6MMW517U"
+          "current_key": "AIzaSyA6JqKgK0w6hZGCAb8w-GuwYq8oFkiIP9o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "654066222620-r4sk69ebeahhmc71fepgd51tq6uv2mdf.apps.googleusercontent.com",
+              "client_id": "925262350085-mm4gs50j7qriqfrb05r5pe1ee1ubapn8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "925262350085-emigdavdj7jkbpvc3pkli5vll8d04pom.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.OmeGame"
+              }
             }
           ]
         }

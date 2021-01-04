@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "podi": "cd ios/ && pod install && cd ..",
     "adbr": "adb reverse tcp:8081 tcp:8081",
-    "genSHA1": "cd android && ./gradlew signingReport && cd .."
+    "sha1release":"keytool -list -v -keystore android/omeGameKeyStore.jks -alias key0 -storepass 123456 -keypass 1234567",
+    "sha1debug":"keytool -list -v -keystore android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.1.0",
