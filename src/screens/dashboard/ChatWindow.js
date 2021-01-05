@@ -1,4 +1,4 @@
-
+l
 
 import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -19,6 +19,7 @@ var uuid = require('react-native-uuid');
 const LIGHT_GREY = '#4d4d4d'
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' };
 const ChatWindow = ({ navigation, route, }) => {
+    let [friend, setFriend] = useState(route?.params?.friend)
 
     let { user } = useSelector(state => state.root);
     let chatID = getChatId(user?._id, friend?._id);
@@ -30,7 +31,6 @@ const ChatWindow = ({ navigation, route, }) => {
         LHeight: 0,
         LWidth: 0
     })
-    let [friend, setFriend] = useState(route?.params?.friend)
     function getChatmsgeshelper() {
         GetChatMessages((messagesRes) => {
             setState(prev => ({ ...prev, loading: false }))
