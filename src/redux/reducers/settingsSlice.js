@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppTheme } from '../../config';
 
 const initState = {
-    bgColor: 'black'
+    bgColor: 'black',
+    uploadStatus: false,
 }
 
 export const settingsSlice = createSlice({

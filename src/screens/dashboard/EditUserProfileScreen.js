@@ -90,7 +90,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                 isPrivate: false
             };
             if (changeUserName && state.userName.trim())
-                formedData.userName = state.userName.trim()
+                formedData.userName = state.userName?.toLowerCase().trim()
             if (state.imageToUpload)
                 formedData = { ...formedData, pic: state.imageToUpload }
             setState(prev => ({ ...prev, loading: true }))

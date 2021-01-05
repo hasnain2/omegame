@@ -12,7 +12,7 @@ import { AppLogger, RemoveDuplicateObjectsFromArray } from '../../../utils/AppHe
 const Tab = createMaterialTopTabNavigator();
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
 const ICON_SIZE = RFValue(36);
-
+let enableReset = true;
 let cursorArrPosts = [];
 let cursorArrMedia = [];
 let cursorArrUsers = [];
@@ -29,32 +29,13 @@ const SearchTabs = ({ navigation, query, type }) => {
         usersList: []
     });
 
-    function getexploremediaonlypostshelper(cursor, searchQuery) {
-        if (!cursor)
-            cursorArrMedia = []
-
-        if (!cursorArrMedia.includes(cursor)) {
-            GetExploreMediaOnlyPosts((postResponse) => {
-                if (postResponse) {
-                    let tempData = postResponse
-                    setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false, mediaPosts: RemoveDuplicateObjectsFromArray(tempData) }))
-                } else {
-                    setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false }))
-                }
-            }, cursor, searchQuery);
-            cursorArrMedia.push(cursor)
-        } else {
-            setState(prev => ({ ...prev, refreshingMedia: false }))
-        }
-    }
-
     function getexplorepostshelper(cursor, searchQuery) {
         if (!cursor)
             cursorArrPosts = []
 
         if (!cursorArrPosts.includes(cursor)) {
             GetExplorePosts((postResponse) => {
-                if (postResponse) {
+                if (postResponse && (postResponse.length || enableReset)) {
                     let tempData = postResponse
                     setState(prev => ({ ...prev, loadingPosts: false, refreshingPosts: false, loading: false, allPosts: RemoveDuplicateObjectsFromArray(tempData) }))
                 } else {
@@ -68,6 +49,25 @@ const SearchTabs = ({ navigation, query, type }) => {
         }
     }
 
+    function getexploremediaonlypostshelper(cursor, searchQuery) {
+        if (!cursor)
+            cursorArrMedia = []
+
+        if (!cursorArrMedia.includes(cursor)) {
+            GetExploreMediaOnlyPosts((postResponse) => {
+                if (postResponse && (postResponse.length || enableReset)) {
+                    let tempData = postResponse
+                    setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false, mediaPosts: RemoveDuplicateObjectsFromArray(tempData) }))
+                } else {
+                    setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false }))
+                }
+            }, cursor, searchQuery);
+            cursorArrMedia.push(cursor)
+        } else {
+            setState(prev => ({ ...prev, refreshingMedia: false }))
+        }
+    }
+
     function getalltrendingusers(cursor, searchQuery) {
         let newQuery = searchQuery.split('&')
         let newQuery2 = newQuery.find(ii => ii.includes('search')) || '';
@@ -77,7 +77,7 @@ const SearchTabs = ({ navigation, query, type }) => {
 
         if (!cursorArrUsers.includes(cursor)) {
             GetAllTrendingUsers((postResponse) => {
-                if (postResponse) {
+                if (postResponse && (postResponse.length || enableReset)) {
                     let tempData = postResponse;
                     setState(prev => ({ ...prev, loadingAllUsers: false, loading: false, refreshingAllUsers: false, usersList: RemoveDuplicateObjectsFromArray(tempData) }))
                 } else {
@@ -90,10 +90,10 @@ const SearchTabs = ({ navigation, query, type }) => {
     }
 
     useEffect(() => {
+        enableReset = true;
         cursorArrPosts = [];
         cursorArrMedia = [];
         cursorArrUsers = [];
-        AppLogger('--------QUERY-------\n', query)
         getexploremediaonlypostshelper(false, query)
         getexplorepostshelper(false, query)
         getalltrendingusers(false, query)
@@ -141,6 +141,7 @@ const SearchTabs = ({ navigation, query, type }) => {
                             loading={state.loadingPosts}
                             refreshing={state.refreshingPosts}
                             loadMore={(cursor, refreshControl) => {
+                                enableReset = false;
                                 if (refreshControl) {
                                     setState(prev => ({ ...prev, refreshingPosts: true }));
                                     getexplorepostshelper(false, query)
@@ -160,6 +161,7 @@ const SearchTabs = ({ navigation, query, type }) => {
                             loading={state.loadingMedia}
                             refreshing={state.refreshingMedia}
                             loadMore={(cursor, refreshControl) => {
+                                enableReset = false;
                                 if (refreshControl) {
                                     setState(prev => ({ ...prev, refreshingMedia: true }));
                                     getexploremediaonlypostshelper(false, query)
@@ -180,6 +182,7 @@ const SearchTabs = ({ navigation, query, type }) => {
                             loading={state.loadingAllUsers}
                             refreshing={state.refreshingAllUsers}
                             loadMore={(cursor, refreshControl) => {
+                                enableReset = false;
                                 if (refreshControl) {
                                     setState(prev => ({ ...prev, refreshingAllUsers: true }));
                                     getalltrendingusers(false, query)

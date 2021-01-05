@@ -2,11 +2,13 @@
 import { firebase } from '@react-native-firebase/messaging';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StatusBar, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MenuProvider } from 'react-native-popup-menu';
 import NotificationPopup from 'react-native-push-notification-popup';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
+import { AppText } from './src/components';
 import { AppTheme } from './src/config';
 import { AuthStack, DashboardTabs } from './src/navigations';
 import { setUser } from './src/redux/reducers/userSlice';
@@ -40,10 +42,11 @@ const App = ({ }) => {
       <NavigationContainer ref={navRef}>
         <StatusBar barStyle="light-content" />
         <MenuProvider>
-          <SafeAreaView style={{ flex: 1,
-             backgroundColor: settings.bgColor ,
+          <SafeAreaView style={{
+            flex: 1,
+            backgroundColor: settings.bgColor,
             //  backgroundColor: 'black' ,
-             }}>
+          }}>
             {state.loading ?
               <AuthLoading />
               : user.token ?
@@ -52,7 +55,6 @@ const App = ({ }) => {
             }
           </SafeAreaView>
         </MenuProvider>
-
         <NotificationPopup ref={ref => global.popupRef = ref} />
       </NavigationContainer>
 

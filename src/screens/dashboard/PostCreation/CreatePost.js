@@ -21,7 +21,6 @@ import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({ navigation, route }) => {
     const postData = route?.params?.postData;
-    console.log('-------------POST DATA-------------', JSON.stringify(postData))
     let [state, setState] = useState({
         loading: false,
         whatsNewText: postData?.text || '',
@@ -67,17 +66,13 @@ const CreatePost = ({ navigation, route }) => {
             if (state.chosenContacts?.length > 0)
                 payload.tagged = state.chosenContacts.map(ii => ii?._id);
 
-
             payload.file = state.selectedMedia || false
-
 
             if (state.location)
                 payload["location"] = state.location
             setState(prev => ({ ...prev, loading: true }))
 
-
-            AppLogger('------------POST CREATION PAYLOAD-----------', JSON.stringify(payload))
-
+            const hasMediaToUpload = (postData?.attachments?.length > 0 && !state.uploadedMedia && !state.selectedMedia) || (payload.file);
             if (postData) {
                 if (postData?.attachments?.length > 0 && !state.uploadedMedia && !state.selectedMedia)
                     payload.removeMedia = true;
@@ -90,7 +85,8 @@ const CreatePost = ({ navigation, route }) => {
                         if (result.data)
                             UpdatePostFromReduxStore(result?.data)
                         AppShowToast("Post updated successfully");
-                        navigation.goBack();
+                        if (!hasMediaToUpload)
+                            navigation.goBack();
                     }
                 }, postData?._id, payload)
             } else {
@@ -100,11 +96,15 @@ const CreatePost = ({ navigation, route }) => {
                         if (result.data)
                             AddPostToReduxStore(result?.data)
                         AppShowToast("Post created successfully");
-                        navigation.goBack();
+                        if (!hasMediaToUpload)
+                            navigation.goBack();
                     }
                 }, payload)
             }
-
+            if (hasMediaToUpload) {
+                navigation.goBack();
+                AppShowToast("Post is being uploaded in background!")
+            }
         } else {
             AppShowToast("Please provide post description")
         }
@@ -300,7 +300,6 @@ const CreatePost = ({ navigation, route }) => {
 
             <AppGooglePlacesAutoFill show={state.showLocationPicker}
                 onChangeValue={(val) => {
-                    AppLogger('----------SELECTED LOCATION-----------', JSON.stringify(val))
                     setState(prev => ({ ...prev, location: val }))
                 }}
                 toggle={() => setState(prev => ({ ...prev, showLocationPicker: false }))} />
@@ -363,14 +362,10 @@ const CreatePost = ({ navigation, route }) => {
                     setState(prev => ({ ...prev, chosenContacts: tempArr }))
                 }} />
 
-
-
             <AppModal show={state.showGallery} toggle={() => setState(prev => ({ ...prev, showGallery: false }))}>
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'black', width: '100%' }}>
                     <AppGallery navigation={navigation}
                         selectedOne={(selected) => {
-
-                            AppLogger('-------------SELECTED ONE------------\n', selected)
                             setState(prev => ({ ...prev, selectedMedia: selected }))
                         }}
                         toggle={() => setState(prev => ({ ...prev, showGallery: false }))} />
