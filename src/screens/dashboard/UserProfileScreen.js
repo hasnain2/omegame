@@ -239,8 +239,8 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <View style={{ height: RFValue(3), margin: RFValue(10), width: RFValue(40), backgroundColor: AppTheme.colors.lightGrey, alignSelf: 'center', borderRadius: 20 }} />
 
                     <TouchableOpacity onPress={() => {
-                        // modify post
-                        setState(prev => ({ ...prev, showMenu: false }))
+                        setState(prev => ({ ...prev, showMenu: false }));
+                        navigation.navigate("AppReportIssue", { userID: userData?._id })
                     }} style={styles.modalListItemStyle}>
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                             <Image source={ICON_REPORT} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
@@ -249,13 +249,16 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        // modify post
-                        setState(prev => ({ ...prev, showMenu: false }))
+                        setState(prev => ({ ...prev, showMenu: false }));
+                        ActionsOnUsers(() => { }, route.params.userID, userData?.mute ? FRIEND_STATUSES_ACTIONS.UNMUTE : FRIEND_STATUSES_ACTIONS.MUTE);
+                        let tmpUserData = { ...state.userData }
+                        tmpUserData.mute = !tmpUserData?.mute || true;
+                        setState(prev => ({ ...prev, userData: tmpUserData }));
                     }} style={styles.modalListItemStyle}>
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                             <Image source={ICON_MUTE} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
                         </View>
-                        <AppText size={2} color="white" style={{ flex: 1 }}>Mute</AppText>
+                        <AppText size={2} color="white" style={{ flex: 1 }}>{userData?.mute ? "Unmute" : "Mute"}</AppText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
@@ -271,9 +274,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
                     <TouchableOpacity onPress={() => {
                         RemovePostsOfUserFromReduxStore(route.params.userID)
                         navigation.goBack();
-                        ActionsOnUsers(() => {
-
-                        }, route.params.userID, FRIEND_STATUSES_ACTIONS.BLOCKED)
+                        ActionsOnUsers(() => { }, route.params.userID, FRIEND_STATUSES_ACTIONS.BLOCKED)
                         setState(prev => ({ ...prev, showMenu: false }))
                     }} style={styles.modalListItemStyle}>
                         <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>

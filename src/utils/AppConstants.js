@@ -43,6 +43,8 @@ const SOCIAL_LOGIN_TYPES = {
 const FRIEND_STATUSES_ACTIONS = { // action on friends weather to 
     BLOCKED: 'BLOCKED',
     UNBLOCKED: 'UN_BLOCKED',
+    MUTE: 'MUTE',
+    UNMUTE: 'UN_MUTE',
     FRIEND: 'FRIEND',
     UNFRIEND: 'UN_FRIEND',
     FOLLOW: 'FOLLOW',

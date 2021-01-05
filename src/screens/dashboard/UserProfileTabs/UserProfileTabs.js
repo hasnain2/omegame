@@ -85,9 +85,6 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                         <UserProfilePosts {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
-                            scrollPosition={(dta) => {
-                                scrollPosition ? scrollPosition(dta) : null
-                            }}
                             autoPlay={true} />
                     </View>
                 )}
@@ -98,9 +95,6 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                         <UserProfileGridPosts {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
-                            scrollPosition={(dta) => {
-                                scrollPosition ? scrollPosition(dta) : null
-                            }}
                             autoPlay={autoPlay} />
                     </View>
                 )}
@@ -111,9 +105,6 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                         <UserProfileReviews {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
-                            scrollPosition={(dta) => {
-                                scrollPosition ? scrollPosition(dta) : null
-                            }}
                             autoPlay={autoPlay} />
                     </View>
                 )}
@@ -124,9 +115,6 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                         <UserProfileGridPosts {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
-                            scrollPosition={(dta) => {
-                                scrollPosition ? scrollPosition(dta) : null
-                            }}
                             autoPlay={autoPlay} />
                     </View>
 

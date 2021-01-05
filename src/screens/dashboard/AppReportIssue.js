@@ -5,64 +5,89 @@ import { TextInput, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
-import { AppBackButton, AppButton, AppCustomSlider, AppText, UserAvatar } from '../../components';
+import { AppBackButton, AppButton, AppCustomSlider, AppRadioButton, AppText, UserAvatar } from '../../components';
 import { AppConfig, AppTheme } from '../../config';
 import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 const NUMBER_OF_COLUMNS = 2;
+const REPORT_TYPE = [{
+    name: "Harassment",
+    key: "HARASSMENT"
+}, {
+    name: "Someone is posting spam",
+    key: "POSTING_SPAM"
+}, {
+    name: "Hate against a protected category (race, religion, national origin, disability)",
+    key: "HATE"
+}, {
+    name: "Homophobia",
+    key: "HOMOPHOBIA"
+}, {
+    name: "Exposed private information",
+    key: "PRIVATE"
+}]
 const AppReportIssue = ({ navigation, route, }) => {
-    let gameData = route?.params?.gameData
+    let postID = route?.params?.postID || '';
+    let userID = route?.params?.userID || '';
     let [state, setState] = useState({
         loading: false,
-        feedbacktext: '',
-        rating: 5,
-        selectedConsole: 'Ps4',
-        showFilter: false
+        reportText: '',
+        reportType: '',
+        referenceUrl: ''
     })
     let { user } = useSelector(state => state.root);
 
     const onSubmit = () => {
-        if (state.feedbacktext.trim()) {
-
+        if (state.reportText.trim()) {
+            navigation.goBack();
+            AppShowToast("Thank you for your feedback, Report sent!")
         } else {
-            AppShowToast('kindly provide feedback')
+            AppShowToast('kindly provide details of the issue.')
         }
     }
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AppBackButton navigation={navigation} name={"LEAVE FEEDBACK"} />
+                <AppBackButton navigation={navigation} name={"ABUSE OR SPAM"} />
             </View>
 
             <KeyboardAvoidingScrollView >
+                <View style={{ padding: RFValue(15) }}>
+                    <AppText bold={true} >Is someone engaging in abusive or posting spam?{"\n"}</AppText>
+                    <AppText size={3} color={'grey'} >We do not tolerate behavior that crosses the line into abuse, including behavior that harasses, intimidates or discriminates another user.{"\n"}</AppText>
+                    <AppText size={3} >What are you reporting?.{"\n\n"}</AppText>
 
-
-                <View style={{ padding: RFValue(15), borderBottomColor: AppTheme.colors.lightGrey, borderBottomWidth: 0.4 }}>
-                    <AppText bold={true} >Thanks for your interest in sending us feedback!{"\n"}</AppText>
-                    <AppText size={3} color={'grey'} >We sincerely appreciate hearing what we can do to make the Omegame experience better for everyone.{"\n"}</AppText>
-                    <AppText size={3} color={'grey'}>If you have comments, concerns or compliments, please feel welcome to let us know.{"\n\n"}</AppText>
-                    <AppText size={3} color={'white'} style={{}}>How much did you like {AppConfig.appName}?</AppText>
-                    <AppText size={3} bold={true} color={state.rating > 5 ? AppTheme.colors.green : AppTheme.colors.red} style={{ textAlign: 'right' }}>{state.rating.toFixed(2)}</AppText>
-                    <AppCustomSlider onChange={(val) => {
-                        AppLogger('-------RATING-------', val)
-                        setState(prev => ({ ...prev, rating: val }))
-                    }} />
+                    {REPORT_TYPE.map(item => (
+                        <AppRadioButton
+                            textStyle={{ fontSize: RFValue(14) }}
+                            val={state.reportType === item?.key}
+                            key={item.name} onPress={() => {
+                                setState(prev => ({ ...prev, reportType: item?.key }))
+                            }} label={item?.name} size={25} color={"white"} />
+                    ))}
+                    <TextInput placeholder={"http://"}
+                        value={state.referenceUrl}
+                        placeholderTextColor={AppTheme.colors.lightGrey}
+                        blurOnSubmit={true}
+                        style={{ flex: 1, color: 'white', fontSize: RFValue(16), height: '100%', borderBottomColor: 'lightgrey', borderBottomWidth: 0.4, marginTop: RFValue(20), paddingVertical: RFValue(10), marginLeft: RFValue(10) }}
+                        onChangeText={(val) => { setState(prev => ({ ...prev, referenceUrl: val })) }}
+                    />
                 </View>
 
 
                 <View style={{ flexDirection: 'row', padding: RFValue(20) }}>
                     <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />
-                    <TextInput placeholder={"Write a feedback..."}
+                    <TextInput placeholder={"Please provide as much detail as possible..."}
                         placeholderTextColor={AppTheme.colors.lightGrey}
                         multiline={true}
                         blurOnSubmit={true}
-                        style={{ flex: 1, color: 'white', fontSize: RFValue(18), height: '100%', maxHeight: RFValue(200), marginLeft: RFValue(10) }}
-                        onChangeText={(val) => { setState(prev => ({ ...prev, feedbacktext: val })) }}
+                        style={{ flex: 1, color: 'white', fontSize: RFValue(16), height: '100%', maxHeight: RFValue(200), marginLeft: RFValue(10) }}
+                        onChangeText={(val) => { setState(prev => ({ ...prev, reportText: val })) }}
                     />
                 </View>
 
             </KeyboardAvoidingScrollView>
             <View style={{ padding: RFValue(15), paddingTop: 0 }}>
-                <AppButton bgColor="black" onPress={onSubmit} label={"SEND FEEDBACK"} />
+                <AppButton bgColor="black" onPress={onSubmit} label={"REPORT"} />
             </View>
 
         </View>
