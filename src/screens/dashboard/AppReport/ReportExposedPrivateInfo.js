@@ -18,13 +18,13 @@ const ReportExposedPrivateInfo = ({ navigation, route, }) => {
                     <AppText style={{ fontSize: RFValue(24), fontWeight: 'bold' }} >Is someone exposing your personal information?{"\n"}</AppText>
 
                     <AppText color={'grey'} size={3}  >Exposing someone's private information without their express authorization and permission is a violation of our <AppText onPress={() => {
-                        // go to terms of use
+                        navigation.navigate("TermsAndConditions")
                     }} color={AppTheme.colors.primary}>Terms of use</AppText>.{'\n'}</AppText>
 
                     <AppText color={'grey'} size={3}  >If someone has shared your private information or has posted a photo or video that violates your privacy, we'd suggest communicating directly with that person to ask that they remove it.{'\n'}</AppText>
 
                     <AppText color={'grey'} size={3} onPress={() => {
-                        // go to report 
+                        navigation.navigate("ReportAbuseOrSpam")
                     }}  >If your request has been rejected you can <AppText color={AppTheme.colors.primary}>report it to us</AppText>.{'\n'}</AppText>
 
                 </View>

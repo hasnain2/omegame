@@ -117,9 +117,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
 
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
-        let newData = JSON.parse(remoteMessage?.data?.payload)
-        AppLogger('---------onNotificationOpenedApp----------:', newData);
-
+        let newData = JSON.parse(remoteMessage?.data?.payload);
         notificationHandler(newData, navigation);
       }
     });
@@ -128,9 +126,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
-          let newData = JSON.parse(remoteMessage?.data?.payload)
-          AppLogger('------------------getInitialNotification--------------------', newData);
-
+          let newData = JSON.parse(remoteMessage?.data?.payload);
           notificationHandler(newData, navigation);
         }
       });

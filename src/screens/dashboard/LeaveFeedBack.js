@@ -42,7 +42,6 @@ const LeaveFeedBack = ({ navigation, route, }) => {
                     <AppText size={3} color={'white'} style={{}}>How much did you like {AppConfig.appName}?</AppText>
                     <AppText size={3} bold={true} color={state.rating > 5 ? AppTheme.colors.green : AppTheme.colors.red} style={{ textAlign: 'right' }}>{state.rating.toFixed(2)}</AppText>
                     <AppCustomSlider onChange={(val) => {
-                        AppLogger('-------RATING-------', val)
                         setState(prev => ({ ...prev, rating: val }))
                     }} />
                 </View>

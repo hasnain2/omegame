@@ -4,6 +4,8 @@ import { AppTheme } from '../../config';
 const initState = {
     bgColor: 'black',
     uploadStatus: false,
+    notiCount:0,
+    chatCount:0,
 }
 
 export const settingsSlice = createSlice({

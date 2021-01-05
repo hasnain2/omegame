@@ -217,7 +217,6 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                             style={{}}
                             onLongPress={() => { }}
                             onPress={() => {
-                                AppLogger('------ITEM CLICKED-----', item)
                                 setCoverPhoto({ ...item });
                                 selectedOne({ ...item, uri: Platform.OS === 'ios' ? item.type === 'video' ? item.image.uri2 : item.image.uri : item.image.uri, type: item.type });
                             }} >

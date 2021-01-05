@@ -10,6 +10,7 @@ import { AppBackButton, AppButton, AppText, UserAvatar } from '../../../componen
 import { AppConfig, AppTheme } from '../../../config';
 import { UploadMedia } from '../../../services';
 import { BUCKETS } from '../../../utils/AppConstants';
+import { AppLogger } from '../../../utils/AppHelperMethods';
 import { Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 
@@ -66,7 +67,8 @@ const ReportImpersonation = ({ navigation, route, }) => {
                                     setState(prev => ({ ...prev, imageLoading: false }))
                                     if (results) {
                                         AppLogger('---------UPLOAD RESULTS-------->', results)
-                                        setState(prev => ({ ...prev, photoOfID: results || '' }))
+                                        setState(prev => ({ ...prev, photoOfID: results || '' }));
+                                        debugger
                                     }
                                 }, BUCKETS.PROFILE_DOC, res)
                             }

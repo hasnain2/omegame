@@ -70,7 +70,6 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                 onEndReachedThreshold={0.5}
                 keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
-                    AppLogger('-------ITEM-----', JSON.stringify(item.isFollowing))
                     return (
                         <View style={{ flexDirection: 'row', borderBottomColor: AppTheme.colors.darkGrey, borderBottomWidth: 1, flex: 1, padding: RFValue(7), alignItems: 'center' }}>
                             <UserAvatar

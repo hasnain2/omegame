@@ -12,7 +12,7 @@ import { AppTheme } from '../config';
 import { AppBadge } from './AppBadge';
 
 const HomeScreenHeader = ({ route, navigation }) => {
-    let { user } = useSelector(state => state.root)
+    let { user, settings } = useSelector(state => state.root)
     return (
         <View style={{ backgroundColor: AppTheme.colors.darkGrey, padding: RFValue(10), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
@@ -29,7 +29,7 @@ const HomeScreenHeader = ({ route, navigation }) => {
                 navigation.navigate("NotificationScreen")
             }}>
                 <View pointerEvents={'none'} style={{}}>
-                    <AppBadge count={0} />
+                    <AppBadge count={settings.notiCount} />
                     <FastImage source={ICON_NOTIFICATION} style={{ height: RFValue(40), width: RFValue(40) }} />
                 </View>
             </TouchableOpacity>
@@ -38,7 +38,7 @@ const HomeScreenHeader = ({ route, navigation }) => {
                 navigation.navigate("InboxScreen");
             }}>
                 <View pointerEvents={'none'} style={{}}>
-                    <AppBadge count={0} />
+                    <AppBadge count={settings.chatCount} />
                     <FastImage source={ICON_CHAT} style={{ height: RFValue(40), width: RFValue(40) }} />
                 </View>
             </TouchableOpacity>

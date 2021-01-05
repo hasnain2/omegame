@@ -29,9 +29,9 @@ const AppCustomSlider = ({ onChange }) => {
                     minimumTrackTintColor={'rgba(0,0,0,0)'}
                     maximumTrackTintColor={'rgba(0,0,0,0)'}
                     style={{ width: '100%', opacity: 1, height: 50, }}
-                    onSlidingStart={value =>
-                        AppLogger('-------on sliding start-------', value)
-                    }
+                    onSlidingStart={value =>{
+                        debugger
+                   } }
                     onValueChange={value => {
                         if (onChange) {
                             onChange(value)

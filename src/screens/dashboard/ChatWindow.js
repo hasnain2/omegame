@@ -44,7 +44,6 @@ const ChatWindow = ({ navigation, route, }) => {
         getChatmsgeshelper();
 
         let messagesListner = socket.on(CHAT_SOCKET_EVENTS.NEW_MESSAGE, msg => {
-            AppLogger('---------------HELLOOOOOO----------', '0-------0')
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg));
         });
 

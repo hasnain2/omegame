@@ -51,7 +51,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, loading: false, userData: profileRes }))
                 if (userID)
                     disp(setUser(profileRes))
-                debugger
             } else
                 setState(prev => ({ ...prev, loading: false }))
         }, route.params.userID)
