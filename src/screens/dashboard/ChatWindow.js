@@ -1,4 +1,3 @@
-l
 
 import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -19,7 +18,7 @@ var uuid = require('react-native-uuid');
 const LIGHT_GREY = '#4d4d4d'
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' };
 const ChatWindow = ({ navigation, route, }) => {
-    let [friend, setFriend] = useState(route?.params?.friend)
+    const [friend, setFriend] = useState(route?.params?.friend)
 
     let { user } = useSelector(state => state.root);
     let chatID = getChatId(user?._id, friend?._id);
@@ -186,6 +185,7 @@ const ChatWindow = ({ navigation, route, }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            setState(prev => ({ ...prev, showMenu: false, loading: false }))
                             navigation.navigate("AppReportUserOrPost", { userID: friend?._id })
                         }}>
                             <View style={styles.modalListItemStyle}>
@@ -195,10 +195,12 @@ const ChatWindow = ({ navigation, route, }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            setState(prev => ({ ...prev, showMenu: false, loading: false }))
                             ActionsOnUsers(() => { }, friend?._id, friend.mute ? FRIEND_STATUSES_ACTIONS.UNMUTE : FRIEND_STATUSES_ACTIONS.MUTE)
-                            let tempFriend = friend;
-                            tempFriend.mute = !tempFriend.mute || true
+                            let tempFriend = { ...friend };
+                            tempFriend.mute = !tempFriend.mute
                             setFriend(tempFriend)
+                            debugger
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_MUTE} style={ICONSTYLE} />
@@ -207,10 +209,12 @@ const ChatWindow = ({ navigation, route, }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                            setState(prev => ({ ...prev, showMenu: false, loading: false }))
                             ActionsOnUsers(() => { }, friend?._id, friend.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
-                            let tempFriend = friend;
-                            tempFriend.isFollowing = !tempFriend.isFollowing || true
+                            let tempFriend = { ...friend };
+                            tempFriend.isFollowing = !tempFriend.isFollowing
                             setFriend(tempFriend)
+                            debugger
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_UNFOLLOW} style={ICONSTYLE} />
