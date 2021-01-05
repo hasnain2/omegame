@@ -1,7 +1,8 @@
 
 import moment from 'moment';
 import React, { useState } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, KeyboardAvoidingView, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { Divider } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -114,8 +115,8 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
         <View style={{ flex: 1, backgroundColor: 'black' }} >
             <AppHeaderCommon navigation={navigation} label={"PROFILE INFORMATION"} />
 
-            <KeyboardAvoidingScrollView style={{ flex: 1 }} scrollEventThrottle={100}>
-                <View style={{ flex: 1, paddingHorizontal: RFValue(20) }}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior='position' keyboardVerticalOffset={100}>
+                <ScrollView style={{ paddingHorizontal: RFValue(20) }}>
                     <View style={{ alignSelf: 'center', paddingVertical: RFValue(20) }}>
                         <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
                         <View style={{ position: 'absolute', bottom: RFValue(20), right: RFValue(3), borderRadius: 90 }}>
@@ -170,8 +171,8 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                                 setState(prev => ({ ...prev, gamingAccounts: tempArr }))
                             }} />)
                     })}
-                </View>
-            </KeyboardAvoidingScrollView >
+                </ScrollView>
+            </KeyboardAvoidingView>
 
             <View style={{ padding: RFValue(15) }}>
                 <AppButton loading={state.loading || state.imageLoading} bgColor="black" onPress={onSubmit} label={"SAVE"} />
