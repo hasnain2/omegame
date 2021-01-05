@@ -2,7 +2,7 @@
 import { Platform } from "react-native";
 
 const AppConfig = {
-    appName: "OmeGame",
+    appName: "Omegame",
     // GOOGLE_PLACES_API_KEY: "AIzaSyArMLwlK0oxww875fx9OGx8w-ns-K14pcw", // -- this key need billing enabled account to work
 
     GOOGLE_PLACES_API_KEY: "AIzaSyBtPVcikwM0s8vtarB9xYssMcFN_A8M3Qo",

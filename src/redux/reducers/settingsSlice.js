@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppTheme } from '../../config';
 
 const initState = {
-    bgColor: AppTheme.colors.darkGrey
+    bgColor: 'black'
 }
 
 export const settingsSlice = createSlice({

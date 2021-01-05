@@ -10,7 +10,7 @@ import { ICON_ADD, ICON_GAME, ICON_HOME, ICON_QUEST, ICON_SEARCH } from '../../a
 import { AppTheme } from '../config';
 import { setSettings } from '../redux/reducers/settingsSlice';
 import { store } from '../redux/store';
-import { AppContactsSearch, AppFollowersAndFollowingList, AppSettingsScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen, DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen, PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen, ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen } from '../screens';
+import { AppContactsSearch, AppFollowersAndFollowingList, AppSettingsScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen, DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen, LeaveFeedBack, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen, PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen, ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen } from '../screens';
 import { UserSavedPosts } from '../screens/dashboard/UserSavedPosts';
 import { AppShowPushNotification, GetPostByCommentID, requestPushNotificationPermission } from '../services';
 import { AppLogger, DynamicLinkHelper } from '../utils/AppHelperMethods';
@@ -167,7 +167,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
       <Drawer.Screen name="OmegaStore" component={OmegaStoreTabs} />
       <Drawer.Screen name="UserSavedPosts" component={UserSavedPosts} />
       <Drawer.Screen name="AppSettingsScreen" component={AppSettingsScreen} />
-      <Drawer.Screen name="TermsAndConditions" component={TermsAndConditions} />
+      <Drawer.Screen name="LeaveFeedBack" component={LeaveFeedBack} />
     </Drawer.Navigator>
   )
 }
@@ -201,6 +201,7 @@ const DashboardTabs = () => {
       <Stack.Screen name="GameDetailsScreen" component={GameDetailsScreen} />
       <Stack.Screen name="PostDetailScreenWithComments" component={PostDetailScreenWithComments} />
       <Stack.Screen name="RateGameScreen" component={RateGameScreen} />
+      <Stack.Screen name="LeaveFeedBack" component={LeaveFeedBack} />
       <Stack.Screen name="EditUserProfileScreen" component={EditUserProfileScreen} />
       <Stack.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
     </Stack.Navigator>

@@ -82,7 +82,7 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
                         ICON = () => <Image key={`${indx}key`} source={ICON_SAVE_POST} style={ICONSTYLE} />
                     } else if (itm === "AppSettingsScreen") {
                         ICON = () => <Image key={`${indx}key`} source={ICON_ACCOUNT_SETTINGS} style={ICONSTYLE} />
-                    } else if (itm === "TermsAndConditions") {
+                    } else if (itm === "LeaveFeedBack") {
                         ICON = () => <Image key={`${indx}key`} source={ICON_FEEDBACK} style={ICONSTYLE} />
                     }
                     return (
@@ -97,7 +97,7 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
                                     itm === "UserSavedPosts" ?
                                         "Saved Posts" :
                                         itm === "AppSettingsScreen" ? "Account Settings" :
-                                            itm === "TermsAndConditions" ? "Leave Feedback" : itm === "UserProfileCustomizeScreen" ? "Customize" : itm}</AppText>
+                                            itm === "LeaveFeedBack" ? "Leave Feedback" : itm === "UserProfileCustomizeScreen" ? "Customize" : itm}</AppText>
                             </View>
                         </TouchableOpacity>
                     )

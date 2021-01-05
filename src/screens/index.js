@@ -19,6 +19,7 @@ export * from './dashboard/RequestVerificationScreen';
 export * from './dashboard/BlockedAccounts';
 export * from './dashboard/DeleteAccount';
 export * from './dashboard/RateGameScreen';
+export * from './dashboard/LeaveFeedBack';
 export * from './dashboard/DataPolicyScreen';
 export * from './dashboard/CustomizeProfileTabs/CustomizeTabs';
 export * from './dashboard/TermsAndConditions';

@@ -33,7 +33,10 @@ const PostCard = ({ item, startPlaying, navigation }) => {
             {item.tagged?.length > 0 ?
                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingBottom: RFValue(10), flexWrap: 'wrap' }}>
                     {item.tagged.map((iii, ind) => (
-                        <AppText key={`${iii?.userName}${ind}`} size={0} color={AppTheme.colors.primary} style={{ paddingTop: 0 }}>@{iii?.userName}, </AppText>
+                        <AppText onPress={() => {
+                            if (iii?._id)
+                                navigation.navigate("UserProfileScreen", { userID: iii?._id })
+                        }} key={`${iii?.userName}${ind}`} size={0} color={AppTheme.colors.primary} style={{ paddingTop: 0 }}>@{iii?.userName}, </AppText>
                     ))}
                 </View>
                 : null}

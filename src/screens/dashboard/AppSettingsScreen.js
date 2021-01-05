@@ -210,10 +210,14 @@ const AppSettingsScreen = ({ navigation, route, }) => {
 
                 </View>
 
-                <View style={{ borderTopColor: AppTheme.colors.lightGrey, borderTopWidth: 0.5, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
-                    <EvilIcons name="star" style={{ fontSize: RFValue(20), color: AppTheme.colors.lightBlue }} />
-                    <AppText size={2} color={AppTheme.colors.lightBlue} >Leave a feedback</AppText>
-                </View>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate("LeaveFeedBack");
+                }}>
+                    <View style={{ borderTopColor: AppTheme.colors.lightGrey, borderTopWidth: 0.5, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', padding: RFValue(25) }}>
+                        <EvilIcons name="star" style={{ fontSize: RFValue(20), color: AppTheme.colors.lightBlue }} />
+                        <AppText size={2} color={AppTheme.colors.lightBlue} >Leave a feedback</AppText>
+                    </View>
+                </TouchableOpacity>
 
             </View>
         </View>
