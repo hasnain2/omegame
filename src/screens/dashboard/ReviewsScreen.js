@@ -40,18 +40,6 @@ const ReviewsScreen = ({ navigation }) => {
 
     useEffect(() => {
         getgameshelper(false, {});
-
-        const unsubscribeFocus = navigation.addListener('focus', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.background }));
-        });
-        const unsubscribeBlur = navigation.addListener('blur', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
-        });
-
-        return () => {
-            unsubscribeFocus();
-            unsubscribeBlur();
-        }
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>

@@ -40,19 +40,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     }
 
     useEffect(() => {
-
         getuserlisthelper(false, '')
-        const unsubscribeFocus = navigation.addListener('focus', e => {
-            store.dispatch(setSettings({ bgColor: 'black' }));
-        });
-        const unsubscribeBlur = navigation.addListener('blur', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
-        });
-
-        return () => {
-            unsubscribeFocus();
-            unsubscribeBlur();
-        }
     }, []);
 
     function handleActionsOnUsers(isUserIsSame, item, index) {

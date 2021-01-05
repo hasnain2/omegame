@@ -20,7 +20,8 @@ export * from './dashboard/BlockedAccounts';
 export * from './dashboard/DeleteAccount';
 export * from './dashboard/RateGameScreen';
 export * from './dashboard/LeaveFeedBack';
-export * from './dashboard/AppReportIssue';
+export * from './dashboard/AppVersionScreen';
+export * from './dashboard/AppHelpCenter';
 export * from './dashboard/DataPolicyScreen';
 export * from './dashboard/CustomizeProfileTabs/CustomizeTabs';
 export * from './dashboard/TermsAndConditions';
@@ -36,6 +37,15 @@ export * from './dashboard/SearchScreenTabs/SearchTabs';
 
 //---POST CREATION
 export * from './dashboard/PostCreation/CreatePost'
+
+// ---- REPORT
+export * from './dashboard/AppReportUserOrPost';
+export * from './dashboard/AppReport';
+export * from './dashboard/AppReport/ReportAbuseOrSpam';
+export * from './dashboard/AppReport/ReportAccountHack';
+export * from './dashboard/AppReport/ReportExposedPrivateInfo';
+export * from './dashboard/AppReport/ReportImpersonation';
+export * from './dashboard/AppReport/ReportSystemIssue';
 
 //------OMEGA STORE
 

@@ -1,16 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppLoadingView, AppNoDataFound, AppPostsListings, AppText } from '../../components';
-import { AppTheme } from '../../config';
+import { AppBackButton, AppLoadingView, AppNoDataFound, AppPostsListings } from '../../components';
 import { setSavedPosts } from '../../redux/reducers/savedPostsSlice';
-import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { GetBookmarkPosts } from '../../services/postService';
 import { RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
-import { Ionicons } from '../../utils/AppIcons';
 let cursorArr = [];
 const UserSavedPosts = ({ navigation, route }) => {
     let [state, setState] = useState({
@@ -29,7 +25,6 @@ const UserSavedPosts = ({ navigation, route }) => {
             GetBookmarkPosts((bookmarkResponse) => {
                 if (bookmarkResponse?.data && bookmarkResponse?.data?.length > 0) {
                     let newArr = cursor ? [...store.getState().root.savedPosts, ...bookmarkResponse?.data] : bookmarkResponse?.data;
-
                     dispatch(setSavedPosts(RemoveDuplicateObjectsFromArray(newArr)))
                 }
                 setState(prev => ({ ...prev, loading: false, refreshing: false, cursor: bookmarkResponse?.cursor || '' }))
@@ -39,26 +34,10 @@ const UserSavedPosts = ({ navigation, route }) => {
     }
     useEffect(() => {
         getbookmarkpostshelper(false);
-
-        const unsubscribeFocus = navigation.addListener('focus', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.background }));
-        });
-        const unsubscribeBlur = navigation.addListener('blur', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
-        });
-
-        return () => {
-            unsubscribeFocus();
-            unsubscribeBlur();
-        }
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
-
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Ionicons onPress={() => navigation.goBack()} name="arrow-back" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(10) }} />
-                <AppText color={AppTheme.colors.lightGrey} bold={true} size={1}>SAVED POSTS</AppText>
-            </View>
+            <AppBackButton navigation={navigation} name={"SAVED POSTS"} />
 
             {state.loading && savedPosts.length < 1 ?
                 <AppLoadingView />

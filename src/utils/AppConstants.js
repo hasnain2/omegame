@@ -40,6 +40,23 @@ const SOCIAL_LOGIN_TYPES = {
     APPLE: 'APPLE'
 }
 
+const REPORT_TYPE = [{
+    name: "Harassment",
+    key: "HARASSMENT"
+}, {
+    name: "Someone is posting spam",
+    key: "POSTING_SPAM"
+}, {
+    name: "Hate against a protected category (race, religion, national origin, disability)",
+    key: "HATE"
+}, {
+    name: "Homophobia",
+    key: "HOMOPHOBIA"
+}, {
+    name: "Exposed private information",
+    key: "PRIVATE"
+}]
+
 const FRIEND_STATUSES_ACTIONS = { // action on friends weather to 
     BLOCKED: 'BLOCKED',
     UNBLOCKED: 'UN_BLOCKED',
@@ -112,4 +129,4 @@ const DEEP_LINK_TYPES = {
 const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7'];
 const COLOR_BUBBLE_SIZE = RFValue(25);
 
-export { BUCKETS, SOCIAL_LOGIN_TYPES, POST_PRIVACY, COLORS, NOTIFICATION_TYPES, GENDERS_OF_USERS, COLOR_BUBBLE_SIZE, GET_ALL_USER_SORT_BY, DEEP_LINK_TYPES, ASSET_TYPES, PRIVACY, CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES, GET_FRIEND_LIST_TYPES }
+export { BUCKETS, REPORT_TYPE, SOCIAL_LOGIN_TYPES, POST_PRIVACY, COLORS, NOTIFICATION_TYPES, GENDERS_OF_USERS, COLOR_BUBBLE_SIZE, GET_ALL_USER_SORT_BY, DEEP_LINK_TYPES, ASSET_TYPES, PRIVACY, CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES, GET_FRIEND_LIST_TYPES }

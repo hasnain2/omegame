@@ -11,11 +11,12 @@ import { AppTheme } from '../config';
 import { setSettings } from '../redux/reducers/settingsSlice';
 import { store } from '../redux/store';
 import {
-  AppContactsSearch, AppFollowersAndFollowingList, AppReportIssue, AppSettingsScreen,
-  BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen,
+  AppContactsSearch, AppFollowersAndFollowingList,
+  AppHelpCenter, AppReport, AppReportUserOrPost, AppSettingsScreen,
+  AppVersionScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen,
   DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen,
   LeaveFeedBack, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen,
-  PostDetailScreenWithComments, QuestScreen, RateGameScreen, RequestVerificationScreen,
+  PostDetailScreenWithComments, QuestScreen, RateGameScreen, ReportAbuseOrSpam, ReportAccountHack, ReportExposedPrivateInfo, ReportImpersonation, ReportSystemIssue, RequestVerificationScreen,
   ReviewsScreen, SearchScreen, TermsAndConditions, UserProfileCustomizeScreen, UserProfileScreen
 } from '../screens';
 import { UserSavedPosts } from '../screens/dashboard/UserSavedPosts';
@@ -137,28 +138,13 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       if (remoteMessage) {
         AppShowPushNotification(remoteMessage?.notification?.title, remoteMessage?.notification?.body, () => {
-          let newData = JSON.parse(remoteMessage?.data?.payload)
-
-          AppLogger('------------------A new FCM message arrived!----------------', newData);
+          let newData = JSON.parse(remoteMessage?.data?.payload);
           notificationHandler(newData, navigation);
         });
       }
     });
 
-
-
-    const unsubscribeFocus = navigation.addListener('focus', e => {
-      store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
-    });
-    const unsubscribeBlur = navigation.addListener('blur', e => {
-      store.dispatch(setSettings({ bgColor: 'black' }));
-    });
-
-
-
     return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
       unsubscribe();
       Linking.removeEventListener('url', (link) => {
         DynamicLinkHelper(navigation, link);
@@ -209,7 +195,15 @@ const DashboardTabs = () => {
       <Stack.Screen name="PostDetailScreenWithComments" component={PostDetailScreenWithComments} />
       <Stack.Screen name="RateGameScreen" component={RateGameScreen} />
       <Stack.Screen name="LeaveFeedBack" component={LeaveFeedBack} />
-      <Stack.Screen name="AppReportIssue" component={AppReportIssue} />
+      <Stack.Screen name="AppReport" component={AppReport} />
+      <Stack.Screen name="ReportAbuseOrSpam" component={ReportAbuseOrSpam} />
+      <Stack.Screen name="ReportAccountHack" component={ReportAccountHack} />
+      <Stack.Screen name="ReportExposedPrivateInfo" component={ReportExposedPrivateInfo} />
+      <Stack.Screen name="ReportImpersonation" component={ReportImpersonation} />
+      <Stack.Screen name="ReportSystemIssue" component={ReportSystemIssue} />
+      <Stack.Screen name="AppReportUserOrPost" component={AppReportUserOrPost} />
+      <Stack.Screen name="AppVersionScreen" component={AppVersionScreen} />
+      <Stack.Screen name="AppHelpCenter" component={AppHelpCenter} />
       <Stack.Screen name="EditUserProfileScreen" component={EditUserProfileScreen} />
       <Stack.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
     </Stack.Navigator>

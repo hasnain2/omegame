@@ -5,27 +5,13 @@ import { TextInput, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
-import { AppBackButton, AppButton, AppCustomSlider, AppRadioButton, AppText, UserAvatar } from '../../components';
-import { AppConfig, AppTheme } from '../../config';
-import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
-const NUMBER_OF_COLUMNS = 2;
-const REPORT_TYPE = [{
-    name: "Harassment",
-    key: "HARASSMENT"
-}, {
-    name: "Someone is posting spam",
-    key: "POSTING_SPAM"
-}, {
-    name: "Hate against a protected category (race, religion, national origin, disability)",
-    key: "HATE"
-}, {
-    name: "Homophobia",
-    key: "HOMOPHOBIA"
-}, {
-    name: "Exposed private information",
-    key: "PRIVATE"
-}]
-const AppReportIssue = ({ navigation, route, }) => {
+import { AppBackButton, AppButton, AppRadioButton, AppText, UserAvatar } from '../../../components';
+import { AppTheme } from '../../../config';
+import { REPORT_TYPE } from '../../../utils/AppConstants';
+import { AppShowToast } from '../../../utils/AppHelperMethods';
+
+
+const ReportAbuseOrSpam = ({ navigation, route, }) => {
     let postID = route?.params?.postID || '';
     let userID = route?.params?.userID || '';
     let [state, setState] = useState({
@@ -73,7 +59,6 @@ const AppReportIssue = ({ navigation, route, }) => {
                     />
                 </View>
 
-
                 <View style={{ flexDirection: 'row', padding: RFValue(20) }}>
                     <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />
                     <TextInput placeholder={"Please provide as much detail as possible..."}
@@ -89,9 +74,8 @@ const AppReportIssue = ({ navigation, route, }) => {
             <View style={{ padding: RFValue(15), paddingTop: 0 }}>
                 <AppButton bgColor="black" onPress={onSubmit} label={"REPORT"} />
             </View>
-
         </View>
     );
 };
 
-export { AppReportIssue };
+export { ReportAbuseOrSpam };

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppLoadingView, AppNoDataFound, AppPostsListings } from "../../../components";
 import { setUserProfileData } from '../../../redux/reducers/userProfileDataSlice';
 import { GetPostsOfSpecificUser } from '../../../services';
-const UserProfilePosts = ({ navigation, autoPlay, scrollPosition, userID }) => {
+const UserProfilePosts = ({ navigation, autoPlay, userID }) => {
     let { userProfileData } = useSelector(state => state.root)
     let dispatch = useDispatch();
 

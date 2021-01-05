@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppLoadingView, AppPostsListings, AppText, HomeScreenHeader } from '../../components';
 import { AppTheme } from '../../config';
 import { setHomeFeed } from '../../redux/reducers/homeFeedSlice';
+import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { GetHomeFeed } from '../../services/postService';
 import { initSocket } from '../../services/socketService';
@@ -45,6 +46,18 @@ const HomeScreen = ({ route, navigation }) => {
     useEffect(() => {
         initSocket(user.token);
         getHomeFeedHelper(false);
+
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
+        });
+        const unsubscribeBlur = navigation.addListener('blur', e => {
+            store.dispatch(setSettings({ bgColor: 'black' }));
+        });
+
+        return () => {
+            unsubscribeFocus();
+            unsubscribeBlur();
+        }
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>

@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { ICON_ACCOUNT_SETTINGS, ICON_GAMEOVER, ICON_INFO, ICON_NOTIFICATION, ICON_PRIVATE, ICON_SAVE_POST } from '../../../assets/icons';
 import { AppBackButton, AppSwitchButton, AppText } from '../../components';
 import { AppTheme } from '../../config';
-import { setSettings } from '../../redux/reducers/settingsSlice';
 import { setUser } from '../../redux/reducers/userSlice';
 import { store } from '../../redux/store';
 import { UpdateProfile } from '../../services';
@@ -35,23 +34,6 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, loading: false }))
             }
         });
-
-
-
-
-
-
-        const unsubscribeFocus = navigation.addListener('focus', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.background }));
-        });
-        const unsubscribeBlur = navigation.addListener('blur', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
-        });
-
-        return () => {
-            unsubscribeFocus();
-            unsubscribeBlur();
-        }
     }, [])
 
 
@@ -161,7 +143,7 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                     {state.infoHelpDetails ?
                         <View style={{ paddingLeft: RFValue(50) }}>
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                                navigation.navigate("AppVersionScreen")
                             }}>
                                 {rendOptionsItem("App Version")}
                             </TouchableOpacity>
@@ -179,13 +161,13 @@ const AppSettingsScreen = ({ navigation, route, }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                                navigation.navigate("AppReport")
                             }}>
                                 {rendOptionsItem("Report a problem")}
                             </TouchableOpacity>
 
                             <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                                navigation.navigate("AppHelpCenter")
                             }}>
                                 {rendOptionsItem("Help Center")}
                             </TouchableOpacity>
