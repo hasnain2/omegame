@@ -19,7 +19,6 @@ var uuid = require('react-native-uuid');
 const LIGHT_GREY = '#4d4d4d'
 const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' };
 const ChatWindow = ({ navigation, route, }) => {
-    let friend = route?.params?.friend;
 
     let { user } = useSelector(state => state.root);
     let chatID = getChatId(user?._id, friend?._id);
@@ -31,13 +30,13 @@ const ChatWindow = ({ navigation, route, }) => {
         LHeight: 0,
         LWidth: 0
     })
-
+    let [friend, setFriend] = useState(route?.params?.friend)
     function getChatmsgeshelper() {
         GetChatMessages((messagesRes) => {
             setState(prev => ({ ...prev, loading: false }))
             if (messagesRes)
                 setMessages(messagesRes)
-        }, 0, friend?._id)
+        }, 0, route?.params?.friend?._id)
     }
 
     useEffect(() => {
@@ -47,7 +46,7 @@ const ChatWindow = ({ navigation, route, }) => {
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg));
         });
 
-        socket.emit(CHAT_SOCKET_EVENTS.CONNECTED_WITH, { connectWith: friend?._id });
+        socket.emit(CHAT_SOCKET_EVENTS.CONNECTED_WITH, { connectWith: route?.params?.friend?._id });
 
         return () => {
             socket.emit(CHAT_SOCKET_EVENTS.CONNECTED_WITH, { connectWith: '' });
@@ -187,7 +186,7 @@ const ChatWindow = ({ navigation, route, }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                            navigation.navigate("AppReportUserOrPost", { userID: friend?._id })
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_REPORT} style={ICONSTYLE} />
@@ -196,20 +195,26 @@ const ChatWindow = ({ navigation, route, }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                            ActionsOnUsers(() => { }, friend?._id, friend.mute ? FRIEND_STATUSES_ACTIONS.UNMUTE : FRIEND_STATUSES_ACTIONS.MUTE)
+                            let tempFriend = friend;
+                            tempFriend.mute = !tempFriend.mute || true
+                            setFriend(tempFriend)
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_MUTE} style={ICONSTYLE} />
-                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>Mute</AppText>
+                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>{friend?.mute ? "Unmute" : "Mute"}</AppText>
                             </View>
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-
+                            ActionsOnUsers(() => { }, friend?._id, friend.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
+                            let tempFriend = friend;
+                            tempFriend.isFollowing = !tempFriend.isFollowing || true
+                            setFriend(tempFriend)
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_UNFOLLOW} style={ICONSTYLE} />
-                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>Unfollow</AppText>
+                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>{friend?.isFollowing ? "Unfollow" : "Follow"}</AppText>
                             </View>
                         </TouchableOpacity>
 
