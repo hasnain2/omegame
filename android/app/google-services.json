@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "925262350085-msvkvi02e1divq58iqfgo94p9ldfc9ct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onegame",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "925262350085-mm4gs50j7qriqfrb05r5pe1ee1ubapn8.apps.googleusercontent.com",
           "client_type": 3
         }

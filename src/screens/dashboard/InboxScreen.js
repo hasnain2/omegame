@@ -135,7 +135,7 @@ const InboxScreen = ({ navigation, route }) => {
                         seen: item?.message?.seen,
                         delivered: item?.message?.delivered,
                         chatId: item?.message?.chatId,
-                        message: item?.message?.message,
+                        message: item?.message?.text,
                         user: {
                             ...newUser,
                             chatId: item?.message?.chatId
@@ -168,7 +168,7 @@ const InboxScreen = ({ navigation, route }) => {
                                     <AppText lines={2} size={2} style={{ paddingVertical: RFValue(5) }}>{inboxItem?.message}</AppText>
                                 </View>
 
-                                <View style={{ backgroundColor: 'red' }}>
+                                <View style={{ }}>
                                     {item?.count ?
                                         <AppBadge count={largeNumberShortify(item?.count)} /> : null}
                                 </View>

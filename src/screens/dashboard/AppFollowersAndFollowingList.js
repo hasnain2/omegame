@@ -18,7 +18,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let userID = route.params.userID;
     const dispatch = useDispatch();
     let { user } = useSelector(state => state.root);
-    debugger
+    
     let [state, setState] = useState({
         loading: true,
         searchTerm: '',
@@ -116,7 +116,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
                                     <AppText size={1} color={item?.nickNameColor ? item?.nickNameColor : AppTheme.colors.lightGrey} >{item?.nickName || item?.userName}</AppText>
                                 </View>
                                 <View style={{ flex: 0.7 }}>
-                                    {user?._id === item?.profileId ?
+                                    {user?._id === item?._id ?
                                         null :
                                         <AppButton size={'small'} grey={!isFollowerMode} onPress={() => {
                                             if (!item?.isRequested) {

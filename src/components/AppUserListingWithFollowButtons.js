@@ -7,7 +7,7 @@ import { DEFAULT_USER_PIC } from '../../assets/images';
 import { AppTheme } from '../config';
 import { ActionsOnUsers } from '../services';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
-import { AppLogger, largeNumberShortify } from '../utils/AppHelperMethods';
+import { largeNumberShortify } from '../utils/AppHelperMethods';
 import { AppGradientContainer } from './AppGradientContainer';
 import { AppLoadingView } from './AppLoadingView';
 import { AppNoDataFound } from './AppNoDataFound';
@@ -104,7 +104,15 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
                                         :
                                         item?.isRequested ?
                                             <AppGradientContainer onPress={() => {
-                                                // followUnfollowUser(item, index)
+                                                let tempUserObj = { ...item }
+                                                ActionsOnUsers(() => { }, item?._id, FRIEND_STATUSES_ACTIONS.CANCEL_FOLLOW_REQUEST)
+                                                tempUserObj["isRequested"] = false;
+                                                tempUserObj["isFollowing"] = false;
+
+                                                let tempData = state.usersData;
+                                                tempData[index] = tempUserObj;
+                                                setState(prev => ({ ...prev, usersData: tempData }));
+
                                             }} style={{ justifyContent: 'center', width: '100%', alignItems: 'center', padding: RFValue(10), borderRadius: 90 }}>
                                                 <AppText size={1} bold={true} color={"white"} >REQUESTED</AppText>
                                             </AppGradientContainer>
