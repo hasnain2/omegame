@@ -1,10 +1,12 @@
 
 import io from "socket.io-client";
 import { setSettings } from "../redux/reducers/settingsSlice";
+import { setUser } from "../redux/reducers/userSlice";
 import { store } from "../redux/store";
+import { QUEST_EVENTS } from "../utils/AppConstants";
 import { DOMAIN } from "../utils/AppEndpoints";
 import { AppLogger } from "../utils/AppHelperMethods";
-import { AppShowPushNotification } from "./PushNotifications/NotificationMethods";
+import { GetSingleUserProfile } from "./profileService";
 
 let SocketEndpoint = DOMAIN;
 
@@ -23,11 +25,26 @@ export const initSocket = async (token) => {
             }
         });
         socket.on('connect', function (data) {
-            // AppShowPushNotification('Status', "Connection has been established.", false);
+            AppLogger('---------SOCKET-------->', 'CONNECTED')
         });
+
         socket.on('disconnect', function (data) {
-            // AppShowPushNotification('Status', "Connection has been lost.",false);
+            AppLogger('---------SOCKET-------->', 'DIS-CONNECTED')
         });
+
+        socket.on(QUEST_EVENTS.QUEST_COMPLETED, function (questData) { // QUEST COMPLETED
+            AppLogger('---------SOCKET quest COMPLETED-------->', '')
+            GetSingleUserProfile((userDataRes) => {
+                if (userDataRes)
+                    store.dispatch(setUser({ ...userDataRes }));
+            }, store.getState().root?.user?._id);
+        });
+
+        socket.on(QUEST_EVENTS.QUEST_EXPIRED, function (questData) { // QUEST EXPIRED
+            AppLogger('---------SOCKET quest EXPIRED-------->', '')
+            debugger
+        });
+
         socket.on('unreadCount', function (newData) {
             let messagesCounter = newData?.message?.chatWith || [];
             let notificationCounter = newData?.notification || 0;

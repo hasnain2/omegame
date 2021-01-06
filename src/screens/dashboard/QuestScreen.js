@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, RefreshControl, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider, ProgressBar } from 'react-native-paper';
@@ -24,6 +24,7 @@ const QuestScreen = ({ route, navigation }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: true,
+        refreshing: false,
         LHeight: 0,
         LWidth: 0,
         visibleDescriptionOfIndex: 999999,
@@ -33,9 +34,9 @@ const QuestScreen = ({ route, navigation }) => {
     function getquesthelper(offset) {
         GetQuests((questListResponse) => {
             if (questListResponse) {
-                setState(prev => ({ ...prev, loading: false, data: questListResponse }))
+                setState(prev => ({ ...prev, loading: false, refreshing: false, data: questListResponse }))
             } else {
-                setState(prev => ({ ...prev, loading: false }))
+                setState(prev => ({ ...prev, loading: false, refreshing: false, }))
             }
         }, offset)
     }
@@ -54,9 +55,18 @@ const QuestScreen = ({ route, navigation }) => {
 
                 initialNumToRender={2}
                 windowSize={2}
-                removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
-                bounces={false}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={state.refreshing}
+                        tintColor={'white'}
+                        onRefresh={() => {
+                            setState(prev => ({ ...prev, refreshing: true }))
+                            getquesthelper(0);
+                        }}
+                    />
+                }
                 keyExtractor={ii => (ii?._id || '') + 'you'}
                 renderItem={({ item, index }) => {
                     return (

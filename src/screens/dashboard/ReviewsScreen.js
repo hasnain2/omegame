@@ -202,7 +202,6 @@ const ReviewsScreen = ({ navigation }) => {
                                         }
                                         setState(prev => ({ ...prev, selectedGenreTypes: tempArr }))
 
-
                                         let tempObj = {
                                             from: state.releaseDate === 'Newest' ? GetLastMonthStartOf()
                                                 : state.releaseDate === 'Past week' ? GetLastWeekStartOf()
@@ -286,12 +285,15 @@ const ReviewsScreen = ({ navigation }) => {
                         <AppButton bgColor={'#1b1b1b'} label={"START"} onPress={() => { setState(prev => ({ ...prev, showFilter: false })) }} />
                     </View>
 
-                    <AppText onPress={() => setState(prev => ({
-                        ...prev,
-                        selectedConsoleTypes: [],
-                        selectedGenreTypes: [],
-                        releaseDate: 'All time'
-                    }))}
+                    <AppText onPress={() => {
+                        setState(prev => ({
+                            ...prev,
+                            selectedConsoleTypes: [],
+                            selectedGenreTypes: [],
+                            releaseDate: 'All time'
+                        }));
+                        getgameshelper(false, {});
+                    }}
                         color={AppTheme.colors.red} size={2}
                         style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
                 </View>
