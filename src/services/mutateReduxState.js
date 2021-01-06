@@ -96,8 +96,14 @@ const AddPostToReduxStore = (newPost) => {
 
 
 const RemovePostFromReduxStore = (postID) => {
+    let tempuserProfileData = { ...store.getState().root.userProfileData };
     const tempHomeFeeds = [...store.getState().root.homeFeed];
     const tempSavedPosts = [...store.getState().root.savedPosts];
+
+    let tempUserProfilePosts = [...tempuserProfileData.posts.slice()]
+    let tempUserProfileMedia = [...tempuserProfileData.media.slice()]
+
+    store.dispatch(setUserProfileData({ posts: tempUserProfilePosts.filter(ii => ii?._id !== postID), media: tempUserProfileMedia.filter(ii => ii?._id !== postID) }));
 
     store.dispatch(setHomeFeed(tempHomeFeeds.filter(ii => ii?._id !== postID)));
     store.dispatch(setSavedPosts(tempSavedPosts.filter(ii => ii?._id !== postID)));

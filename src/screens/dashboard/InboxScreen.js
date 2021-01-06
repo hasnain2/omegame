@@ -167,12 +167,10 @@ const InboxScreen = ({ navigation, route }) => {
                                     </View>
                                     <AppText lines={2} size={2} style={{ paddingVertical: RFValue(5) }}>{inboxItem?.message}</AppText>
                                 </View>
-
                                 <View style={{ }}>
                                     {item?.count ?
                                         <AppBadge count={largeNumberShortify(item?.count)} /> : null}
                                 </View>
-
                             </View>
                         </TouchableOpacity>
                     )

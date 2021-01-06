@@ -17,9 +17,10 @@ import { setUser } from '../../redux/reducers/userSlice';
 import { RemovePostsOfUserFromReduxStore } from '../../services';
 import { ActionsOnUsers, GetSingleUserProfile } from '../../services/profileService';
 import { FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
-import { AppShowToast, largeNumberShortify } from '../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { MaterialIcons } from '../../utils/AppIcons';
 import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
+import InViewPort from "@coffeebeanslabs/react-native-inviewport";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -43,7 +44,8 @@ const UserProfileScreen = ({ navigation, route, }) => {
         bioShowMoreLines: 3,
         scrollPosition: 0,
         enableScrollViewScroll: true,
-        userData: userID ? user : null
+        userData: userID ? user : null,
+        isVisible: false
     });
     function getsingleuserprofilehelper() {
         GetSingleUserProfile((profileRes) => {
@@ -65,13 +67,10 @@ const UserProfileScreen = ({ navigation, route, }) => {
         }
     }, [])
 
-    function acceptOrDenyRequest(accept) {
-        let tempData = state.userData;
-        tempData.requestStatus = false;
-        setState(prev => ({ ...prev, userData: tempData }))
-        AppShowToast(accept ? "Request accepted!" : "Request denied!");
-        ActionsOnUsers(() => { }, route.params.userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
-    }
+    const checkVisible = isVisible => {
+        if (isVisible != state.isVisible)
+            setState(prev => ({ ...prev, isVisible }))
+    };
 
     function followOrCancelRequest(req) {
         let tempUserObj = state.userData;
@@ -88,7 +87,7 @@ const UserProfileScreen = ({ navigation, route, }) => {
         }
         setState(prev => ({ ...prev, userData: tempUserObj }));
     }
-    userData = userID ? user : state.userData;
+    let userData = userID ? user : state.userData;
     return (
         <View onStartShouldSetResponder={() => {
             setState(prev => ({ ...prev, enableScrollViewScroll: true }))
@@ -213,21 +212,25 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         </View>}
                 </View>
 
-                <View
-                    style={{ height: state.LHeight - RFValue(50), width: state.LWidth, }}>
-                    <UserProfileTabs
-                        userID={route.params.userID}
-                        navigation={navigation}
-                        route={route}
-                        scrollPosition={({ scroll, index }) => {
-                            if (scroll && scroll < 300 && index < 3)
-                                setState(prev => ({ ...prev, enableScrollViewScroll: true }));
-                        }}
-                        decelerationRate={0.2}
-                        autoPlay={state.enableScrollViewScroll === false ? true : false}
-                    />
-                </View>
-
+                <InViewPort onChange={(isVisible) => {
+                    AppLogger('---------VISIBLE???------', isVisible)
+                    checkVisible(isVisible)
+                }}>
+                    <View
+                        style={{ height: state.LHeight - RFValue(50), width: state.LWidth, }}>
+                        <UserProfileTabs
+                            userID={route.params.userID}
+                            navigation={navigation}
+                            route={route}
+                            scrollPosition={({ scroll, index }) => {
+                                if (scroll && scroll < 300 && index < 3)
+                                    setState(prev => ({ ...prev, enableScrollViewScroll: true }));
+                            }}
+                            decelerationRate={0.2}
+                            autoPlay={state.isVisible}
+                        />
+                    </View>
+                </InViewPort>
             </ScrollView>
 
             <AppModal show={state.showMenu}
