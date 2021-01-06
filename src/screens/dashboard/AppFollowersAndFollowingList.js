@@ -3,24 +3,22 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppButton, AppLoadingView, AppNoDataFound, AppSearchBar, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { setSettings } from '../../redux/reducers/settingsSlice';
-import { store } from '../../redux/store';
-import { ActionsOnUsers, GerUserListByType } from '../../services';
+import { setUser } from '../../redux/reducers/userSlice';
+import { ActionsOnUsers, GerUserListByType, GetSingleUserProfile } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
 import { AppLogger, AppShowToast, CapitalizeFirstLetter, largeNumberShortify } from '../../utils/AppHelperMethods';
-const LIGHT_GREY = '#4d4d4d'
+
 const AppFollowersAndFollowingList = ({ navigation, route, }) => {
     let isFollowerMode = route.params.isFollowerMode;
     let userID = route.params.userID;
-
+    const dispatch = useDispatch();
     let { user } = useSelector(state => state.root);
-
-
+    debugger
     let [state, setState] = useState({
         loading: true,
         searchTerm: '',
@@ -41,13 +39,18 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
 
     useEffect(() => {
         getuserlisthelper(false, '')
+        GetSingleUserProfile((userRes) => {
+            if (userRes) {
+                dispatch(setUser({ ...userRes }))
+            }
+        }, user?._id)
     }, []);
 
     function handleActionsOnUsers(isUserIsSame, item, index) {
         let tempData = state.data;
         if (isFollowerMode && isUserIsSame) { // remove follower
             ActionsOnUsers((res) => { }, item?._id, FRIEND_STATUSES_ACTIONS.REMOVE_FOLLOWER)
-
+            dispatch(setUser({ followers: user.followers - 1 }))
             setState(prev => ({
                 ...prev,
                 data: tempData.filter(itm => itm._id !== item._id),
@@ -56,6 +59,9 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
         } else { // follow unfollow user
             ActionsOnUsers((res) => { }, item?._id, item?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
             tempData[index] = { ...item, isRequested: tempData[index]?.isFollowing ? false : true, isFollowing: !tempData[index]?.isFollowing }
+            if (item?.isFollowing)
+                dispatch(setUser({ following: user.following - 1 }))
+
             setState(prev => ({
                 ...prev,
                 data: tempData,

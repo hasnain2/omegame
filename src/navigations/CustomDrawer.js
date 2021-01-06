@@ -20,6 +20,7 @@ const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' 
 
 const CustomDrawer = ({ state: { routeNames }, navigation }) => {
     let { user } = useSelector(state => state.root);
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <FastImage source={user?.cover ? { uri: user.cover } : BACKGROUND_IMG} style={{ height: LHeight, width: LWidth, }} >
