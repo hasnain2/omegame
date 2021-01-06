@@ -35,7 +35,6 @@ const ReportSystemIssue = ({ navigation, route }) => {
             navigation.goBack();
             AppShowToast("Thank you for your feedback, Report sent!")
         }
-        debugger
     }
 
     return (

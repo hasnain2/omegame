@@ -7,7 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
 import { ICON_NEW_MESSAGE } from '../../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppBackButton, AppFriendsListModal, AppLoadingView, AppNoDataFound, AppRadioButton, AppSearchBar, AppText, IsUserVerifiedCheck } from '../../components';
+import { AppBackButton, AppBadge, AppFriendsListModal, AppLoadingView, AppNoDataFound, AppRadioButton, AppSearchBar, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setInbox } from '../../redux/reducers/inboxSlice';
@@ -17,8 +17,9 @@ import { AppLogger, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 
 let originalInboxList = [];
-const InboxScreen = ({ navigation, route, }) => {
+const InboxScreen = ({ navigation, route }) => {
     let { user, inbox } = useSelector(state => state.root);
+
     let dipatch = useDispatch()
     let [state, setState] = useState({
         loading: true,
@@ -52,7 +53,13 @@ const InboxScreen = ({ navigation, route, }) => {
         }, cursor)
     }
     useEffect(() => {
-        getinboxlisthelper(0)
+        const unsubscribe = navigation.addListener('focus', () => {
+            getinboxlisthelper(0)
+        });
+
+        return () => {
+            unsubscribe();
+        }
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -111,7 +118,7 @@ const InboxScreen = ({ navigation, route, }) => {
             {!state.loading && inbox.length < 1 ?
                 <AppNoDataFound />
                 : null}
-                
+
             <FlatList
                 data={inbox}
                 initialNumToRender={2}
@@ -160,6 +167,12 @@ const InboxScreen = ({ navigation, route, }) => {
                                     </View>
                                     <AppText lines={2} size={2} style={{ paddingVertical: RFValue(5) }}>{inboxItem?.message}</AppText>
                                 </View>
+
+                                <View style={{ backgroundColor: 'red' }}>
+                                    {item?.count ?
+                                        <AppBadge count={largeNumberShortify(item?.count)} /> : null}
+                                </View>
+
                             </View>
                         </TouchableOpacity>
                     )

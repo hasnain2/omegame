@@ -10,7 +10,6 @@ async function ReportIssueOrSpam(PAYLOAD) {
         body: JSON.stringify(PAYLOAD)
     }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------REPORT RES--------------', JSON.stringify(data))
-        debugger
         if (status === 201 || status === 200) {
             return data
         } else

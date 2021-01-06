@@ -5,7 +5,7 @@ import { TextInput, View } from 'react-native';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
-import { AppBackButton, AppButton, AppRadioButton, AppText, UserAvatar } from '../../../components';
+import { AppBackButton, AppButton, AppLoadingView, AppRadioButton, AppText, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
 import { ReportIssueOrSpam } from '../../../services';
 import { REPORT_TYPE } from '../../../utils/AppConstants';
@@ -46,7 +46,6 @@ const ReportAbuseOrSpam = ({ navigation, route, }) => {
                 navigation.goBack();
                 AppShowToast("Thank you for your feedback, Report sent!")
             }
-            debugger
         } else {
             AppShowToast('kindly provide details of the issue.')
         }
@@ -93,6 +92,10 @@ const ReportAbuseOrSpam = ({ navigation, route, }) => {
                 </View>
 
             </KeyboardAvoidingScrollView>
+
+            {state.loading ?
+                <AppLoadingView /> : null}
+
             <View style={{ padding: RFValue(15), paddingTop: 0 }}>
                 <AppButton bgColor="black" onPress={onSubmit} label={"REPORT"} />
             </View>

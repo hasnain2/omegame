@@ -18,10 +18,8 @@ const LogInUser = (callback, formData) => {
             Interceptor.setToken(data?.data?.access_token || "");
             let UserObj = { ...data.data.user, ...data?.data?.user?.profile, token: data.data.access_token, email: formData?.userName };
 
-            debugger
             storeData('user', UserObj).then(res => {
                 store.dispatch(setUser(UserObj))
-                debugger
                 callback(UserObj)
             }).catch(err => {
                 callback(false)

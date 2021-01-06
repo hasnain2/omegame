@@ -13,6 +13,7 @@ import { AppTheme } from '../../config';
 import { setHomeFeed } from '../../redux/reducers/homeFeedSlice';
 import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
+import { GetCounterNumberOfNotifications } from '../../services/appSettingsService';
 import { GetHomeFeed } from '../../services/postService';
 import { initSocket } from '../../services/socketService';
 let cursorArr = []
@@ -43,10 +44,11 @@ const HomeScreen = ({ route, navigation }) => {
         }
         cursorArr.push(cursor)
     }
+
     useEffect(() => {
         initSocket(user.token);
         getHomeFeedHelper(false);
-
+        GetCounterNumberOfNotifications();
         const unsubscribeFocus = navigation.addListener('focus', e => {
             store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
         });

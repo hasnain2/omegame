@@ -13,7 +13,6 @@ import Interceptor from '../utils/Interceptor';
 
 async function socialloginhelper(token, type) {
     AppLogger('------GOT TOKEN FROM ' + type, token)
-    debugger
     fetch(`${EndPoints.SOCIAL_LOGIN}`, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
@@ -102,7 +101,6 @@ const LoginWithGoogle = async () => {
             token: userInfo.idToken,
             userId: userInfo.user.id
         };
-        debugger
         return await socialloginhelper(newUserObj.token, SOCIAL_LOGIN_TYPES.GOOGLE);
     } catch (err) {
         AppLogger('---------LOGIN WITH GOOGLE----ERROR-----\n', err);

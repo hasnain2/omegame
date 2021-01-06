@@ -1,9 +1,10 @@
 import { JSONBodyHelper } from '.'
+import { setSettings } from '../redux/reducers/settingsSlice'
+import { store } from '../redux/store'
 import { EndPoints } from '../utils/AppEndpoints'
 import { AppLogger } from '../utils/AppHelperMethods'
 import Interceptor from '../utils/Interceptor'
 const SetAppSettings = (callback, formData) => {
-
     fetch(EndPoints.APP_SETTINGS_SET_OR_GET, {
         method: 'PATCH',
         headers: Interceptor.getHeaders(),
@@ -38,4 +39,20 @@ const GetAppSettings = (callback) => {
     });
 }
 
-export { SetAppSettings, GetAppSettings }
+const GetCounterNumberOfNotifications = () => {
+    fetch(`${EndPoints.GET_NOTIFICATION_COUNTERS}`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('-----------GET NOTIFICATION COUNTERS RESPONSE----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            store.dispatch(setSettings({
+                chatCount: data?.data?.inboxCount || 0,
+                notiCount: data?.data?.notificationCount || 0
+            }))
+        }
+    }).catch((error) => {
+        AppLogger('---------GET NOTIFICATION COUNTERS DATA - ERROR-----------', error)
+    });
+}
+export { SetAppSettings, GetCounterNumberOfNotifications, GetAppSettings }

@@ -39,7 +39,6 @@ export * from './dashboard/SearchScreenTabs/SearchTabs';
 export * from './dashboard/PostCreation/CreatePost'
 
 // ---- REPORT
-export * from './dashboard/AppReportUserOrPost';
 export * from './dashboard/AppReport';
 export * from './dashboard/AppReport/ReportAbuseOrSpam';
 export * from './dashboard/AppReport/ReportAccountHack';

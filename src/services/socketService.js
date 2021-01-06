@@ -29,11 +29,16 @@ export const initSocket = async (token) => {
             // AppShowPushNotification('Status', "Connection has been lost.",false);
         });
         socket.on('unreadCount', function (newData) {
+            let messagesCounter = newData?.message?.chatWith || [];
+
+            let UN_READ_MESSAGES = 0;
+            messagesCounter?.forEach((ii) => {
+                UN_READ_MESSAGES += ii?.unReadCount
+            })
             store.dispatch(setSettings({
-                chatCount: 23,
+                chatCount: UN_READ_MESSAGES,
                 // notiCount:23
             }))
-            debugger
         })
     } catch (err) {
         AppLogger('---------SOCKET ERROR---------', err)

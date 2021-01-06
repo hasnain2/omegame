@@ -186,7 +186,7 @@ const ChatWindow = ({ navigation, route, }) => {
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, showMenu: false, loading: false }))
-                            navigation.navigate("AppReportUserOrPost", { userID: friend?._id })
+                            navigation.navigate("ReportAbuseOrSpam", { userID: friend?._id })
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_REPORT} style={ICONSTYLE} />
@@ -199,8 +199,7 @@ const ChatWindow = ({ navigation, route, }) => {
                             ActionsOnUsers(() => { }, friend?._id, friend.mute ? FRIEND_STATUSES_ACTIONS.UNMUTE : FRIEND_STATUSES_ACTIONS.MUTE)
                             let tempFriend = { ...friend };
                             tempFriend.mute = !tempFriend.mute
-                            setFriend(tempFriend)
-                            debugger
+                            setFriend(tempFriend);
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_MUTE} style={ICONSTYLE} />
@@ -213,8 +212,7 @@ const ChatWindow = ({ navigation, route, }) => {
                             ActionsOnUsers(() => { }, friend?._id, friend.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
                             let tempFriend = { ...friend };
                             tempFriend.isFollowing = !tempFriend.isFollowing
-                            setFriend(tempFriend)
-                            debugger
+                            setFriend(tempFriend);
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_UNFOLLOW} style={ICONSTYLE} />

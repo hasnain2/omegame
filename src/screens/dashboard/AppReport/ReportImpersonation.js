@@ -56,7 +56,6 @@ const ReportImpersonation = ({ navigation, route }) => {
             navigation.goBack();
             AppShowToast("Thank you for your feedback, Report sent!")
         }
-        debugger
     }
 
 
@@ -99,7 +98,6 @@ const ReportImpersonation = ({ navigation, route }) => {
                                     if (results) {
                                         AppLogger('---------UPLOAD RESULTS-------->', results)
                                         setState(prev => ({ ...prev, photoOfID: results || '' }));
-                                        debugger
                                     }
                                 }, BUCKETS.PROFILE_DOC, res)
                             }

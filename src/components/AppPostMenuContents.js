@@ -50,7 +50,7 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
                     <>
                         <TouchableOpacity onPress={() => {   // Report post
                             toggle();
-                            navigation.navigate("AppReportUserOrPost", { postID: item?._id })
+                            navigation.navigate("ReportAbuseOrSpam", { postID: item?._id })
                         }} style={styles.modalListItemStyle}>
                             <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                 <Image source={ICON_REPORT} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />

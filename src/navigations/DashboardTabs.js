@@ -8,11 +8,9 @@ import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_ADD, ICON_GAME, ICON_HOME, ICON_QUEST, ICON_SEARCH } from '../../assets/icons';
 import { AppTheme } from '../config';
-import { setSettings } from '../redux/reducers/settingsSlice';
-import { store } from '../redux/store';
 import {
   AppContactsSearch, AppFollowersAndFollowingList,
-  AppHelpCenter, AppReport, AppReportUserOrPost, AppSettingsScreen,
+  AppHelpCenter, AppReport, AppSettingsScreen,
   AppVersionScreen, BlockedAccounts, ChangePasswordScreen, ChatWindow, CreatePost, DataPolicyScreen,
   DeleteAccount, EditUserProfileScreen, GameDetailsScreen, HomeScreen, InboxScreen,
   LeaveFeedBack, NotificationScreen, OmegaStoreTabs, PersonalInformationScreen,
@@ -102,9 +100,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
     }).catch(err => {
       AppLogger('----------ERROR LINK GETTING INITIAL URL DEEP LINK----------', err)
     })
-
     /* NOTIFICATION HANDLERS */
-
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       if (remoteMessage) {
         let newData = JSON.parse(remoteMessage?.data?.payload)
@@ -113,7 +109,6 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
         notificationHandler(newData, navigation);
       }
     });
-
 
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
@@ -197,7 +192,6 @@ const DashboardTabs = () => {
       <Stack.Screen name="ReportExposedPrivateInfo" component={ReportExposedPrivateInfo} />
       <Stack.Screen name="ReportImpersonation" component={ReportImpersonation} />
       <Stack.Screen name="ReportSystemIssue" component={ReportSystemIssue} />
-      <Stack.Screen name="AppReportUserOrPost" component={AppReportUserOrPost} />
       <Stack.Screen name="AppVersionScreen" component={AppVersionScreen} />
       <Stack.Screen name="AppHelpCenter" component={AppHelpCenter} />
       <Stack.Screen name="EditUserProfileScreen" component={EditUserProfileScreen} />

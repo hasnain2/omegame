@@ -73,7 +73,8 @@ const EndPoints = {
 
     DELETE_MY_ACCOUNT: BASE_URL + 'authentication/me',
 
-    APP_SETTINGS_SET_OR_GET: BASE_URL + 'account-settings' // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
+    APP_SETTINGS_SET_OR_GET: BASE_URL + 'account-settings', // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
+    GET_NOTIFICATION_COUNTERS: BASE_URL + 'profile/counters' // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
 };
 
 export { DOMAIN, EndPoints };
