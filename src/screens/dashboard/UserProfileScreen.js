@@ -213,7 +213,6 @@ const UserProfileScreen = ({ navigation, route, }) => {
                 </View>
 
                 <InViewPort onChange={(isVisible) => {
-                    AppLogger('---------VISIBLE???------', isVisible)
                     checkVisible(isVisible)
                 }}>
                     <View

@@ -43,13 +43,11 @@ const NotificationScreen = ({ navigation, route, }) => {
         let tempData = notifications.requests.slice();
         tempData.splice(index, 1)
         dispatch(setNotifications({ requests: tempData }))
-        if (!accept) {
-            ActionsOnUsers((dta) => { }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST)
-        } else {
-            ActionsOnUsers((dta) => {
+
+        ActionsOnUsers((dta) => {
+            if (accept)
                 getnotificationhistoryhelper(false);
-            }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST);
-        }
+        }, userID, accept ? FRIEND_STATUSES_ACTIONS.ACCEPT_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.DENY_FOLLOW_REQUEST);
         AppShowToast(accept ? "Request accepted!" : "Request denied!");
     }
     async function handlenotificationclick(item) {

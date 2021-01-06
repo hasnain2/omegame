@@ -30,6 +30,7 @@ export const initSocket = async (token) => {
         });
         socket.on('unreadCount', function (newData) {
             let messagesCounter = newData?.message?.chatWith || [];
+            let notificationCounter = newData?.notification || 0;
 
             let UN_READ_MESSAGES = 0;
             messagesCounter?.forEach((ii) => {
@@ -37,8 +38,9 @@ export const initSocket = async (token) => {
             })
             store.dispatch(setSettings({
                 chatCount: UN_READ_MESSAGES,
-                // notiCount:23
+                notiCount: notificationCounter
             }))
+            debugger
         })
     } catch (err) {
         AppLogger('---------SOCKET ERROR---------', err)

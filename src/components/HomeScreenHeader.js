@@ -9,6 +9,8 @@ import { ICON_CHAT, ICON_NOTIFICATION } from '../../assets/icons';
 import { DEFAULT_USER_PIC } from '../../assets/images';
 import { UserAvatar } from '../components/UserAvatar';
 import { AppTheme } from '../config';
+import { setSettings } from '../redux/reducers/settingsSlice';
+import { store } from '../redux/store';
 import { AppBadge } from './AppBadge';
 
 const HomeScreenHeader = ({ route, navigation }) => {
@@ -26,7 +28,10 @@ const HomeScreenHeader = ({ route, navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                navigation.navigate("NotificationScreen")
+                navigation.navigate("NotificationScreen");
+                store.dispatch(setSettings({
+                    notiCount: 0
+                }))
             }}>
                 <View pointerEvents={'none'} style={{}}>
                     <AppBadge count={settings.notiCount} />
