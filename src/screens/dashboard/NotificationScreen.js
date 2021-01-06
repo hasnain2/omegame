@@ -6,7 +6,7 @@ import { Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
-import { AppBackButton, AppButton, AppNoDataFound, AppText } from '../../components';
+import { AppBackButton, AppButton, AppLoadingView, AppNoDataFound, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setNotifications } from '../../redux/reducers/notificationsSlice';
@@ -185,6 +185,8 @@ const NotificationScreen = ({ navigation, route, }) => {
                             )} />}
                 </View>
             </View>
+            {state.loading ?
+                <AppLoadingView /> : null}
         </View >
     );
 };
