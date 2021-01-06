@@ -7,16 +7,35 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppBackButton, AppButton, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
+import { ReportIssueOrSpam } from '../../../services';
+import { AppShowToast } from '../../../utils/AppHelperMethods';
 
-const ReportSystemIssue = ({ navigation, route, }) => {
+const ReportSystemIssue = ({ navigation, route }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: false,
         feedbacktext: ''
     })
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        if (!state.feedbacktext) {
+            AppShowToast("Kindly explain the issue you're facing.")
+            return false
+        }
 
+        let payload = {
+            reportType: "SYSTEM_ISSUES",
+            description: state.feedbacktext?.trim()
+        }
+
+        setState(prev => ({ ...prev, loading: true }))
+        const reportResponse = await ReportIssueOrSpam(payload)
+        setState(prev => ({ ...prev, loading: false }))
+        if (reportResponse) {
+            navigation.goBack();
+            AppShowToast("Thank you for your feedback, Report sent!")
+        }
+        debugger
     }
 
     return (

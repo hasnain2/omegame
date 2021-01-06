@@ -8,13 +8,13 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppBackButton, AppButton, AppText, UserAvatar } from '../../../components';
 import { AppConfig, AppTheme } from '../../../config';
-import { UploadMedia } from '../../../services';
+import { ReportIssueOrSpam, UploadMedia } from '../../../services';
 import { BUCKETS } from '../../../utils/AppConstants';
-import { AppLogger } from '../../../utils/AppHelperMethods';
+import { AppLogger, AppShowToast } from '../../../utils/AppHelperMethods';
 import { Ionicons } from '../../../utils/AppIcons';
 import { OpenCameraGalleryPromptPicker } from '../../../utils/AppMediaPicker';
 
-const ReportImpersonation = ({ navigation, route, }) => {
+const ReportImpersonation = ({ navigation, route }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({
         loading: false,
@@ -25,9 +25,40 @@ const ReportImpersonation = ({ navigation, route, }) => {
         imageLoading: false
     });
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        if (!state.userToReport) {
+            AppShowToast("Please provide username of user you want to report")
+            return false
+        }
+        if (!state.reporterEmailAddress) {
+            AppShowToast("Please provide your email-address")
+            return false
+        }
+        if (!state.photoOfID?.url) {
+            AppShowToast("Please provide photo of your ID")
+            return false
+        }
 
+        let payload = {
+            reportType: "IMPERSONATION",
+            // reportCase: state.reportType,
+            url: state.referenceUrl,
+            userName: state.userToReport?.trim(),
+            reporterEmail: state.reporterEmailAddress?.trim(),
+            description: state.reportText?.trim(),
+            attachments: [state.photoOfID?.url]
+        }
+
+        setState(prev => ({ ...prev, loading: true }))
+        const reportResponse = await ReportIssueOrSpam(payload)
+        setState(prev => ({ ...prev, loading: false }))
+        if (reportResponse) {
+            navigation.goBack();
+            AppShowToast("Thank you for your feedback, Report sent!")
+        }
+        debugger
     }
+
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>

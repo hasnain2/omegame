@@ -7,6 +7,7 @@ export * from './profileService'
 export * from './mutateReduxState'
 export * from './s3fileupload'
 export * from './chatService'
+export * from './reportService'
 export * from './questService'
 
 function JSONBodyHelper(response) {

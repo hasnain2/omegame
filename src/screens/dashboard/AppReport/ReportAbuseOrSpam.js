@@ -7,6 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppBackButton, AppButton, AppRadioButton, AppText, UserAvatar } from '../../../components';
 import { AppTheme } from '../../../config';
+import { ReportIssueOrSpam } from '../../../services';
 import { REPORT_TYPE } from '../../../utils/AppConstants';
 import { AppShowToast } from '../../../utils/AppHelperMethods';
 
@@ -22,14 +23,35 @@ const ReportAbuseOrSpam = ({ navigation, route, }) => {
     })
     let { user } = useSelector(state => state.root);
 
-    const onSubmit = () => {
-        if (state.reportText.trim()) {
-            navigation.goBack();
-            AppShowToast("Thank you for your feedback, Report sent!")
+    const onSubmit = async () => {
+        if (state.reportText?.trim()) {
+            let payload = {
+                reportType: "ABUSE_OR_SPAM",
+                reportCase: state.reportType,
+                url: state.referenceUrl,
+                description: state.reportText
+            }
+
+            if (postID) {
+                payload.targetObjectId = postID;
+                payload.targetEntity = "post";
+            } else if (userID) {
+                payload.targetObjectId = userID;
+                payload.targetEntity = "user";
+            }
+            setState(prev => ({ ...prev, loading: true }))
+            const reportResponse = await ReportIssueOrSpam(payload)
+            setState(prev => ({ ...prev, loading: false }))
+            if (reportResponse) {
+                navigation.goBack();
+                AppShowToast("Thank you for your feedback, Report sent!")
+            }
+            debugger
         } else {
             AppShowToast('kindly provide details of the issue.')
         }
     }
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
