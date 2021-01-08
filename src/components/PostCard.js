@@ -10,7 +10,7 @@ import { AppVideoPlayer } from './AppVideoPlayer';
 import { PostPoolBottomBar } from './PostPoolBottomBar';
 import { PostPoolTopBar } from './PostPoolTopBar';
 
-const PostCard = ({ item, startPlaying, navigation }) => {
+const PostCard = ({ item, startPlaying, goBack, navigation }) => {
     let [state, setState] = useState({
         stopPlaying: false,
         imageLoaded: false,
@@ -20,7 +20,7 @@ const PostCard = ({ item, startPlaying, navigation }) => {
     }, [])
     return (
         <View style={{ borderBottomColor: AppTheme.colors.darkGrey, borderBottomWidth: 0.5 }}>
-            <PostPoolTopBar item={item} navigation={navigation} />
+            <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />
             <AppText size={1} style={{ padding: RFValue(15), paddingTop: 0 }}>{item.text}</AppText>
 
             {item.location?.addressName ?

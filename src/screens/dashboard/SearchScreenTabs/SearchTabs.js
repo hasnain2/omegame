@@ -61,6 +61,7 @@ const SearchTabs = ({ navigation, query, type }) => {
                 } else {
                     setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false }))
                 }
+                debugger
             }, cursor, searchQuery);
             cursorArrMedia.push(cursor)
         } else {

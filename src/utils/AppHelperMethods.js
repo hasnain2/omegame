@@ -47,16 +47,19 @@ function dateDifference(date) {
 }
 
 function timeRemaining(date) {
-    var a = moment(date);
-    var b = moment(new Date());
+    var dateFuture = new Date(date);
+    var dateNow = new Date();
 
-    let days = a.diff(b, 'days') || 0; // 1
-    let hours = a.diff(b, 'hours') || 0; // 1
-    let minutes = a.diff(b, 'minutes') || 0;// 1
-    let seconds = a.diff(b, 'seconds') || 0;// 1
+    var seconds = Math.floor((dateFuture - (dateNow)) / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+
+    hours = hours - (days * 24);
+    minutes = minutes - (days * 24 * 60) - (hours * 60);
+    seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
 
     let obj = { days, hours, minutes, seconds, txt: days + 'd ' + hours + 'h ' + minutes + 'm' }
-    AppLogger('-----CALCULATED TIME------', obj)
     return obj
 }
 

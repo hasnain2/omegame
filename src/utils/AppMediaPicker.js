@@ -33,13 +33,14 @@ function pickerResponseMaker(callback, response, type) {
     }
 }
 const GenerateThumbnailFromVideo = (callback, videoPath) => {
-    AppLogger('VIDEO PATH TO BE COMPRESSED----', videoPath)
+    AppLogger('VIDEO PATH TO BE THUMBNAIL GENERATED----', videoPath)
     createThumbnail({
         url: videoPath,
         timeStamp: 2000,
         format: 'png',
     }).then(response => {
         AppLogger('--------------THUMBNAIL GENERATION RES----------', response)
+        debugger
         if (response.path)
             callback(response.path)
         else

@@ -22,6 +22,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
 
     let [state, setState] = useState({
         loading: true,
+        focused: true,
         comments: [],
         LHeight: 0,
         LWidth: 0,
@@ -63,10 +64,15 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
     useEffect(() => {
         const unsubscribeFocus = navigation.addListener('focus', e => {
             getsinglepostbyidhelper();
+            setState(prev => ({ ...prev, focused: true }))
+        });
+        const unsubscribeBlur = navigation.addListener('blur', e => {
+            setState(prev => ({ ...prev, focused: false }))
         });
 
         return () => {
             unsubscribeFocus();
+            unsubscribeBlur();
         }
     }, [])
 
@@ -183,7 +189,9 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                 <>
                     {state.comments.length < 1 && postData ?
                         <View style={{ paddingBottom: RFValue(20) }}>
-                            <PostCard item={postData} navigation={navigation} startPlaying={true} />
+                            <PostCard
+                                // goBack={() => navigation.goBack()}
+                                item={postData} navigation={navigation} startPlaying={state.focused} />
                         </View>
                         : null}
 
@@ -200,7 +208,9 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 <>
                                     {index === 0 && postData ?
                                         <View style={{ paddingBottom: RFValue(20) }}>
-                                            <PostCard item={postData} navigation={navigation} startPlaying={true} />
+                                            <PostCard
+                                                // goBack={() => navigation.goBack()}
+                                                item={postData} navigation={navigation} startPlaying={state.focused} />
                                         </View>
                                         : null}
 

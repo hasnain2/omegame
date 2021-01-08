@@ -5,7 +5,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_MENU } from '../../assets/icons';
 import { AppUserBoxNameAvatar } from '../components';
 import { AppPostMenuContents } from './AppPostMenuContents';
-const PostPoolTopBar = ({ item, navigation }) => {
+const PostPoolTopBar = ({ item, navigation, goBack }) => {
     let [state, setState] = useState({
         showMenu: '',
     })
@@ -20,7 +20,7 @@ const PostPoolTopBar = ({ item, navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <AppPostMenuContents navigation={navigation} item={item} show={state.showMenu === item?._id}
+            <AppPostMenuContents goBack={goBack} navigation={navigation} item={item} show={state.showMenu === item?._id}
                 toggle={() => { setState(prev => ({ ...prev, showMenu: '' })) }} />
         </>
     )

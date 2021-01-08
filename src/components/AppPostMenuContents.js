@@ -12,7 +12,7 @@ import { DeletePost, FollowPost } from '../services/postService';
 import { FRIEND_STATUSES_ACTIONS } from '../utils/AppConstants';
 import { AppLogger } from '../utils/AppHelperMethods';
 import { AppModal } from './AppModal';
-const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
+const AppPostMenuContents = ({ navigation, item, show, goBack, toggle }) => {
     let { user } = useSelector(state => state.root);
     let [state, setState] = useState({
         isFollowing: item.isFollowing || false,
@@ -38,7 +38,11 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
                             <AppText size={2} color="white" style={{ flex: 1 }}>Modify</AppText>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            DeletePost((res) => { toggle(); }, item?._id)
+                            DeletePost((res) => {
+                                toggle();
+                                if (goBack)
+                                    goBack();
+                            }, item?._id)
                         }} style={styles.modalListItemStyle}>
                             <View style={{ justifyContent: "center", alignItems: 'center', flex: 0.15 }}>
                                 <Image source={ICON_DELETE} style={{ height: RFValue(30), width: RFValue(30), tintColor: 'white' }} />
@@ -94,7 +98,8 @@ const AppPostMenuContents = ({ navigation, item, show, toggle }) => {
                                     text: "Block", onPress: () => {
                                         RemovePostsOfUserFromReduxStore(item?.createdBy?._id);
                                         ActionsOnUsers(() => {
-
+                                            if (goBack)
+                                                goBack();
                                         }, item?.createdBy?._id, FRIEND_STATUSES_ACTIONS.BLOCKED)
                                         toggle();
                                     }

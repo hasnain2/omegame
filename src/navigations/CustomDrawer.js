@@ -73,7 +73,7 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
                     let ICON = null;
                     let NAV_NAME = '';
                     if (itm === "Home") {
-                        NAV_NAME = ""
+                        NAV_NAME = "Home"
                         ICON = () => <Image key={`${indx}key`} source={ICON_HOME} style={ICONSTYLE} />
                     } else if (itm === "UserProfileCustomizeScreen") {
                         ICON = () => <Image key={`${indx}key`} source={ICON_CUSTOMIZE} style={ICONSTYLE} />
@@ -88,7 +88,12 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
                     }
                     return (
                         <TouchableOpacity key={`${indx}key`} activeOpacity={0.7} onPress={() => {
-                            navigation.push(NAV_NAME || itm)
+                            if (NAV_NAME === 'Home') {
+                                navigation.toggleDrawer()
+                            } else {
+                                navigation.toggleDrawer()
+                                navigation.push(itm)
+                            }
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(13) }}>
                                 <View style={{ flex: 0.15, justifyContent: 'center', alignItems: 'center' }}>

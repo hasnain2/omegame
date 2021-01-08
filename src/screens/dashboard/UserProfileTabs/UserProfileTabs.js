@@ -2,22 +2,19 @@
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React, { useEffect } from 'react';
-import { Dimensions, Image, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
 import { ICON_GAME, ICON_PHOTO, ICON_TAG, ICON_TEXT } from '../../../../assets/icons';
 import { AppTheme } from '../../../config';
-import { UserProfileExtras } from './UserProfileExtras';
 import { UserProfileGridPosts } from './UserProfileGridPosts';
 import { UserProfilePosts } from './UserProfilePosts';
 import { UserProfileReviews } from './UserProfileReviews';
 const Tab = createMaterialTopTabNavigator();
-const SCREEN_HEIGHT = Dimensions.get('screen').height;
-const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
+
+const UserProfileTabs = ({ navigation, autoPlay, userID }) => {
 
     useEffect(() => {
-
-    }, [])
+    }, [autoPlay])
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -85,7 +82,7 @@ const UserProfileTabs = ({ navigation, scrollPosition, autoPlay, userID }) => {
                         <UserProfilePosts {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
-                            autoPlay={true} />
+                            autoPlay={autoPlay} />
                     </View>
                 )}
             </Tab.Screen>

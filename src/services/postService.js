@@ -46,6 +46,11 @@ const CreatePostService = (callback, formData) => {
     if (formData.file) {
         UploadMedia((results) => {
             if (results) {
+                AppLogger('----------', '')
+                AppLogger('----------', '')
+                AppLogger('----------', '')
+                AppLogger('----------', JSON.stringify(results))
+                debugger
                 creatPostHelper((creatResults) => {
                     if (creatResults)
                         callback(creatResults)
@@ -58,11 +63,11 @@ const CreatePostService = (callback, formData) => {
                         type: results?.oType,
                         url: results?.url,
                         bucket: formData.privacy !== 'Public' ? BUCKETS.MEDIA_PRIVATE : BUCKETS.MEDIA_PUBLIC,
-                        meta: results?.thumbnail?.thumbnail ? [{
+                        meta: results?.thumbnail?.thumbnail ? {
                             type: results?.thumbnail?.oType || results?.thumbnail?.type,
                             url: results?.thumbnail?.url,
-                            isThumbnail: results?.thumbnail?.thumbnail ? true : false
-                        }] : null
+                            isThumbnail: true
+                        } : null
                     }]
                 })
                 AppLogger('---------CREATE POST UPLOAD MEDIA RESPONSE---------->', results)

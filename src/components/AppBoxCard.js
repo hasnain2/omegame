@@ -11,9 +11,12 @@ const AppBoxCard = ({ item, navigation, size, startPlaying }) => {
         <View style={{ height: size, width: size, }}>
             {item.attachments && item.attachments.length > 0 ?
                 item?.attachments[0]?.type.includes('video') ?
-                    <View style={{ height: size, width: size }}>
-                        <AppVideoPlayer source={{ uri: item?.attachments[0]?.url }} startPlaying={false} />
-                    </View>
+                    item?.attachments[0]?.meta?.url ?
+                        <FastImage source={{ uri: item?.attachments[0]?.meta?.url }} style={{ height: size, width: size }} resizeMode={"cover"} />
+                        :
+                        <View style={{ height: size, width: size }}>
+                            <AppVideoPlayer source={{ uri: item?.attachments[0]?.url }} startPlaying={false} />
+                        </View>
                     :
                     <FastImage source={{ uri: item?.attachments[0]?.url }} style={{ height: size, width: size }} />
                 : null}

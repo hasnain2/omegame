@@ -9,7 +9,7 @@ import { AppBackButton, AppSwitchButton, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { setUser } from '../../redux/reducers/userSlice';
 import { store } from '../../redux/store';
-import { UpdateProfile } from '../../services';
+import { GetSingleUserProfile, UpdateProfile } from '../../services';
 import { GetAppSettings, SetAppSettings } from '../../services/appSettingsService';
 import { LogOutUser } from '../../services/authService';
 import { AppLogger } from '../../utils/AppHelperMethods';
@@ -27,6 +27,12 @@ const AppSettingsScreen = ({ navigation, route, }) => {
     })
 
     useEffect(() => {
+        GetSingleUserProfile((userDta) => {
+            if (userDta) {
+                store.dispatch(setUser({ ...userDta }))
+                storeData('user', { ...user, ...userDta })
+            }
+        }, user?._id)
         GetAppSettings((appSettingsResponse) => {
             if (appSettingsResponse) {
                 setState(prev => ({ ...prev, isNotificationOn: appSettingsResponse?.notificationsAllowed }))

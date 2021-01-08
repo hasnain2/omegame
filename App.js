@@ -23,13 +23,14 @@ const App = ({ }) => {
   });
   let navRef = useRef(null)
   let { user, settings } = useSelector(state => state.root);
-  if (user?._id) {
-    firebase.messaging().subscribeToTopic(user?._id);
-  }
+
   useEffect(() => {
     getData('user', (storageUser) => {
       setState({ loading: false })
       if (storageUser) {
+        if (storageUser?._id) {
+          firebase.messaging().subscribeToTopic(storageUser?._id);
+        }
         Interceptor.setToken(storageUser.token);
         store.dispatch(setUser(storageUser));
       }

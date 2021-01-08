@@ -11,16 +11,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ICON_BLOCK, ICON_CUSTOMIZE, ICON_MENU, ICON_MUTE, ICON_REPORT, ICON_SETTINGS, ICON_UNFOLLOW } from '../../../assets/icons';
 import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppButton, AppGoldCoin, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
+import IsViewInViewPort from '../../components/IsViewInViewPort';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setUser } from '../../redux/reducers/userSlice';
 import { RemovePostsOfUserFromReduxStore } from '../../services';
 import { ActionsOnUsers, GetSingleUserProfile } from '../../services/profileService';
 import { FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
-import { AppLogger, AppShowToast, largeNumberShortify } from '../../utils/AppHelperMethods';
+import { AppLogger, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { MaterialIcons } from '../../utils/AppIcons';
 import { UserProfileTabs } from './UserProfileTabs/UserProfileTabs';
-import InViewPort from "@coffeebeanslabs/react-native-inviewport";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -68,8 +68,9 @@ const UserProfileScreen = ({ navigation, route, }) => {
     }, [])
 
     const checkVisible = isVisible => {
-        if (isVisible != state.isVisible)
+        if (isVisible !== state.isVisible) {
             setState(prev => ({ ...prev, isVisible }))
+        }
     };
 
     function followOrCancelRequest(req) {
@@ -212,24 +213,23 @@ const UserProfileScreen = ({ navigation, route, }) => {
                         </View>}
                 </View>
 
-                <InViewPort onChange={(isVisible) => {
-                    checkVisible(isVisible)
-                }}>
+                <IsViewInViewPort
+                    offset={RFValue(200)}
+                    onChange={(isVisible) => {
+                        AppLogger('-----------', isVisible)
+                        checkVisible(isVisible)
+                    }}>
                     <View
                         style={{ height: state.LHeight - RFValue(50), width: state.LWidth, }}>
                         <UserProfileTabs
                             userID={route.params.userID}
                             navigation={navigation}
                             route={route}
-                            scrollPosition={({ scroll, index }) => {
-                                if (scroll && scroll < 300 && index < 3)
-                                    setState(prev => ({ ...prev, enableScrollViewScroll: true }));
-                            }}
                             decelerationRate={0.2}
                             autoPlay={state.isVisible}
                         />
                     </View>
-                </InViewPort>
+                </IsViewInViewPort>
             </ScrollView>
 
             <AppModal show={state.showMenu}

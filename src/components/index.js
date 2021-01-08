@@ -33,5 +33,6 @@ export * from './AppPostsListingsGrid';
 export * from './AppBoxCard';
 export * from './AppUserListingWithFollowButtons';
 export * from './AppModal';
+export * from './IsViewInViewPort';
 export * from './AppFriendsListModal';
 export * from './AppGooglePlacesAutoFill';

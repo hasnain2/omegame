@@ -8,6 +8,7 @@ import { EndPoints } from '../utils/AppEndpoints'
 import { AppLogger, AppShowToast, CapitalizeFirstLetter } from '../utils/AppHelperMethods'
 import { clearStorage, getData, removeItemsFromLocalStorage, storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
+import iid from '@react-native-firebase/iid'
 const LogInUser = (callback, formData) => {
     fetch(EndPoints.LOGIN, {
         method: 'POST',
@@ -17,7 +18,9 @@ const LogInUser = (callback, formData) => {
         if (status === 201 || status === 200) {
             Interceptor.setToken(data?.data?.access_token || "");
             let UserObj = { ...data.data.user, ...data?.data?.user?.profile, token: data.data.access_token, email: formData?.userName };
-
+            if (UserObj?._id) {
+                firebase.messaging().subscribeToTopic(UserObj?._id);
+            }
             storeData('user', UserObj).then(res => {
                 store.dispatch(setUser(UserObj))
                 callback(UserObj)
@@ -27,7 +30,6 @@ const LogInUser = (callback, formData) => {
         } else
             callback(false)
     }).catch((error) => {
-        AppLogger('---------LOGIN ERROR-----------', error)
         callback(false)
     });
 
@@ -89,9 +91,11 @@ const ChangePassword = (callback, formedData) => {
     });
 }
 
-const LogOutUser = (callback) => {
-    if (store.getState()?.root?.user?._id)
-        firebase.messaging().unsubscribeFromTopic(store.getState()?.root?.user?._id)
+const LogOutUser = async (callback) => {
+    try {
+        let unsubRes = await firebase.messaging().unsubscribeFromTopic(store.getState()?.root?.user?._id)
+    } catch (err) { }
+
     getData('rememberMe', (dta) => {
         if (dta) {
             removeItemsFromLocalStorage(['user']);

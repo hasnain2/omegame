@@ -83,18 +83,19 @@ const UploadMedia = (callback, bucket, mediaObj) => {
     VideoAndImageCompressor(mediaObj).then((compressionResponse) => {
         let fileName = 'assetmedia.' + (compressionResponse.oType.split('/')[1] ? ('' + compressionResponse.oType.split('/')[1]) : '');
         let multiFormData = new FormData()
-        multiFormData.append('files', { uri: compressionResponse.compressed.uri, name: fileName, type: compressionResponse.oType });
+        multiFormData.append('files', { uri: compressionResponse?.compressed?.uri, name: fileName, type: compressionResponse?.oType });
         postFiles((fileUploadRes) => {
 
             if (fileUploadRes) {
-                if (mediaObj.type === 'video') {
+                if (mediaObj?.type === 'video' || mediaObj?.type?.includes('video')) {
                     GenerateThumbnailFromVideo((thumbnail) => {
                         if (thumbnail) {
                             let multiFormDataForThumbnail = new FormData()
                             multiFormDataForThumbnail.append('files', { uri: thumbnail, name: "thumbnail.png", type: 'image/png' });
+                            debugger
                             postFiles((thumbnailUploadRes) => {
                                 if (thumbnailUploadRes) {
-                                    callback({ ...fileUploadRes, thumbnail: { thumbnail: true, url: thumbnailUploadRes.url, oType: 'image/png' }, thumbnail: true })
+                                    callback({ ...fileUploadRes, thumbnail: { thumbnail: true, url: thumbnailUploadRes.url, oType: 'image/png' } })
                                 } else {
                                     callback(fileUploadRes)
                                 }
@@ -102,7 +103,7 @@ const UploadMedia = (callback, bucket, mediaObj) => {
                         } else {
                             callback(fileUploadRes)
                         }
-                    }, mediaObj?.uri2 || mediaObj?.image?.uri2 || mediaObj?.image?.uri || mediaObj.uri)
+                    }, compressionResponse?.compressed?.uri)
                 } else {
                     callback(fileUploadRes)
                 }
