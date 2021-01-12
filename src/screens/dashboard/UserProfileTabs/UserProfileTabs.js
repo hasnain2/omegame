@@ -9,10 +9,10 @@ import { AppTheme } from '../../../config';
 import { UserProfileGridPosts } from './UserProfileGridPosts';
 import { UserProfilePosts } from './UserProfilePosts';
 import { UserProfileReviews } from './UserProfileReviews';
+import { UserProfileTaggedInPosts } from './UserProfileTaggedInPosts';
 const Tab = createMaterialTopTabNavigator();
 
 const UserProfileTabs = ({ navigation, autoPlay, userID }) => {
-
     useEffect(() => {
     }, [autoPlay])
     return (
@@ -108,22 +108,12 @@ const UserProfileTabs = ({ navigation, autoPlay, userID }) => {
             </Tab.Screen>
             <Tab.Screen name="UserProfileExtras"  >
                 {(props) => (
-                    <View style={{ flex: 1 }}>
-                        <UserProfileGridPosts {...props}
+                    <View style={{ flex: 1, }}>
+                        <UserProfileTaggedInPosts {...props}
                             style={{ backgroundColor: AppTheme.colors.background }}
                             userID={userID}
                             autoPlay={autoPlay} />
                     </View>
-
-                    // <View style={{ flex: 1 }}>
-                    //     <UserProfileExtras {...props}
-                    //         style={{ backgroundColor: AppTheme.colors.background }}
-                    //         userID={userID}
-                    //         scrollPosition={(dta) => {
-                    //             scrollPosition ? scrollPosition(dta) : null
-                    //         }}
-                    //         autoPlay={autoPlay} />
-                    // </View>
                 )}
             </Tab.Screen>
         </Tab.Navigator>

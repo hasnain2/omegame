@@ -29,10 +29,11 @@ const SearchScreen = ({ route, navigation }) => {
         const unsubscribeBlur = navigation.addListener('blur', e => {
             store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
         });
-
+        console.log('-^^^^^^^^^^^-SEARCH SCREEN MOUNTED-^^^^^^6')
         return () => {
             unsubscribeFocus();
             unsubscribeBlur();
+            console.log('-vvvvvvvv-SEARCH SCREEN destroyed-vvvvvvvvv6')
         }
     }, [])
     return (

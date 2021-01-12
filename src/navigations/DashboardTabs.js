@@ -79,7 +79,7 @@ async function notificationHandler(noti, navigation) {
   } else if (noti?.comment) {
     try {
       const post = await GetPostByCommentID(noti?.comment);
-      navigation.push("PostDetailScreenWithComments", { post })
+      navigation.push("PostDetailScreenWithComments", { postID: post?._id })
     } catch (err) { }
   } else if (noti?.post) {
     navigation.push("PostDetailScreenWithComments", { postID: noti?.post })
@@ -146,7 +146,7 @@ const DrawerDashboardTabsExtra = ({ navigation }) => {
     <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawer {...props} />}
       drawerStyle={{ width: '85%' }}
     >
-      <Drawer.Screen name="Home" component={DashboardTabsExtra} />
+      <Drawer.Screen  name="Home" component={DashboardTabsExtra} />
       <Drawer.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
       <Drawer.Screen name="OmegaStore" component={OmegaStoreTabs} />
       <Drawer.Screen name="UserSavedPosts" component={UserSavedPosts} />

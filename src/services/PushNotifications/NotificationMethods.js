@@ -4,7 +4,7 @@ import { AppConfig } from '../../config';
 import { EndPoints } from '../../utils/AppEndpoints';
 import { AppLogger } from '../../utils/AppHelperMethods';
 import Interceptor from '../../utils/Interceptor';
-
+const LIMIT = 100;
 const getFCMToken = (callback) => {
     iid().getToken().then(token => {
         AppLogger('------|||||||---FCM TOKEN---|||||||------', '')
@@ -28,9 +28,8 @@ const AppShowPushNotification = (title, body, onPress) => {
     }
 }
 
-
 const GetNotificationHistory = (callback, cursor) => {
-    fetch(`${EndPoints.GET_NOTIFICATION_HISTORY}${cursor ? ("?cursor=" + cursor + "&limit=" + 3) : ''}`, {
+    fetch(`${EndPoints.GET_NOTIFICATION_HISTORY}?limit=${LIMIT}${cursor ? ("&cursor=" + cursor) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {

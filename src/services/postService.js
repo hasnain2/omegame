@@ -46,11 +46,6 @@ const CreatePostService = (callback, formData) => {
     if (formData.file) {
         UploadMedia((results) => {
             if (results) {
-                AppLogger('----------', '')
-                AppLogger('----------', '')
-                AppLogger('----------', '')
-                AppLogger('----------', JSON.stringify(results))
-                debugger
                 creatPostHelper((creatResults) => {
                     if (creatResults)
                         callback(creatResults)
@@ -184,12 +179,26 @@ const GetExploreMediaOnlyPosts = (callback, cursor, query) => {
 }
 
 const GetPostsOfSpecificUser = (callback, userID) => {
-    AppLogger('', EndPoints.GET_POSTS_OF_SPECIFIC_USER + userID)
     fetch(EndPoints.GET_POSTS_OF_SPECIFIC_USER + 'userId=' + userID, {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        // AppLogger('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
+        AppLogger('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        AppLogger('---------SPECIFIC USER POSTS ERROR-----------', error)
+        callback(false)
+    });
+}
+const GetPostsOfSpecificUserWhereTaggedIn = (callback, query) => {
+    fetch(EndPoints.GET_POSTS_OF_SPECIFIC_USER + 'userId=' + query, {
+        method: 'GET',
+        headers: Interceptor.getHeaders()
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('-----------SPECIFIC USER POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -447,6 +456,7 @@ const GetPostByCommentID = async (commentID) => {
 }
 export {
     GetCommentsOfPost,
+    GetPostsOfSpecificUserWhereTaggedIn,
     GetPostByCommentID,
     CommentReaction,
     GetCommentsReplies,

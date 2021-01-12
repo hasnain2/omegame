@@ -1,5 +1,4 @@
 
-
 import moment from 'moment';
 import React, { useState } from 'react';
 import { FlatList, TextInput, TouchableOpacity, View } from 'react-native';
@@ -26,7 +25,6 @@ const RateGameScreen = ({ navigation, route, }) => {
         showFilter: false
     })
     let { user } = useSelector(state => state.root);
-
 
     const onSubmit = () => {
         if (state.reviewText.trim()) {
@@ -143,7 +141,11 @@ const RateGameScreen = ({ navigation, route, }) => {
                         <AppButton bgColor={'#1b1b1b'} label={"SELECT"} onPress={() => { setState(prev => ({ ...prev, showFilter: false })) }} />
                     </View>
 
-                    <AppText onPress={() => setState(prev => ({ ...prev, showFilter: false }))} color={AppTheme.colors.red} size={2} style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
+                    <AppText onPress={() => {
+                        setState(prev => ({ ...prev, selectedConsole: 'Ps4', showFilter: false }))
+                    }} color={AppTheme.colors.red} size={2}
+                        style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}
+                    >Reset</AppText>
                 </View>
             </AppModal>
         </View>

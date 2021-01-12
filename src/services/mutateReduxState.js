@@ -11,7 +11,7 @@ const UpdatePostFromReduxStore = (newPost) => {
     let newPosts = [...tempuserProfileData.posts.slice()]
     let newMedia = [...tempuserProfileData.media.slice()]
     let newReviews = [...tempuserProfileData.reviews.slice()]
-    let newUsers = [...tempuserProfileData.users.slice()]
+    let newUsers = [...tempuserProfileData.taggedInPosts.slice()]
 
     let tempuserProfileDataPostsIndex = newPosts?.findIndex(ii => ii?._id === newPost?._id)
     let tempuserProfileDataMediaIndex = newMedia?.findIndex(ii => ii?._id === newPost?._id)
@@ -35,7 +35,7 @@ const UpdatePostFromReduxStore = (newPost) => {
 
     if (tempuserProfileDataUsersIndex > -1) {
         newUsers[tempuserProfileDataUsersIndex] = { ...newPost }
-        tempuserProfileData = { ...tempuserProfileData, users: newUsers }
+        tempuserProfileData = { ...tempuserProfileData, taggedInPosts: newUsers }
     }
 
     /*-----------UPDATE USER PROFILE TABS DATA END-------------*/

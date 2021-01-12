@@ -68,7 +68,7 @@ const NotificationScreen = ({ navigation, route, }) => {
             if (item?.comment) {
                 try {
                     const post = await GetPostByCommentID(item?.comment);
-                    navigation.navigate("PostDetailScreenWithComments", { post })
+                    navigation.navigate("PostDetailScreenWithComments", { postID: post?._id })
                 } catch (err) { }
             }
         } else if (item?.type === NOTIFICATION_TYPES.POST) {

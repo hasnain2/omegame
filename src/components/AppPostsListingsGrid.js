@@ -24,21 +24,13 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
 
     let [state, setState] = useState({
         currentItemIndex: 0,
-        focused: true,
         showPost: false,
     })
 
     useEffect(() => {
-        const unsubscribeFocusListner = navigation.addListener('focus', () => {
-            setState(prev => ({ ...prev, focused: true }))
-        });
-        const unsubscribeBlur = navigation.addListener('blur', () => {
-            setState(prev => ({ ...prev, focused: false }))
-        });
-
+        console.log('-^^^^^^^^^^^^-SEARCH GRID MOUNTED-^^^^^^^^^^^^')
         return () => {
-            unsubscribeFocusListner();
-            unsubscribeBlur();
+            console.log('-vvvvvvvvvvv-SEARCH GRID destroyed-vvvvvvvvvvv')
         }
     })
 

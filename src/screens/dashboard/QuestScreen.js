@@ -19,7 +19,6 @@ const TRANS_BLACK = 'rgba(0,0,0,0.0)';
 const BLACK = 'black';
 const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, BLACK, BLACK];
 
-
 const QuestScreen = ({ route, navigation }) => {
     let { user } = useSelector(state => state.root)
     let [state, setState] = useState({

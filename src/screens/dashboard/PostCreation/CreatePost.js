@@ -62,7 +62,7 @@ const CreatePost = ({ navigation, route }) => {
                 privacy: PRIVACY.find(ii => ii.name === state.privacy)?.key || 'PUBLIC',
                 text: state.whatsNewText,
             }
-debugger
+            debugger
             if (state.chosenContacts?.length > 0)
                 payload.tagged = state.chosenContacts.map(ii => ii?._id);
 

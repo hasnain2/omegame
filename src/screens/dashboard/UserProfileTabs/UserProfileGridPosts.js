@@ -28,7 +28,6 @@ const UserProfileGridPosts = ({ navigation, userID }) => {
                     style={{ backgroundColor: 'black' }} />}
             {state.loading && userProfileData?.media.length < 1 ?
                 <AppLoadingView /> : null}
-
         </View>
     )
 }

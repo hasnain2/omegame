@@ -4,7 +4,7 @@ const initState = {
     posts: [],
     media: [],
     reviews: [],
-    users: []
+    taggedInPosts: []
 }
 
 export const userProfileDataSlice = createSlice({

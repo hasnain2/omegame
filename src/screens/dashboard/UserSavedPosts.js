@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppBackButton, AppLoadingView, AppNoDataFound, AppPostsListings } from '../../components';
 import { setSavedPosts } from '../../redux/reducers/savedPostsSlice';
-import { store } from '../../redux/store';
 import { GetBookmarkPosts } from '../../services/postService';
 import { RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
 let cursorArr = [];
@@ -24,7 +23,7 @@ const UserSavedPosts = ({ navigation, route }) => {
         if (!cursorArr.includes(cursor)) {
             GetBookmarkPosts((bookmarkResponse) => {
                 if (bookmarkResponse?.data && bookmarkResponse?.data?.length > 0) {
-                    let newArr = cursor ? [...store.getState().root.savedPosts, ...bookmarkResponse?.data] : bookmarkResponse?.data;
+                    let newArr = bookmarkResponse?.data;
                     dispatch(setSavedPosts(RemoveDuplicateObjectsFromArray(newArr)))
                 }
                 setState(prev => ({ ...prev, loading: false, refreshing: false, cursor: bookmarkResponse?.cursor || '' }))
@@ -58,7 +57,7 @@ const UserSavedPosts = ({ navigation, route }) => {
                             getbookmarkpostshelper(state.cursor)
                         };
                     }}
-                    data={savedPosts} />
+                    data={savedPosts.filter(io => io.isSaved)} />
             </View>
         </View>
     );

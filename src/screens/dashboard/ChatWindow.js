@@ -9,7 +9,7 @@ import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppInputToolBar, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { ActionsOnUsers, DeleteChat, GetChatMessages } from '../../services';
+import { ActionsOnUsers, DeleteChat, GetChatMessages, GetSingleUserProfile } from '../../services';
 import { socket } from '../../services/socketService';
 import { CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
 import { AppLogger, AppShowToast, getChatId } from '../../utils/AppHelperMethods';
@@ -37,10 +37,16 @@ const ChatWindow = ({ navigation, route, }) => {
                 setMessages(messagesRes)
         }, 0, route?.params?.friend?._id)
     }
-
+    const getsingleUserprofile = () => {
+        GetSingleUserProfile((profileRes) => {
+            if (profileRes)
+                setFriend({ chatId: chatID, ...profileRes })
+                debugger
+        }, friend?._id)
+    }
     useEffect(() => {
         getChatmsgeshelper();
-
+        getsingleUserprofile();
         let messagesListner = socket.on(CHAT_SOCKET_EVENTS.NEW_MESSAGE, msg => {
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg));
         });

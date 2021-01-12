@@ -8,7 +8,7 @@ import { ICON_ADD_FRIEND, ICON_PHOTO, ICON_TEXT } from '../../../../assets/icons
 import { AppPostsListings, AppPostsListingsGrid, AppUserListingWithFollowButtons } from '../../../components';
 import { AppTheme } from '../../../config';
 import { GetAllTrendingUsers, GetExploreMediaOnlyPosts, GetExplorePosts } from '../../../services';
-import { AppLogger, RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
+import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
 const Tab = createMaterialTopTabNavigator();
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
 const ICON_SIZE = RFValue(36);
@@ -17,8 +17,6 @@ let cursorArrPosts = [];
 let cursorArrMedia = [];
 let cursorArrUsers = [];
 const SearchTabs = ({ navigation, query, type }) => {
-    // query = query.replaceAll(':', "%")
-    AppLogger('----QUERY----', query)
     let [state, setState] = useState({
         loading: false,
         loadingPosts: true, refreshingPosts: false,
@@ -61,7 +59,6 @@ const SearchTabs = ({ navigation, query, type }) => {
                 } else {
                     setState(prev => ({ ...prev, loadingMedia: false, refreshingMedia: false, loading: false }))
                 }
-                debugger
             }, cursor, searchQuery);
             cursorArrMedia.push(cursor)
         } else {
@@ -99,7 +96,12 @@ const SearchTabs = ({ navigation, query, type }) => {
         getexplorepostshelper(false, query)
         getalltrendingusers(false, query)
 
-    }, [query])
+        console.log('-^^^^^^^^^^^-SEARCH TABS MOUNTED-^^^^^^6')
+
+        return () => {
+            console.log('-vvvvvvvvvvv-SEARCH TABS destroyed-vvvvvvvvvvv')
+        }
+    }, [query, type])
     return (
         <Tab.Navigator
             initialRouteName={type === 'users' ? "TabUsers" : "TabPosts"}

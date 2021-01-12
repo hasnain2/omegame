@@ -1,18 +1,19 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
 import { AppLoadingView } from './AppLoadingView';
 import { AppNoDataFound } from './AppNoDataFound';
 import { PoolCard } from './PoolCard';
 import { PostCard } from './PostCard';
-
+import { useScrollToTop } from '@react-navigation/native';
 const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshing, autoPlay = true }) => {
+    const flatListRef = useRef(null);
     let [state, setState] = useState({
         showMenu: '',
         currentItemIndex: 0,
         focused: true
     });
-
+    useScrollToTop(flatListRef);
     useEffect(() => {
         const unsubscribeFocusListner = navigation.addListener('focus', () => {
             setState(prev => ({ ...prev, focused: true }))
@@ -20,8 +21,9 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
         const unsubscribeBlur = navigation.addListener('blur', () => {
             setState(prev => ({ ...prev, focused: false }))
         });
-
+        console.log('-^^^^^^^^^^^-SEARCH POSTS MOUNTED-^^^^^^^^^^^')
         return () => {
+            console.log('-vvvvvvvvvvv-SEARCH POSTS destroyed-vvvvvvvvvvv')
             unsubscribeFocusListner();
             unsubscribeBlur();
         }
@@ -46,6 +48,7 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
                 <AppLoadingView />
                 : null}
             <FlatList
+                ref={flatListRef}
                 nestedScrollEnabled={true}
                 data={data}
                 refreshControl={

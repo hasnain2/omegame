@@ -29,31 +29,21 @@ const Login = ({ route, navigation }) => {
         email: __DEV__ ? 'asadalicodingpixel@gmail.com' : "", password: __DEV__ ? '@Sad123456' : "",
         loading: false,
         passwordVisible: true,
-        keyboardIsVisible: false
     });
-
+function tstts(){
+    let tomkm = "sldfsdf";
+    debugger
+}
     useEffect(() => {
+        tstts();
         getData('rememberMe', (dta) => {
+            tstts();
             if (dta)
                 setState(prev => ({ ...prev, rememberMe: true, email: dta.userName, password: dta.password }))
         })
-        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-
-        // cleanup function
-        return () => {
-            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-        };
+    
     }, []);
 
-    const _keyboardDidShow = () => {
-        setState(prev => ({ ...prev, keyboardIsVisible: true }))
-    };
-
-    const _keyboardDidHide = () => {
-        setState(prev => ({ ...prev, keyboardIsVisible: false }))
-    };
     const socialbuttonsclickhandler = (data) => {
         if (data) {
             if (true) { // got token proceen to login success and set user into redux and local storage
@@ -115,7 +105,7 @@ const Login = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            {/* {!state.keyboardIsVisible ? */}
+            
             <View style={{}}>
                 <InstagramLogin
                     ref={ref => setInstagramLoginRef(ref)}

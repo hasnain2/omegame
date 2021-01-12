@@ -86,27 +86,29 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
                     } else if (itm === "LeaveFeedBack") {
                         ICON = () => <Image key={`${indx}key`} source={ICON_FEEDBACK} style={ICONSTYLE} />
                     }
-                    return (
-                        <TouchableOpacity key={`${indx}key`} activeOpacity={0.7} onPress={() => {
-                            if (NAV_NAME === 'Home') {
-                                navigation.toggleDrawer()
-                            } else {
-                                navigation.toggleDrawer()
-                                navigation.push(itm)
-                            }
-                        }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(13) }}>
-                                <View style={{ flex: 0.15, justifyContent: 'center', alignItems: 'center' }}>
-                                    {ICON()}
+                    if (NAV_NAME !== 'Home')
+                        return (
+                            <TouchableOpacity key={`${indx}key`} activeOpacity={0.7} onPress={() => {
+                                if (NAV_NAME === 'Home') {
+                                    navigation.toggleDrawer()
+                                } else {
+                                    navigation.toggleDrawer()
+                                    navigation.push(itm)
+                                }
+                            }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(13) }}>
+                                    <View style={{ flex: 0.15, justifyContent: 'center', alignItems: 'center' }}>
+                                        {ICON()}
+                                    </View>
+                                    <AppText color="white" size={2} style={{ flex: 1, paddingLeft: RFValue(15) }}>{
+                                        itm === "UserSavedPosts" ?
+                                            "Saved Posts" :
+                                            itm === "AppSettingsScreen" ? "Account Settings" :
+                                                itm === "LeaveFeedBack" ? "Leave Feedback" : itm === "UserProfileCustomizeScreen" ? "Customize" : itm}</AppText>
                                 </View>
-                                <AppText color="white" size={2} style={{ flex: 1, paddingLeft: RFValue(15) }}>{
-                                    itm === "UserSavedPosts" ?
-                                        "Saved Posts" :
-                                        itm === "AppSettingsScreen" ? "Account Settings" :
-                                            itm === "LeaveFeedBack" ? "Leave Feedback" : itm === "UserProfileCustomizeScreen" ? "Customize" : itm}</AppText>
-                            </View>
-                        </TouchableOpacity>
-                    )
+                            </TouchableOpacity>
+                        )
+                    return null
                 })}
             </ScrollView>
         </View>

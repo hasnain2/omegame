@@ -26,7 +26,7 @@ const App = ({ }) => {
 
   useEffect(() => {
     getData('user', (storageUser) => {
-      setState({ loading: false })
+
       if (storageUser) {
         if (storageUser?._id) {
           firebase.messaging().subscribeToTopic(storageUser?._id);
@@ -34,8 +34,10 @@ const App = ({ }) => {
         Interceptor.setToken(storageUser.token);
         store.dispatch(setUser(storageUser));
       }
+      setTimeout(() => {
+        setState({ loading: false })
+      }, 700)
     });
-
   }, [])
   return (
     <PaperProvider theme={AppTheme}>
@@ -48,12 +50,15 @@ const App = ({ }) => {
             backgroundColor: settings.bgColor,
             //  backgroundColor: 'black' ,
           }}>
-            {state.loading ?
-              <AuthLoading />
-              : user.token ?
-                <DashboardTabs />
-                : <AuthStack />
-            }
+            {(() => {
+              if (user.token) {
+                return <DashboardTabs />
+              } else if (!state.loading && !user.token) {
+                return <AuthStack />
+              } else {
+                return <AuthLoading />
+              }
+            })()}
           </SafeAreaView>
         </MenuProvider>
         <NotificationPopup ref={ref => global.popupRef = ref} />

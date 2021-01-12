@@ -43,9 +43,9 @@ const AppInputToolBar = ({ LHeight, onSend, chat, removeTag, placeholder }) => {
                 bottom: Platform.OS === 'ios' ? state.keyboardIsVisible : 0,
             }]}>
             {removeTag && placeholder && state.comment ?
-                <AppText size={1} style={{paddingHorizontal:RFValue(15)}} >{placeholder}</AppText>
+                <AppText size={1} style={{ paddingHorizontal: RFValue(15) }} >{placeholder}</AppText>
                 : null}
-            <View style={{ flex: 1, borderColor: 'white', borderWidth: 1, borderRadius: 50, margin: RFValue(10), paddingHorizontal: RFValue(10), flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 1, borderColor: 'white', borderWidth: 1, borderRadius: 50, margin: RFValue(10), paddingLeft: RFValue(10), flexDirection: 'row', alignItems: 'center' }}>
                 {/* <Fontisto name="smiley" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(5) }} /> */}
                 <TextInput placeholderTextColor={AppTheme.colors.lightGrey} placeholder={placeholder ? placeholder : "Type a message"}
                     onChangeText={(txt) => { setState(prev => ({ ...prev, comment: txt })) }}
@@ -59,12 +59,15 @@ const AppInputToolBar = ({ LHeight, onSend, chat, removeTag, placeholder }) => {
                 {removeTag && placeholder && !state.comment.trim() ?
                     <AntDesign name="close" onPress={removeTag} style={{ color: 'white', fontSize: RFValue(30) }} />
                     :
-                    <AppText onPress={() => {
+                    <TouchableOpacity style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }} onPress={() => {
                         if (state.comment.trim()) {
                             onSend(state.comment.trim())
                             setState(prev => ({ ...prev, comment: "" }))
                         }
-                    }} color={AppTheme.colors.primary} size={2} bold={true} style={{ padding: RFValue(5), paddingVertical: RFValue(5) }} >SEND</AppText>
+                    }}>
+                        <AppText color={AppTheme.colors.primary} size={2}
+                            bold={true} style={{ paddingHorizontal: RFValue(15), textAlign: 'center', }} >SEND</AppText>
+                    </TouchableOpacity>
                 }
             </View>
 
