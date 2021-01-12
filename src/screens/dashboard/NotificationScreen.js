@@ -17,7 +17,7 @@ import { AntDesign } from '../../utils/AppIcons';
 
 let tempRequests = [];
 const NotificationScreen = ({ navigation, route, }) => {
-    let { user, notifications } = useSelector(state => state.root);
+    let { notifications } = useSelector(state => state.root);
 
     let dispatch = useDispatch();
     let [state, setState] = useState({
@@ -29,6 +29,12 @@ const NotificationScreen = ({ navigation, route, }) => {
         GetNotificationHistory((notificatioHistoryResponse) => {
             if (notificatioHistoryResponse) {
                 tempRequests = notificatioHistoryResponse.filter(ii => (ii?.portion === "upper"));
+                let tempArr = []
+                tempRequests.forEach(io => {
+                    if (io?.createdBy?.isFollowing)
+                        tempArr.push(io.createdBy._id)
+                })
+                setState(prev => ({ ...prev, isFollowingArray: tempArr }))
                 let tempPlanNotifications = notificatioHistoryResponse.filter(ii => (ii?.portion === "lower"));
 
                 dispatch(setNotifications({
@@ -47,7 +53,9 @@ const NotificationScreen = ({ navigation, route, }) => {
         let doesExists = tempData.findIndex(io => io === item?.createdBy?._id)
         if (doesExists > -1) {
             tempData.splice(doesExists, 1)
+            AppShowToast('Unfollowed!')
         } else {
+            AppShowToast('Follow request sent!')
             tempData.push(item?.createdBy?._id)
         }
         setState(prev => ({ ...prev, isFollowingArray: tempData }))
@@ -126,9 +134,10 @@ const NotificationScreen = ({ navigation, route, }) => {
                                                 <View  >
                                                     <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
                                                     <View style={{ position: 'absolute', bottom: RFValue(2), right: RFValue(2), backgroundColor: 'white', borderRadius: 90, }}>
-                                                        {item?.createdBy?.isRequested || item?.createdBy?.isFollowing || state.isFollowingArray.includes(item?.createdBy?._id) ?
+                                                        {state.isFollowingArray.includes(item?.createdBy?._id) ?
                                                             <AntDesign name={"minus"}
                                                                 onPress={() => {
+                                                                    AppLogger('-----------', JSON.stringify(item.createdBy))
                                                                     IsFollowingHelper(item);
                                                                     ActionsOnUsers(() => { }, item?.createdBy?._id, FRIEND_STATUSES_ACTIONS.UNFOLLOW)
                                                                 }}
@@ -136,6 +145,7 @@ const NotificationScreen = ({ navigation, route, }) => {
                                                             :
                                                             <AntDesign name={"pluscircle"}
                                                                 onPress={() => {
+                                                                    AppLogger('-----------', JSON.stringify(item.createdBy))
                                                                     IsFollowingHelper(item);
                                                                     ActionsOnUsers(() => { }, item?.createdBy?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)
                                                                 }}

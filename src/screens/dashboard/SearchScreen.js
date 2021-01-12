@@ -6,6 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { AppButton, AppModal, AppRadioButton, AppSearchBar, AppText } from '../../components';
 import { AppTheme } from '../../config';
 import { MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
+import { setQuery } from '../../redux/reducers/querySlice';
 import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
@@ -21,6 +22,23 @@ const SearchScreen = ({ route, navigation }) => {
         sortPostBy: '',
         sortPostByTime: 'Newest'
     });
+    useEffect(() => {
+
+    }, [type])
+
+    const setQueryHelper = (searchTerm) => {
+        store.dispatch(setQuery(`${state.sortPostBy ? ('&sort=' + state.sortPostBy.toUpperCase()) : ''}${searchTerm ? ("&search=" + searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
+            : state.sortPostByTime === 'Past week' ? GetLastWeekStartOf()
+                : state.sortPostByTime === 'Past month' ? GetLastMonthStartOf()
+                    : state.sortPostByTime === 'Past year' ? GetLastYearStartOf()
+                        : GetLastYearStartOf()
+            }&to=${state.sortPostByTime === 'Newest' ? GetCurrentDate()
+                : state.sortPostByTime === 'Past week' ? GetLastWeekEndOf()
+                    : state.sortPostByTime === 'Past month' ? GetLastMonthEndOf()
+                        : state.sortPostByTime === 'Past year' ? GetLastYearEndOf()
+                            : GetCurrentDate()
+            }`))
+    }
 
     useEffect(() => {
         const unsubscribeFocus = navigation.addListener('focus', e => {
@@ -29,6 +47,9 @@ const SearchScreen = ({ route, navigation }) => {
         const unsubscribeBlur = navigation.addListener('blur', e => {
             store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
         });
+
+        setQueryHelper('');
+
         console.log('-^^^^^^^^^^^-SEARCH SCREEN MOUNTED-^^^^^^6')
         return () => {
             unsubscribeFocus();
@@ -39,24 +60,15 @@ const SearchScreen = ({ route, navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
             <View style={{ padding: RFValue(10), paddingBottom: 0 }}>
-                <AppSearchBar onChangeText={(val) => setState(prev => ({ ...prev, searchTerm: val }))}
-                    onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
+                <AppSearchBar onChangeText={(val) => {
+                    setState(prev => ({ ...prev, searchTerm: val }))
+                    setQueryHelper(val)
+                }} onRightPess={() => { setState(prev => ({ ...prev, showFilter: true })) }} />
             </View>
             <View style={{ flex: 1, backgroundColor: AppTheme.colors.darkGrey }}>
                 <SearchTabs navigation={navigation}
                     // &sort=${state.sortPostBy.toUpperCase()}
                     type={type}
-                    query={`${state.sortPostBy ? ('&sort=' + state.sortPostBy.toUpperCase()) : ''}${state.searchTerm ? ("&search=" + state.searchTerm) : ''}&from=${state.sortPostByTime === 'Newest' ? GetLastMonthStartOf()
-                        : state.sortPostByTime === 'Past week' ? GetLastWeekStartOf()
-                            : state.sortPostByTime === 'Past month' ? GetLastMonthStartOf()
-                                : state.sortPostByTime === 'Past year' ? GetLastYearStartOf()
-                                    : GetLastYearStartOf()
-                        }&to=${state.sortPostByTime === 'Newest' ? GetCurrentDate()
-                            : state.sortPostByTime === 'Past week' ? GetLastWeekEndOf()
-                                : state.sortPostByTime === 'Past month' ? GetLastMonthEndOf()
-                                    : state.sortPostByTime === 'Past year' ? GetLastYearEndOf()
-                                        : GetCurrentDate()
-                        }`}
                 />
             </View>
 
@@ -121,14 +133,20 @@ const SearchScreen = ({ route, navigation }) => {
                         : null}
 
                     <View style={{ paddingTop: RFValue(20) }}>
-                        <AppButton bgColor={'#1b1b1b'} label={"START"} onPress={() => { setState(prev => ({ ...prev, showFilter: false })) }} />
+                        <AppButton bgColor={'#1b1b1b'} label={"START"} onPress={() => {
+                            setState(prev => ({ ...prev, showFilter: false }))
+                            setQueryHelper(state.searchTerm);
+                        }} />
                     </View>
 
-                    <AppText onPress={() => setState(prev => ({
-                        ...prev,
-                        sortPostBy: 'Best',
-                        sortPostByTime: 'Newest'
-                    }))}
+                    <AppText onPress={() => {
+                        setState(prev => ({
+                            ...prev,
+                            sortPostBy: 'Best',
+                            sortPostByTime: 'Newest'
+                        }))
+                        setQueryHelper(state.searchTerm);
+                    }}
                         color={AppTheme.colors.red} size={2}
                         style={{ paddingTop: RFValue(20), paddingBottom: RFValue(10), textAlign: 'center' }}>Reset</AppText>
                 </View>

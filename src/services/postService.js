@@ -151,7 +151,7 @@ const GetExplorePosts = (callback, cursor, query) => {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------EXPLORE POSTS RESPONSE-----------', JSON.stringify(data))
+        // AppLogger('-----------EXPLORE POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -167,7 +167,7 @@ const GetExploreMediaOnlyPosts = (callback, cursor, query) => {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------EXPLORE MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
+        // AppLogger('-----------EXPLORE MEDIA ONLY POSTS RESPONSE-----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else

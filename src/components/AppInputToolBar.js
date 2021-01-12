@@ -38,7 +38,7 @@ const AppInputToolBar = ({ LHeight, onSend, chat, removeTag, placeholder }) => {
 
     return (
         <LinearGradient colors={['rgba(0,0,0,0)', 'black', 'black', 'black']}
-            style={[chat ? { width: '100%', height: RFValue(80) } : {
+            style={[ {
                 position: 'absolute', left: 0, right: 0,
                 bottom: Platform.OS === 'ios' ? state.keyboardIsVisible : 0,
             }]}>

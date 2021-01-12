@@ -26,13 +26,6 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
         showPost: false,
     })
 
-    useEffect(() => {
-        console.log('-^^^^^^^^^^^^-SEARCH GRID MOUNTED-^^^^^^^^^^^^')
-        return () => {
-            console.log('-vvvvvvvvvvv-SEARCH GRID destroyed-vvvvvvvvvvv')
-        }
-    }, [])
-
     return (
         <View style={[{ flex: 1, paddingTop: RFValue(10), backgroundColor: AppTheme.colors.background }, style ? style : null]}>
             {!loading && data.length < 1 ?

@@ -49,7 +49,7 @@ const GetAllTrendingUsers = (callback, cursor, query) => {
         method: 'GET',
         headers: Interceptor.getHeaders(),
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------GET ALL TRENDING USERS RES----------', JSON.stringify(data))
+        // AppLogger('-----------GET ALL TRENDING USERS RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else

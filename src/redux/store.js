@@ -11,6 +11,7 @@ import settings from './reducers/settingsSlice';
 import notifications from './reducers/notificationsSlice';
 import postData from './reducers/postDataSlice';
 import userProfileData from './reducers/userProfileDataSlice';
+import query from './reducers/querySlice';
 
 const rootReducer = combineReducers({
     user: user,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     notifications: notifications,
     postData: postData,
     userProfileData: userProfileData,
+    query: query,
 });
 
 export const store = configureStore({

@@ -21,9 +21,8 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
         const unsubscribeBlur = navigation.addListener('blur', () => {
             setState(prev => ({ ...prev, focused: false }))
         });
-        console.log('-^^^^^^^^^^^-SEARCH POSTS MOUNTED-^^^^^^^^^^^')
+        
         return () => {
-            console.log('-vvvvvvvvvvv-SEARCH POSTS destroyed-vvvvvvvvvvv')
             unsubscribeFocusListner();
             unsubscribeBlur();
         }

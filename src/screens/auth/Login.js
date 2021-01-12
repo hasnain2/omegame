@@ -33,7 +33,6 @@ const Login = ({ route, navigation }) => {
 
     useEffect(() => {
         getData('rememberMe', (dta) => {
-            tstts();
             if (dta)
                 setState(prev => ({ ...prev, rememberMe: true, email: dta.userName, password: dta.password }))
         })

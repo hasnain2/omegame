@@ -41,7 +41,7 @@ const ChatWindow = ({ navigation, route, }) => {
         GetSingleUserProfile((profileRes) => {
             if (profileRes)
                 setFriend({ chatId: chatID, ...profileRes })
-                debugger
+            debugger
         }, friend?._id)
     }
     useEffect(() => {
@@ -141,12 +141,13 @@ const ChatWindow = ({ navigation, route, }) => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ flex: 1, backgroundColor: '#1b1b1b', paddingBottom: RFValue(50) }}>
+                <View style={{ flex: 1, backgroundColor: '#1b1b1b', }}>
                     <GiftedChat
                         messages={messages}
                         renderTicks={renderTicks}
                         showUserAvatar={false}
                         renderInputToolbar={renderInputToolbar}
+                        minInputToolbarHeight={RFValue(80)}
                         showAvatarForEveryMessage={false}
                         renderBubble={renderBubble}
                         onSend={messages => onSend(messages)}
@@ -215,14 +216,20 @@ const ChatWindow = ({ navigation, route, }) => {
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, showMenu: false, loading: false }))
-                            ActionsOnUsers(() => { }, friend?._id, friend.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW)
+                            ActionsOnUsers(() => { }, friend?._id, friend.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : friend.isRequested ? FRIEND_STATUSES_ACTIONS.CANCEL_FOLLOW_REQUEST : FRIEND_STATUSES_ACTIONS.FOLLOW)
                             let tempFriend = { ...friend };
-                            tempFriend.isFollowing = !tempFriend.isFollowing
+                            if (tempFriend?.isRequested) {
+                                tempFriend.isFollowing = false
+                                tempFriend.isRequested = false
+                            } else {
+                                tempFriend.isRequested = true
+                            }
+
                             setFriend(tempFriend);
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_UNFOLLOW} style={ICONSTYLE} />
-                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>{friend?.isFollowing ? "Unfollow" : "Follow"}</AppText>
+                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>{friend?.isFollowing ? "Unfollow" : friend?.isRequested ? "Requested" : "Follow"}</AppText>
                             </View>
                         </TouchableOpacity>
 

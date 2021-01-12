@@ -249,7 +249,8 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                     if (state.parentID?.parentComment || state.parentID?._id)
                                         getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id)
                                 }
-                                ScrollToSpecificIndex(state.currentIndex || 0)
+                                if (state.comments?.length > 0)
+                                    ScrollToSpecificIndex(state.currentIndex || 0)
                                 setState(prev => ({ ...prev, parentID: '', currentIndex: 0 }))
                                 getsinglepostbyidhelper();
                             }, state.parentID?.parentComment || state.parentID?._id ? {

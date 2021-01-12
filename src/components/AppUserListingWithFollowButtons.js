@@ -34,12 +34,7 @@ const AppUserListingWithFollowButtons = ({ navigation, data, style, loading, ref
         setState(prev => ({ ...prev, usersData: tempData }));
     }
     useEffect(() => {
-        console.log('-^^^^^^^^^^^^^^-SEARCH USERS MOUNTED-^^^^^^^^^^^^^^')
-        setState(prev => ({ ...prev, usersData: data }))
-
-        return ()=>{
-            console.log('-vvvvvvvvvvv-SEARCH USERS destroyed-vvvvvvvvvvv')
-        }
+        setState(prev => ({ ...prev, usersData: data }));
     }, [data])
     return (
         <View style={[{ flex: 1, backgroundColor: AppTheme.colors.background }, style ? style : null]}>
