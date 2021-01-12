@@ -6,7 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { AppTheme } from '../config';
 import { EvilIcons } from '../utils/AppIcons';
 import { AppVideoPlayer } from './AppVideoPlayer';
-const AppBoxCard = ({ item, navigation, size, startPlaying }) => {
+const AppBoxCard = ({ item, navigation, size }) => {
     return (
         <View style={{ height: size, width: size, }}>
             {item.attachments && item.attachments.length > 0 ?

@@ -28,12 +28,6 @@ const SetUserName = ({ route, navigation }) => {
         userName: ''
     });
 
-    useEffect(() => {
-
-    }, []);
-
-
-
     const onsubmit = () => {
         if (state.userName.trim()) {
 

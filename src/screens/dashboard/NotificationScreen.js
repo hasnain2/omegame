@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_USER_PIC } from '../../../assets/images';
@@ -15,17 +15,20 @@ import { FRIEND_STATUSES_ACTIONS, NOTIFICATION_TYPES } from '../../utils/AppCons
 import { AppLogger, AppShowToast, RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 
+let tempRequests = [];
 const NotificationScreen = ({ navigation, route, }) => {
     let { user, notifications } = useSelector(state => state.root);
+
     let dispatch = useDispatch();
     let [state, setState] = useState({
         loading: true,
         limitRequests: 2,
+        isFollowingArray: []
     });
     function getnotificationhistoryhelper(cursor) {
         GetNotificationHistory((notificatioHistoryResponse) => {
             if (notificatioHistoryResponse) {
-                let tempRequests = notificatioHistoryResponse.filter(ii => (ii?.portion === "upper"));
+                tempRequests = notificatioHistoryResponse.filter(ii => (ii?.portion === "upper"));
                 let tempPlanNotifications = notificatioHistoryResponse.filter(ii => (ii?.portion === "lower"));
 
                 dispatch(setNotifications({
@@ -37,6 +40,17 @@ const NotificationScreen = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, loading: false }))
             }
         }, cursor)
+    }
+
+    const IsFollowingHelper = (item) => {
+        let tempData = state.isFollowingArray
+        let doesExists = tempData.findIndex(io => io === item?.createdBy?._id)
+        if (doesExists > -1) {
+            tempData.splice(doesExists, 1)
+        } else {
+            tempData.push(item?.createdBy?._id)
+        }
+        setState(prev => ({ ...prev, isFollowingArray: tempData }))
     }
 
     function acceptOrDenyRequest(userID, accept, index) {
@@ -88,13 +102,13 @@ const NotificationScreen = ({ navigation, route, }) => {
             <AppBackButton navigation={navigation} />
 
             <View style={{ padding: RFValue(10), flex: 1 }}>
-                <View style={{ flex: 0.7 }}>
+                <View style={{ flex: state.limitRequests > 2 ? 1.6 : 0.8 }}>
                     <AppText size={1} bold={true} style={{ paddingVertical: RFValue(10) }} color={AppTheme.colors.lightGrey}>FOLLOW REQUESTS</AppText>
 
                     {!state.loading && notifications?.requests?.length < 1 ?
                         <AppNoDataFound msg={"No follow requests found!"} />
                         : <FlatList
-                            data={notifications?.requests}
+                            data={notifications?.requests?.slice(0, state.limitRequests)}
                             initialNumToRender={10}
                             windowSize={3}
                             contentContainerStyle={{ justifyContent: 'center' }}
@@ -112,7 +126,21 @@ const NotificationScreen = ({ navigation, route, }) => {
                                                 <View  >
                                                     <UserAvatar corner={item?.createdBy?.corner || ''} color={item?.createdBy?.cornerColor} source={item?.createdBy?.pic ? { uri: item?.createdBy?.pic } : DEFAULT_USER_PIC} size={50} />
                                                     <View style={{ position: 'absolute', bottom: RFValue(2), right: RFValue(2), backgroundColor: 'white', borderRadius: 90, }}>
-                                                        <AntDesign name={"pluscircle"} style={{ fontSize: RFValue(15), color: AppTheme.colors.primary }} />
+                                                        {item?.createdBy?.isRequested || item?.createdBy?.isFollowing || state.isFollowingArray.includes(item?.createdBy?._id) ?
+                                                            <AntDesign name={"minus"}
+                                                                onPress={() => {
+                                                                    IsFollowingHelper(item);
+                                                                    ActionsOnUsers(() => { }, item?.createdBy?._id, FRIEND_STATUSES_ACTIONS.UNFOLLOW)
+                                                                }}
+                                                                style={{ fontSize: RFValue(15), padding: RFValue(2), color: AppTheme.colors.primary }} />
+                                                            :
+                                                            <AntDesign name={"pluscircle"}
+                                                                onPress={() => {
+                                                                    IsFollowingHelper(item);
+                                                                    ActionsOnUsers(() => { }, item?.createdBy?._id, FRIEND_STATUSES_ACTIONS.FOLLOW)
+                                                                }}
+                                                                style={{ fontSize: RFValue(15), padding: RFValue(2), color: AppTheme.colors.primary }} />
+                                                        }
                                                     </View>
                                                 </View>
                                             </View>
@@ -146,7 +174,9 @@ const NotificationScreen = ({ navigation, route, }) => {
                             setState(prev => ({ ...prev, limitRequests: state.limitRequests > 2 ? 2 : 10 }));
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <AppText size={3} color={AppTheme.colors.lightGrey} style={{ textAlign: 'center', paddingVertical: RFValue(10) }}>{state.limitRequests > 2 ? "Show Less" : "Show more"}</AppText>
+                                <AppText size={3} color={AppTheme.colors.lightGrey}
+                                    style={{ textAlign: 'center', paddingVertical: RFValue(10) }}
+                                >{state.limitRequests > 2 ? "Show Less" : "Show more"}</AppText>
                             </View>
                         </TouchableOpacity> : null}
 

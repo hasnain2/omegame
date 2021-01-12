@@ -14,7 +14,6 @@ import { AppVideoPlayer } from './AppVideoPlayer';
 import { PostPoolBottomBar } from './PostPoolBottomBar';
 import { PostPoolTopBar } from './PostPoolTopBar';
 
-let currentItemBeingUpdated = 0;
 const { height, width } = Dimensions.get('screen')
 let POST_DATA = null;
 const NUMBER_OF_COLUMNS = 3;
@@ -32,19 +31,7 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
         return () => {
             console.log('-vvvvvvvvvvv-SEARCH GRID destroyed-vvvvvvvvvvv')
         }
-    })
-
-    const onViewRef = React.useRef((viewableItems) => {
-        if (viewableItems && viewableItems?.changed?.length > 0) {
-            let currentIndex = viewableItems?.changed[0]?.index;
-            if (currentIndex !== state.currentItemIndex && currentIndex !== currentItemBeingUpdated) {
-                setState(prev => ({ ...prev, currentItemIndex: currentIndex }))
-                currentItemBeingUpdated = currentIndex;
-            }
-        }
-    });
-
-    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 60 })
+    }, [])
 
     return (
         <View style={[{ flex: 1, paddingTop: RFValue(10), backgroundColor: AppTheme.colors.background }, style ? style : null]}>
@@ -62,13 +49,7 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
                 windowSize={Platform.OS === 'ios' ? 3 : 2}
                 initialNumToRender={Platform.OS === 'ios' ? 10 : 3}
                 maxToRenderPerBatch={Platform.OS === 'ios' ? 10 : 3}
-                // removeClippedSubviews={true}
-                // bounces={false}
-
                 keyboardShouldPersistTaps={'always'}
-                // onViewableItemsChanged={onViewRef.current}
-                // viewabilityConfig={viewConfigRef.current}
-
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
@@ -79,14 +60,12 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
                         }}
                     />
                 }
-
                 onEndReached={() => {
                     if (loadMore) {
                         loadMore(data[data.length - 1]?._id, false)
                     }
                 }}
                 onEndReachedThreshold={0.5}
-
                 keyExtractor={ii => ii?._id + ''}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity activeOpacity={0.7}
@@ -101,7 +80,7 @@ const AppPostsListingsGrid = ({ navigation, data, style, loading, refreshing, lo
                             setState(prev => ({ ...prev, showPost: true }))
                         }}>
                         <View style={{ padding: PADDING }}>
-                            <AppBoxCard item={item} startPlaying={false} navigation={navigation} size={CARD_SIZE} />
+                            <AppBoxCard item={item} navigation={navigation} size={CARD_SIZE} />
                         </View>
                     </TouchableOpacity>
                 )}

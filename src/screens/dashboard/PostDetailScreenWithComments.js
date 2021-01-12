@@ -1,7 +1,7 @@
 
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { FlatList, LayoutAnimation, Platform, TouchableOpacity, UIManager, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Keyboard, LayoutAnimation, Platform, TouchableOpacity, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ICON_COMMENT } from '../../../assets/icons';
@@ -19,13 +19,14 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 const PostDetailScreenWithComments = ({ navigation, route, }) => {
     let [postData, setPostData] = useState(route?.params?.post || null);
     let postID = postData?._id || route?.params?.postID;
-
+    const flatListRef = useRef(null)
     let [state, setState] = useState({
         loading: true,
         focused: true,
         comments: [],
         LHeight: 0,
         LWidth: 0,
+        currentIndex: 0,
         commentLikesArr: [],
         replies: { _id: '', data: [] },
         parentID: { parentComment: '', _id: '' }
@@ -39,6 +40,11 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                 setState(prev => ({ ...prev, loading: false }))
             }
         }, '', '', postID)
+    }
+
+    const ScrollToSpecificIndex = (index) => {
+        if (flatListRef && flatListRef.current)
+            flatListRef?.current?.scrollToIndex({ animated: true, index: index });
     }
 
     const getcommentreplieshelper = (parentIDparam) => {
@@ -76,7 +82,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
         }
     }, [])
 
-    function renderCommentView(item, isCommentIsLiked, index) {
+    function renderCommentView(item, isCommentIsLiked, index, currentIndexToSet) {
         return (
             <View style={{ paddingHorizontal: RFValue(10) }}>
                 <View style={{ flexDirection: 'row', }}>
@@ -165,7 +171,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                 : null}
 
                             <TouchableOpacity activeOpacity={0.8} activeOpacity={0.7} onPress={() => {
-                                setState(prev => ({ ...prev, parentID: item }))
+                                setState(prev => ({ ...prev, parentID: item, currentIndex: currentIndexToSet }))
                             }}>
                                 <View style={{ flexDirection: 'row', padding: RFValue(10), paddingHorizontal: RFValue(20), alignItems: 'center' }}>
                                     <AppText size={1} color={AppTheme.colors.lightGrey}>Reply</AppText>
@@ -196,6 +202,7 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                         : null}
 
                     <FlatList
+                        ref={flatListRef}
                         data={state.comments}
                         contentContainerStyle={{ paddingBottom: RFValue(100) }}
                         windowSize={2}
@@ -214,13 +221,13 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                         </View>
                                         : null}
 
-                                    {renderCommentView(item, isCommentIsLiked, index)}
+                                    {renderCommentView(item, isCommentIsLiked, index, index)}
                                     {state?.replies?._id === item?._id ?
                                         state?.replies?.data.map((ittem, inndex) => {
                                             let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
                                             return (
                                                 <View key={`${inndex}key`} style={{}}>
-                                                    { renderCommentView(ittem, isReplyIsLiked, inndex)}
+                                                    { renderCommentView(ittem, isReplyIsLiked, inndex, index)}
                                                 </View>
                                             )
                                         })
@@ -242,7 +249,8 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                                     if (state.parentID?.parentComment || state.parentID?._id)
                                         getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id)
                                 }
-                                setState(prev => ({ ...prev, parentID: '' }))
+                                ScrollToSpecificIndex(state.currentIndex || 0)
+                                setState(prev => ({ ...prev, parentID: '', currentIndex: 0 }))
                                 getsinglepostbyidhelper();
                             }, state.parentID?.parentComment || state.parentID?._id ? {
                                 // mentions: [],
@@ -252,7 +260,8 @@ const PostDetailScreenWithComments = ({ navigation, route, }) => {
                             } : {
                                     text: msg,
                                     post: postData._id
-                                })
+                                });
+                            Keyboard.dismiss();
                         }} />
                 </>
             }

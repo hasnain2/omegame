@@ -15,9 +15,7 @@ const PostCard = ({ item, startPlaying, goBack, navigation }) => {
         stopPlaying: false,
         imageLoaded: false,
     })
-    useEffect(() => {
-
-    }, [])
+    
     return (
         <View style={{ borderBottomColor: AppTheme.colors.darkGrey, borderBottomWidth: 0.5 }}>
             <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />

@@ -30,18 +30,13 @@ const Login = ({ route, navigation }) => {
         loading: false,
         passwordVisible: true,
     });
-function tstts(){
-    let tomkm = "sldfsdf";
-    debugger
-}
+
     useEffect(() => {
-        tstts();
         getData('rememberMe', (dta) => {
             tstts();
             if (dta)
                 setState(prev => ({ ...prev, rememberMe: true, email: dta.userName, password: dta.password }))
         })
-    
     }, []);
 
     const socialbuttonsclickhandler = (data) => {
@@ -105,7 +100,7 @@ function tstts(){
                     </View>
                 </View>
             </View>
-            
+
             <View style={{}}>
                 <InstagramLogin
                     ref={ref => setInstagramLoginRef(ref)}
