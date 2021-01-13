@@ -85,7 +85,6 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
                         return <PostCard key={'PostCard' + index} startPlaying={state.currentItemIndex === index && state.focused && autoPlay} navigation={navigation} item={item} index={index} />
                 }}
             />
-
         </View>
     );
 };

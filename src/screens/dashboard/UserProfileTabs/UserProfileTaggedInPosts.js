@@ -17,7 +17,7 @@ const UserProfileTaggedInPosts = ({ navigation, autoPlay, userID }) => {
             if (userPosts)
                 dispatch(setUserProfileData({ taggedInPosts: userPosts }))
             setState(prev => ({ ...prev, loading: false }))
-        }, `${userID}&taggedOnly=true&mediaOnly=true`)
+        }, `${userID}&taggedOnly=true`)
     }, [])
 
     return (

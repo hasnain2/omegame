@@ -75,6 +75,7 @@
     "react-native-video-helper": "^1.5.0",
     "react-native-webview": "^11.0.2",
     "react-redux": "^7.2.2",
+    "recyclerlistview": "^3.0.0",
     "redux": "^4.0.5",
     "rn-fetch-blob": "^0.12.0",
     "socket.io-client": "^2.1.1"
