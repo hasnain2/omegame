@@ -19,6 +19,23 @@ function GetInboxList(callback, CURSOR) {
     });
 }
 
+function MuteChatOfSpecificUser(callback, userID, TOGGLE) {
+    fetch(`${EndPoints.MUTE_CHAT}${userID}`, {
+        method: 'POST',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify({ mute: TOGGLE })
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        AppLogger('-----------MUTE CHAT RES----------', JSON.stringify(data))
+        if (status === 201 || status === 200) {
+            callback(data?.data || [])
+        } else
+            callback(false);
+    }).catch((error) => {
+        AppLogger('---------MUTE CHAT ERROR-----------', error)
+        callback(false)
+    });
+}
+
 function GetChatMessages(callback, CURSOR, friendID) {
     fetch(`${EndPoints.GET_CHAT_MESSAGES}?limit=${LIMIT}&cursor=${CURSOR}&sort=desc&friendId=${friendID}`, {
         method: 'GET',
@@ -51,6 +68,7 @@ function DeleteChat(callback, chatID) {
 
 export {
     GetInboxList,
+    MuteChatOfSpecificUser,
     GetChatMessages,
     DeleteChat
 };

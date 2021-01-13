@@ -9,7 +9,7 @@ import { DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppBackButton, AppInputToolBar, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { ActionsOnUsers, DeleteChat, GetChatMessages, GetSingleUserProfile } from '../../services';
+import { ActionsOnUsers, DeleteChat, GetChatMessages, GetSingleUserProfile, MuteChatOfSpecificUser } from '../../services';
 import { socket } from '../../services/socketService';
 import { CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS } from '../../utils/AppConstants';
 import { AppLogger, AppShowToast, getChatId } from '../../utils/AppHelperMethods';
@@ -203,14 +203,14 @@ const ChatWindow = ({ navigation, route, }) => {
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, showMenu: false, loading: false }))
-                            ActionsOnUsers(() => { }, friend?._id, friend.mute ? FRIEND_STATUSES_ACTIONS.UNMUTE : FRIEND_STATUSES_ACTIONS.MUTE)
+                            MuteChatOfSpecificUser(() => { }, friend?._id, `${friend.isChatMuted?'false':'true'}`)
                             let tempFriend = { ...friend };
-                            tempFriend.mute = !tempFriend.mute
+                            tempFriend.isChatMuted = !tempFriend.isChatMuted
                             setFriend(tempFriend);
                         }}>
                             <View style={styles.modalListItemStyle}>
                                 <Image source={ICON_MUTE} style={ICONSTYLE} />
-                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>{friend?.mute ? "Unmute" : "Mute"}</AppText>
+                                <AppText size={2} style={{ paddingLeft: RFValue(10) }}>{friend?.isChatMuted ? "Unmute" : "Mute"}</AppText>
                             </View>
                         </TouchableOpacity>
 

@@ -42,7 +42,7 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
     }, [])
     return (
         <AppModal show={show} toggle={toggle}>
-            <View style={{ flex: 1, width: '100%', paddingTop: RFValue(40), backgroundColor: 'black', paddingVertical: RFValue(20) }}>
+            <View style={{ flex: 1, width: '100%', backgroundColor: 'black', paddingVertical: RFValue(20) }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <AppBackButton onPress={() => toggle()} />
 
@@ -79,7 +79,7 @@ const AppFriendsListModal = ({ show, toggle, selectedContacts, chosenContacts = 
                                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                                 <AppText bold={true} size={1} color={'white'}>{item?.firstName || item?.userName}</AppText>
                                                 <IsUserVerifiedCheck check={item?.isVerified} />
-                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.earnedXps || 0)}</AppText>
+                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(item?.level || 0)}</AppText>
                                             </View>
                                             <AppText size={1} color={item?.nickNameColor ? item?.nickNameColor : AppTheme.colors.lightGrey} >{item?.nickName || item?.userName}</AppText>
                                         </View>

@@ -82,8 +82,8 @@ const UpdatePostFromReduxStore = (newPost) => {
 
 
 const AddPostToReduxStore = (newPost) => {
-    let tempHomeFeeds = [...store.getState().root.homeFeed];
-    tempHomeFeeds = [newPost, ...tempHomeFeeds]
+    // let tempHomeFeeds = [...store.getState().root.homeFeed];
+    // tempHomeFeeds = [newPost, ...tempHomeFeeds]
 
     let tempuserProfileData = { ...store.getState().root.userProfileData };
 
@@ -91,7 +91,7 @@ const AddPostToReduxStore = (newPost) => {
     newPosts?.unshift(newPost)
     if (store.getState()?.root?.user?._id === newPost?.createdBy?._id)
         store.dispatch(setUserProfileData({ posts: newPosts }));
-    store.dispatch(setHomeFeed(tempHomeFeeds));
+    // store.dispatch(setHomeFeed(tempHomeFeeds));
 }
 
 

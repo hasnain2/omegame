@@ -156,7 +156,7 @@ const InboxScreen = ({ navigation, route }) => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                                 <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>{inboxItem?.user?.firstName || inboxItem?.user?.userName}</AppText>
                                                 <IsUserVerifiedCheck check={inboxItem?.user?.isVerified} />
-                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(inboxItem?.user?.earnedXps)}</AppText>
+                                                <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{largeNumberShortify(inboxItem?.user?.level)}</AppText>
                                                 <AppText size={1} color={AppTheme.colors.lightGrey}> - {moment(inboxItem.createdAt).fromNow(true)}</AppText>
                                             </View>
                                             <AppText size={1} color={inboxItem?.user?.nickNameColor ? inboxItem?.user?.nickNameColor : AppTheme.colors.lightGrey} >{inboxItem?.user?.nickName || inboxItem?.user?.userName}</AppText>

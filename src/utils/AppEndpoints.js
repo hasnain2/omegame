@@ -49,7 +49,7 @@ const EndPoints = {
     GET_INBOX_LIST: BASE_URL + 'chat/inbox',
     GET_CHAT_MESSAGES: BASE_URL + 'chat/messages',
     DELETE_CHAT_MESSAGES: BASE_URL + 'chat/chat/',
-
+    MUTE_CHAT: BASE_URL + 'chat/mute/', // FRIEND _ID IN query param
     //---------CUSTOMIZATION---
     GET_MY_ASSETS: BASE_URL + 'profile/customization/', // for getting my assets
     GET_ALL_ASSETS: BASE_URL + 'assets/type/',

@@ -19,7 +19,6 @@ const PoolCard = ({ item, navigation }) => {
             <PostPoolTopBar item={item} navigation={navigation} />
             <AppText size={1} style={{ padding: RFValue(15), paddingTop: 0 }}>{item.question}</AppText>
 
-
             {item.location?.addressName ?
                 <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(15), paddingBottom: RFValue(10), flexWrap: 'wrap' }}>
                     <AppText size={0} color={'grey'} style={{ paddingTop: 0 }}>Location: {item.location?.addressName || ''}, {item.location?.country || ''}</AppText>
@@ -36,7 +35,6 @@ const PoolCard = ({ item, navigation }) => {
                     ))}
                 </View>
                 : null}
-
 
             {state.voded ?
                 <View style={{ paddingHorizontal: RFValue(15) }}>
@@ -63,7 +61,14 @@ const PoolCard = ({ item, navigation }) => {
                 <>
                     <View style={{ paddingHorizontal: RFValue(15) }}>
                         {item.options.map((itm, ind) => (
-                            <AppRadioButton key={`${ind}sd`} onPress={() => { setState(prev => ({ ...prev, selectedOption: ind })) }} val={state.selectedOption === ind} size={16} label={itm.label} style={{ paddingVertical: RFValue(10) }} />
+                            <AppRadioButton key={`${ind}sd`}
+                                onPress={() => {
+                                    setState(prev => ({ ...prev, selectedOption: ind }))
+                                }}
+                                val={state.selectedOption === ind}
+                                size={16}
+                                label={itm.label}
+                                style={{ paddingVertical: RFValue(10) }} />
                         ))}
                     </View>
 

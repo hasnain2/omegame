@@ -95,8 +95,9 @@ const CreatePost = ({ navigation, route }) => {
                     if (!hasMediaToUpload)
                         setState(prev => ({ ...prev, loading: false }))
                     if (result) {
-                        if (result.data)
+                        if (result.data) {
                             AddPostToReduxStore(result?.data)
+                        }
                         AppShowToast("Post created successfully");
                         if (!hasMediaToUpload)
                             navigation.goBack();
