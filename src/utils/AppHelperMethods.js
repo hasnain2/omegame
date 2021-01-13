@@ -122,7 +122,7 @@ const RemoveDuplicateObjectsFromArray = (arrayToProcess) => {
 
 function AppLogger(identifier, msgOrError) {
     if (__DEV__) {
-        console.log(identifier, msgOrError)
+        // console.log(identifier, msgOrError)
     }
 }
 
