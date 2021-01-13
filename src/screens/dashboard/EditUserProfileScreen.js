@@ -1,14 +1,13 @@
 
 import moment from 'moment';
 import React, { useState } from 'react';
-import { Image, TouchableOpacity, KeyboardAvoidingView, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 import { Divider } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { ICON_PHOTO } from '../../../assets/icons';
-import { AppButton, AppDateTimePicker, AppHeaderCommon, AppInput, AppModal, AppText } from '../../components';
+import { AppAvoidKeyboard, AppButton, AppDateTimePicker, AppHeaderCommon, AppInput, AppModal, AppText } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { UploadMedia } from '../../services';
 import { UpdateProfile } from '../../services/profileService';
@@ -115,7 +114,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
         <View style={{ flex: 1, backgroundColor: 'black' }} >
             <AppHeaderCommon navigation={navigation} label={"PROFILE INFORMATION"} />
 
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior='position' keyboardVerticalOffset={100}>
+            <AppAvoidKeyboard >
                 <ScrollView style={{ paddingHorizontal: RFValue(20) }}>
                     <View style={{ alignSelf: 'center', paddingVertical: RFValue(20) }}>
                         <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={state.photo ? { uri: state.photo } : user.pic ? { uri: user.pic } : null} size={140} />
@@ -172,7 +171,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
                             }} />)
                     })}
                 </ScrollView>
-            </KeyboardAvoidingView>
+            </AppAvoidKeyboard>
 
             <View style={{ padding: RFValue(15) }}>
                 <AppButton loading={state.loading || state.imageLoading} bgColor="black" onPress={onSubmit} label={"SAVE"} />

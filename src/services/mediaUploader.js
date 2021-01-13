@@ -7,14 +7,13 @@ import { AppLogger, AppShowToast } from '../utils/AppHelperMethods';
 import { GenerateThumbnailFromVideo } from '../utils/AppMediaPicker';
 import Interceptor from '../utils/Interceptor';
 
-
 // current vid size = 2498125
 const VideoAndImageCompressor = (image) => {
     AppLogger('------------media going to be compressed----------', image)
     let imagetemp = { ...image, uri: image?.image?.uri || image?.uri, type: image?.image?.type || image?.type };
     return new Promise((resolve, reject) => {
         if (imagetemp.type === 'photo' || imagetemp.type === 'image') {
-            ImageResizer.createResizedImage(image?.image?.uri || image.uri, 1000, 1000, 'JPEG', 100, 0, null)
+            ImageResizer.createResizedImage(image?.image?.uri || image.uri, 700, 700, 'JPEG', 100, 0, null)
                 .then(response => {
                     var temp = {
                         ...imagetemp,
@@ -30,13 +29,12 @@ const VideoAndImageCompressor = (image) => {
             // resolve(imagetemp)
             RNVideoHelper.compress(image?.uri2 || image?.image?.uri2 || image?.image?.uri || image.uri, {
                 startTime: 1, // optional, in seconds, defaults to 0
-                endTime: 60, //  optional, in seconds, defaults to video duration
-                quality: 'low', // default low, can be medium or high
+                endTime: (60*2), //  optional, in seconds, defaults to video duration
+                quality: 'medium', // default low, can be medium or high
                 defaultOrientation: 0 // By default is 0, some devices not save this property in metadata. Can be between 0 - 360
             }).progress(value => {
                 // console.warn('-----compressing video-----progress', value); // Int with progress value from 0 to 1
             }).then(compressedUri => {
-
                 let ValidPath = Platform.OS === 'android' ? ('file://' + compressedUri) : ('' + compressedUri)
                 let temp = {
                     ...imagetemp,
@@ -81,6 +79,7 @@ function postFiles(callback, fileName, bucket, data) {
 const UploadMedia = (callback, bucket, mediaObj) => {
 
     VideoAndImageCompressor(mediaObj).then((compressionResponse) => {
+        debugger
         let fileName = 'assetmedia.' + (compressionResponse.oType.split('/')[1] ? ('' + compressionResponse.oType.split('/')[1]) : '');
         let multiFormData = new FormData()
         multiFormData.append('files', { uri: compressionResponse?.compressed?.uri, name: fileName, type: compressionResponse?.oType });

@@ -80,7 +80,8 @@ const CreatePost = ({ navigation, route }) => {
                     payload.removeMedia = false
                 }
                 EditModifyPostService((result) => {
-                    setState(prev => ({ ...prev, loading: false }))
+                    if (!hasMediaToUpload)
+                        setState(prev => ({ ...prev, loading: false }))
                     if (result) {
                         if (result.data)
                             UpdatePostFromReduxStore(result?.data)
@@ -91,7 +92,8 @@ const CreatePost = ({ navigation, route }) => {
                 }, postData?._id, payload)
             } else {
                 CreatePostService((result) => {
-                    setState(prev => ({ ...prev, loading: false }))
+                    if (!hasMediaToUpload)
+                        setState(prev => ({ ...prev, loading: false }))
                     if (result) {
                         if (result.data)
                             AddPostToReduxStore(result?.data)

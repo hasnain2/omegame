@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppBackButton, AppLoadingView, AppNoDataFound, AppPostsListings } from '../../components';
+import { AppBackButton, AppPostsListings } from '../../components';
 import { setSavedPosts } from '../../redux/reducers/savedPostsSlice';
 import { GetBookmarkPosts } from '../../services/postService';
 import { RemoveDuplicateObjectsFromArray } from '../../utils/AppHelperMethods';
@@ -38,15 +38,9 @@ const UserSavedPosts = ({ navigation, route }) => {
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <AppBackButton navigation={navigation} name={"SAVED POSTS"} />
 
-            {state.loading && savedPosts.length < 1 ?
-                <AppLoadingView />
-                : null}
-
-            {!state.loading && savedPosts.length < 1 ?
-                <AppNoDataFound /> : null}
-
             <View style={{ flex: 1, }}>
                 <AppPostsListings navigation={navigation}
+                    loading={state.loading}
                     route={route} style={{ backgroundColor: 'black' }}
                     refreshing={state.refreshing}
                     loadMore={(offset, refreshControl) => {

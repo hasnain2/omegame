@@ -144,7 +144,6 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
             getAlbumbs();
         });
 
-
         const unsubscribe = navigation.addListener('focus', () => {
             StatusBar.setBarStyle('dark-content', true);
             setFocused(true)
@@ -167,6 +166,7 @@ const AppGallery = ({ navigation, toggle, selectedOne }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: RFValue(5) }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <EvilIcons onPress={() => {
+                            selectedOne(null);
                             toggle()
                         }} name="close" style={{ fontSize: RFValue(30), padding: RFValue(10), color: 'white' }} />
 

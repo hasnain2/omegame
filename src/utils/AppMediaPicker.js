@@ -27,7 +27,6 @@ function pickerResponseMaker(callback, response, type) {
         } else {
             callback({ image: { uri: ORIGINAL_URI }, oType: response?.mime ? response.mime : ('image/' + ext), type, uri: ORIGINAL_URI })
         }
-
     } else {
         callback(false)
     }
