@@ -9,6 +9,13 @@ import { AppLogger, AppShowToast, CapitalizeFirstLetter } from '../utils/AppHelp
 import { clearStorage, getData, removeItemsFromLocalStorage, storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
 import iid from '@react-native-firebase/iid'
+import { resetFriends } from '../redux/reducers/friendsSlice'
+import { resetGameReviews } from '../redux/reducers/gameReviewsSlice'
+import { resetInbox } from '../redux/reducers/inboxSlice'
+import { resetMyAssets } from '../redux/reducers/myAssetsSlice'
+import { resetNotifications } from '../redux/reducers/notificationsSlice'
+import { resetQuests } from '../redux/reducers/questsSlice'
+import { resetUserProfileData } from '../redux/reducers/userProfileDataSlice'
 const LogInUser = (callback, formData) => {
     fetch(EndPoints.LOGIN, {
         method: 'POST',
@@ -100,13 +107,24 @@ const LogOutUser = async (callback) => {
         if (dta) {
             removeItemsFromLocalStorage(['user']);
         } else {
-            clearStorage().then(res => callback(true)).then(err => {
-                AppLogger('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
-            })
+            clearStorage().then(res => callback(true)).catch(err => {
+                AppLogger('------------CLEARING STORAGE ERROR---------', err)
+                callback(false)
+            });
         }
+        
         store.dispatch(resetUser())
         store.dispatch(resetHomeFeed())
         store.dispatch(resetSavedPosts())
+
+        store.dispatch(resetFriends())
+        store.dispatch(resetGameReviews())
+        store.dispatch(resetInbox())
+        store.dispatch(resetMyAssets())
+        store.dispatch(resetNotifications())
+        store.dispatch(resetQuests())
+        store.dispatch(resetUserProfileData())
+
         callback(false)
     })
 }
@@ -119,8 +137,9 @@ const DeleteUserAccount = (callback) => {
         AppLogger('---------------ACCOUNT DELETION RES-------------', data)
         if (status === 201 || status === 200) {
             LogOutUser(() => { })
-            clearStorage().then(res => callback(true)).then(err => {
-                AppLogger('-------ERROR LOGGIN OUT AND CLEARING STORAGE----------\n', err)
+            clearStorage().then(res => callback(true)).catch(err => {
+                AppLogger('------------CLEARING STORAGE ERROR---------', err)
+                callback(false)
             })
         } else {
             AppShowToast(data?.message?.message || "Wrong password provided")

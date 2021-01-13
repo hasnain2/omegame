@@ -9,6 +9,7 @@ function GetQuests(callback, OFFSET = 0) { // PAGINATED = OFFSET BASE-
         headers: Interceptor.getHeaders(),
     }).then(JSONBodyHelper).then(([status, data]) => {
         AppLogger('-----------GET QUEST LIST RES----------', JSON.stringify(data))
+        debugger
         if (status === 201 || status === 200) {
             callback(data?.data || [])
         } else

@@ -6,13 +6,16 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider, ProgressBar } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ICON_SHOP } from '../../../assets/icons';
 import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck } from '../../components';
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
-import { GetQuests } from '../../services';
+import { setQuests } from '../../redux/reducers/questsSlice';
+import { setUser } from '../../redux/reducers/userSlice';
+import { store } from '../../redux/store';
+import { GetQuests, GetSingleUserProfile } from '../../services';
 import { largeNumberShortify, timeRemaining } from '../../utils/AppHelperMethods';
 
 const TRANS_BLACK = 'rgba(0,0,0,0.0)';
@@ -20,20 +23,21 @@ const BLACK = 'black';
 const COLORS_ARR = [AppTheme.colors.darkGrey, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, TRANS_BLACK, BLACK, BLACK];
 
 const QuestScreen = ({ route, navigation }) => {
-    let { user } = useSelector(state => state.root)
+    const { user, quests } = useSelector(state => state.root)
+    const dispatch = useDispatch();
     let [state, setState] = useState({
         loading: true,
         refreshing: false,
         LHeight: 0,
         LWidth: 0,
-        visibleDescriptionOfIndex: 999999,
-        data: []
+        visibleDescriptionOfIndex: 999999
     });
 
     function getquesthelper(offset) {
         GetQuests((questListResponse) => {
             if (questListResponse) {
-                setState(prev => ({ ...prev, loading: false, refreshing: false, data: questListResponse }))
+                dispatch(setQuests(questListResponse))
+                setState(prev => ({ ...prev, loading: false, refreshing: false }))
             } else {
                 setState(prev => ({ ...prev, loading: false, refreshing: false, }))
             }
@@ -41,6 +45,10 @@ const QuestScreen = ({ route, navigation }) => {
     }
 
     useEffect(() => {
+        GetSingleUserProfile((userDataRes) => {
+            if (userDataRes)
+                store.dispatch(setUser({ ...userDataRes }));
+        }, store.getState().root?.user?._id);
         getquesthelper(0);
     }, [])
     return (
@@ -50,7 +58,7 @@ const QuestScreen = ({ route, navigation }) => {
                 setState(prev => ({ ...prev, LHeight: height, LWidth: width }))
             }}>
             <FlatList
-                data={state.data}
+                data={quests}
 
                 initialNumToRender={2}
                 windowSize={2}

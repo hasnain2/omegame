@@ -12,6 +12,7 @@ import notifications from './reducers/notificationsSlice';
 import postData from './reducers/postDataSlice';
 import userProfileData from './reducers/userProfileDataSlice';
 import query from './reducers/querySlice';
+import quests from './reducers/questsSlice';
 
 const rootReducer = combineReducers({
     user: user,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     postData: postData,
     userProfileData: userProfileData,
     query: query,
+    quests: quests,
 });
 
 export const store = configureStore({

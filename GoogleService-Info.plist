@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
   <key>CLIENT_ID</key>
-  <string>925262350085-emigdavdj7jkbpvc3pkli5vll8d04pom.apps.googleusercontent.com</string>
+  <string>925262350085-tbmeqeighgohr2q5aba315l1q5prt1sa.apps.googleusercontent.com</string>
   <key>REVERSED_CLIENT_ID</key>
-  <string>com.googleusercontent.apps.925262350085-emigdavdj7jkbpvc3pkli5vll8d04pom</string>
+  <string>com.googleusercontent.apps.925262350085-tbmeqeighgohr2q5aba315l1q5prt1sa</string>
+  <key>ANDROID_CLIENT_ID</key>
+  <string>925262350085-7dhumob1ar0c36bhinph47elucccmk6a.apps.googleusercontent.com</string>
   <key>API_KEY</key>
   <string>AIzaSyAbB3aU90QW2V5gckQMjR8rrFtiLs1kbwk</string>
   <key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
   <key>PLIST_VERSION</key>
   <string>1</string>
   <key>BUNDLE_ID</key>
-  <string>org.reactjs.native.example.OmeGame</string>
+  <string>org.reactjs.native.dev.OmeGame</string>
   <key>PROJECT_ID</key>
   <string>omegame-5f44e</string>
   <key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
   <key>IS_SIGNIN_ENABLED</key>
   <true></true>
   <key>GOOGLE_APP_ID</key>
-  <string>1:925262350085:ios:b8927791ff4d91b1b9596c</string>
+  <string>1:925262350085:ios:a689a319f3bb2cfeb9596c</string>
 </dict>
 </plist>

@@ -9,6 +9,9 @@ import { ICON_ACCOUNT_SETTINGS, ICON_CUSTOMIZE, ICON_FEEDBACK, ICON_HOME, ICON_S
 import { BACKGROUND_IMG, DEFAULT_USER_PIC } from '../../assets/images';
 import { AppGoldCoin, AppText, IsUserVerifiedCheck, UserAvatar } from '../components';
 import { AppTheme } from '../config';
+import { setUser } from '../redux/reducers/userSlice';
+import { store } from '../redux/store';
+import { GetSingleUserProfile } from '../services';
 import { largeNumberShortify } from '../utils/AppHelperMethods';
 
 const LWidth = '100%';
@@ -20,6 +23,13 @@ const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' 
 
 const CustomDrawer = ({ state: { routeNames }, navigation }) => {
     let { user } = useSelector(state => state.root);
+
+    React.useEffect(() => {
+        GetSingleUserProfile((userDataRes) => {
+            if (userDataRes)
+                store.dispatch(setUser({ ...userDataRes }));
+        }, store.getState().root?.user?._id);
+    }, [])
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>

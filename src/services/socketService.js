@@ -1,6 +1,8 @@
 
 import io from "socket.io-client";
+import { GetQuests } from ".";
 import { setInbox } from "../redux/reducers/inboxSlice";
+import { setQuests } from "../redux/reducers/questsSlice";
 import { setSettings } from "../redux/reducers/settingsSlice";
 import { setUser } from "../redux/reducers/userSlice";
 import { store } from "../redux/store";
@@ -13,6 +15,18 @@ let SocketEndpoint = DOMAIN;
 
 export let socket = io.connect(SocketEndpoint);
 
+const LoadQuestData = () => {
+    GetSingleUserProfile((userDataRes) => {
+        if (userDataRes)
+            store.dispatch(setUser({ ...userDataRes }));
+    }, store.getState().root?.user?._id);
+
+    GetQuests((questListResponse) => {
+        if (questListResponse) {
+            store.dispatch(setQuests(questListResponse))
+        }
+    }, 0)
+}
 export const initSocket = async (token) => {
     try {
         if (token)
@@ -33,17 +47,12 @@ export const initSocket = async (token) => {
             AppLogger('---------SOCKET-------->', 'DIS-CONNECTED')
         });
 
-        socket.on(QUEST_EVENTS.QUEST_COMPLETED, function (questData) { // QUEST COMPLETED
-            AppLogger('---------SOCKET quest COMPLETED-------->', '')
-            GetSingleUserProfile((userDataRes) => {
-                if (userDataRes)
-                    store.dispatch(setUser({ ...userDataRes }));
-            }, store.getState().root?.user?._id);
+        socket.on(QUEST_EVENTS.QUEST_COMPLETED, function (questData) {
+            LoadQuestData()
         });
 
         socket.on(QUEST_EVENTS.QUEST_EXPIRED, function (questData) { // QUEST EXPIRED
-            AppLogger('---------SOCKET quest EXPIRED-------->', '')
-            debugger
+            LoadQuestData()
         });
 
         socket.on('unreadCount', function (newData) {

@@ -346,7 +346,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = Z2APUMCWUU;
+						DevelopmentTeam = J537C3NTZC;
 						LastSwiftMigration = 1200;
 						ProvisioningStyle = Manual;
 					};
@@ -848,9 +848,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = OneGame/OneGame.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z2APUMCWUU;
+				DEVELOPMENT_TEAM = J537C3NTZC;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = OneGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -859,9 +860,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.OmeGame;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.dev.OmeGame;
 				PRODUCT_NAME = OneGame;
-				PROVISIONING_PROFILE_SPECIFIER = "omegame test dev profile";
+				PROVISIONING_PROFILE_SPECIFIER = "omegame dev profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OneGame-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -876,9 +877,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = OneGame/OneGame.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z2APUMCWUU;
+				DEVELOPMENT_TEAM = J537C3NTZC;
 				INFOPLIST_FILE = OneGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -886,9 +888,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.OmeGame;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.dev.OmeGame;
 				PRODUCT_NAME = OneGame;
-				PROVISIONING_PROFILE_SPECIFIER = "omegame test dev profile";
+				PROVISIONING_PROFILE_SPECIFIER = "omegame dev profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OneGame-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
