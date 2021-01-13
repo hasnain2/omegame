@@ -42,7 +42,6 @@ const InboxScreen = ({ navigation, route }) => {
         }
     }
 
-
     getinboxlisthelper = (cursor) => {
         GetInboxList((inboxListRes) => {
             if (inboxListRes) {

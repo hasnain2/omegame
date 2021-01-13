@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
-import { AppLoadingView, AppNoDataFound, AppPostsListingsGrid } from "../../../components";
+import { AppLoadingView, AppNoDataFound, AppPostsListings } from "../../../components";
 import { setUserProfileData } from '../../../redux/reducers/userProfileDataSlice';
 import { GetPostsOfSpecificUserWhereTaggedIn } from '../../../services';
 const UserProfileTaggedInPosts = ({ navigation, autoPlay, userID }) => {
@@ -24,9 +24,10 @@ const UserProfileTaggedInPosts = ({ navigation, autoPlay, userID }) => {
         <View style={{ backgroundColor: 'black', flex: 1 }}>
             {!state.loading && userProfileData?.taggedInPosts.length < 1 ?
                 <AppNoDataFound /> :
-                <AppPostsListingsGrid navigation={navigation}
+                <AppPostsListings navigation={navigation} style={{ backgroundColor: 'black' }}
+                    autoPlay={autoPlay}
                     data={userProfileData.taggedInPosts}
-                    style={{ backgroundColor: 'black' }} />}
+                />}
             {state.loading && userProfileData?.taggedInPosts.length < 1 ?
                 <AppLoadingView /> : null}
         </View>

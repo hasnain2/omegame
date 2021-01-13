@@ -19,7 +19,7 @@ const AppVideoPlayer = ({ source, startPlaying, style, children, controls }) => 
                 backgroundColor: 'black',
                 position: 'absolute',
                 top: 0,
-                zIndex:9,
+                zIndex: 9,
                 left: 0,
                 bottom: 0,
                 right: 0,
@@ -27,7 +27,6 @@ const AppVideoPlayer = ({ source, startPlaying, style, children, controls }) => 
                 <Video
                     source={source?.uri ? { uri: /^((http|https|ftp):\/\/)/.test(source.uri) ? convertToCache(source.uri) : source.uri } : source}   // Can be a URL or a local file.
                     paused={!startPlaying}
-
                     controls={controls}
                     repeat={startPlaying}
                     resizeMode={"cover"}
@@ -35,7 +34,7 @@ const AppVideoPlayer = ({ source, startPlaying, style, children, controls }) => 
                         minBufferMs: 100,
                         maxBufferMs: 100,
                         bufferForPlaybackMs: 500,
-                        bufferForPlaybackAfterRebufferMs: 1000,
+                        bufferForPlaybackAfterRebufferMs: 200,
                     }}
                     style={[styles.backgroundVideo, style ? style : {}]} />
 
@@ -47,7 +46,7 @@ const AppVideoPlayer = ({ source, startPlaying, style, children, controls }) => 
 const styles = StyleSheet.create({
     backgroundVideo: {
         position: 'absolute',
-        zIndex:10,
+        zIndex: 10,
         top: 0,
         left: 0,
         bottom: 0,

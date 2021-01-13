@@ -21,7 +21,7 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
         const unsubscribeBlur = navigation.addListener('blur', () => {
             setState(prev => ({ ...prev, focused: false }))
         });
-        
+
         return () => {
             unsubscribeFocusListner();
             unsubscribeBlur();
@@ -35,7 +35,7 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
         }
     });
 
-    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 80 })
+    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 70 })
 
     return (
         <View style={[{ flex: 1, backgroundColor: 'black' }, style ? style : null]}>
@@ -60,19 +60,16 @@ const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshi
                         }}
                     />
                 }
-
                 windowSize={Platform.OS === 'ios' ? 3 : 2}
-                initialNumToRender={Platform.OS === 'ios' ? 10 : 3}
-                maxToRenderPerBatch={Platform.OS === 'ios' ? 10 : 3}
+                initialNumToRender={2}
+                maxToRenderPerBatch={2}
                 // removeClippedSubviews={true}
                 // bounces={false}
 
                 keyExtractor={ii => ii?._id + 'you'}
                 keyboardShouldPersistTaps={'always'}
-
                 onViewableItemsChanged={onViewRef.current}
                 viewabilityConfig={viewConfigRef.current}
-
                 onEndReached={() => {
                     if (loadMore) {
                         loadMore(data[data.length - 1]?._id, false)
