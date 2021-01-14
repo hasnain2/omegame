@@ -31,9 +31,8 @@ const HomeScreen = ({ route, navigation }) => {
             cursorArr = [];
         if (!cursorArr.includes(cursor)) {
             GetHomeFeed((res) => {
-                if (res && res?.length > 0) {
+                if (res) {
                     let newArr = cursor ? [...store.getState().root.homeFeed, ...res] : res;
-
                     let uniqueArr = [...new Set(newArr.map(item => item?._id ? item : false))];
                     disptach(setHomeFeed(uniqueArr))
                 }
