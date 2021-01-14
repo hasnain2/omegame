@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
 import { ICON_NEW_MESSAGE } from '../../../assets/icons';
@@ -24,6 +24,7 @@ const InboxScreen = ({ navigation, route }) => {
     let dipatch = useDispatch()
     let [state, setState] = useState({
         loading: true,
+        refreshing: false,
         deletionEnabled: '',
         showFriendsListModal: false
     });
@@ -56,7 +57,7 @@ const InboxScreen = ({ navigation, route }) => {
                 }
                 dipatch(setSettings({ chatCount: totalUnreadMessages }))
             }
-            setState(prev => ({ ...prev, loading: false }))
+            setState(prev => ({ ...prev, refreshing: false, loading: false }))
         }, cursor)
     }
     useEffect(() => {
@@ -82,9 +83,7 @@ const InboxScreen = ({ navigation, route }) => {
                                 <AppText size={2} color={'#02aaff'}>  New Message</AppText>
                             </View>
                         </TouchableOpacity>
-                        <View style={{ flex: 0.3 }}>
-
-                        </View>
+                        <View style={{ flex: 0.3 }} />
                     </>
                     :
                     <View style={{ justifyContent: 'flex-end', flex: 1, paddingHorizontal: RFValue(10), flexDirection: 'row', alignItems: 'center' }}>
@@ -133,7 +132,19 @@ const InboxScreen = ({ navigation, route }) => {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={2}
                 bounces={false}
-                keyExtractor={ii => (ii._id || '') + 'you'}
+                keyExtractor={ii => (ii?._id || '') + 'you'}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={state.refreshing}
+                        tintColor={'white'}
+                        onRefresh={() => {
+                            setState(prev => ({ ...prev, refreshing: true }))
+                            getinboxlisthelper(0)
+                        }}
+                    />
+                }
+
                 renderItem={({ item, index }) => {
                     let newUser = user?._id === item?.message?.from?._id ? item?.message?.to : item?.message?.from;
                     let inboxItem = {

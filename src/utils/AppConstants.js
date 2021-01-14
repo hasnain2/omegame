@@ -103,6 +103,28 @@ const POST_PRIVACY = [{
     key: "ONLY_ME"
 },]
 
+const SLIDER_COLORS = [
+    { r: 255 - 0 * 1, g: 26 - 0 * 1, b: 76 - 0 * 1 },
+    // { r: 255 - 12 * 1, g: 26 + 11.45 * 1, b: 76 - 1.85 * 1 },
+    { r: 255 - 12 * 2, g: 26 + 11.45 * 2, b: 76 - 1.85 * 2 },
+    // { r: 255 - 12 * 3, g: 26 + 11.45 * 3, b: 76 - 1.85 * 3 },
+    { r: 255 - 12 * 4, g: 26 + 11.45 * 4, b: 76 - 1.85 * 4 },
+    // { r: 255 - 12 * 5, g: 26 + 11.45 * 5, b: 76 - 1.85 * 5 },
+    { r: 255 - 12 * 6, g: 26 + 11.45 * 6, b: 76 - 1.85 * 6 },
+    // { r: 255 - 12 * 7, g: 26 + 11.45 * 7, b: 76 - 1.85 * 7 },
+    { r: 255 - 12 * 8, g: 26 + 11.45 * 8, b: 76 - 1.85 * 8 },
+    // { r: 255 - 12 * 9, g: 26 + 11.45 * 9, b: 76 - 1.85 * 9 },
+    { r: 255 - 12 * 10, g: 26 + 11.45 * 10, b: 76 - 1.85 * 10 },
+    // { r: 255 - 12 * 11, g: 26 + 11.45 * 11, b: 76 - 1.85 * 11 },
+    { r: 255 - 12 * 12, g: 26 + 11.45 * 12, b: 76 - 1.85 * 12 },
+    // { r: 255 - 12 * 13, g: 26 + 11.45 * 13, b: 76 - 1.85 * 13 },
+    { r: 255 - 12 * 14, g: 26 + 11.45 * 14, b: 76 - 1.85 * 14 },
+    // { r: 255 - 12 * 15, g: 26 + 11.45 * 15, b: 76 - 1.85 * 15 },
+    { r: 255 - 12 * 16, g: 26 + 11.45 * 16, b: 76 - 1.85 * 16 },
+    // { r: 255 - 12 * 17, g: 26 + 11.45 * 17, b: 76 - 1.85 * 17 },
+    { r: 255 - 12 * 18, g: 26 + 11.45 * 18, b: 76 - 1.85 * 18 },
+    // { r: 255 - 12 * 19, g: 26 + 11.45 * 19, b: 76 - 1.85 * 19 },
+]
 const SHARE_STATUS_TYPES = { // ----- providing share statuses types 
     FACEBOOK: 'FACEBOOK',
     TWITTER: 'TWITTER'
@@ -135,12 +157,21 @@ const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff'
 const COLOR_BUBBLE_SIZE = RFValue(25);
 
 export {
-    BUCKETS, QUEST_EVENTS,
-    REPORT_TYPE, SOCIAL_LOGIN_TYPES,
-    POST_PRIVACY, COLORS, NOTIFICATION_TYPES,
-    GENDERS_OF_USERS, COLOR_BUBBLE_SIZE,
-    GET_ALL_USER_SORT_BY, DEEP_LINK_TYPES,
-    ASSET_TYPES, PRIVACY, CHAT_SOCKET_EVENTS,
-    FRIEND_STATUSES_ACTIONS, SHARE_STATUS_TYPES,
-    GET_FRIEND_LIST_TYPES
+    BUCKETS,
+    QUEST_EVENTS,
+    REPORT_TYPE,
+    SOCIAL_LOGIN_TYPES,
+    POST_PRIVACY, COLORS,
+    NOTIFICATION_TYPES,
+    GENDERS_OF_USERS,
+    COLOR_BUBBLE_SIZE,
+    GET_ALL_USER_SORT_BY,
+    DEEP_LINK_TYPES,
+    ASSET_TYPES,
+    PRIVACY,
+    CHAT_SOCKET_EVENTS,
+    FRIEND_STATUSES_ACTIONS,
+    SHARE_STATUS_TYPES,
+    GET_FRIEND_LIST_TYPES,
+    SLIDER_COLORS
 }
