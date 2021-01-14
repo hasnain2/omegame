@@ -9,7 +9,6 @@ import Interceptor from '../utils/Interceptor';
 
 // current vid size = 2498125
 const VideoAndImageCompressor = (image) => {
-    AppLogger('------------media going to be compressed----------', image)
     let imagetemp = { ...image, uri: image?.image?.uri || image?.uri, type: image?.image?.type || image?.type };
     return new Promise((resolve, reject) => {
         if (imagetemp.type === 'photo' || imagetemp.type === 'image') {

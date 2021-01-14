@@ -4,9 +4,12 @@ import Video from 'react-native-video';
 import convertToCache from 'react-native-video-cache';
 
 const AppVideoPlayer = ({ source, startPlaying, style, controls }) => {
+    console.log(source.uri)
     return (
         <Video
             source={source?.uri ? { uri: /^((http|https|ftp):\/\/)/.test(source.uri) ? convertToCache(source.uri) : source.uri } : source}   // Can be a URL or a local file.
+            // source={{uri:"https://pp.tedcdn.com/vids/intro_00/v01/master.m3u8"}}  // -> video streaming URL , (supper fast playback)
+            // source={{ uri: source.uri }}
             paused={!startPlaying}
             controls={controls}
             repeat={startPlaying}
@@ -23,10 +26,10 @@ const AppVideoPlayer = ({ source, startPlaying, style, controls }) => {
             }}
             resizeMode={"cover"}
             bufferConfig={{
-                minBufferMs: 100,
-                maxBufferMs: 100,
-                bufferForPlaybackMs: 500,
-                bufferForPlaybackAfterRebufferMs: 200,
+                minBufferMs: 5000,
+                maxBufferMs: 5000,
+                // bufferForPlaybackMs: 100,
+                // bufferForPlaybackAfterRebufferMs: 1000,
             }}
             style={[styles.backgroundVideo, style ? style : {}]} />
     );

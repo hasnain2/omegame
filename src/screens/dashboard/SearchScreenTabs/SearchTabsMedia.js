@@ -1,13 +1,13 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AppPostsListingsGrid } from '../../../components';
 import { AppTheme } from '../../../config';
 import { GetExploreMediaOnlyPosts } from '../../../services';
 import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
-const SCREEN_HEIGHT = Dimensions.get('screen').height;
+
 let enableReset = true;
 let cursorArrMedia = [];
 const SearchTabsMedia = ({ navigation }) => {
@@ -43,7 +43,7 @@ const SearchTabsMedia = ({ navigation }) => {
         getexploremediaonlypostshelper(false, query)
     }, [query])
     return (
-        <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
+        <View style={{ flex: 1 }}>
             <AppPostsListingsGrid navigation={navigation}
                 data={state.mediaPosts}
                 loading={state.loadingMedia}

@@ -1,13 +1,13 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AppUserListingWithFollowButtons } from '../../../components';
 import { AppTheme } from '../../../config';
 import { GetAllTrendingUsers } from '../../../services';
 import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
-const SCREEN_HEIGHT = Dimensions.get('screen').height;
+
 let enableReset = true;
 let cursorArrUsers = [];
 const SearchTabsUsers = ({ navigation }) => {
@@ -45,7 +45,7 @@ const SearchTabsUsers = ({ navigation }) => {
         getalltrendingusers(false, query)
     }, [query])
     return (
-        <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
+        <View style={{ flex: 1 }}>
             <AppUserListingWithFollowButtons
                 navigation={navigation}
                 data={state.usersList}

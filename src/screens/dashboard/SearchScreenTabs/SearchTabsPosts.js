@@ -1,14 +1,13 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AppPostsListings } from '../../../components';
 import { AppTheme } from '../../../config';
 import { GetExplorePosts } from '../../../services';
 import { RemoveDuplicateObjectsFromArray } from '../../../utils/AppHelperMethods';
 
-const SCREEN_HEIGHT = Dimensions.get('screen').height;
 let enableReset = true;
 let cursorArrPosts = [];
 const SearchTabsPosts = ({ navigation }) => {
@@ -44,7 +43,7 @@ const SearchTabsPosts = ({ navigation }) => {
         getexplorepostshelper(false, query)
     }, [query])
     return (
-        <View style={{ flex: 1, maxHeight: SCREEN_HEIGHT }}>
+        <View style={{ flex: 1 }}>
             <AppPostsListings navigation={navigation}
                 data={state.allPosts}
                 loading={state.loadingPosts}
