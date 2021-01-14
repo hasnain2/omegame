@@ -20,7 +20,7 @@ const ICONSTYLE = { height: RFValue(30), width: RFValue(30), tintColor: 'white' 
 const ChatWindow = ({ navigation, route, }) => {
     const [friend, setFriend] = useState(route?.params?.friend)
 
-    let { user } = useSelector(state => state.root);
+    const { user } = useSelector(state => state.root);
     let chatID = getChatId(user?._id, friend?._id);
     friend["chatId"] = chatID;
     const [messages, setMessages] = useState([]);
@@ -41,7 +41,6 @@ const ChatWindow = ({ navigation, route, }) => {
         GetSingleUserProfile((profileRes) => {
             if (profileRes)
                 setFriend({ chatId: chatID, ...profileRes })
-            debugger
         }, friend?._id)
     }
     useEffect(() => {
@@ -128,7 +127,7 @@ const ChatWindow = ({ navigation, route, }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                             <AppText bold={true} size={1} color={'white'}>{friend.firstName || friend?.userName}</AppText>
                             <IsUserVerifiedCheck check={friend?.isVerified} />
-                            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{friend.earnedXps}</AppText>
+                            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{ paddingLeft: RFValue(5) }}>{friend.level}</AppText>
                             {/* <AppText size={1} color={AppTheme.colors.lightGrey}> - 4 h</AppText> */}
 
                         </View>
@@ -203,7 +202,7 @@ const ChatWindow = ({ navigation, route, }) => {
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, showMenu: false, loading: false }))
-                            MuteChatOfSpecificUser(() => { }, friend?._id, `${friend.isChatMuted?'false':'true'}`)
+                            MuteChatOfSpecificUser(() => { }, friend?._id, `${friend.isChatMuted ? 'false' : 'true'}`)
                             let tempFriend = { ...friend };
                             tempFriend.isChatMuted = !tempFriend.isChatMuted
                             setFriend(tempFriend);

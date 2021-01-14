@@ -24,7 +24,7 @@ const RateGameScreen = ({ navigation, route, }) => {
         selectedConsole: 'Ps4',
         showFilter: false
     })
-    let { user } = useSelector(state => state.root);
+    const { user } = useSelector(state => state.root);
 
     const onSubmit = () => {
         if (state.reviewText.trim()) {
@@ -57,7 +57,6 @@ const RateGameScreen = ({ navigation, route, }) => {
             </View>
 
             <KeyboardAvoidingScrollView >
-
                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(15) }}>
                     <UserAvatar corner={gameData?.corner || ''} color={gameData?.cornerColor} source={gameData?.background?.url ? { uri: gameData?.background?.url } : BACKGROUND_IMG} size={50} />
 
@@ -87,7 +86,6 @@ const RateGameScreen = ({ navigation, route, }) => {
                         setState(prev => ({ ...prev, rating: val }))
                     }} />
                 </View>
-
 
                 <View style={{ flexDirection: 'row', padding: RFValue(20) }}>
                     <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={40} />

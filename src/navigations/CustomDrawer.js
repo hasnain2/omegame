@@ -11,7 +11,7 @@ import { AppGoldCoin, AppText, IsUserVerifiedCheck, UserAvatar } from '../compon
 import { AppTheme } from '../config';
 import { setUser } from '../redux/reducers/userSlice';
 import { store } from '../redux/store';
-import { GetSingleUserProfile } from '../services';
+import { GetSingleUserProfile, UpdateUserProfile } from '../services';
 import { largeNumberShortify } from '../utils/AppHelperMethods';
 
 const LWidth = '100%';
@@ -25,10 +25,7 @@ const CustomDrawer = ({ state: { routeNames }, navigation }) => {
     let { user } = useSelector(state => state.root);
 
     React.useEffect(() => {
-        GetSingleUserProfile((userDataRes) => {
-            if (userDataRes)
-                store.dispatch(setUser({ ...userDataRes }));
-        }, store.getState().root?.user?._id);
+        UpdateUserProfile()
     }, [])
 
     return (

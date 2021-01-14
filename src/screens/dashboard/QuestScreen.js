@@ -45,11 +45,18 @@ const QuestScreen = ({ route, navigation }) => {
     }
 
     useEffect(() => {
-        GetSingleUserProfile((userDataRes) => {
-            if (userDataRes)
-                store.dispatch(setUser({ ...userDataRes }));
-        }, store.getState().root?.user?._id);
         getquesthelper(0);
+
+        const unsubscribeFocus = navigation.addListener('focus', e => {
+            GetSingleUserProfile((userDataRes) => {
+                if (userDataRes)
+                    store.dispatch(setUser({ ...userDataRes }));
+            }, store.getState().root?.user?._id);
+        });
+
+        return () => {
+            unsubscribeFocus();
+        }
     }, [])
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}

@@ -1,11 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import {
-    ScrollView,
-    RefreshControl,
-    View
-} from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppLoadingView, AppPostsListings, AppText, HomeScreenHeader } from '../../components';

@@ -32,7 +32,6 @@ const RequestVerification = (callback, formData) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------RequestVerification RES----------', data)
         if (status === 201 || status === 200) {
             callback(true)
         } else
@@ -42,14 +41,17 @@ const RequestVerification = (callback, formData) => {
         callback(false)
     });
 }
-
+const UpdateUserProfile = () => {
+    GetSingleUserProfile((userDataRes) => {
+        if (userDataRes)
+            store.dispatch(setUser({ ...userDataRes }));
+    }, store.getState().root?.user?._id);
+}
 const GetAllTrendingUsers = (callback, cursor, query) => {
-    AppLogger('-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\---', `${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`)
     fetch(`${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${cursor ? ('&cursor=' + cursor) : ''}${query ? ("&" + query) : ''}`, {
         method: 'GET',
         headers: Interceptor.getHeaders(),
     }).then(JSONBodyHelper).then(([status, data]) => {
-        // AppLogger('-----------GET ALL TRENDING USERS RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data?.data?.data || [])
         } else
@@ -65,7 +67,6 @@ const GetSingleUserProfile = (callback, id) => {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------GET SINGLE USER PROFILE RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data)
         } else
@@ -85,7 +86,6 @@ const ActionsOnUsers = (callback, id, TYPE) => {
             status: TYPE
         })
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------ACTIONS ON FRIENDS RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data)
         } else
@@ -102,7 +102,6 @@ const GerUserListByType = (callback, id, TYPE, CURSOR, query) => {
         method: 'GET',
         headers: Interceptor.getHeaders(),
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------GETTING USER LIST OF ' + TYPE + ' RES----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(data.data)
         } else
@@ -113,4 +112,9 @@ const GerUserListByType = (callback, id, TYPE, CURSOR, query) => {
     });
 }
 
-export { UpdateProfile, GetAllTrendingUsers, RequestVerification, GetSingleUserProfile, ActionsOnUsers, GerUserListByType }
+export {
+    UpdateProfile, UpdateUserProfile,
+    GetAllTrendingUsers, RequestVerification,
+    GetSingleUserProfile, ActionsOnUsers,
+    GerUserListByType
+}

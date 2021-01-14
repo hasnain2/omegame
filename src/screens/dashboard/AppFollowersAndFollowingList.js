@@ -9,7 +9,7 @@ import { AppBackButton, AppButton, AppLoadingView, AppNoDataFound, AppSearchBar,
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setUser } from '../../redux/reducers/userSlice';
-import { ActionsOnUsers, GerUserListByType, GetSingleUserProfile } from '../../services';
+import { ActionsOnUsers, GerUserListByType, GetSingleUserProfile, UpdateUserProfile } from '../../services';
 import { FRIEND_STATUSES_ACTIONS, GET_FRIEND_LIST_TYPES } from '../../utils/AppConstants';
 import { AppLogger, AppShowToast, CapitalizeFirstLetter, largeNumberShortify } from '../../utils/AppHelperMethods';
 
@@ -39,11 +39,7 @@ const AppFollowersAndFollowingList = ({ navigation, route, }) => {
 
     useEffect(() => {
         getuserlisthelper(false, '')
-        GetSingleUserProfile((userRes) => {
-            if (userRes) {
-                dispatch(setUser({ ...userRes }))
-            }
-        }, user?._id)
+        UpdateUserProfile()
     }, []);
 
     function handleActionsOnUsers(isUserIsSame, item, index) {

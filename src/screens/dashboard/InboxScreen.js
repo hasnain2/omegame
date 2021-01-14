@@ -11,6 +11,7 @@ import { AppBackButton, AppBadge, AppFriendsListModal, AppLoadingView, AppNoData
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setInbox } from '../../redux/reducers/inboxSlice';
+import { setSettings } from '../../redux/reducers/settingsSlice';
 import { store } from '../../redux/store';
 import { GetInboxList } from '../../services';
 import { AppLogger, largeNumberShortify } from '../../utils/AppHelperMethods';
@@ -18,7 +19,7 @@ import { AntDesign } from '../../utils/AppIcons';
 
 let originalInboxList = [];
 const InboxScreen = ({ navigation, route }) => {
-    let { user, inbox } = useSelector(state => state.root);
+    const { user, inbox } = useSelector(state => state.root);
 
     let dipatch = useDispatch()
     let [state, setState] = useState({
@@ -46,7 +47,14 @@ const InboxScreen = ({ navigation, route }) => {
         GetInboxList((inboxListRes) => {
             if (inboxListRes) {
                 dipatch(setInbox(inboxListRes));
-                originalInboxList = inboxListRes
+                originalInboxList = inboxListRes;
+                let totalUnreadMessages = 0;
+                if (inboxListRes.length) {
+                    inboxListRes.forEach((item) => {
+                        totalUnreadMessages += item?.count || 0
+                    })
+                }
+                dipatch(setSettings({ chatCount: totalUnreadMessages }))
             }
             setState(prev => ({ ...prev, loading: false }))
         }, cursor)
@@ -166,7 +174,7 @@ const InboxScreen = ({ navigation, route }) => {
                                     </View>
                                     <AppText lines={2} size={2} style={{ paddingVertical: RFValue(5) }}>{inboxItem?.message}</AppText>
                                 </View>
-                                <View style={{ }}>
+                                <View style={{}}>
                                     {item?.count ?
                                         <AppBadge count={largeNumberShortify(item?.count)} /> : null}
                                 </View>
