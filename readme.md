@@ -42,6 +42,23 @@ react-native run-ios
 ```
 
 
+
+## Extra step for Android
+You'll also need to manually apply a plugin to your app, from ```android/app/build.gradle```:
+
+// 2nd line, add a new apply:
+```apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"```
+
+### Advanced Android Setup
+In ```android/app/build.gradle```, if you use applicationIdSuffix or applicationId that is different from the package name indicated in ```AndroidManifest.xml``` in <manifest package="..."> tag, for example, to support different build variants: Add this in ```android/app/build.gradle```
+
+```
+defaultConfig {
+    ...
+    resValue "string", "build_config_package", "YOUR_PACKAGE_NAME_IN_ANDROIDMANIFEST.XML"
+}
+```
+
 ## Known Issues
 
 ### IF android released build crashes on start with error unable to find metro

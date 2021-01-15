@@ -171,7 +171,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                                     </TouchableOpacity>
                                     <View style={{ borderColor: AppTheme.colors.green, borderWidth: 1, paddingHorizontal: RFValue(25), paddingVertical: RFValue(10), borderRadius: RFValue(15) }} >
                                         <AppText size={1} style={{ textAlign: 'center' }} >{item?.devices[0]}</AppText>
-                                        <AppText size={3} style={{ textAlign: 'center' }} >{item?.ratings}</AppText>
+                                        <AppText size={3} style={{ textAlign: 'center' }} >{parseFloat(item?.ratings || 0)?.toFixed(2)}</AppText>
                                     </View>
                                 </View>
                                 <AppText size={2}  >{item?.feedback}</AppText>

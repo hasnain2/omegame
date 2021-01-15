@@ -41,6 +41,7 @@
     "react-native": "0.63.3",
     "react-native-aws3": "0.0.9",
     "react-native-collapsible-tab-view": "^1.1.1",
+    "react-native-config": "^1.4.1",
     "react-native-create-thumbnail": "^1.2.2",
     "react-native-custom-slider": "^1.0.2",
     "react-native-device-info": "^7.3.1",

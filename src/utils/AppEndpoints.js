@@ -1,5 +1,9 @@
-const TESTING_DOMAIN = "http://ec2-18-219-104-108.us-east-2.compute.amazonaws.com";
-const PRODUCTION_DOMAIN = "http://ec2-18-219-104-108.us-east-2.compute.amazonaws.com";
+import Config from 'react-native-config';
+
+
+
+const TESTING_DOMAIN = Config.BASE_URL;
+const PRODUCTION_DOMAIN = Config.BASE_URL;
 const DOMAIN = __DEV__ ? TESTING_DOMAIN : PRODUCTION_DOMAIN;
 const BASE_URL = DOMAIN + '/api/';
 

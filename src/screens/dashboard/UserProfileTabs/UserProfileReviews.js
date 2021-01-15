@@ -49,7 +49,7 @@ const UserProfileReviews = ({ navigation, userID }) => {
                                 </View>
                                 <View style={{ borderRadius: RFValue(10), borderWidth: 1, padding: RFValue(10), flex: 0.2, justifyContent: 'center', alignItems: 'center', borderColor: item.negetive ? AppTheme.colors.red : AppTheme.colors.green }}>
                                     <AppText size={1}>{item?.devices[0]}</AppText>
-                                    <AppText size={3}>{item.ratings}</AppText>
+                                    <AppText size={3}>{parseFloat(item?.ratings || 0)?.toFixed(2)}</AppText>
                                 </View>
                             </View>
                             <View style={{ paddingVertical: RFValue(15) }}>

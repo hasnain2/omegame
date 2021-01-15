@@ -2,7 +2,7 @@
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, TouchableHighlight, View } from 'react-native';
+import { Keyboard, LayoutAnimation, Platform, TouchableHighlight, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import InstagramLogin from 'react-native-instagram-login';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -20,6 +20,11 @@ import { Ionicons } from '../../utils/AppIcons';
 import { getData, storeData } from '../../utils/AppStorage';
 import { ValidateEmail } from '../../utils/AppValidators';
 const INSTA_SCOPES = ['user_profile', 'user_media', 'instagram_graph_user_profile'];
+
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 GoogleSignin.configure();
 
 const Login = ({ route, navigation }) => {
@@ -50,10 +55,12 @@ const Login = ({ route, navigation }) => {
 
     function _keyboardDidShow(e) {
         setState(prev => ({ ...prev, isKeyboardVisible: true }))
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     };
 
     function _keyboardDidHide() {
         setState(prev => ({ ...prev, isKeyboardVisible: false }))
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     };
 
     const socialbuttonsclickhandler = (data) => {
@@ -118,7 +125,7 @@ const Login = ({ route, navigation }) => {
                 </View>
             </View>
 
-            <View style={{ zIndex: state.isKeyboardVisible ? -10 : 10 }}>
+            <View style={{}}>
                 <InstagramLogin
                     ref={ref => setInstagramLoginRef(ref)}
                     appId={AppConfig.INSTAGRAM_APP_ID}
@@ -131,50 +138,48 @@ const Login = ({ route, navigation }) => {
                     onLoginSuccess={async (data) => {
                         setState(prev => ({ ...prev, loading: true }))
                         let loginRes = await socialloginhelper(data.access_token, SOCIAL_LOGIN_TYPES.INSTAGRAM);
-                        AppLogger('--------INSTA LOGIN RESPONSE--------', JSON.stringify(loginRes))
                         socialbuttonsclickhandler(loginRes)
                     }}
                     onLoginFailure={(data) => {
-                        AppLogger('--------INSTA LOGIN ERROR--------', JSON.stringify(data))
                         setState(prev => ({ ...prev, loading: false }))
                     }}
                 />
-
-                <View style={{ paddingBottom: RFValue(20) }}>
-                    <AppText size={1} style={{ textAlign: 'center', paddingBottom: RFValue(10) }} color={AppTheme.colors.lightGrey} >or start with:</AppText>
-                    <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
-                        <AppSocialButton onPress={async () => {
-                            if (__DEV__) {
-                                setState(prev => ({ ...prev, loading: true }))
-                                const socialLoginRes = await LoginWithFacebook();
-                                socialbuttonsclickhandler(socialLoginRes)
-                            }
-                        }} name="facebook" />
-                        <AppSocialButton name="twitter" />
-                        <AppSocialButton onPress={() => {
-                            if (instagramLoginRef && __DEV__) {
-                                setState(prev => ({ ...prev, loading: true }))
-                                instagramLoginRef.show();
-                            }
-                        }} name="instagram" />
-                        <AppSocialButton onPress={async () => {
-                            if (__DEV__) {
-                                setState(prev => ({ ...prev, loading: true }))
-                                const socialLoginRes = await LoginWithGoogle();
-                                socialbuttonsclickhandler(socialLoginRes)
-                            }
-                        }} name="google" />
-                        {Platform.OS === 'ios' && parseInt(Platform.Version, 10) >= 13 ?
+                {!state.isKeyboardVisible ?
+                    <View style={{ paddingBottom: RFValue(20) }}>
+                        <AppText size={1} style={{ textAlign: 'center', paddingBottom: RFValue(10) }} color={AppTheme.colors.lightGrey} >or start with:</AppText>
+                        <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
                             <AppSocialButton onPress={async () => {
                                 if (__DEV__) {
                                     setState(prev => ({ ...prev, loading: true }))
-                                    const socialLoginRes = await LoginWithApple();
+                                    const socialLoginRes = await LoginWithFacebook();
                                     socialbuttonsclickhandler(socialLoginRes)
                                 }
-                            }} name="apple" /> : null}
+                            }} name="facebook" />
+                            <AppSocialButton name="twitter" />
+                            <AppSocialButton onPress={() => {
+                                if (instagramLoginRef && __DEV__) {
+                                    setState(prev => ({ ...prev, loading: true }))
+                                    instagramLoginRef.show();
+                                }
+                            }} name="instagram" />
+                            <AppSocialButton onPress={async () => {
+                                if (__DEV__) {
+                                    setState(prev => ({ ...prev, loading: true }))
+                                    const socialLoginRes = await LoginWithGoogle();
+                                    socialbuttonsclickhandler(socialLoginRes)
+                                }
+                            }} name="google" />
+                            {Platform.OS === 'ios' && parseInt(Platform.Version, 10) >= 13 ?
+                                <AppSocialButton onPress={async () => {
+                                    if (__DEV__) {
+                                        setState(prev => ({ ...prev, loading: true }))
+                                        const socialLoginRes = await LoginWithApple();
+                                        socialbuttonsclickhandler(socialLoginRes)
+                                    }
+                                }} name="apple" /> : null}
+                        </View>
                     </View>
-                </View>
-
+                    : null}
                 <AppGradientContainer onPress={() => navigation.replace("SignUp")} style={{ paddingVertical: RFValue(30), marginTop: RFValue(10), justifyContent: 'center', alignItems: 'center', marginTop: RFValue(10) }}>
                     <AppText size={2} >Don't you have an account?</AppText>
                     <AppText size={4} bold={true} style={{ paddingTop: RFValue(10) }}>SIGN UP</AppText>

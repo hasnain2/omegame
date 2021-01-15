@@ -358,6 +358,10 @@ PODS:
     - React
   - react-native-cameraroll (4.0.1):
     - React
+  - react-native-config (1.4.1):
+    - react-native-config/App (= 1.4.1)
+  - react-native-config/App (1.4.1):
+    - React-Core
   - react-native-create-thumbnail (1.2.2):
     - React
   - react-native-fbsdk (3.0.0):
@@ -576,6 +580,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
+  - react-native-config (from `../node_modules/react-native-config`)
   - react-native-create-thumbnail (from `../node_modules/react-native-create-thumbnail`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
@@ -712,6 +717,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-community/cameraroll"
+  react-native-config:
+    :path: "../node_modules/react-native-config"
   react-native-create-thumbnail:
     :path: "../node_modules/react-native-create-thumbnail"
   react-native-fbsdk:
@@ -853,6 +860,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 9d2b7c1707204d2040d2812f960c6cebdbd9f670
+  react-native-config: d8b45133fd13d4f23bd2064b72f6e2c08b2763ed
   react-native-create-thumbnail: 4c445d78f7fe6537292e169744faff065c4e71f8
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
   react-native-image-resizer: af7fa48fe7913b7b96fa079d16dd97ada31d6833
@@ -902,6 +910,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 20ad43f85417fdb537c8c7d0689c8943ff03d234
+PODFILE CHECKSUM: 1ac042e5548d4b1be554fc664ccee8435b34690f
 
 COCOAPODS: 1.9.3
