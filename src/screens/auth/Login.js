@@ -4,21 +4,21 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Platform, TouchableHighlight, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import InstagramLogin from 'react-native-instagram-login';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { APP_LOGO } from '../../../assets/images';
 import { AppButton, AppGradientContainer, AppInput, AppRadioButton, AppText } from '../../components';
 import { AppSocialButton } from '../../components/AppSocialButton';
+import { AppConfig } from '../../config';
 import { AppTheme } from '../../config/AppTheme';
 import { LogInUser } from '../../services/authService';
 import { LoginWithApple, LoginWithFacebook, LoginWithGoogle, socialloginhelper } from '../../services/socialAuthService';
+import { SOCIAL_LOGIN_TYPES } from '../../utils/AppConstants';
+import { EndPoints } from '../../utils/AppEndpoints';
 import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { getData, storeData } from '../../utils/AppStorage';
 import { ValidateEmail } from '../../utils/AppValidators';
-import InstagramLogin from 'react-native-instagram-login';
-import { AppConfig } from '../../config';
-import { EndPoints } from '../../utils/AppEndpoints';
-import { SOCIAL_LOGIN_TYPES } from '../../utils/AppConstants';
 const INSTA_SCOPES = ['user_profile', 'user_media', 'instagram_graph_user_profile'];
 GoogleSignin.configure();
 
@@ -29,6 +29,7 @@ const Login = ({ route, navigation }) => {
         email: __DEV__ ? 'asadalicodingpixel@gmail.com' : "", password: __DEV__ ? '@Sad123456' : "",
         loading: false,
         passwordVisible: true,
+        isKeyboardVisible: false
     });
 
     useEffect(() => {
@@ -36,7 +37,24 @@ const Login = ({ route, navigation }) => {
             if (dta)
                 setState(prev => ({ ...prev, rememberMe: true, email: dta.userName, password: dta.password }))
         })
+
+        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+        // cleanup function
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
     }, []);
+
+    function _keyboardDidShow(e) {
+        setState(prev => ({ ...prev, isKeyboardVisible: true }))
+    };
+
+    function _keyboardDidHide() {
+        setState(prev => ({ ...prev, isKeyboardVisible: false }))
+    };
 
     const socialbuttonsclickhandler = (data) => {
         if (data) {
@@ -100,7 +118,7 @@ const Login = ({ route, navigation }) => {
                 </View>
             </View>
 
-            <View style={{}}>
+            <View style={{ zIndex: state.isKeyboardVisible ? -10 : 10 }}>
                 <InstagramLogin
                     ref={ref => setInstagramLoginRef(ref)}
                     appId={AppConfig.INSTAGRAM_APP_ID}
@@ -121,6 +139,7 @@ const Login = ({ route, navigation }) => {
                         setState(prev => ({ ...prev, loading: false }))
                     }}
                 />
+
                 <View style={{ paddingBottom: RFValue(20) }}>
                     <AppText size={1} style={{ textAlign: 'center', paddingBottom: RFValue(10) }} color={AppTheme.colors.lightGrey} >or start with:</AppText>
                     <View style={{ flexDirection: 'row', paddingHorizontal: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
@@ -155,6 +174,7 @@ const Login = ({ route, navigation }) => {
                             }} name="apple" /> : null}
                     </View>
                 </View>
+
                 <AppGradientContainer onPress={() => navigation.replace("SignUp")} style={{ paddingVertical: RFValue(30), marginTop: RFValue(10), justifyContent: 'center', alignItems: 'center', marginTop: RFValue(10) }}>
                     <AppText size={2} >Don't you have an account?</AppText>
                     <AppText size={4} bold={true} style={{ paddingTop: RFValue(10) }}>SIGN UP</AppText>
