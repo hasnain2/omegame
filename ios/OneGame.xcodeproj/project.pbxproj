@@ -22,6 +22,7 @@
 		F17FAABD0FB3A60A677AAE17 /* libPods-OneGame-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39E1EB1DAFB4FE87FA3CB480 /* libPods-OneGame-tvOS.a */; };
 		FA408135259F135000E890AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA408134259F135000E890AF /* GoogleService-Info.plist */; };
 		FA4497CC25A300C500E02107 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4497CB25A300C500E02107 /* File.swift */; };
+		FA7D1E4825B1DBB50069A4DB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		FA40819F259F13AC00E890AF /* OneGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OneGame.entitlements; path = OneGame/OneGame.entitlements; sourceTree = "<group>"; };
 		FA44974E25A3003900E02107 /* OneGame-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OneGame-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA4497CB25A300C500E02107 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */,
 				FA408134259F135000E890AF /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* OneGame */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -394,6 +397,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA7D1E4825B1DBB50069A4DB /* Config.xcconfig in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				FA408135259F135000E890AF /* GoogleService-Info.plist in Resources */,
@@ -1009,6 +1013,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1069,6 +1074,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;

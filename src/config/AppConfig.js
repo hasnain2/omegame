@@ -27,7 +27,6 @@ const AppConfig = {
             secretKey: Config.S3_SECRET_KEY,
             successActionStatus: 201,
         }
-
     },
     //For Direct upload
     S3_DIRECT_UPLOAD_CONFIGURATION: {

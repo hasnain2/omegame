@@ -59,6 +59,10 @@ defaultConfig {
 }
 ```
 
+## Extra steps for iOS
+```https://github.com/luggit/react-native-config#availability-in-build-settings-and-infoplist```
+
+
 ## Known Issues
 
 ### IF android released build crashes on start with error unable to find metro
@@ -81,3 +85,8 @@ var sharedBlacklist = [
 
 https://github.com/ashrithks/rn-collapsing-tab-bar
 https://github.com/ptomasroos/react-native-scrollable-tab-view
+
+
+
+## NOTES
+- Make sure you do not have empty lines in ```.env``` or your iOS build will fail
