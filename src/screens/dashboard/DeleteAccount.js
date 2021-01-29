@@ -1,7 +1,6 @@
 
-
-import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
+import React from 'react';
+import { Alert, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppButton, AppText } from '../../components';
@@ -10,10 +9,7 @@ import { DeleteUserAccount } from '../../services';
 import { Ionicons } from '../../utils/AppIcons';
 
 const DeleteAccount = ({ navigation, route, }) => {
-    let { user } = useSelector(state => state.root)
-    let [state, setState] = useState({
-        loading: false,
-    })
+    const { user } = useSelector(state => state.root)
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -29,7 +25,6 @@ const DeleteAccount = ({ navigation, route, }) => {
                 <AppText onPress={() => { navigation.navigate("EditUserProfileScreen", { data: user, userName: true }) }} size={2} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }} >- If you want to change your username you can <AppText onPress={() => { }} size={2} color={AppTheme.colors.primary}>do that here</AppText>.</AppText>
                 <AppText size={2} color={AppTheme.colors.lightGrey} style={{ paddingVertical: RFValue(10) }} >- Account deletion is final. <AppText onPress={() => { }} size={2} bold={true} color={AppTheme.colors.lightGrey}>You will permanently lose your profile, messages and photos</AppText>.</AppText>
             </View>
-
             <View style={{ paddingHorizontal: RFValue(20), paddingVertical: RFValue(10) }}>
                 <AppButton fill={true} onPress={() => { navigation.goBack(); }} label={"NEVER MIND, KEEP MY ACCOUNT"} />
             </View>
@@ -48,7 +43,6 @@ const DeleteAccount = ({ navigation, route, }) => {
                 }} label={"DELETE MY ACCOUNT"} />
             </View>
         </View>
-
     );
 };
 

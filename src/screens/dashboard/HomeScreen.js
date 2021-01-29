@@ -14,13 +14,13 @@ import { GetHomeFeed } from '../../services/postService';
 import { initSocket } from '../../services/socketService';
 let cursorArr = []
 const HomeScreen = ({ route, navigation }) => {
-    let [state, setState] = useState({
+    const [state, setState] = useState({
         loading: true,
         refreshing: false,
         data: []
     })
-    let disptach = useDispatch();
-    let { homeFeed, user } = useSelector(state => state.root);
+    const disptach = useDispatch();
+    const { homeFeed, user } = useSelector(state => state.root);
 
     function getHomeFeedHelper(cursor) {
         if (!cursor)

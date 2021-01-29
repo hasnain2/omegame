@@ -44,6 +44,7 @@ const SearchTabsUsers = ({ navigation }) => {
         cursorArrUsers = [];
         getalltrendingusers(false, query)
     }, [query])
+    
     return (
         <View style={{ flex: 1 }}>
             <AppUserListingWithFollowButtons

@@ -7,22 +7,21 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppBackButton, AppButton, AppCustomSlider, AppText, UserAvatar } from '../../components';
 import { AppConfig, AppTheme } from '../../config';
-import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
+import { AppShowToast } from '../../utils/AppHelperMethods';
 const NUMBER_OF_COLUMNS = 2;
 const LeaveFeedBack = ({ navigation, route, }) => {
     let gameData = route?.params?.gameData
-    let [state, setState] = useState({
+    const [state, setState] = useState({
         loading: false,
         feedbacktext: '',
         rating: 5,
         selectedConsole: 'Ps4',
         showFilter: false
     })
-    let { user } = useSelector(state => state.root);
+    const { user } = useSelector(state => state.root);
 
     const onSubmit = () => {
         if (state.feedbacktext.trim()) {
-
         } else {
             AppShowToast('kindly provide feedback')
         }

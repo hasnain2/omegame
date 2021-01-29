@@ -39,13 +39,13 @@ const Signup = ({ route, navigation }) => {
         };
     }, []);
     function _keyboardDidShow(e) {
-        setState(prev => ({ ...prev, keyboardVisible: true }))
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        setState(prev => ({ ...prev, keyboardVisible: true }))
     };
 
     function _keyboardDidHide() {
-        setState(prev => ({ ...prev, keyboardVisible: false }));
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        setState(prev => ({ ...prev, keyboardVisible: false }));
     };
 
     const onSubmit = () => {
@@ -58,7 +58,7 @@ const Signup = ({ route, navigation }) => {
                             SignUpUser((res) => {
                                 if (res) {
                                     AppShowToast("Verification Email has been sent!")
-                                    navigation.replace("Login");
+                                    navigation.navigate("CodeVerification", { email: state.email?.toLowerCase().trim() });
                                 }
                                 setState(prev => ({ ...prev, loading: false }))
                             }, {
@@ -82,13 +82,13 @@ const Signup = ({ route, navigation }) => {
 
             <View style={{ flex: 1, backgroundColor: 'black', }}>
                 <View style={{ paddingHorizontal: RFValue(15), flex: 1 }}>
-                    <KeyboardAvoidingScrollView contentContainerStyle={{ flex: 0.9, backgroundColor: 'black', paddingBottom: RFValue(10) }}>
+                    <KeyboardAvoidingScrollView contentContainerStyle={{ flex: 0.97, backgroundColor: 'black', paddingBottom: RFValue(30) }}>
 
-                        <View style={{ flex: 0.6, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ flex: 0.45, justifyContent: 'center', alignItems: 'center' }}>
                             <FastImage style={{ width: RFValue(70), height: RFValue(70) }} source={APP_LOGO} resizeMode="contain" />
                         </View>
 
-                        <View style={{ flex: 1, }}>
+                        <View style={{ flex: 1 }}>
                             <AppInput editable={!state.loading} type={"any"} label={"Username"} onChangeText={(val) => { setState(prev => ({ ...prev, username: val })) }} />
                             <AppInput editable={!state.loading} type={'type'} label={"E-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
                             <AppInput editable={!state.loading} type={'any'} passwordVisible={state.passwordVisibleA} label={"Password"} onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisibleA: !state.passwordVisibleA }))} right={<Ionicons name={state.passwordVisibleA ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
@@ -96,23 +96,24 @@ const Signup = ({ route, navigation }) => {
                             {state.passwordError ?
                                 <AppText color={AppTheme.colors.red} size={1}>{state.passwordError}</AppText>
                                 : null}
-                            <View style={{ justifyContent: 'center', paddingTop: RFValue(20) }}>
-                                <AppButton loading={state.loading} onPress={onSubmit} label={"Create Account"} />
-                            </View>
-                            <View style={{}}>
-                                <AppText size={1} style={{ textAlign: 'center', paddingVertical: RFValue(10) }} color={AppTheme.colors.lightGrey} >By clicking Create account, I agree that I have read and accepted the <AppText size={0} color={AppTheme.colors.lightGrey} style={{ textDecorationLine: 'underline' }}>Terms of Use</AppText> and <AppText size={0} color={AppTheme.colors.lightGrey} style={{ textDecorationLine: 'underline' }}>Privacy Policy</AppText>.</AppText>
-                            </View>
+                            {!state.keyboardVisible &&
+                                <View style={{ justifyContent: 'center', paddingTop: RFValue(20) }}>
+                                    <AppButton loading={state.loading} onPress={onSubmit} label={"Create Account"} />
+                                </View>}
+
+
+                            <AppText size={1} style={{ textAlign: 'center', paddingVertical: RFValue(10) }} color={AppTheme.colors.lightGrey} >By clicking Create account, I agree that I have read and accepted the <AppText size={0} color={AppTheme.colors.lightGrey} style={{ textDecorationLine: 'underline' }}>Terms of Use</AppText> and <AppText size={0} color={AppTheme.colors.lightGrey} style={{ textDecorationLine: 'underline' }}>Privacy Policy</AppText>.</AppText>
                         </View>
                     </KeyboardAvoidingScrollView>
                 </View>
 
-
-                <View style={{ justifyContent: 'space-between' }}>
-                    <AppGradientContainer onPress={() => navigation.replace("Login")} style={{ paddingVertical: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
-                        <AppText size={2} >Already have an account?</AppText>
-                        <AppText size={4} bold={true} style={{ paddingTop: RFValue(10) }} >LOGIN</AppText>
-                    </AppGradientContainer>
-                </View>
+                {!state.keyboardVisible &&
+                    <View style={{ justifyContent: 'space-between' }}>
+                        <AppGradientContainer onPress={() => navigation.replace("Login")} style={{ paddingVertical: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
+                            <AppText size={2} >Already have an account?</AppText>
+                            <AppText size={4} bold={true} style={{ paddingTop: RFValue(10) }} >LOGIN</AppText>
+                        </AppGradientContainer>
+                    </View>}
             </View>
 
         </View>

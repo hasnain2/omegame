@@ -156,7 +156,13 @@ const DEEP_LINK_TYPES = {
 const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7'];
 const COLOR_BUBBLE_SIZE = RFValue(25);
 
+const SecurityCodeTypeEnum = {
+    verification: 'verification',
+    forgot: 'forgot',
+    otp: 'otp'
+}
 export {
+    SecurityCodeTypeEnum,
     BUCKETS,
     QUEST_EVENTS,
     REPORT_TYPE,

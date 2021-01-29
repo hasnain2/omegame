@@ -13,9 +13,10 @@ const EndPoints = {
     LOGIN: BASE_URL + 'authentication/login',
     SIGNUP: BASE_URL + 'authentication/signup/PLAYER',
     FORGOT_PASSWORD: BASE_URL + 'authentication/forgotPassword',
+    VERIFY_EMAIL: BASE_URL + 'authentication/verifyEmail',
+    RESEND_VERIFICATION_CODE: BASE_URL + 'authentication/resendCode',
     RESET_PASSWORD: BASE_URL + 'authentication/resetPassword',
     CHANGE_PASSWORD: BASE_URL + 'authentication/password', //change/update password
-    VERIFY_EMAIL: BASE_URL + 'authentication/verifyEmail',
     PROFILE_UPDATE_CREATE: BASE_URL + 'profile',
     UPLOAD_MEDIA: BASE_URL + 'media/bucket/',
     REQUEST_VERIFICATION: BASE_URL + 'profile/verification/docs',

@@ -22,8 +22,8 @@ const GameDetailsScreen = ({ navigation, route, }) => {
     const dispatch = useDispatch();
     let gameData = route?.params?.gameData;
 
-    let gameReviews = useSelector(state => state.root.gameReviews)
-    let [state, setState] = useState({
+    const { gameReviews } = useSelector(state => state.root)
+    const [state, setState] = useState({
         loading: true,
         selectedSortType: 'RECENT',
         showBuyModal: false
@@ -84,7 +84,6 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                     </FastImage>
                 </View>
 
-
                 <View style={{ padding: RFValue(10) }}>
                     <AppText onPress={() => {
                         setState(prev => ({ ...prev, bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3 }))
@@ -102,11 +101,9 @@ const GameDetailsScreen = ({ navigation, route, }) => {
 
                 <AppText size={2} style={{ paddingLeft: RFValue(10), paddingBottom: RFValue(20) }} color={AppTheme.colors.lightGrey}>Suggested price: {gameData?.price || '0'} $</AppText>
 
-
                 <View style={{ padding: RFValue(10) }}>
                     <AppButton label={"RATE THIS GAME"} onPress={() => { navigation.navigate('RateGameScreen', { gameData }) }} bgColor={"black"} />
                 </View>
-
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', padding: RFValue(10) }}>
                     <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, margin: RFValue(3) }} onPress={() => {
@@ -134,7 +131,6 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-
 
                 <View style={{ height: Dimensions.get('screen').height - RFValue(200) }}>
                     <FlatList
@@ -179,16 +175,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                             </View>
                         )} />
                 </View>
-
-
-
             </ScrollView>
-
-
-
-
-
-
         </View>
     );
 };

@@ -1,24 +1,21 @@
 
 
 import moment from 'moment';
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
 import { AppHeaderCommon, AppText } from '../../components';
 import { AppTheme } from '../../config';
 
-const renderOptionItem = (label, value) => {
-    return (
-        <View style={{ paddingVertical: RFValue(10) }} >
-            <AppText color={AppTheme.colors.lightGrey} size={1}>{label}</AppText>
-            <AppText color={'white'} size={2} style={{ paddingTop: RFValue(5) }}>{value}</AppText>
-        </View>
-    )
-}
+const renderOptionItem = (label, value) =>
+    <View style={{ paddingVertical: RFValue(10) }} >
+        <AppText color={AppTheme.colors.lightGrey} size={1}>{label}</AppText>
+        <AppText color={'white'} size={2} style={{ paddingTop: RFValue(5) }}>{value}</AppText>
+    </View>
 
 const PersonalInformationScreen = ({ navigation, route, }) => {
-    let { user } = useSelector(state => state.root);
+    const { user } = useSelector(state => state.root);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>

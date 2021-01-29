@@ -10,15 +10,14 @@ import { AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { ValidatePassword } from '../../utils/AppValidators';
 
-const ChangePasswordScreen = ({ navigation, route, }) => {
-    let [state, setState] = useState({
+const ChangePasswordScreen = ({ navigation, route }) => {
+
+    const [state, setState] = useState({
         loading: false,
         currentPass: '',
         newPass: '',
         confirmNewPass: '',
-
         passwordError: '',
-
         passVisibility1: true,
         passVisibility2: true,
         passVisibility3: true
@@ -102,7 +101,6 @@ const ChangePasswordScreen = ({ navigation, route, }) => {
                     }} label={"CHANGE MY PASSWORD"} />
             </View>
         </View>
-
     );
 };
 

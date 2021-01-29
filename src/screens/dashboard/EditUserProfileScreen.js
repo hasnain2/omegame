@@ -19,7 +19,7 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
     let changeUserName = route?.params?.userName || false;
     let reduxUser = useSelector(state => state.root.user);
     let user = { ...routeUser, ...reduxUser };
-    let [state, setState] = useState({
+    const [state, setState] = useState({
         name: user.firstName || '',
         userName: user.userName || '',
         bio: user?.bio,
@@ -34,7 +34,6 @@ const EditUserProfileScreen = ({ navigation, route, }) => {
             { gamingAccountProvider: "STREAM", account: '' },
             { gamingAccountProvider: "NINTENDO", account: '' },
         ],
-
 
         imageToUpload: '',
         photo: '',

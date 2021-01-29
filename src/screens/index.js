@@ -4,6 +4,8 @@ export * from './auth/Login';
 export * from './auth/SetUserName';
 export * from './auth/Signup';
 export * from './auth/ForgotPassword';
+export * from './auth/CodeVerification';
+export * from './auth/ResetPassword';
 
 //----BOTTOM TABS
 export * from './dashboard/HomeScreen';

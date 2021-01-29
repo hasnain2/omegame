@@ -19,8 +19,8 @@ let tempRequests = [];
 const NotificationScreen = ({ navigation, route, }) => {
     let { notifications } = useSelector(state => state.root);
 
-    let dispatch = useDispatch();
-    let [state, setState] = useState({
+    const dispatch = useDispatch();
+    const [state, setState] = useState({
         loading: true,
         limitRequests: 2,
         isFollowingArray: []

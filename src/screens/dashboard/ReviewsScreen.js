@@ -9,8 +9,6 @@ import { AppButton, AppLoadingView, AppModal, AppNoDataFound, AppRadioButton, Ap
 import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_CONSOLE_TYPES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
-import { setSettings } from '../../redux/reducers/settingsSlice';
-import { store } from '../../redux/store';
 import { GetGamesList } from '../../services/gamesService';
 import { AppLogger, GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
 import { AntDesign, MaterialIcons } from '../../utils/AppIcons';

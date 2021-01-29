@@ -1,45 +1,73 @@
 import { firebase } from '@react-native-firebase/messaging'
 import { JSONBodyHelper } from '.'
+import { resetFriends } from '../redux/reducers/friendsSlice'
+import { resetGameReviews } from '../redux/reducers/gameReviewsSlice'
 import { resetHomeFeed } from '../redux/reducers/homeFeedSlice'
+import { resetInbox } from '../redux/reducers/inboxSlice'
+import { resetMyAssets } from '../redux/reducers/myAssetsSlice'
+import { resetNotifications } from '../redux/reducers/notificationsSlice'
+import { resetQuests } from '../redux/reducers/questsSlice'
 import { resetSavedPosts } from '../redux/reducers/savedPostsSlice'
+import { resetUserProfileData } from '../redux/reducers/userProfileDataSlice'
 import { resetUser, setUser } from '../redux/reducers/userSlice'
 import { store } from '../redux/store'
 import { EndPoints } from '../utils/AppEndpoints'
 import { AppLogger, AppShowToast, CapitalizeFirstLetter } from '../utils/AppHelperMethods'
 import { clearStorage, getData, removeItemsFromLocalStorage, storeData } from '../utils/AppStorage'
 import Interceptor from '../utils/Interceptor'
-import iid from '@react-native-firebase/iid'
-import { resetFriends } from '../redux/reducers/friendsSlice'
-import { resetGameReviews } from '../redux/reducers/gameReviewsSlice'
-import { resetInbox } from '../redux/reducers/inboxSlice'
-import { resetMyAssets } from '../redux/reducers/myAssetsSlice'
-import { resetNotifications } from '../redux/reducers/notificationsSlice'
-import { resetQuests } from '../redux/reducers/questsSlice'
-import { resetUserProfileData } from '../redux/reducers/userProfileDataSlice'
+
+const SetUpUserAndToken = async (data) => {
+    Interceptor.setToken(data?.access_token || "");
+    const UserObj = { ...data?.user, ...data?.user?.profile, token: data?.access_token };
+    if (UserObj?._id)
+        firebase.messaging().subscribeToTopic(UserObj?._id);
+    storeData('user', UserObj).then(res => {
+        store.dispatch(setUser(UserObj))
+        return UserObj
+    }).catch(err => {
+        return false
+    })
+}
+
 const LogInUser = (callback, formData) => {
     fetch(EndPoints.LOGIN, {
         method: 'POST',
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
-    }).then(JSONBodyHelper).then(([status, data]) => {
+    }).then(JSONBodyHelper).then(async ([status, data]) => {
         if (status === 201 || status === 200) {
-            Interceptor.setToken(data?.data?.access_token || "");
-            let UserObj = { ...data.data.user, ...data?.data?.user?.profile, token: data.data.access_token, email: formData?.userName };
-            if (UserObj?._id) {
-                firebase.messaging().subscribeToTopic(UserObj?._id);
-            }
-            storeData('user', UserObj).then(res => {
-                store.dispatch(setUser(UserObj))
-                callback(UserObj)
-            }).catch(err => {
+            const res = await SetUpUserAndToken(data?.data);
+            if (res)
+                callback(res)
+            else
                 callback(false)
-            })
         } else
             callback(false)
     }).catch((error) => {
         callback(false)
     });
+}
 
+const ResetPasswordService = async (body) => {
+    return await fetch(EndPoints.RESET_PASSWORD, {
+        method: 'POST',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(body)
+    }).then(JSONBodyHelper).then(async ([status, data]) => {
+        AppLogger('---------------RESET PASSWORD RESPONSE-------------', data)
+        debugger
+        if (status === 201 || status === 200) {
+            AppShowToast("Password has been updated!")
+            const res = await SetUpUserAndToken(data?.data);
+            return true
+        } else {
+            AppShowToast(data?.message?.message || "try again later")
+            return false
+        }
+    }).catch((error) => {
+        AppLogger('--------- RESET PASSWORD - ERROR-----------', error)
+        return false
+    });
 }
 
 const SignUpUser = (callback, formedData) => {
@@ -98,6 +126,49 @@ const ChangePassword = (callback, formedData) => {
     });
 }
 
+const VerifyEmail = async (body) => {
+    return await fetch(EndPoints.VERIFY_EMAIL, {
+        method: 'POST',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(body)
+    }).then(JSONBodyHelper).then(async ([status, data]) => {
+        AppLogger('---------------EMAIL VERIFICATION RESPONSE-------------', data)
+        debugger
+        if (status === 201 || status === 200) {
+            AppShowToast("Email successfully verified!")
+            const res = await SetUpUserAndToken(data?.data);
+            return true
+        } else {
+            AppShowToast(data?.message?.message || "try again later")
+            return false
+        }
+    }).catch((error) => {
+        AppLogger('--------- EMAIL VERIFICATION - ERROR-----------', error)
+        return false
+    });
+}
+
+const ResendVerificationCode = async (body) => {
+    return await fetch(EndPoints.RESEND_VERIFICATION_CODE, {
+        method: 'POST',
+        headers: Interceptor.getHeaders(),
+        body: JSON.stringify(body)
+    }).then(JSONBodyHelper).then(async ([status, data]) => {
+        AppLogger('---------------EMAIL RESEND CODE RESPONSE-------------', data)
+        debugger
+        if (status === 201 || status === 200) {
+            AppShowToast("Verification code sent!")
+            return true
+        } else {
+            AppShowToast(data?.message?.message || "try again later")
+            return false
+        }
+    }).catch((error) => {
+        AppLogger('--------- EMAIL RESEND CODE - ERROR-----------', error)
+        return false
+    });
+}
+
 const LogOutUser = async (callback) => {
     try {
         let unsubRes = await firebase.messaging().unsubscribeFromTopic(store.getState()?.root?.user?._id)
@@ -112,7 +183,7 @@ const LogOutUser = async (callback) => {
                 callback(false)
             });
         }
-        
+
         store.dispatch(resetUser())
         store.dispatch(resetHomeFeed())
         store.dispatch(resetSavedPosts())
@@ -148,4 +219,4 @@ const DeleteUserAccount = (callback) => {
         AppLogger('--------- ACCOUNT DELETION - ERROR-----------', error)
     });
 }
-export { LogInUser, SignUpUser, LogOutUser, ChangePassword, ForgotPasswordCall, DeleteUserAccount }
+export { LogInUser, SignUpUser, ResetPasswordService, ResendVerificationCode, VerifyEmail, LogOutUser, ChangePassword, ForgotPasswordCall, DeleteUserAccount }

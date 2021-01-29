@@ -19,7 +19,10 @@ const ForgotPassword = ({ route, navigation }) => {
         if (state.email.trim()) {
             setState(prev => ({ ...prev, loading: true }))
             ForgotPasswordCall((res) => {
-                if (res) AppShowToast("Recovery link has been sent to your email")
+                if (res) {
+                    AppShowToast("Recovery link has been sent to your email")
+                    navigation.navigate("ResetPassword", { email: state.email?.toLowerCase().trim() })
+                }
                 setState(prev => ({ ...prev, loading: false }))
             }, state.email.includes('@') ? state.email?.toLowerCase().trim() : state.email?.trim())
         } else {
