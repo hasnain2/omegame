@@ -122,7 +122,7 @@ const RemoveDuplicateObjectsFromArray = (arrayToProcess) => {
 
 function AppLogger(identifier, msgOrError) {
     if (__DEV__) {
-        // console.log(identifier, msgOrError)
+        console.log(identifier, msgOrError)
     }
 }
 
@@ -138,7 +138,7 @@ const GetLastWeekEndOf = () => moment().subtract(1, 'weeks').endOf('week').toISO
 const GetLastMonthEndOf = () => moment().subtract(1, 'months').endOf('month').toISOString() + '';
 const GetLastYearEndOf = () => moment().subtract(1, 'years').endOf('year').toISOString() + '';
 
-
+const HandleNaN = (data) => isNaN(data) ? 0 : data
 
 function getChatId(user1, user2) {
     return [user1, user2].sort().join('-');
@@ -152,6 +152,7 @@ export {
     generateRandomString,
     numberWithCommas,
     AppShowToast,
+    HandleNaN,
     stringifyNumber,
     dateDifference,
     timeRemaining,

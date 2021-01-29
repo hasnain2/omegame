@@ -10,7 +10,7 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { MOCK_CONSOLE_TYPES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES } from '../../mockups/Mockups';
 import { GetGamesList } from '../../services/gamesService';
-import { AppLogger, GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
+import { AppLogger, GetCurrentDate, GetLastMonthEndOf, GetLastMonthStartOf, GetLastWeekEndOf, GetLastWeekStartOf, HandleNaN, GetLastYearEndOf, GetLastYearStartOf } from '../../utils/AppHelperMethods';
 import { AntDesign, MaterialIcons } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const ReviewsScreen = ({ navigation }) => {
@@ -24,8 +24,8 @@ const ReviewsScreen = ({ navigation }) => {
         selectedGenreTypes: [],
         releaseDate: 'All time',
         data: []
-
     })
+
     function getgameshelper(offset, query) {
         GetGamesList((gamesRes) => {
             if (gamesRes) {
@@ -39,6 +39,7 @@ const ReviewsScreen = ({ navigation }) => {
     useEffect(() => {
         getgameshelper(false, {});
     }, [])
+
     return (
         <View style={{ flex: 1, backgroundColor: AppTheme.colors.background }}>
             <View style={{ padding: RFValue(10) }}>
@@ -96,7 +97,7 @@ const ReviewsScreen = ({ navigation }) => {
                                             <AppText size={2} color={AppTheme.colors.lightGrey} >{item.supportedDevices.map(ii => (ii + ', ').toUpperCase())}</AppText>
                                             <AppText size={0} color={AppTheme.colors.lightGrey} >Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}</AppText>
                                         </View>
-                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{((item?.computed[0]?.value || 0) / (item?.computed[1]?.value || 0))?.toFixed(2)}</AppText>
+                                        <AppText size={2} color={item.negetive ? AppTheme.colors.red : AppTheme.colors.green} >{HandleNaN((item?.computed[0]?.value || 0) / (item?.computed[1]?.value || 0))?.toFixed(2) || 0}</AppText>
                                         <MaterialIcons name="arrow-forward-ios" style={{ fontSize: RFValue(18), paddingLeft: RFValue(10), color: AppTheme.colors.lightGrey }} />
                                     </View>
                                     <Divider style={{ backgroundColor: AppTheme.colors.lightGrey, height: 0.5 }} />

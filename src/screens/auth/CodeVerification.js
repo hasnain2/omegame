@@ -43,10 +43,10 @@ const CodeVerification = ({ route, navigation }) => {
         <View style={{ flex: 1, backgroundColor: 'black', }}>
             <AppHeaderCommon navigation={navigation} label={"Email verification"} />
 
-            <AppText style={{ paddingHorizontal: RFValue(25), marginTop: RFValue(5), fontWeight: 'bold', fontSize: RFValue(18) }}>Enter 4-digit code</AppText>
-            <AppText size="small" style={{ paddingHorizontal: RFValue(25), marginTop: RFValue(5), color: 'grey' }}>Verification code was sent to {email}</AppText>
+            <AppText style={{ paddingHorizontal: RFValue(25), marginTop: RFValue(5), fontWeight: 'bold', fontSize: RFValue(16) }}>Enter 4-digit code</AppText>
+            <AppText size="small" style={{ paddingHorizontal: RFValue(25), marginTop: RFValue(5), fontSize: RFValue(14), color: 'grey' }}>Verification code was sent to {email}</AppText>
             {loading && <AppLoadingView />}
-            <View style={{ width: '100%', flex: 0.15 }}>
+            <View style={{ width: '100%' }}>
                 <View style={{ alignItems: 'center' }}>
                     <CodeField
                         ref={ref}
@@ -77,7 +77,7 @@ const CodeVerification = ({ route, navigation }) => {
                     />
                 </View>
             </View>
-            <AppText size={"small"} color="grey" style={{ paddingHorizontal: RFValue(10), margin: RFValue(20) }}>Didn’t receive a code?  <AppText size={"small"}
+            <AppText size={"small"} color="grey" style={{ paddingHorizontal: RFValue(10), fontSize: RFValue(14), margin: RFValue(20) }}>Didn’t receive a code?  <AppText size={"small"}
                 onPress={async () => {
                     if (enableResend) {
                         setLoading(true);
@@ -88,12 +88,10 @@ const CodeVerification = ({ route, navigation }) => {
                         setCounter(60);
                     }
                 }}
-                color={enableResend ? AppTheme.colors.primary : "grey"} bold={true} style={{ paddingHorizontal: RFValue(10) }}>Resend code now</AppText> {counter > 0 ? ("(" + counter + ")") : ""}</AppText>
+                color={enableResend ? AppTheme.colors.primary : "grey"} bold={true} style={{ paddingHorizontal: RFValue(10), fontSize: RFValue(14) }}>Resend code now</AppText> {counter > 0 ? ("(" + counter + ")") : ""}</AppText>
         </View>
     );
 };
-
-
 
 const styles = StyleSheet.create({
     root: { padding: RFValue(20), justifyContent: 'center', alignItems: 'center' },
@@ -114,6 +112,5 @@ const styles = StyleSheet.create({
         borderColor: AppTheme.colors.accent,
     },
 });
-
 
 export { CodeVerification };

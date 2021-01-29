@@ -15,7 +15,7 @@ import { LogInUser } from '../../services/authService';
 import { LoginWithApple, LoginWithFacebook, LoginWithGoogle, socialloginhelper } from '../../services/socialAuthService';
 import { SOCIAL_LOGIN_TYPES } from '../../utils/AppConstants';
 import { EndPoints } from '../../utils/AppEndpoints';
-import { AppLogger, AppShowToast } from '../../utils/AppHelperMethods';
+import { AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
 import { getData, storeData } from '../../utils/AppStorage';
 import { ValidateEmail } from '../../utils/AppValidators';
@@ -29,7 +29,7 @@ GoogleSignin.configure();
 
 const Login = ({ route, navigation }) => {
     let [instagramLoginRef, setInstagramLoginRef] = useState('')
-    let [state, setState] = useState({
+    const [state, setState] = useState({
         rememberMe: false,
         email: __DEV__ ? 'asadalicodingpixel@gmail.com' : "", password: __DEV__ ? '@Sad123456' : "",
         loading: false,
@@ -80,11 +80,12 @@ const Login = ({ route, navigation }) => {
                 LogInUser((dta) => {
                     setState(prev => ({ ...prev, loading: false }))
                     if (dta) {
-                        if (state.rememberMe)
-                            storeData('rememberMe', {
-                                userName: state.email.trim(),
-                                password: state.password.trim()
-                            })
+                        if (dta === 'verify') {
+                            navigation.navigate("CodeVerification", { email: state.email?.toLowerCase().trim() });
+                        } else {
+                            if (state.rememberMe)
+                                storeData('rememberMe', { userName: state.email.trim(), password: state.password.trim() })
+                        }
                     } else
                         AppShowToast("Invalid email or password")
                 }, {
@@ -114,7 +115,10 @@ const Login = ({ route, navigation }) => {
                     <AppInput editable={!state.loading} value={state.password} style={{ backgroundColor: 'black' }} type={'any'} passwordVisible={state.passwordVisible} label={"Password"} onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisible: !state.passwordVisible }))} right={<Ionicons name={state.passwordVisible ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
                     <View style={{ flexDirection: 'row', paddingVertical: RFValue(10), justifyContent: 'space-between', alignItems: 'center', }}>
                         <AppRadioButton label={"Remember me"} size={20} val={state.rememberMe}
-                            onPress={() => { setState(prev => ({ ...prev, rememberMe: !state.rememberMe })) }} />
+                            onPress={() => {
+                                global.rememberMe = !state.rememberMe
+                                setState(prev => ({ ...prev, rememberMe: !state.rememberMe }))
+                            }} />
                         <AppText ></AppText>
                         <AppText onPress={() => navigation.navigate("ForgotPassword")}
                             style={{ textAlign: 'right' }} size={1} color={AppTheme.colors.primary} >Forgot Password</AppText>

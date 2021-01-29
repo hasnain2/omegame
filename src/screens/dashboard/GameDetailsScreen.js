@@ -15,7 +15,7 @@ import { UserAvatar } from '../../components/UserAvatar';
 import { AppTheme } from '../../config';
 import { setGameReviews } from '../../redux/reducers/gameReviewsSlice';
 import { GetGameReviews } from '../../services/gamesService';
-import { largeNumberShortify } from '../../utils/AppHelperMethods';
+import { HandleNaN, largeNumberShortify } from '../../utils/AppHelperMethods';
 import { MaterialIcons } from '../../utils/AppIcons';
 
 const GameDetailsScreen = ({ navigation, route, }) => {
@@ -77,7 +77,7 @@ const GameDetailsScreen = ({ navigation, route, }) => {
                                 </View>
                                 <View style={{ borderRadius: RFValue(5), borderWidth: 1, justifyContent: 'center', padding: RFValue(10), alignItems: 'center', borderColor: AppTheme.colors.green }}>
                                     <AppText size={1} color={'white'} bold={true} style={{}}>RATE</AppText>
-                                    <AppText size={4} color={'white'} bold={true} style={{}}>{((gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 0)).toFixed(2)}</AppText>
+                                    <AppText size={4} color={'white'} bold={true} style={{}}>{HandleNaN((gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 0)).toFixed(2)}</AppText>
                                 </View>
                             </View>
                         </LinearGradient>

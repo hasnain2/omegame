@@ -14,6 +14,7 @@ import { ResendVerificationCode, ResetPasswordService } from '../../services';
 import { SecurityCodeTypeEnum } from '../../utils/AppConstants';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { Ionicons } from '../../utils/AppIcons';
+import { removeItemsFromLocalStorage, storeData } from '../../utils/AppStorage';
 import { ValidatePassword } from '../../utils/AppValidators';
 
 const CELL_COUNT = 4;
@@ -137,6 +138,13 @@ const ResetPassword = ({ route, navigation }) => {
                                                 code: Number(value),
                                                 email: email
                                             })
+                                            if (global.rememberMe)
+                                                storeData('rememberMe', {
+                                                    userName: email,
+                                                    password: state.password
+                                                })
+                                            else
+                                                removeItemsFromLocalStorage(['rememberMe'])
                                             setLoading(false)
                                         } else
                                             setState(prev => ({ ...prev, error: "Password does not match" }))

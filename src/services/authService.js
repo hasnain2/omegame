@@ -21,7 +21,7 @@ const SetUpUserAndToken = async (data) => {
     const UserObj = { ...data?.user, ...data?.user?.profile, token: data?.access_token };
     if (UserObj?._id)
         firebase.messaging().subscribeToTopic(UserObj?._id);
-    storeData('user', UserObj).then(res => {
+    return await storeData('user', UserObj).then(res => {
         store.dispatch(setUser(UserObj))
         return UserObj
     }).catch(err => {
@@ -37,12 +37,9 @@ const LogInUser = (callback, formData) => {
     }).then(JSONBodyHelper).then(async ([status, data]) => {
         if (status === 201 || status === 200) {
             const res = await SetUpUserAndToken(data?.data);
-            if (res)
-                callback(res)
-            else
-                callback(false)
+            callback(true)
         } else
-            callback(false)
+            callback(data?.message?.message === 'Verify email' ? 'verify' : false)
     }).catch((error) => {
         callback(false)
     });
@@ -54,18 +51,18 @@ const ResetPasswordService = async (body) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(body)
     }).then(JSONBodyHelper).then(async ([status, data]) => {
-        AppLogger('---------------RESET PASSWORD RESPONSE-------------', data)
-        debugger
         if (status === 201 || status === 200) {
-            AppShowToast("Password has been updated!")
-            const res = await SetUpUserAndToken(data?.data);
-            return true
+            if (data?.data) {
+                AppShowToast("Password has been updated!")
+                const res = await SetUpUserAndToken(data?.data);
+                return true
+            } else
+                return false
         } else {
             AppShowToast(data?.message?.message || "try again later")
             return false
         }
     }).catch((error) => {
-        AppLogger('--------- RESET PASSWORD - ERROR-----------', error)
         return false
     });
 }
@@ -76,15 +73,18 @@ const SignUpUser = (callback, formedData) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formedData)
     }).then(JSONBodyHelper).then(([status, data]) => {
-        AppLogger('-----------SIGN UP RESPONSE----------', JSON.stringify(data))
         if (status === 201 || status === 200) {
             callback(true)
         } else {
-            AppShowToast(data?.message?.message || data?.message?.response?.message || "Something went wrong, try again later")
-            callback(false)
+            if (data?.message?.message === "Verify email" || data?.message?.response?.message === "Verify email") {
+                AppShowToast("Kindly verify your email address!")
+                callback('verify')
+            } else {
+                AppShowToast(data?.message?.message || data?.message?.response?.message || "Something went wrong, try again later")
+                callback(false)
+            }
         }
     }).catch((error) => {
-        AppLogger('---------SIGN UP DATA - ERROR-----------', error)
         callback(false)
     });
 }
@@ -132,7 +132,6 @@ const VerifyEmail = async (body) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(body)
     }).then(JSONBodyHelper).then(async ([status, data]) => {
-        AppLogger('---------------EMAIL VERIFICATION RESPONSE-------------', data)
         debugger
         if (status === 201 || status === 200) {
             AppShowToast("Email successfully verified!")

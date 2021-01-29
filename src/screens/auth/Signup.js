@@ -57,7 +57,8 @@ const Signup = ({ route, navigation }) => {
                             setState(prev => ({ ...prev, loading: true, passwordError: '' }))
                             SignUpUser((res) => {
                                 if (res) {
-                                    AppShowToast("Verification Email has been sent!")
+                                    if (res !== "verify")
+                                        AppShowToast("Verification Email has been sent!")
                                     navigation.navigate("CodeVerification", { email: state.email?.toLowerCase().trim() });
                                 }
                                 setState(prev => ({ ...prev, loading: false }))
@@ -91,8 +92,17 @@ const Signup = ({ route, navigation }) => {
                         <View style={{ flex: 1 }}>
                             <AppInput editable={!state.loading} type={"any"} label={"Username"} onChangeText={(val) => { setState(prev => ({ ...prev, username: val })) }} />
                             <AppInput editable={!state.loading} type={'type'} label={"E-mail"} onChangeText={(val) => { setState(prev => ({ ...prev, email: val })) }} />
-                            <AppInput editable={!state.loading} type={'any'} passwordVisible={state.passwordVisibleA} label={"Password"} onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisibleA: !state.passwordVisibleA }))} right={<Ionicons name={state.passwordVisibleA ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
-                            <AppInput editable={!state.loading} type={'any'} passwordVisible={state.passwordVisibleB} label={"Confirm password"} onChangeText={(val) => { setState(prev => ({ ...prev, retypedPassword: val })) }} onRightPress={() => setState(prev => ({ ...prev, passwordVisibleB: !state.passwordVisibleB }))} right={<Ionicons name={state.passwordVisibleB ? "md-eye-off-sharp" : "md-eye-sharp"} style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
+                            <AppInput editable={!state.loading} type={'any'} passwordVisible={state.passwordVisibleA} label={"Password"}
+                                onChangeText={(val) => { setState(prev => ({ ...prev, password: val })) }}
+                                onRightPress={() => setState(prev => ({ ...prev, passwordVisibleA: !state.passwordVisibleA }))}
+                                right={<Ionicons name={state.passwordVisibleA ? "md-eye-off-sharp" : "md-eye-sharp"}
+                                    style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
+                            <AppInput editable={!state.loading} type={'any'} passwordVisible={state.passwordVisibleB}
+                                label={"Confirm password"}
+                                onChangeText={(val) => { setState(prev => ({ ...prev, retypedPassword: val })) }}
+                                onRightPress={() => setState(prev => ({ ...prev, passwordVisibleB: !state.passwordVisibleB }))}
+                                right={<Ionicons name={state.passwordVisibleB ? "md-eye-off-sharp" : "md-eye-sharp"}
+                                    style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }} />} />
                             {state.passwordError ?
                                 <AppText color={AppTheme.colors.red} size={1}>{state.passwordError}</AppText>
                                 : null}
