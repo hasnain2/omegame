@@ -22,8 +22,8 @@ const ResetPassword = ({ route, navigation }) => {
 
     const [value, setValue] = useState('');
     const [state, setState] = useState({
-        passVisibility1: false,
-        passVisibility2: false,
+        passVisibility1: true,
+        passVisibility2: true,
         password: '',
         newPassword: '',
         error: ''
