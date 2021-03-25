@@ -4,8 +4,8 @@ import Config from 'react-native-config';
 
 const AppConfig = {
     appName: "Omegame",
-   
-    GOOGLE_PLACES_API_KEY: Config.GOOGLE_PLACES_API_KEY,
+
+    GOOGLE_PLACES_API_KEY: 'AIzaSyD3YCY01PIvIqIQB0nJfrsIUiI2VkCrQqc',
     IS_IOS_DEVICE: Platform.OS === 'ios',
     VideoOptions: {
         mediaType: 'video',

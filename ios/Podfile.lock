@@ -839,14 +839,14 @@ SPEC CHECKSUMS:
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
-  Permission-Camera: 358081c7b8210849958af181ce9ddeb11932aa82
-  Permission-LocationAccuracy: 2c54a3a6572a12924fba7d8ca4bb33aca9470936
-  Permission-LocationAlways: 20c287ae79fbc5659a9cc95b32a725810f5529df
-  Permission-MediaLibrary: 8187d4e44ea517860f1b12aac792ed45a031eeb2
-  Permission-Microphone: a94fa6a77b603424a6d4b7b49bbc6107fb027db1
-  Permission-Notifications: 4325073de6e418cfbbdd8d296822c419d8ddc7ef
-  Permission-PhotoLibrary: 79f74cef889ed76e1712fee9fe9a187e9a15dec1
-  Permission-PhotoLibraryAddOnly: b79f52e932b0714ff6b0774282dfa6ce0b7cfd8d
+  Permission-Camera: 119b01de97a5b3edb637999e38476b68143b9d17
+  Permission-LocationAccuracy: e748463597fb8789cacdab1f9aa7d7a5924faae5
+  Permission-LocationAlways: c083f45f28c4b78ddc6f9668cf1a984d879a80ec
+  Permission-MediaLibrary: 37de8bf0149851d5213b74380aa9fbe76754e4c8
+  Permission-Microphone: e426a115ddf9591e8c30c55ea2b28572d4cbd07e
+  Permission-Notifications: 5c69bf2f6c1e30345af4f25e2981dc1c8dafbc22
+  Permission-PhotoLibrary: cb9cdc1e3744e26ab404297a8e289d50c8ee27e8
+  Permission-PhotoLibraryAddOnly: b179f1487560123186a45d8aac39483987acdf3e
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
@@ -859,19 +859,19 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-cameraroll: 9d2b7c1707204d2040d2812f960c6cebdbd9f670
+  react-native-cameraroll: 60ba0068826eab1c8d43146191bafd4363ea58a7
   react-native-config: d8b45133fd13d4f23bd2064b72f6e2c08b2763ed
   react-native-create-thumbnail: 4c445d78f7fe6537292e169744faff065c4e71f8
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
-  react-native-image-resizer: af7fa48fe7913b7b96fa079d16dd97ada31d6833
+  react-native-image-resizer: 354b09df56858289f386dfbd804e318155c14c8f
   react-native-login-twitter: f0f71fa99f7ec2cd7578b0982c2ef11a4cc90a03
-  react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
-  react-native-simple-toast: b986e6c1befdc211af3df1bae293278a44e32990
-  react-native-slider: b733e17fdd31186707146debf1f04b5d94aa1a93
-  react-native-video: 8d97379f3c2322a569f1e27542ad1a646cad9444
+  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
+  react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-video-cache: 0f8b1b2195f234eabd507cfebdd91c2e82695008
-  react-native-video-helper: 9501d162f7cee60439aa58c4d84cb6c0258076fd
-  react-native-webview: b2542d6fd424bcc3e3b2ec5f854f0abb4ec86c87
+  react-native-video-helper: f5e1ccf46c0a1436c2b3c3891feeada00cf0d4fe
+  react-native-webview: dfd7202ff115c44d3ea401c2f36122fb3ac79f07
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -884,10 +884,10 @@ SPEC CHECKSUMS:
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
-  RNCAsyncStorage: bc2f81cc1df90c267ce9ed30bb2dbc93b945a8ee
-  RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
-  RNDateTimePicker: 54bc1830e4e8d99ed00e6b6735b8517e163b2a4a
-  RNDeviceInfo: 57bb2806fb7bd982a1434e9f0b4e6a6ab1f6702e
+  RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNDateTimePicker: 120f8d08b19dd50c0308d30a07c1982e4618e9ad
+  RNDeviceInfo: 6ecb1d1c87d20e4c62354be0348de23362824dcd
   RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
   RNFBApp: dd793eec42bce8d09391bd95e42f2ed7511e7fef
   RNFBIid: 76ed1a06afa5d55bf207ad3a9f86d416e56fd9fe
@@ -896,7 +896,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
-  RNPermissions: 350964d19150b183796a88180fb7ec62a1e41422
+  RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 2ad555d4d9fa10b91bb765ca07fe9b29d59573f0
   RNShare: 106a76243ac90f43ddb9028dcb78ade406b8adff
@@ -912,4 +912,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1ac042e5548d4b1be554fc664ccee8435b34690f
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.0
