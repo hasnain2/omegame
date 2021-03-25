@@ -58,73 +58,99 @@ const EditUserProfileScreen = ({navigation, route}) => {
   });
 
   const onSubmit = () => {
-    if (changeUserName && !state.userName?.trim()) {
-      AppShowToast('Please provide userName');
-      return;
+    let formData = {};
+    if (state.bio) {
+      formData = {...formData, bio: state.bio};
     }
-    if (!state.name?.trim()) {
-      AppShowToast('Please provide name');
-      return;
-    }
-    if (!state.bio?.trim()) {
-      AppShowToast('Please provide bio');
-      return;
-    }
-    if (!state.dateOfBirth) {
-      AppShowToast('Please provide date of birth');
-      return;
-    }
-    if (!state.gender) {
-      AppShowToast('Please provide gender');
-      return;
-    }
-    if (!state.favoriteGame?.trim()) {
-      AppShowToast('Please provide favourite game');
-      return;
-    }
-    if (!state.favoriteConsole?.trim()) {
-      AppShowToast('Please provide favourite console');
-      return;
-    }
-    if (
-      state.gamingAccounts[0].account &&
-      state.gamingAccounts[1].account &&
-      state.gamingAccounts[2].account &&
-      state.gamingAccounts[3].account
-    ) {
-      let formedData = {
-        bio: state.bio || null,
-        dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
-        favouriteConsole: state.favoriteConsole || null,
-        favouriteGame: state.favoriteGame || null,
-        firstName: state.name || null,
-        gamingAccounts: state.gamingAccounts,
-        gender: state.gender || '',
-        // lastName: "" || null,
-        // nickName: "" || null,
-        isPrivate: false,
+    if (state.dateOfBirth) {
+      formData = {
+        ...formData,
+        dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString(),
       };
-      if (changeUserName && state.userName.trim())
-        formedData.userName = state.userName?.toLowerCase().trim();
-      if (state.imageToUpload)
-        formedData = {...formedData, pic: state.imageToUpload};
-      setState((prev) => ({...prev, loading: true}));
-      UpdateProfile((res) => {
-        setState((prev) => ({...prev, loading: false}));
-        if (res) {
-          navigation.goBack();
-          AppShowToast('Profile has been updated');
-        } else {
-        }
-      }, formedData);
-    } else {
-      let GAMING = state.gamingAccounts;
-      let errors = GAMING.map((ii) =>
-        !ii.account ? ii.gamingAccountProvider : '',
-      ).filter((iii) => iii);
-      AppLogger('------', errors);
-      AppShowToast(`Please provide ${errors[0]?.toLowerCase()} accounts`);
     }
+    if (state.favoriteConsole) {
+      formData = {...formData, favoriteConsole: state.favoriteConsole};
+    }
+    if (state.favoriteGame) {
+      formData = {...formData, favouriteGame: state.favoriteGame};
+    }
+    if (state.name) {
+      formData = {...formData, firstName: state.name};
+    }
+    if (state.gamingAccounts[0].account) {
+      formData = {
+        ...formData,
+        gamingAccounts: [
+          {
+            gamingAccountProvider: 'XBOX',
+            account: state.gamingAccounts[0].account,
+          },
+        ],
+      };
+    }
+    if (state.gamingAccounts[1].account) {
+      formData = {
+        ...formData,
+        gamingAccounts: [
+          ...formData.gamingAccounts,
+          {
+            gamingAccountProvider: 'PSN',
+            account: state.gamingAccounts[1].account,
+          },
+        ],
+      };
+    }
+    if (state.gamingAccounts[2].account) {
+      formData = {
+        ...formData,
+        gamingAccounts: [
+          ...formData.gamingAccounts,
+          {
+            gamingAccountProvider: 'PSN',
+            account: state.gamingAccounts[2].account,
+          },
+        ],
+      };
+    }
+    if (state.gamingAccounts[3].account) {
+      formData = {
+        ...formData,
+        gamingAccounts: [
+          ...formData.gamingAccounts,
+          {
+            gamingAccountProvider: 'PSN',
+            account: state.gamingAccounts[3].account,
+          },
+        ],
+      };
+    }
+    if (state.gender) {
+      formData = {...formData, gender: state.gender};
+    }
+    // let formedData = {
+    //     bio: state.bio || null,
+    //     dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
+    //     favouriteConsole: state.favoriteConsole || null,
+    //     favouriteGame: state.favoriteGame || null,
+    //     firstName: state.name || null,
+    //     gamingAccounts: state.gamingAccounts,
+    //     gender: state.gender || '',
+    //     // lastName: "" || null,
+    //     // nickName: "" || null,
+    //     isPrivate: false
+    // };
+    if (changeUserName && state.userName.trim())
+      formData.userName = state.userName?.toLowerCase().trim();
+    if (state.imageToUpload) formData = {...formData, pic: state.imageToUpload};
+    setState((prev) => ({...prev, loading: true}));
+    UpdateProfile((res) => {
+      setState((prev) => ({...prev, loading: false}));
+      if (res) {
+        navigation.goBack();
+        AppShowToast('Profile has been updated');
+      } else {
+      }
+    }, formData);
   };
 
   return (
@@ -158,7 +184,6 @@ const EditUserProfileScreen = ({navigation, route}) => {
                 onPress={() => {
                   OpenCameraGalleryPromptPicker((res) => {
                     if (res) {
-                      console.log('---------image resp----------', res);
                       setState((prev) => ({...prev, imageLoading: true}));
                       UploadMedia(
                         (uploaderRes) => {
