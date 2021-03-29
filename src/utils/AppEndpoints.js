@@ -61,7 +61,7 @@ const EndPoints = {
   SET_ASSET_DEFAULT: BASE_URL + 'profile/customization/', //patch 1
 
   GET_REVIEWS_OF_USER: BASE_URL + 'reviews/user/', //---------REVIEWS OF USERS
-
+  DELETE_REVIEW: BASE_URL + 'reviews/',
   GET_ONLY_MEDIA_POSTS: BASE_URL + 'posts/user?mediaOnly=true',
   GET_ALL_TRENDING_USERS: BASE_URL + 'profile/users',
 
