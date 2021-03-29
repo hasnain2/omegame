@@ -390,6 +390,8 @@ PODS:
     - Toast (~> 4.0.0)
   - react-native-slider (3.0.3):
     - React
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-video (5.1.0-alpha8):
     - React
     - react-native-video/Video (= 5.1.0-alpha8)
@@ -588,6 +590,7 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-video-cache (from `../node_modules/react-native-video-cache`)
   - react-native-video-helper (from `../node_modules/react-native-video-helper`)
@@ -733,6 +736,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-simple-toast"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-video:
     :path: "../node_modules/react-native-video"
   react-native-video-cache:
@@ -868,6 +873,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-video-cache: 0f8b1b2195f234eabd507cfebdd91c2e82695008
   react-native-video-helper: f5e1ccf46c0a1436c2b3c3891feeada00cf0d4fe
@@ -910,6 +916,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 1c5871613b1979bcd936bb8267d6a49e283357ab
+PODFILE CHECKSUM: 0759932e6101c3698558d66f1dafd95e0b2e3d2b
 
 COCOAPODS: 1.10.1
