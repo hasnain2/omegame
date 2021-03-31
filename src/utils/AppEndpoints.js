@@ -1,10 +1,9 @@
 import Config from 'react-native-config';
 
 const TESTING_DOMAIN = Config.BASE_URL;
-console.log(TESTING_DOMAIN);
 const PRODUCTION_DOMAIN = Config.BASE_URL;
 const DOMAIN = __DEV__ ? TESTING_DOMAIN : PRODUCTION_DOMAIN;
-const BASE_URL = 'http://3.20.77.255' + '/api/';
+const BASE_URL = 'https://api.omegame.net' + '/api/';
 
 const EndPoints = {
   SOCIAL_LOGIN: BASE_URL + 'authentication/social',

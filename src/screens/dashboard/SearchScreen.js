@@ -1,13 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {
-  AppButton,
-  AppModal,
-  AppRadioButton,
-  AppSearchBar,
-  AppText,
-} from '../../components';
+import {AppButton, AppModal, AppRadioButton, AppSearchBar, AppText} from '../../components';
 import {AppTheme} from '../../config';
 import {MOCK_RELEASEDATE_TYPES} from '../../mockups/Mockups';
 import {setQuery} from '../../redux/reducers/querySlice';
@@ -90,9 +84,8 @@ const SearchScreen = ({route, navigation}) => {
     };
   }, []);
   return (
-    <SafeAreaView
-      style={{flex: 1, backgroundColor: AppTheme.colors.background}}>
-      <View style={{padding: RFValue(10), paddingBottom: 0}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: AppTheme.colors.background}}>
+      <View style={{padding: RFValue(10), paddingBottom: 0, height: RFValue(56), backgroundColor: '#1C1C22'}}>
         <AppSearchBar
           onChangeText={(val) => {
             setState((prev) => ({...prev, searchTerm: val}));
@@ -139,8 +132,7 @@ const SearchScreen = ({route, navigation}) => {
             onPress={() => {
               setState((prev) => ({
                 ...prev,
-                visibleFilter:
-                  state.visibleFilter !== 'sortPostBy' ? 'sortPostBy' : '',
+                visibleFilter: state.visibleFilter !== 'sortPostBy' ? 'sortPostBy' : '',
               }));
             }}>
             <View
@@ -150,10 +142,7 @@ const SearchScreen = ({route, navigation}) => {
                 paddingBottom: RFValue(15),
               }}>
               <AppText size={2}>Sort Post by:</AppText>
-              <AppText
-                size={2}
-                color={AppTheme.colors.primary}
-                style={{paddingTop: RFValue(10)}}>
+              <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                 {state.sortPostBy || 'Select'}
               </AppText>
             </View>
@@ -188,18 +177,12 @@ const SearchScreen = ({route, navigation}) => {
             onPress={() => {
               setState((prev) => ({
                 ...prev,
-                visibleFilter:
-                  state.visibleFilter !== 'sortPostByTime'
-                    ? 'sortPostByTime'
-                    : '',
+                visibleFilter: state.visibleFilter !== 'sortPostByTime' ? 'sortPostByTime' : '',
               }));
             }}>
             <View style={{paddingVertical: RFValue(15)}}>
               <AppText size={2}>Release date:</AppText>
-              <AppText
-                size={2}
-                color={AppTheme.colors.primary}
-                style={{paddingTop: RFValue(10)}}>
+              <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                 {state.sortPostByTime}
               </AppText>
             </View>
