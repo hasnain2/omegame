@@ -20,9 +20,17 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
       style={{
         borderBottomColor: AppTheme.colors.darkGrey,
         borderBottomWidth: 0.5,
+        marginLeft: RFValue(16),
+        marginRight: RFValue(16),
+        marginTop: RFValue(16),
       }}>
       <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />
-      <AppText size={1} style={{padding: RFValue(15), paddingTop: 0}}>
+      <AppText
+        size={1}
+        style={{
+          paddingLeft: RFValue(2),
+          paddingBottom: RFValue(5),
+        }}>
         {item.text}
       </AppText>
 
@@ -30,8 +38,8 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
         <View
           style={{
             flexDirection: 'row',
-            paddingHorizontal: RFValue(15),
-            paddingBottom: RFValue(10),
+            paddingHorizontal: RFValue(2),
+            padding: RFValue(5),
             flexWrap: 'wrap',
           }}>
           <AppText size={0} color={'grey'} style={{paddingTop: 0}}>
@@ -53,8 +61,8 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
               size={0}
               color={AppTheme.colors.primary}
               style={{
-                paddingHorizontal: RFValue(15),
-                paddingBottom: RFValue(10),
+                paddingHorizontal: RFValue(2),
+                padding: RFValue(5),
               }}>
               @{iii?.userName},{' '}
             </AppText>
