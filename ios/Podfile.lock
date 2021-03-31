@@ -390,6 +390,8 @@ PODS:
     - Toast (~> 4.0.0)
   - react-native-slider (3.0.3):
     - React
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-video (5.1.0-alpha8):
     - React
     - react-native-video/Video (= 5.1.0-alpha8)
@@ -497,12 +499,12 @@ PODS:
   - RNGoogleSignin (5.0.0):
     - GoogleSignIn (~> 5.0.0)
     - React-Core
-  - RNImageCropPicker (0.35.1):
+  - RNImageCropPicker (0.36.0):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.35.1)
+    - RNImageCropPicker/QBImagePickerController (= 0.36.0)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.35.1):
+  - RNImageCropPicker/QBImagePickerController (0.36.0):
     - React-Core
     - React-RCTImage
     - TOCropViewController
@@ -588,6 +590,7 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-video-cache (from `../node_modules/react-native-video-cache`)
   - react-native-video-helper (from `../node_modules/react-native-video-helper`)
@@ -733,6 +736,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-simple-toast"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-video:
     :path: "../node_modules/react-native-video"
   react-native-video-cache:
@@ -868,6 +873,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-video-cache: 0f8b1b2195f234eabd507cfebdd91c2e82695008
   react-native-video-helper: f5e1ccf46c0a1436c2b3c3891feeada00cf0d4fe
@@ -895,7 +901,7 @@ SPEC CHECKSUMS:
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
-  RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
+  RNImageCropPicker: e641bf83ac47324994cac139bde74635ec52c17c
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 2ad555d4d9fa10b91bb765ca07fe9b29d59573f0
@@ -910,6 +916,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 1ac042e5548d4b1be554fc664ccee8435b34690f
+PODFILE CHECKSUM: 0759932e6101c3698558d66f1dafd95e0b2e3d2b
 
 COCOAPODS: 1.10.0
