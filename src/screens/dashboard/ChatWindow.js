@@ -44,6 +44,7 @@ import {
   FRIEND_STATUSES_ACTIONS,
 } from '../../utils/AppConstants';
 import {AppLogger, AppShowToast, getChatId} from '../../utils/AppHelperMethods';
+import {BlurView} from '@react-native-community/blur';
 var uuid = require('react-native-uuid');
 
 const LIGHT_GREY = '#4d4d4d';
@@ -60,6 +61,7 @@ const ChatWindow = ({navigation, route}) => {
     loading: true,
     LHeight: 0,
     LWidth: 0,
+    showBlur: false,
   });
   function getChatmsgeshelper() {
     GetChatMessages(
@@ -222,7 +224,11 @@ const ChatWindow = ({navigation, route}) => {
           <TouchableOpacity
             style={{paddingHorizontal: RFValue(10)}}
             onPress={() =>
-              setState((prev) => ({...prev, showMenu: !state.showMenu}))
+              setState((prev) => ({
+                ...prev,
+                showMenu: !state.showMenu,
+                showBlur: !state.showBlur,
+              }))
             }>
             <Image
               source={ICON_MENU}
@@ -258,11 +264,27 @@ const ChatWindow = ({navigation, route}) => {
           />
           {state.loading ? <AppLoadingView /> : null}
         </View>
-
+        {state.showBlur ? (
+          <BlurView
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+            }}
+            reducedTransparencyFallbackColor="gray"
+            blurType="light"
+            blurAmount={1}
+          />
+        ) : null}
         <AppModal
           show={state.showMenu}
+          shadow={true}
           type="bottom"
-          toggle={() => setState((prev) => ({...prev, showMenu: false}))}>
+          toggle={() =>
+            setState((prev) => ({...prev, showMenu: false, showBlur: false}))
+          }>
           <View
             style={{
               borderTopRightRadius: RFValue(10),

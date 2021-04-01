@@ -46,6 +46,7 @@ import {FRIEND_STATUSES_ACTIONS} from '../../utils/AppConstants';
 import {AppLogger, largeNumberShortify} from '../../utils/AppHelperMethods';
 import {MaterialIcons} from '../../utils/AppIcons';
 import {UserProfileTabs} from './UserProfileTabs/UserProfileTabs';
+import moment from 'moment';
 
 if (
   Platform.OS === 'android' &&
@@ -86,6 +87,7 @@ const UserProfileScreen = ({navigation, route}) => {
     LHeight: 0,
     LWidth: 0,
     bioShowMoreLines: 3,
+    showMore: false,
     scrollPosition: 0,
     enableScrollViewScroll: true,
     userData: userID ? user : null,
@@ -154,8 +156,9 @@ const UserProfileScreen = ({navigation, route}) => {
         style={[
           {
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             justifyContent: 'space-between',
+            height: RFValue(56),
           },
           state.enableScrollViewScroll
             ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}
@@ -250,7 +253,7 @@ const UserProfileScreen = ({navigation, route}) => {
                       ? {uri: userData?.pic}
                       : DEFAULT_USER_PIC
                   }
-                  size={100}
+                  size={120}
                 />
 
                 {userID ? (
@@ -306,7 +309,7 @@ const UserProfileScreen = ({navigation, route}) => {
                         flexDirection: 'row',
                         alignItems: 'center',
                       }}>
-                      <AppText size={3} bold={true}>
+                      <AppText size={16} bold={true}>
                         {userData?.userName || userData?.firstName || ''}
                       </AppText>
                       <IsUserVerifiedCheck check={userData?.isVerified} />
@@ -324,10 +327,13 @@ const UserProfileScreen = ({navigation, route}) => {
                   </View>
                   <View
                     style={{
-                      borderRadius: RFValue(5),
+                      borderRadius: RFValue(10),
                       borderWidth: 1,
                       justifyContent: 'center',
-                      padding: RFValue(10),
+                      paddingTop: RFValue(10),
+                      paddingBottom: RFValue(10),
+                      paddingLeft: RFValue(20),
+                      paddingRight: RFValue(20),
                       alignItems: 'center',
                       borderColor: AppTheme.colors.primary,
                     }}>
@@ -352,48 +358,159 @@ const UserProfileScreen = ({navigation, route}) => {
           </View>
 
           <View style={{padding: RFValue(10)}}>
-            {userData?.bio ? (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => {
-                  setState((prev) => ({
-                    ...prev,
-                    bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3,
-                  }));
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <AppText
-                    size={2}
-                    color={AppTheme.colors.lightGrey}
-                    style={{paddingVertical: RFValue(10)}}>
-                    {state.bioShowMoreLines === 3
-                      ? 'More about me'
-                      : 'Less about me'}{' '}
-                  </AppText>
-                  <MaterialIcons
-                    name={
-                      state.bioShowMoreLines === 3
-                        ? 'keyboard-arrow-down'
-                        : 'keyboard-arrow-up'
-                    }
-                    style={{
-                      fontSize: RFValue(20),
-                      color: AppTheme.colors.lightGrey,
-                    }}
-                  />
-                </View>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-          <View>
-            {state.bioShowMoreLines !== 3 ? (
-              <View>
-                <AppText>
-                  {'\n'}
-                  {userData?.bio}
-                </AppText>
+            <TouchableOpacity activeOpacity={0.7}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <AppText>{userData?.bio}</AppText>
               </View>
-            ) : null}
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => {
+                setState((prev) => ({
+                  ...prev,
+                  showMore: !state.showMore,
+                }));
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <AppText
+                  size={2}
+                  color={AppTheme.colors.lightGrey}
+                  style={{paddingVertical: RFValue(10)}}>
+                  {state.showMore ? 'Hide Information' : 'More about me'}{' '}
+                </AppText>
+                <MaterialIcons
+                  name={
+                    state.showMore ? 'keyboard-arrow-down' : 'keyboard-arrow-up'
+                  }
+                  style={{
+                    fontSize: RFValue(20),
+                    color: AppTheme.colors.lightGrey,
+                  }}
+                />
+              </View>
+              <View>
+                {state.showMore ? (
+                  <View>
+                    {userData.dateOfBirth ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          Date of Birth:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {moment(userData.dateOfBirth).format('DD MMM, yyyy')}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData.favouriteGame ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          Favorite Game:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {userData.favouriteGame}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData.favouriteConsole ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          Favorite Console:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {userData.favouriteConsole}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[1] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          PSN account:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[1].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[0] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          XBOX live account:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[0].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[2] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          Stream account:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[2].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[3] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.lightGrey}
+                          style={{paddingVertical: RFValue(10)}}>
+                          Nintendo account:
+                        </AppText>
+                        <AppText
+                          size={2}
+                          color={AppTheme.colors.text}
+                          style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[3].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                  </View>
+                ) : null}
+              </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
