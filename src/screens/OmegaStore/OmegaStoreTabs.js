@@ -28,7 +28,7 @@ const OmegaStoreTabs = ({ navigation, route }) => {
                         <Ionicons onPress={() => navigation.goBack()} name="arrow-back" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(10) }} />
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                        <AppGoldCoin />
+                        <AppGoldCoin size={35}/>
                         <AppText style={{ paddingLeft: RFValue(10) }}>{largeNumberShortify(user?.earnedCoins || 0)} OmegaCoins</AppText>
                     </View>
                     <View style={{ flex: 0.3 }} />
@@ -41,10 +41,10 @@ const OmegaStoreTabs = ({ navigation, route }) => {
                         activeTintColor: AppTheme.colors.primary,
                         inactiveTintColor: '#616161',
                         labelStyle: {
-                            fontSize: RFValue(12), margin: 0, fontWeight: 'bold',
+                            fontSize: RFValue(12), margin: 0, fontWeight: 'bold', textTransform: 'capitalize',
                         },
                         tabStyle: {
-                            justifyContent: 'center', alignItems: 'center', margin: 1, padding: 0
+                            justifyContent: 'flex-end', alignItems: 'center', padding: 0, margin: 1, paddingBottom: RFValue(8)
                         },
                         indicatorStyle: {
                             backgroundColor: AppTheme.colors.primary

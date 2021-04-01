@@ -3,7 +3,7 @@ import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useSelector } from 'react-redux';
-import { AppButtonPlane, AppGoldCoin, AppModal, AppText } from '../../components';
+import { AppButtonPlane, AppGoldCoin, AppModal, AppText, AppBlurView } from '../../components';
 import { AppTheme } from '../../config/index';
 import { AddAssetBackground } from '../../services';
 import { BuyAsset, GetAllAssets } from '../../services/customizationService';
@@ -11,6 +11,8 @@ import { ASSET_TYPES } from '../../utils/AppConstants';
 import { AppShowToast } from '../../utils/AppHelperMethods';
 import { AntDesign } from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
+const {height, width} = Dimensions.get('screen');
+
 const OmegaStoreBackgroundsTab = ({ navigation }) => {
     let [state, setState] = React.useState({
         isModalVisible: null,
@@ -35,11 +37,10 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
 
     const isPurchased = state?.isModalVisible?.isPurchased || !!myAssets?.backgrounds?.find(ii => ii?._id === state?.isModalVisible?._id)
     return (
-        <View style={{ backgroundColor: 'black', flex: 1, }}>
+        <View style={{ backgroundColor: 'black', flex: 1, paddingTop: RFValue(10) }}>
             <FlatList
                 data={state.data}
                 numColumns={NUMBER_OF_COLUMNS}
-
                 initialNumToRender={2}
                 windowSize={2}
                 // removeClippedSubviews={true}
@@ -51,7 +52,7 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             setState(prev => ({ ...prev, isModalVisible: item }))
                         }}>
-                            <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: AppTheme.colors.lightGrey, borderWidth: 1, borderRadius: RFValue(10), overflow: 'hidden' }}>
+                            <View style={{ width: CARD_WIDTH, margin: PADDING, borderColor: '#404040', borderWidth: 0.8, borderRadius: RFValue(10), overflow: 'hidden' }}>
                                 <FastImage source={{ uri: item?.attachment?.url }} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} />
                                 <View style={{ justifyContent: 'center', alignItems: 'center', borderTopWidth: 1, borderTopColor: AppTheme.colors.lightGrey, padding: RFValue(15) }}>
                                     <AppText size={2}>{item.name}</AppText>
@@ -70,8 +71,9 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
             <AppModal show={state.isModalVisible} toggle={() => setState(prev => ({ ...prev, isModalVisible: null }))} >
                 {state.isModalVisible ?
                     <View style={{ flex: 1, padding: RFValue(30) }}>
+                        <AppBlurView style={{width}}>
                         <AntDesign name="close" onPress={() => setState(prev => ({ ...prev, isModalVisible: null }))} style={{ fontSize: RFValue(30), color: 'white', padding: RFValue(10) }} />
-                        <View style={{ width: Dimensions.get('screen').width - RFValue(20), flex: 1, margin: PADDING, borderRadius: RFValue(10), overflow: 'hidden' }}>
+                        <View style={{ width: Dimensions.get('screen').width - RFValue(36), flex: 1, margin: PADDING, borderRadius: RFValue(10), overflow: 'hidden' }}>
                             <FastImage source={{ uri: state.isModalVisible?.attachment?.url }} style={{ width: Dimensions.get('screen').width - RFValue(20), height: '80%' }} />
                             <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center', backgroundColor: 'black', borderTopWidth: 1, borderTopColor: 'grey', padding: RFValue(15) }}>
                                 <AppText size={2}>{state.isModalVisible.name}</AppText>
@@ -98,6 +100,7 @@ const OmegaStoreBackgroundsTab = ({ navigation }) => {
                                 }} label={isPurchased ? "PURCHASED" : "BUY"} />
                             </View>
                         </View>
+                        </AppBlurView>
                     </View>
                     : null}
             </AppModal>

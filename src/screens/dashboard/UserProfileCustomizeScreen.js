@@ -41,7 +41,7 @@ const UserProfileCustomizeScreen = ({ navigation, route, }) => {
                             <UserAvatar corner={user?.corner || ''} color={user?.cornerColor} source={user?.pic ? { uri: user.pic } : DEFAULT_USER_PIC} size={100} />
                             <View style={{ flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3 }}>
-                                    <AppGoldCoin />
+                                    <AppGoldCoin/>
                                     <AppText size={2} style={{ paddingHorizontal: RFValue(5) }}>{largeNumberShortify(user?.earnedCoins || 0)}</AppText>
                                 </View>
                                 <View style={{ flex: 0.53 }}>
