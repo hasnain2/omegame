@@ -10,8 +10,14 @@ import {largeNumberShortify} from '../utils/AppHelperMethods';
 
 const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
   return (
-    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-      <View style={{padding: RFValue(15), paddingBottom: 0}}>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: RFValue(15),
+      }}>
+      <View style={{paddingRight: RFValue(16)}}>
         <UserAvatar
           corner={item?.corner || ''}
           color={item?.cornerColor}

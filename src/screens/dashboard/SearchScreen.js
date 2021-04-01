@@ -18,6 +18,7 @@ import {
 } from '../../utils/AppHelperMethods';
 import {AntDesign} from '../../utils/AppIcons';
 import {SearchTabs} from './SearchScreenTabs/SearchTabs';
+import {BlurView} from '@react-native-community/blur';
 const POST_SORTING_TYPES = [
   {id: 0, name: 'Best'},
   {id: 1, name: 'Top'},
@@ -31,6 +32,7 @@ const SearchScreen = ({route, navigation}) => {
   let [state, setState] = useState({
     searchTerm: '',
     showFilter: false,
+    showBlur: false,
     sortPostBy: '',
     sortPostByTime: 'Newest',
   });
@@ -76,23 +78,23 @@ const SearchScreen = ({route, navigation}) => {
 
     setQueryHelper('');
 
-    // console.log('-^^^^^^^^^^^-SEARCH SCREEN MOUNTED-^^^^^^6')
+    console.log('-^^^^^^^^^^^-SEARCH SCREEN MOUNTED-^^^^^^6');
     return () => {
       unsubscribeFocus();
       unsubscribeBlur();
-      // console.log('-vvvvvvvv-SEARCH SCREEN destroyed-vvvvvvvvv6')
+      console.log('-vvvvvvvv-SEARCH SCREEN destroyed-vvvvvvvvv6');
     };
   }, []);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: AppTheme.colors.background}}>
-      <View style={{padding: RFValue(10), paddingBottom: 0, height: RFValue(56), backgroundColor: '#1C1C22'}}>
+      <View style={{padding: RFValue(10), paddingBottom: 0}}>
         <AppSearchBar
           onChangeText={(val) => {
             setState((prev) => ({...prev, searchTerm: val}));
             setQueryHelper(val);
           }}
           onRightPess={() => {
-            setState((prev) => ({...prev, showFilter: true}));
+            setState((prev) => ({...prev, showFilter: true, showBlur: true}));
           }}
         />
       </View>
@@ -103,22 +105,44 @@ const SearchScreen = ({route, navigation}) => {
           type={type}
         />
       </View>
-
+      {state.showBlur ? (
+        <BlurView
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          }}
+          reducedTransparencyFallbackColor="gray"
+          blurType="light"
+          blurAmount={1}
+        />
+      ) : null}
       <AppModal
         show={state.showFilter}
         toggle={() => {
-          setState((prev) => ({...prev, showFilter: !state.showFilter}));
+          setState((prev) => ({
+            ...prev,
+            showFilter: !state.showFilter,
+            showBlur: !state.showBlur,
+          }));
         }}>
         <View
           style={{
             backgroundColor: '#1b1b1b',
-            padding: RFValue(15),
             width: '85%',
             maxHeight: '90%',
             borderRadius: 15,
           }}>
           <AntDesign
-            onPress={() => setState((prev) => ({...prev, showFilter: false}))}
+            onPress={() =>
+              setState((prev) => ({
+                ...prev,
+                showFilter: false,
+                showBlur: false,
+              }))
+            }
             name="close"
             style={{
               fontSize: RFValue(25),
@@ -141,10 +165,12 @@ const SearchScreen = ({route, navigation}) => {
                 borderBottomColor: AppTheme.colors.lightGrey,
                 paddingBottom: RFValue(15),
               }}>
-              <AppText size={2}>Sort Post by:</AppText>
-              <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
-                {state.sortPostBy || 'Select'}
-              </AppText>
+              <View style={{padding: RFValue(15)}}>
+                <AppText size={2}>Sort Post by:</AppText>
+                <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
+                  {state.sortPostBy || 'Select'}
+                </AppText>
+              </View>
             </View>
           </TouchableOpacity>
           {state.visibleFilter === 'sortPostBy' ? (
@@ -158,7 +184,12 @@ const SearchScreen = ({route, navigation}) => {
               bounces={false}
               keyExtractor={(ii) => (ii._id || '') + 'you'}
               renderItem={({item, index}) => (
-                <View style={{flex: 1, paddingVertical: RFValue(6)}}>
+                <View
+                  style={{
+                    flex: 1,
+                    paddingVertical: RFValue(6),
+                    padding: RFValue(15),
+                  }}>
                   <AppRadioButton
                     val={state.sortPostBy === item.name}
                     onPress={() => {
@@ -180,7 +211,7 @@ const SearchScreen = ({route, navigation}) => {
                 visibleFilter: state.visibleFilter !== 'sortPostByTime' ? 'sortPostByTime' : '',
               }));
             }}>
-            <View style={{paddingVertical: RFValue(15)}}>
+            <View style={{paddingVertical: RFValue(15), padding: RFValue(15)}}>
               <AppText size={2}>Release date:</AppText>
               <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                 {state.sortPostByTime}
@@ -199,7 +230,12 @@ const SearchScreen = ({route, navigation}) => {
               bounces={false}
               keyExtractor={(ii) => (ii._id || '') + 'you'}
               renderItem={({item, index}) => (
-                <View style={{flex: 1, paddingVertical: RFValue(6)}}>
+                <View
+                  style={{
+                    flex: 1,
+                    paddingVertical: RFValue(6),
+                    padding: RFValue(15),
+                  }}>
                   <AppRadioButton
                     val={state.sortPostByTime === item.name}
                     onPress={() => {
@@ -242,6 +278,7 @@ const SearchScreen = ({route, navigation}) => {
               paddingTop: RFValue(20),
               paddingBottom: RFValue(10),
               textAlign: 'center',
+              textDecorationLine: 'underline',
             }}>
             Reset
           </AppText>

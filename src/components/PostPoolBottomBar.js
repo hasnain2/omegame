@@ -41,10 +41,18 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         activeOpacity={0.7}
         onPress={() => {
           UpdatePostFromReduxStore({...item, isLiked: !state.isLiked});
-          LikePost(() => {}, item?._id, {type: state.isLiked ? 'UN_LIKE' : 'LIKE'});
+          LikePost(() => {}, item?._id, {
+            type: state.isLiked ? 'UN_LIKE' : 'LIKE',
+          });
           setState((prev) => ({...prev, isLiked: !state.isLiked}));
         }}>
-        <View style={{flexDirection: 'row', padding: RFValue(15), alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingRight: RFValue(15),
+            paddingLeft: RFValue(0),
+            alignItems: 'center',
+          }}>
           <FontAwesome
             name="heart-o"
             style={{
@@ -80,7 +88,9 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         activeOpacity={0.7}
         onPress={() => {
           if (stopPlaying) stopPlaying(true);
-          SharePost(() => {}, item?._id, {platform: SHARE_STATUS_TYPES.FACEBOOK});
+          SharePost(() => {}, item?._id, {
+            platform: SHARE_STATUS_TYPES.FACEBOOK,
+          });
           AppShareContents((res) => {
             if (stopPlaying) stopPlaying(false);
             setState((prev) => ({...prev, isShared: res}));
@@ -101,15 +111,21 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         activeOpacity={0.7}
         onPress={() => {
           UpdatePostFromReduxStore({...item, isSaved: !state.isSaved});
-          SaveOrBookMarkPost((res) => {}, item?._id, {bookmark: !state.isSaved});
+          SaveOrBookMarkPost((res) => {}, item?._id, {
+            bookmark: !state.isSaved,
+          });
           setState((prev) => ({...prev, isSaved: !state.isSaved}));
         }}>
-        <View style={{flexDirection: 'row', padding: RFValue(15), alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
           <Image
             source={ICON_SAVE_POST}
             style={{
-              height: RFValue(36),
-              width: RFValue(36),
+              height: RFValue(34),
+              width: RFValue(34),
               tintColor: state.isSaved ? AppTheme.colors.primary : 'grey',
             }}
           />

@@ -21,14 +21,14 @@ const AppButton = ({onPress, label, fill, size, bgColor, grey, loading}) => {
           grey ? AppTheme.colors.lightGrey : AppTheme.colors.gradientA,
           grey ? AppTheme.colors.lightGrey : AppTheme.colors.gradientB,
         ]}
-        style={{padding: RFValue(1), borderRadius: RADIUS}}>
+        style={{padding: RFValue(1.0), borderRadius: RADIUS}}>
         <View
           style={[
             {
               borderRadius: 50,
               overflow: 'hidden',
               textAlign: 'center',
-              padding: RFValue(size === 'small' ? 6 : 10),
+              padding: RFValue(size === 'small' ? 4 : 10),
               color: grey ? AppTheme.colors.lightGrey : fill ? 'white' : '#00bbff',
               overflow: 'hidden',
             },

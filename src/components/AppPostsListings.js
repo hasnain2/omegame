@@ -5,7 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
-const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, autoPlay = true}) => {
+const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true}) => {
   const flatListRef = useRef(null);
   let [state, setState] = useState({
     showMenu: '',
@@ -98,6 +98,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
                 navigation={navigation}
                 item={item}
                 index={index}
+                screenType={screenType}
               />
             );
         }}

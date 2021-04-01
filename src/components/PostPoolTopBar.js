@@ -10,7 +10,10 @@ const PostPoolTopBar = ({item, navigation, goBack}) => {
   });
   return (
     <>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
         <AppUserBoxNameAvatar navigation={navigation} createdAt={item?.createdAt} item={item?.createdBy} />
         <TouchableOpacity
           onPress={() => {
@@ -18,7 +21,11 @@ const PostPoolTopBar = ({item, navigation, goBack}) => {
           }}>
           <Image
             source={ICON_MENU}
-            style={{tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15)}}
+            style={{
+              tintColor: 'white',
+              height: RFValue(30),
+              width: RFValue(10),
+            }}
           />
         </TouchableOpacity>
       </View>
