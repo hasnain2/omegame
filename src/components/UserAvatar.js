@@ -1,11 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  TouchableOpacity,
-  Image,
-  View,
-  StyleSheet,
-  ImageBackground,
-} from 'react-native';
+import {TouchableOpacity, Image, View, StyleSheet, ImageBackground} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {DEFAULT_USER_PIC} from '../../assets/images';
