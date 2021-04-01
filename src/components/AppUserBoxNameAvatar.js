@@ -22,8 +22,7 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
           corner={item?.corner || ''}
           color={item?.cornerColor}
           onPress={() => {
-            if (item?._id)
-              navigation.navigate('UserProfileScreen', {userID: item?._id});
+            if (item?._id) navigation.navigate('UserProfileScreen', {userID: item?._id});
           }}
           source={item?.pic ? {uri: item?.pic} : false}
         />
@@ -32,8 +31,7 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
         activeOpacity={0.9}
         style={{flex: 1}}
         onPress={() => {
-          if (item?._id)
-            navigation.navigate('UserProfileScreen', {userID: item?._id});
+          if (item?._id) navigation.navigate('UserProfileScreen', {userID: item?._id});
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -41,11 +39,7 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
               {item?.firstName || item?.userName || ''} {item?.lastName}
             </AppText>
             <IsUserVerifiedCheck check={item?.isVerified} />
-            <AppText
-              size={1}
-              bold={true}
-              color={AppTheme.colors.primary}
-              style={{paddingLeft: RFValue(5)}}>
+            <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
               {largeNumberShortify(item?.level || item?.xp || 0)}
             </AppText>
             {createdAt && (
@@ -55,13 +49,7 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
               </AppText>
             )}
           </View>
-          <AppText
-            size={1}
-            color={
-              item?.nickNameColor
-                ? item.nickNameColor
-                : AppTheme.colors.lightGrey
-            }>
+          <AppText size={1} color={item?.nickNameColor ? item.nickNameColor : AppTheme.colors.lightGrey}>
             {item?.nickName || item?.userName || ''}
           </AppText>
         </View>

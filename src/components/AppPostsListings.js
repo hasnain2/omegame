@@ -5,16 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
-const AppPostsListings = ({
-  navigation,
-  loading,
-  data,
-  style,
-  loadMore,
-  refreshing,
-  screenType,
-  autoPlay = true,
-}) => {
+const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true}) => {
   const flatListRef = useRef(null);
   let [state, setState] = useState({
     showMenu: '',
@@ -83,9 +74,7 @@ const AppPostsListings = ({
             return (
               <PostCard
                 key={'PostCard' + index}
-                startPlaying={
-                  state.currentItemIndex === index && state.focused && autoPlay
-                }
+                startPlaying={state.currentItemIndex === index && state.focused && autoPlay}
                 navigation={navigation}
                 item={item}
                 index={index}
@@ -95,9 +84,7 @@ const AppPostsListings = ({
             return (
               <PoolCard
                 key={'PoolCard' + index}
-                startPlaying={
-                  state.currentItemIndex === index && state.focused && autoPlay
-                }
+                startPlaying={state.currentItemIndex === index && state.focused && autoPlay}
                 navigation={navigation}
                 item={item}
                 index={index}
@@ -107,9 +94,7 @@ const AppPostsListings = ({
             return (
               <PostCard
                 key={'PostCard' + index}
-                startPlaying={
-                  state.currentItemIndex === index && state.focused && autoPlay
-                }
+                startPlaying={state.currentItemIndex === index && state.focused && autoPlay}
                 navigation={navigation}
                 item={item}
                 index={index}

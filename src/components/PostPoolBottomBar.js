@@ -34,6 +34,8 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        paddingHorizontal: RFValue(20),
+        backgroundColor: '#1C1C22',
       }}>
       <TouchableOpacity
         activeOpacity={0.7}
@@ -56,15 +58,13 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
             style={{
               fontSize: RFValue(20),
               paddingRight: RFValue(5),
-              color: state.isLiked
-                ? AppTheme.colors.primary
-                : AppTheme.colors.lightGrey,
+              color: state.isLiked ? AppTheme.colors.primary : AppTheme.colors.lightGrey,
             }}
           />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
             {largeNumberShortify(
-              item?.computed?.find((ii) => ii.key === 'LIKE')?.value +
-                (state.isLiked ? 1 : 0) || (state.isLiked ? 1 : 0),
+              item?.computed?.find((ii) => ii.key === 'LIKE')?.value + (state.isLiked ? 1 : 0) ||
+                (state.isLiked ? 1 : 0),
             )}
           </AppText>
         </View>
@@ -77,14 +77,9 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {/* <Ionicons name="chatbubble-outline" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'white' }} /> */}
-          <FastImage
-            source={ICON_COMMENT}
-            style={{height: RFValue(37), width: RFValue(37)}}
-          />
+          <FastImage source={ICON_COMMENT} style={{height: RFValue(37), width: RFValue(37)}} />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
-            {largeNumberShortify(
-              item?.computed?.find((ii) => ii.key === 'COMMENTS')?.value || 0,
-            )}
+            {largeNumberShortify(item?.computed?.find((ii) => ii.key === 'COMMENTS')?.value || 0)}
           </AppText>
         </View>
       </TouchableOpacity>
@@ -102,14 +97,11 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           }, `Hey you might wanna check this post out on OmeGame.\n${DOMAIN}?${DEEP_LINK_TYPES.POST_ID}=${item?._id}`);
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <FastImage
-            source={ICON_SHARE}
-            style={{height: RFValue(36), width: RFValue(36)}}
-          />
+          <FastImage source={ICON_SHARE} style={{height: RFValue(36), width: RFValue(36)}} />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
             {largeNumberShortify(
-              item?.computed?.find((ii) => ii.key === 'SHARE')?.value +
-                (state.isShared ? 1 : 0) || (state.isShared ? 1 : 0),
+              item?.computed?.find((ii) => ii.key === 'SHARE')?.value + (state.isShared ? 1 : 0) ||
+                (state.isShared ? 1 : 0),
             )}
           </AppText>
         </View>

@@ -1,30 +1,33 @@
-
-import { firebase } from '@react-native-firebase/messaging';
-import { NavigationContainer } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
-import { MenuProvider } from 'react-native-popup-menu';
+import {firebase} from '@react-native-firebase/messaging';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {SafeAreaView, StatusBar} from 'react-native';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {MenuProvider} from 'react-native-popup-menu';
 import NotificationPopup from 'react-native-push-notification-popup';
-import { useSelector } from 'react-redux';
-import { AppTheme } from './src/config';
-import { AuthStack, DashboardTabs } from './src/navigations';
-import { setUser } from './src/redux/reducers/userSlice';
-import { store } from './src/redux/store';
-import { AuthLoading } from './src/screens';
-import { getData } from './src/utils/AppStorage';
+import {useSelector} from 'react-redux';
+import {AppTheme} from './src/config';
+import {AuthStack, DashboardTabs} from './src/navigations';
+import {setUser} from './src/redux/reducers/userSlice';
+import {store} from './src/redux/store';
+import {AuthLoading} from './src/screens';
+import {getData} from './src/utils/AppStorage';
 import Interceptor from './src/utils/Interceptor';
+import SplashScreen from 'react-native-splash-screen';
 
-const App = ({ }) => {
+const App = ({}) => {
   let [state, setState] = useState({
     loading: true,
   });
-  let navRef = useRef(null)
-  let { user, settings } = useSelector(state => state.root);
+  let navRef = useRef(null);
+  let {user, settings} = useSelector((state) => state.root);
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   useEffect(() => {
     getData('user', (storageUser) => {
-
       if (storageUser) {
         if (storageUser?._id) {
           firebase.messaging().subscribeToTopic(storageUser?._id);
@@ -33,37 +36,37 @@ const App = ({ }) => {
         store.dispatch(setUser(storageUser));
       }
       setTimeout(() => {
-        setState({ loading: false })
-      }, 700)
+        setState({loading: false});
+      }, 700);
     });
-  }, [])
+  }, []);
   return (
     <PaperProvider theme={AppTheme}>
       <StatusBar barStyle={'dark-content'} backgroundColor="black" />
       <NavigationContainer ref={navRef}>
         <StatusBar barStyle="light-content" />
         <MenuProvider>
-          <SafeAreaView style={{
-            flex: 1,
-            backgroundColor: settings.bgColor,
-            //  backgroundColor: 'black' ,
-          }}>
+          <SafeAreaView
+            style={{
+              flex: 1,
+              backgroundColor: settings.bgColor,
+              //  backgroundColor: 'black' ,
+            }}>
             {(() => {
               if (user.token) {
-                return <DashboardTabs />
+                return <DashboardTabs />;
               } else if (!state.loading && !user.token) {
-                return <AuthStack />
+                return <AuthStack />;
               } else {
-                return <AuthLoading />
+                return <AuthLoading />;
               }
             })()}
           </SafeAreaView>
         </MenuProvider>
-        <NotificationPopup ref={ref => global.popupRef = ref} />
+        <NotificationPopup ref={(ref) => (global.popupRef = ref)} />
       </NavigationContainer>
-
     </PaperProvider>
-  )
+  );
 };
 
 export default App;

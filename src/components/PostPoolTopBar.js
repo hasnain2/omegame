@@ -14,11 +14,7 @@ const PostPoolTopBar = ({item, navigation, goBack}) => {
         style={{
           flexDirection: 'row',
         }}>
-        <AppUserBoxNameAvatar
-          navigation={navigation}
-          createdAt={item?.createdAt}
-          item={item?.createdBy}
-        />
+        <AppUserBoxNameAvatar navigation={navigation} createdAt={item?.createdAt} item={item?.createdBy} />
         <TouchableOpacity
           onPress={() => {
             setState((prev) => ({...prev, showMenu: item?._id}));

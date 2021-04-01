@@ -29,11 +29,7 @@ const AppButton = ({onPress, label, fill, size, bgColor, grey, loading}) => {
               overflow: 'hidden',
               textAlign: 'center',
               padding: RFValue(size === 'small' ? 4 : 10),
-              color: grey
-                ? AppTheme.colors.lightGrey
-                : fill
-                ? 'white'
-                : '#00bbff',
+              color: grey ? AppTheme.colors.lightGrey : fill ? 'white' : '#00bbff',
               overflow: 'hidden',
             },
             fill ? null : {backgroundColor: bgColor ? bgColor : 'black'},
@@ -48,11 +44,7 @@ const AppButton = ({onPress, label, fill, size, bgColor, grey, loading}) => {
                 {
                   paddingVertical: RFValue(1.3),
                   textAlign: 'center',
-                  color: grey
-                    ? AppTheme.colors.lightGrey
-                    : fill
-                    ? 'white'
-                    : '#00bbff',
+                  color: grey ? AppTheme.colors.lightGrey : fill ? 'white' : '#00bbff',
                   overflow: 'hidden',
                 },
                 fill ? null : {backgroundColor: bgColor ? bgColor : 'black'},

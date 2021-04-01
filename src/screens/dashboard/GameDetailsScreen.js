@@ -1,13 +1,6 @@
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {
-  Dimensions,
-  Image,
-  Linking,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, Image, Linking, ScrollView, TouchableOpacity, View, Alert} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,24 +8,20 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {ICON_SHOP} from '../../../assets/icons';
 import {BACKGROUND_IMG} from '../../../assets/images';
-import {
-  AppBackButton,
-  AppButton,
-  AppText,
-  IsUserVerifiedCheck,
-} from '../../components';
+import {AppBackButton, AppButton, AppText, IsUserVerifiedCheck} from '../../components';
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
 import {setGameReviews} from '../../redux/reducers/gameReviewsSlice';
-import {GetGameReviews} from '../../services/gamesService';
+import {GetGameReviews, PostGameReview, DeleteUserReview} from '../../services/gamesService';
 import {HandleNaN, largeNumberShortify} from '../../utils/AppHelperMethods';
 import {MaterialIcons} from '../../utils/AppIcons';
+import {AntDesign, Feather} from '../../utils/AppIcons';
 
 const GameDetailsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   let gameData = route?.params?.gameData;
 
-  const {gameReviews} = useSelector((state) => state.root);
+  const {gameReviews, user} = useSelector((state) => state.root);
   const [state, setState] = useState({
     loading: true,
     selectedSortType: 'RECENT',
@@ -77,6 +66,27 @@ const GameDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     getgamereviewshelper(0, 'RECENT');
   }, []);
+
+  const removePressHandler = (id) => {
+    Alert.alert('Remove Rating', 'Are you sure?', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Remove', onPress: () => removeRating(id)},
+    ]);
+  };
+
+  const removeRating = (id) => {
+    DeleteUserReview((res) => {
+      if (res) {
+        console.log('Succcess');
+        let allReviews = [...gameReviews];
+        const filtered = allReviews.filter((item) => item._id !== id);
+        dispatch(setGameReviews(filtered));
+      } else {
+        console.log('error');
+      }
+    }, id);
+  };
+
   return (
     <View
       style={{flex: 1, backgroundColor: 'black'}}
@@ -118,26 +128,17 @@ const GameDetailsScreen = ({navigation, route}) => {
                 tintColor: AppTheme.colors.yellow,
               }}
             />
-            <AppText
-              size={2}
-              style={{paddingLeft: RFValue(15), color: AppTheme.colors.yellow}}>
+            <AppText size={2} style={{paddingLeft: RFValue(15), color: AppTheme.colors.yellow}}>
               Buy it now!
             </AppText>
           </View>
         </TouchableOpacity>
         <View style={{flex: 0.3}} />
       </View>
-      <ScrollView
-        style={{flex: 1}}
-        decelerationRate={0}
-        nestedScrollEnabled={true}>
+      <ScrollView style={{flex: 1}} decelerationRate={0} nestedScrollEnabled={true}>
         <View style={{height: state.LHeight, width: state.LWidth}}>
           <FastImage
-            source={
-              gameData?.background?.url
-                ? {uri: gameData?.background?.url}
-                : BACKGROUND_IMG
-            }
+            source={gameData?.background?.url ? {uri: gameData?.background?.url} : BACKGROUND_IMG}
             style={{height: state.LHeight, width: state.LWidth}}>
             <LinearGradient
               colors={COLORS_ARR}
@@ -149,11 +150,7 @@ const GameDetailsScreen = ({navigation, route}) => {
               <UserAvatar
                 corner={gameData?.corner || ''}
                 color={false}
-                source={
-                  gameData?.background?.url
-                    ? {uri: gameData?.background?.url}
-                    : BACKGROUND_IMG
-                }
+                source={gameData?.background?.url ? {uri: gameData?.background?.url} : BACKGROUND_IMG}
                 size={140}
               />
 
@@ -166,10 +163,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                 }}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                   <View style={{flexDirection: 'row'}}>
-                    <AppText
-                      size={2}
-                      color={AppTheme.colors.lightGrey}
-                      style={{}}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
                       Name:
                     </AppText>
                     <AppText size={3} color={'white'} bold={true} style={{}}>
@@ -177,23 +171,15 @@ const GameDetailsScreen = ({navigation, route}) => {
                     </AppText>
                   </View>
                   <View style={{flexDirection: 'row'}}>
-                    <AppText
-                      size={2}
-                      color={AppTheme.colors.lightGrey}
-                      style={{}}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
                       devices:
                     </AppText>
                     <AppText size={1} color={AppTheme.colors.text} style={{}}>
-                      {gameData?.supportedDevices.map((ii) =>
-                        (ii + ', ').toUpperCase(),
-                      )}
+                      {gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
                     </AppText>
                   </View>
                   <View style={{flexDirection: 'row'}}>
-                    <AppText
-                      size={2}
-                      color={AppTheme.colors.lightGrey}
-                      style={{}}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
                       Release date:
                     </AppText>
                     <AppText size={1} color={AppTheme.colors.text} style={{}}>
@@ -216,17 +202,10 @@ const GameDetailsScreen = ({navigation, route}) => {
                   <AppText
                     size={4}
                     color={
-                      (gameData?.computed[0]?.value || 0) /
-                        (gameData?.computed[1]?.value || 1) >
-                      5
-                        ? 'green'
-                        : 'red'
+                      (gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 1) > 5 ? 'green' : 'red'
                     }
                     bold={true}>
-                    {HandleNaN(
-                      (gameData?.computed[0]?.value || 0) /
-                        (gameData?.computed[1]?.value || 1),
-                    ).toFixed(2)}
+                    {HandleNaN((gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 1)).toFixed(2)}
                   </AppText>
                 </View>
               </View>
@@ -237,10 +216,7 @@ const GameDetailsScreen = ({navigation, route}) => {
           <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
             Suggested price:
           </AppText>
-          <AppText
-            size={2}
-            style={{paddingBottom: RFValue(20)}}
-            color={AppTheme.colors.text}>
+          <AppText size={2} style={{paddingBottom: RFValue(20)}} color={AppTheme.colors.text}>
             {gameData?.price || '0'} $
           </AppText>
         </View>
@@ -248,16 +224,10 @@ const GameDetailsScreen = ({navigation, route}) => {
         <View style={{paddingLeft: RFValue(10)}}>
           {gameData.genre ? (
             <View style={{flexDirection: 'row'}}>
-              <AppText
-                size={2}
-                color={AppTheme.colors.lightGrey}
-                style={{paddingVertical: RFValue(10)}}>
+              <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                 Genre:
               </AppText>
-              <AppText
-                size={2}
-                color={AppTheme.colors.text}
-                style={{paddingVertical: RFValue(10)}}>
+              <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
                 {gameData?.genre}
               </AppText>
             </View>
@@ -394,9 +364,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                           userID: item?.createdBy?._id,
                         });
                     }}
-                    source={
-                      item?.createdBy?.pic ? {uri: item?.createdBy?.pic} : false
-                    }
+                    source={item?.createdBy?.pic ? {uri: item?.createdBy?.pic} : false}
                   />
 
                   <TouchableOpacity
@@ -409,23 +377,12 @@ const GameDetailsScreen = ({navigation, route}) => {
                         });
                     }}>
                     <View style={{paddingLeft: RFValue(14)}}>
-                      <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <AppText
-                          bold={true}
-                          size={1}
-                          color={AppTheme.colors.lightGrey}>
-                          {item?.createdBy?.firstName ||
-                            item?.createdBy?.userName}
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
+                          {item?.createdBy?.firstName || item?.createdBy?.userName}
                         </AppText>
-                        <IsUserVerifiedCheck
-                          check={item?.createdBy?.isVerified}
-                        />
-                        <AppText
-                          size={1}
-                          bold={true}
-                          color={AppTheme.colors.primary}
-                          style={{paddingLeft: RFValue(5)}}>
+                        <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
+                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
                           {largeNumberShortify(item?.createdBy?.level)}
                         </AppText>
                       </View>
@@ -445,19 +402,13 @@ const GameDetailsScreen = ({navigation, route}) => {
                     <AppText size={1} style={{textAlign: 'center'}}>
                       {item?.devices[0]}
                     </AppText>
-                    <AppText
-                      size={3}
-                      style={{textAlign: 'center'}}
-                      color={item?.ratings > 5 ? 'green' : 'red'}>
+                    <AppText size={3} style={{textAlign: 'center'}} color={item?.ratings > 5 ? 'green' : 'red'}>
                       {parseFloat(item?.ratings || 0)?.toFixed(2)}
                     </AppText>
                   </View>
                 </View>
                 <AppText size={2}>{item?.feedback}</AppText>
-                <AppText
-                  size={1}
-                  color={AppTheme.colors.lightGrey}
-                  style={{paddingTop: RFValue(10)}}>
+                <AppText size={1} color={AppTheme.colors.lightGrey} style={{paddingTop: RFValue(10)}}>
                   {moment(item?.createdAt).format('DD MMM YYYY')}
                 </AppText>
               </View>
