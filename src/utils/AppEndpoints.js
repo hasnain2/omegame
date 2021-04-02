@@ -82,4 +82,4 @@ const EndPoints = {
   GET_NOTIFICATION_COUNTERS: BASE_URL + 'profile/counters', // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
 };
 
-export {DOMAIN, EndPoints};
+export { DOMAIN, EndPoints };

@@ -1,4 +1,4 @@
-import iid from '@react-native-firebase/iid';
+import messaging from '@react-native-firebase/messaging';
 import { JSONBodyHelper } from '..';
 import { AppConfig } from '../../config';
 import { EndPoints } from '../../utils/AppEndpoints';
@@ -6,7 +6,7 @@ import { AppLogger } from '../../utils/AppHelperMethods';
 import Interceptor from '../../utils/Interceptor';
 const LIMIT = 100;
 const getFCMToken = (callback) => {
-    iid().getToken().then(token => {
+    messaging().getToken().then(token => {
         AppLogger('------|||||||---FCM TOKEN---|||||||------', '')
         callback(token)
     }).catch(err => {

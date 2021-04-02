@@ -85,12 +85,14 @@ const AppCustomSlider = ({onChange, rating}) => {
             }));
           }}
         />
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={[AppTheme.colors.red, AppTheme.colors.green]}
-          style={{zIndex: -1, bottom: 0, height: RFValue(3), width: '100%'}}
-        />
+        <View style={{marginLeft: RFValue(15), marginRight: RFValue(15)}}>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={[AppTheme.colors.red, AppTheme.colors.green]}
+            style={{zIndex: -1, bottom: 0, height: RFValue(3), width: '100%'}}
+          />
+        </View>
       </View>
     </View>
   );

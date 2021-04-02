@@ -1,28 +1,33 @@
-import {firebase} from '@react-native-firebase/messaging';
-import {NavigationContainer} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {MenuProvider} from 'react-native-popup-menu';
+import { firebase } from '@react-native-firebase/messaging';
+import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { MenuProvider } from 'react-native-popup-menu';
 import NotificationPopup from 'react-native-push-notification-popup';
-import {useSelector} from 'react-redux';
-import {AppTheme} from './src/config';
-import {AuthStack, DashboardTabs} from './src/navigations';
-import {setUser} from './src/redux/reducers/userSlice';
-import {store} from './src/redux/store';
-import {AuthLoading} from './src/screens';
-import {getData} from './src/utils/AppStorage';
+import { useSelector } from 'react-redux';
+import { AppTheme } from './src/config';
+import { AuthStack, DashboardTabs } from './src/navigations';
+import { setUser } from './src/redux/reducers/userSlice';
+import { store } from './src/redux/store';
+import { AuthLoading } from './src/screens';
+import { getData } from './src/utils/AppStorage';
 import Interceptor from './src/utils/Interceptor';
 import SplashScreen from 'react-native-splash-screen';
+import { getFCMToken, requestPushNotificationPermission } from './src/services';
 
-const App = ({}) => {
+const App = ({ }) => {
   let [state, setState] = useState({
     loading: true,
   });
   let navRef = useRef(null);
-  let {user, settings} = useSelector((state) => state.root);
+  let { user, settings } = useSelector((state) => state.root);
 
   useEffect(() => {
+    requestPushNotificationPermission();
+    getFCMToken((token) => {
+      console.log(token);
+    });
     SplashScreen.hide();
   }, []);
 
@@ -36,7 +41,7 @@ const App = ({}) => {
         store.dispatch(setUser(storageUser));
       }
       setTimeout(() => {
-        setState({loading: false});
+        setState({ loading: false });
       }, 700);
     });
   }, []);

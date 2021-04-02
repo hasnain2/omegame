@@ -1,35 +1,34 @@
-import { AppLogger } from "./AppHelperMethods";
+import {AppLogger} from './AppHelperMethods';
 
 export default class Interceptor {
-    static token = null;
+  static token = null;
 
-    static headers = {
-        'Accept': '*/*',
-        'Content-Type': 'application/json'
-    }
+  static headers = {
+    Accept: '*/*',
+    'Content-Type': 'application/json',
+  };
 
-    static getHeaders() {
-        temp = this.headers;
-        temp["Accept"] = "*/*"
-        temp['Content-Type'] = "application/json"
-        temp['Authorization'] = 'Bearer ' + this.token
+  static getHeaders() {
+    temp = this.headers;
+    temp['Accept'] = '*/*';
+    temp['Content-Type'] = 'application/json';
+    temp['Authorization'] = 'Bearer ' + this.token;
 
-        return temp;
-    }
+    return temp;
+  }
 
-    static getHeadersMultiPart() {
-        temp = this.headers;
-        temp["Accept"] = "application/json"
-        temp['Content-Type'] = "multipart/form-data"
-        temp['Authorization'] = 'Bearer ' + this.token
-        return temp
-    }
+  static getHeadersMultiPart() {
+    temp = this.headers;
+    temp['Accept'] = 'application/json';
+    temp['Content-Type'] = 'multipart/form-data';
+    temp['Authorization'] = 'Bearer ' + this.token;
+    return temp;
+  }
 
-    static setToken(token) {
-        AppLogger('-------------token is-------------', token)
-        this.token = token;
-    }
-    static getToken() {
-        return this.token;
-    }
+  static setToken(token) {
+    this.token = token;
+  }
+  static getToken() {
+    return this.token;
+  }
 }

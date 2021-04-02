@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {ProgressBar} from 'react-native-paper';
+import {Bar} from 'react-native-progress';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -139,6 +140,7 @@ const UserProfileScreen = ({navigation, route}) => {
             alignItems: 'flex-end',
             justifyContent: 'space-between',
             height: RFValue(56),
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
           },
           state.enableScrollViewScroll
             ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}
@@ -157,6 +159,7 @@ const UserProfileScreen = ({navigation, route}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
+                opacity: 0.9,
               }}>
               <Image
                 source={ICON_CUSTOMIZE}
@@ -165,6 +168,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   tintColor: 'white',
                   height: RFValue(30),
                   width: RFValue(30),
+                  opacity: 1,
                 }}
               />
               <AppText size={2} style={{paddingLeft: RFValue(15)}}>
@@ -252,11 +256,14 @@ const UserProfileScreen = ({navigation, route}) => {
                       </AppText>
                     </View>
                     <View style={{flex: 0.54}}>
-                      <ProgressBar
-                        style={{height: RFValue(10), borderRadius: 3}}
+                      <Bar
+                        height={RFValue(10)}
+                        width={200}
                         progress={(userData?.earnedXps || 0) / 100}
                         // backgroundColor={'#C2C2C2'}
                         color={AppTheme.colors.primary}
+                        unfilledColor="#666666"
+                        borderColor="none"
                       />
                     </View>
                     <View
@@ -361,6 +368,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Date of Birth:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {moment(userData.dateOfBirth).format('DD MMM, yyyy')}
                         </AppText>
                       </View>
@@ -371,6 +379,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Favorite Game:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.favouriteGame}
                         </AppText>
                       </View>
@@ -381,6 +390,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Favorite Console:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.favouriteConsole}
                         </AppText>
                       </View>
@@ -391,6 +401,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           PSN account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[1].account}
                         </AppText>
                       </View>
@@ -401,6 +412,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           XBOX live account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[0].account}
                         </AppText>
                       </View>
@@ -411,6 +423,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Stream account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[2].account}
                         </AppText>
                       </View>
@@ -421,6 +434,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Nintendo account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[3].account}
                         </AppText>
                       </View>

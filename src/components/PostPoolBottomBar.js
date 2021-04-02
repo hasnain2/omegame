@@ -35,7 +35,7 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         justifyContent: 'space-around',
         alignItems: 'center',
         paddingHorizontal: RFValue(20),
-        backgroundColor: '#1C1C22',
+        backgroundColor: 'black',
       }}>
       <TouchableOpacity
         activeOpacity={0.7}

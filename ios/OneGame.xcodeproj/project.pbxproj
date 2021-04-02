@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* OneGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* OneGameTests.m */; };
+		042D323C2615DE70002B8783 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 042D323B2615DE70002B8783 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -20,7 +21,6 @@
 		DE64C9E4546E2C57DD3C8AE1 /* libPods-OneGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D631ECF2106D534E5AE52A17 /* libPods-OneGame.a */; };
 		EEA8C7B9F9FF6FB4B6A61BDB /* libPods-OneGame-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F43C912AFA42BAE97430F73B /* libPods-OneGame-tvOSTests.a */; };
 		F17FAABD0FB3A60A677AAE17 /* libPods-OneGame-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39E1EB1DAFB4FE87FA3CB480 /* libPods-OneGame-tvOS.a */; };
-		FA408135259F135000E890AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA408134259F135000E890AF /* GoogleService-Info.plist */; };
 		FA4497CC25A300C500E02107 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4497CB25A300C500E02107 /* File.swift */; };
 		FA7D1E4825B1DBB50069A4DB /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */; };
 /* End PBXBuildFile section */
@@ -47,6 +47,7 @@
 		00E356EE1AD99517003FC87E /* OneGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* OneGameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneGameTests.m; sourceTree = "<group>"; };
+		042D323B2615DE70002B8783 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "OneGame/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* OneGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = OneGame/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = OneGame/AppDelegate.m; sourceTree = "<group>"; };
@@ -86,7 +87,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F43C912AFA42BAE97430F73B /* libPods-OneGame-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneGame-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA408134259F135000E890AF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA40819F259F13AC00E890AF /* OneGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OneGame.entitlements; path = OneGame/OneGame.entitlements; sourceTree = "<group>"; };
 		FA44974E25A3003900E02107 /* OneGame-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OneGame-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA4497CB25A300C500E02107 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -149,6 +149,7 @@
 		13B07FAE1A68108700A75B9A /* OneGame */ = {
 			isa = PBXGroup;
 			children = (
+				042D323B2615DE70002B8783 /* GoogleService-Info.plist */,
 				FA40819F259F13AC00E890AF /* OneGame.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -202,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				FA7D1E4725B1DBB50069A4DB /* Config.xcconfig */,
-				FA408134259F135000E890AF /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* OneGame */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* OneGameTests */,
@@ -349,7 +349,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = J537C3NTZC;
+						DevelopmentTeam = 4SWJ362GRX;
 						LastSwiftMigration = 1200;
 						ProvisioningStyle = Automatic;
 					};
@@ -398,9 +398,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA7D1E4825B1DBB50069A4DB /* Config.xcconfig in Resources */,
+				042D323C2615DE70002B8783 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				FA408135259F135000E890AF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -859,7 +859,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J537C3NTZC;
+				DEVELOPMENT_TEAM = 4SWJ362GRX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = OneGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -868,7 +868,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.dev.OmeGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.omegame.cp;
 				PRODUCT_NAME = OneGame;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "OneGame-Bridging-Header.h";
@@ -888,7 +888,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J537C3NTZC;
+				DEVELOPMENT_TEAM = 4SWJ362GRX;
 				INFOPLIST_FILE = OneGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -896,7 +896,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.dev.OmeGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.omegame.cp;
 				PRODUCT_NAME = OneGame;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "OneGame-Bridging-Header.h";

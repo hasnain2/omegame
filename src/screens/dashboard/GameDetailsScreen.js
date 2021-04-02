@@ -100,7 +100,8 @@ const GameDetailsScreen = ({navigation, route}) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           position: 'absolute',
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(0,0,0,0.3)',
+          height: RFValue(56),
           top: 0,
           left: 0,
           right: 0,
@@ -166,7 +167,8 @@ const GameDetailsScreen = ({navigation, route}) => {
                     <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
                       Name:
                     </AppText>
-                    <AppText size={3} color={'white'} bold={true} style={{}}>
+                    <AppText size={3} color={'white'} style={{}}>
+                      {' '}
                       {gameData?.name}
                     </AppText>
                   </View>
@@ -175,6 +177,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                       devices:
                     </AppText>
                     <AppText size={1} color={AppTheme.colors.text} style={{}}>
+                      {' '}
                       {gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
                     </AppText>
                   </View>
@@ -183,6 +186,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                       Release date:
                     </AppText>
                     <AppText size={1} color={AppTheme.colors.text} style={{}}>
+                      {' '}
                       {moment(gameData?.releaseDate).format('DD MMMM YYYY')}
                     </AppText>
                   </View>
@@ -217,6 +221,7 @@ const GameDetailsScreen = ({navigation, route}) => {
             Suggested price:
           </AppText>
           <AppText size={2} style={{paddingBottom: RFValue(20)}} color={AppTheme.colors.text}>
+            {' '}
             {gameData?.price || '0'} $
           </AppText>
         </View>
@@ -228,6 +233,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                 Genre:
               </AppText>
               <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                {' '}
                 {gameData?.genre}
               </AppText>
             </View>
@@ -347,7 +353,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                 style={{
                   padding: RFValue(15),
                   borderBottomWidth: 0.3,
-                  borderBottomColor: AppTheme.colors.lightGrey,
+                  borderBottomColor: '#213A57',
                 }}>
                 <View
                   style={{
@@ -393,7 +399,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                   </TouchableOpacity>
                   <View
                     style={{
-                      borderColor: AppTheme.colors.green,
+                      borderColor: item?.ratings > 5 ? AppTheme.colors.green : 'red',
                       borderWidth: 1,
                       paddingHorizontal: RFValue(25),
                       paddingVertical: RFValue(10),
@@ -402,7 +408,10 @@ const GameDetailsScreen = ({navigation, route}) => {
                     <AppText size={1} style={{textAlign: 'center'}}>
                       {item?.devices[0]}
                     </AppText>
-                    <AppText size={3} style={{textAlign: 'center'}} color={item?.ratings > 5 ? 'green' : 'red'}>
+                    <AppText
+                      size={3}
+                      style={{textAlign: 'center'}}
+                      color={item?.ratings > 5 ? AppTheme.colors.green : 'red'}>
                       {parseFloat(item?.ratings || 0)?.toFixed(2)}
                     </AppText>
                   </View>

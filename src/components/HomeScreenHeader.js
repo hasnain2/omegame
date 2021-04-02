@@ -22,12 +22,20 @@ const HomeScreenHeader = ({route, navigation}) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         height: RFValue(56),
+        shadowColor: 'black',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
       }}>
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => {
-          if (user?._id)
-            navigation.navigate('UserProfileScreen', {userID: user?._id});
+          if (user?._id) navigation.navigate('UserProfileScreen', {userID: user?._id});
         }}>
         <View pointerEvents={'none'} style={{padding: RFValue(5)}}>
           <AppBadge count={0} />
@@ -52,10 +60,7 @@ const HomeScreenHeader = ({route, navigation}) => {
         }}>
         <View pointerEvents={'none'} style={{}}>
           <AppBadge count={settings.notiCount} />
-          <FastImage
-            source={ICON_NOTIFICATION}
-            style={{height: RFValue(40), width: RFValue(40)}}
-          />
+          <FastImage source={ICON_NOTIFICATION} style={{height: RFValue(40), width: RFValue(40)}} />
         </View>
       </TouchableOpacity>
 
@@ -66,10 +71,7 @@ const HomeScreenHeader = ({route, navigation}) => {
         }}>
         <View pointerEvents={'none'} style={{}}>
           <AppBadge count={settings.chatCount} />
-          <FastImage
-            source={ICON_CHAT}
-            style={{height: RFValue(40), width: RFValue(40)}}
-          />
+          <FastImage source={ICON_CHAT} style={{height: RFValue(40), width: RFValue(40)}} />
         </View>
       </TouchableOpacity>
     </View>
