@@ -1,56 +1,31 @@
-import {GoogleSignin} from '@react-native-community/google-signin';
-import React, {useEffect, useState} from 'react';
-import {
-  Keyboard,
-  LayoutAnimation,
-  Platform,
-  TouchableHighlight,
-  UIManager,
-  View,
-} from 'react-native';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, LayoutAnimation, Platform, TouchableHighlight, UIManager, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import InstagramLogin from 'react-native-instagram-login';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {APP_LOGO} from '../../../assets/images';
-import {
-  AppButton,
-  AppGradientContainer,
-  AppInput,
-  AppRadioButton,
-  AppText,
-} from '../../components';
-import {AppSocialButton} from '../../components/AppSocialButton';
-import {AppConfig} from '../../config';
-import {AppTheme} from '../../config/AppTheme';
-import {LogInUser} from '../../services/authService';
-import {
-  LoginWithApple,
-  LoginWithFacebook,
-  LoginWithGoogle,
-  socialloginhelper,
-} from '../../services/socialAuthService';
-import {SOCIAL_LOGIN_TYPES} from '../../utils/AppConstants';
-import {EndPoints} from '../../utils/AppEndpoints';
-import {AppShowToast} from '../../utils/AppHelperMethods';
-import {Ionicons} from '../../utils/AppIcons';
-import {getData, storeData} from '../../utils/AppStorage';
-import {ValidateEmail} from '../../utils/AppValidators';
-const INSTA_SCOPES = [
-  'user_profile',
-  'user_media',
-  'instagram_graph_user_profile',
-];
+import { RFValue } from 'react-native-responsive-fontsize';
+import { APP_LOGO, APP_ICON } from '../../../assets/images';
+import { AppButton, AppGradientContainer, AppInput, AppRadioButton, AppText } from '../../components';
+import { AppSocialButton } from '../../components/AppSocialButton';
+import { AppConfig } from '../../config';
+import { AppTheme } from '../../config/AppTheme';
+import { LogInUser } from '../../services/authService';
+import { LoginWithApple, LoginWithFacebook, LoginWithGoogle, socialloginhelper } from '../../services/socialAuthService';
+import { SOCIAL_LOGIN_TYPES } from '../../utils/AppConstants';
+import { EndPoints } from '../../utils/AppEndpoints';
+import { AppShowToast } from '../../utils/AppHelperMethods';
+import { Ionicons } from '../../utils/AppIcons';
+import { getData, storeData } from '../../utils/AppStorage';
+import { ValidateEmail } from '../../utils/AppValidators';
+const INSTA_SCOPES = ['user_profile', 'user_media', 'instagram_graph_user_profile'];
 
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 GoogleSignin.configure();
 
-const Login = ({route, navigation}) => {
+const Login = ({ route, navigation }) => {
   let [instagramLoginRef, setInstagramLoginRef] = useState('');
   const [state, setState] = useState({
     rememberMe: false,
@@ -63,13 +38,7 @@ const Login = ({route, navigation}) => {
 
   useEffect(() => {
     getData('rememberMe', (dta) => {
-      if (dta)
-        setState((prev) => ({
-          ...prev,
-          rememberMe: true,
-          email: dta.userName,
-          password: dta.password,
-        }));
+      if (dta) setState((prev) => ({ ...prev, rememberMe: true, email: dta.userName, password: dta.password }));
     });
 
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
@@ -83,12 +52,12 @@ const Login = ({route, navigation}) => {
   }, []);
 
   function _keyboardDidShow(e) {
-    setState((prev) => ({...prev, isKeyboardVisible: true}));
+    setState((prev) => ({ ...prev, isKeyboardVisible: true }));
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   }
 
   function _keyboardDidHide() {
-    setState((prev) => ({...prev, isKeyboardVisible: false}));
+    setState((prev) => ({ ...prev, isKeyboardVisible: false }));
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   }
 
@@ -100,33 +69,26 @@ const Login = ({route, navigation}) => {
         // this is new user take him to set username screen to complete registration
       }
     }
-    setState((prev) => ({...prev, loading: false}));
+    setState((prev) => ({ ...prev, loading: false }));
   };
   const onsubmit = () => {
     if (state.email) {
       if (state.password) {
-        setState((prev) => ({...prev, loading: true}));
+        setState((prev) => ({ ...prev, loading: true }));
         LogInUser(
           (dta) => {
-            setState((prev) => ({...prev, loading: false}));
+            setState((prev) => ({ ...prev, loading: false }));
             if (dta) {
               if (dta === 'verify') {
-                navigation.navigate('CodeVerification', {
-                  email: state.email?.toLowerCase().trim(),
-                });
+                navigation.navigate('CodeVerification', { email: state.email?.toLowerCase().trim() });
               } else {
                 if (state.rememberMe)
-                  storeData('rememberMe', {
-                    userName: state.email.trim(),
-                    password: state.password.trim(),
-                  });
+                  storeData('rememberMe', { userName: state.email.trim(), password: state.password.trim() });
               }
             } else AppShowToast('Invalid email or password');
           },
           {
-            userName: ValidateEmail(state.email)
-              ? state.email.toLowerCase().trim()
-              : state.email.trim(),
+            userName: ValidateEmail(state.email) ? state.email.toLowerCase().trim() : state.email.trim(),
             password: state.password.trim(),
           },
         );
@@ -134,58 +96,49 @@ const Login = ({route, navigation}) => {
     } else AppShowToast('Please provide valid email address');
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'black'}}>
-      <View style={{paddingHorizontal: RFValue(15), flex: 1}}>
-        <View
-          style={{flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <View style={{ paddingHorizontal: RFValue(24), flex: 1 }}>
+        <View style={{ flex: 0.7, justifyContent: 'center', alignItems: 'center' }}>
           <TouchableHighlight
             activeOpacity={9}
             onPress={() => {
               if (__DEV__) navigation.navigate('SetUserName');
             }}>
             <FastImage
-              style={{width: RFValue(70), height: RFValue(70)}}
-              source={APP_LOGO}
+              style={{ width: RFValue(70), height: RFValue(70), color: 'orange' }}
+              source={APP_ICON}
               resizeMode="contain"
             />
           </TouchableHighlight>
         </View>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <AppInput
             editable={!state.loading}
+            dense={true}
             value={state.email}
-            style={{backgroundColor: 'black'}}
+            style={{ backgroundColor: 'black', marginBottom: RFValue(10) }}
             type={'any'}
             label={'Username or e-mail'}
             onChangeText={(val) => {
-              setState((prev) => ({...prev, email: val}));
+              setState((prev) => ({ ...prev, email: val }));
             }}
           />
           <AppInput
             editable={!state.loading}
             value={state.password}
-            style={{backgroundColor: 'black'}}
+            dense={true}
+            style={{ backgroundColor: 'black' }}
             type={'any'}
             passwordVisible={state.passwordVisible}
             label={'Password'}
             onChangeText={(val) => {
-              setState((prev) => ({...prev, password: val}));
+              setState((prev) => ({ ...prev, password: val }));
             }}
-            onRightPress={() =>
-              setState((prev) => ({
-                ...prev,
-                passwordVisible: !state.passwordVisible,
-              }))
-            }
+            onRightPress={() => setState((prev) => ({ ...prev, passwordVisible: !state.passwordVisible }))}
             right={
               <Ionicons
-                name={
-                  state.passwordVisible ? 'md-eye-off-sharp' : 'md-eye-sharp'
-                }
-                style={{
-                  fontSize: RFValue(20),
-                  color: AppTheme.colors.lightGrey,
-                }}
+                name={state.passwordVisible ? 'md-eye-off-sharp' : 'md-eye-sharp'}
+                style={{ fontSize: RFValue(20), color: AppTheme.colors.lightGrey }}
               />
             }
           />
@@ -202,30 +155,20 @@ const Login = ({route, navigation}) => {
               val={state.rememberMe}
               onPress={() => {
                 global.rememberMe = !state.rememberMe;
-                setState((prev) => ({...prev, rememberMe: !state.rememberMe}));
+                setState((prev) => ({ ...prev, rememberMe: !state.rememberMe }));
               }}
             />
             <AppText></AppText>
             <AppText
               onPress={() => navigation.navigate('ForgotPassword')}
-              style={{textAlign: 'right'}}
+              style={{ textAlign: 'right' }}
               size={1}
               color={AppTheme.colors.primary}>
               Forgot Password
             </AppText>
           </View>
-          <View
-            style={{
-              flex: 1,
-              paddingTop: RFValue(25),
-              justifyContent: 'center',
-            }}>
-            <AppButton
-              loading={state.loading}
-              bgColor="black"
-              onPress={onsubmit}
-              label={'Start'}
-            />
+          <View style={{ flex: 1, paddingTop: RFValue(25), justifyContent: 'center' }}>
+            <AppButton loading={state.loading} bgColor="black" onPress={onsubmit} label={'Start'} />
           </View>
         </View>
       </View>
@@ -238,25 +181,22 @@ const Login = ({route, navigation}) => {
           redirectUrl={EndPoints.INSTAGRAM_REDIRECT_URL}
           scopes={INSTA_SCOPES}
           onClose={() => {
-            setState((prev) => ({...prev, loading: false}));
+            setState((prev) => ({ ...prev, loading: false }));
           }}
           onLoginSuccess={async (data) => {
-            setState((prev) => ({...prev, loading: true}));
-            let loginRes = await socialloginhelper(
-              data.access_token,
-              SOCIAL_LOGIN_TYPES.INSTAGRAM,
-            );
+            setState((prev) => ({ ...prev, loading: true }));
+            let loginRes = await socialloginhelper(data.access_token, SOCIAL_LOGIN_TYPES.INSTAGRAM);
             socialbuttonsclickhandler(loginRes);
           }}
           onLoginFailure={(data) => {
-            setState((prev) => ({...prev, loading: false}));
+            setState((prev) => ({ ...prev, loading: false }));
           }}
         />
         {!state.isKeyboardVisible ? (
-          <View style={{paddingBottom: RFValue(20)}}>
+          <View style={{ paddingBottom: RFValue(20) }}>
             <AppText
               size={1}
-              style={{textAlign: 'center', paddingBottom: RFValue(10)}}
+              style={{ textAlign: 'center', paddingBottom: RFValue(10) }}
               color={AppTheme.colors.lightGrey}>
               or start with:
             </AppText>
@@ -270,7 +210,7 @@ const Login = ({route, navigation}) => {
               <AppSocialButton
                 onPress={async () => {
                   if (__DEV__) {
-                    setState((prev) => ({...prev, loading: true}));
+                    setState((prev) => ({ ...prev, loading: true }));
                     const socialLoginRes = await LoginWithFacebook();
                     socialbuttonsclickhandler(socialLoginRes);
                   }
@@ -281,7 +221,7 @@ const Login = ({route, navigation}) => {
               <AppSocialButton
                 onPress={() => {
                   if (instagramLoginRef && __DEV__) {
-                    setState((prev) => ({...prev, loading: true}));
+                    setState((prev) => ({ ...prev, loading: true }));
                     instagramLoginRef.show();
                   }
                 }}
@@ -290,7 +230,7 @@ const Login = ({route, navigation}) => {
               <AppSocialButton
                 onPress={async () => {
                   if (__DEV__) {
-                    setState((prev) => ({...prev, loading: true}));
+                    setState((prev) => ({ ...prev, loading: true }));
                     const socialLoginRes = await LoginWithGoogle();
                     socialbuttonsclickhandler(socialLoginRes);
                   }
@@ -301,7 +241,7 @@ const Login = ({route, navigation}) => {
                 <AppSocialButton
                   onPress={async () => {
                     if (__DEV__) {
-                      setState((prev) => ({...prev, loading: true}));
+                      setState((prev) => ({ ...prev, loading: true }));
                       const socialLoginRes = await LoginWithApple();
                       socialbuttonsclickhandler(socialLoginRes);
                     }
@@ -322,7 +262,7 @@ const Login = ({route, navigation}) => {
             marginTop: RFValue(10),
           }}>
           <AppText size={2}>Don't you have an account?</AppText>
-          <AppText size={4} bold={true} style={{paddingTop: RFValue(10)}}>
+          <AppText size={4} bold={true} style={{ paddingTop: RFValue(10) }}>
             SIGN UP
           </AppText>
         </AppGradientContainer>
@@ -332,4 +272,4 @@ const Login = ({route, navigation}) => {
   );
 };
 
-export {Login};
+export { Login };

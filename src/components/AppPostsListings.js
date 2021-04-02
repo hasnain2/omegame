@@ -1,20 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Platform, RefreshControl, View} from 'react-native';
-import {AppLoadingView} from './AppLoadingView';
-import {AppNoDataFound} from './AppNoDataFound';
-import {PoolCard} from './PoolCard';
-import {PostCard} from './PostCard';
-import {useScrollToTop} from '@react-navigation/native';
-const AppPostsListings = ({
-  navigation,
-  loading,
-  data,
-  style,
-  loadMore,
-  refreshing,
-  screenType,
-  autoPlay = true,
-}) => {
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Platform, RefreshControl, View } from 'react-native';
+import { AppLoadingView } from './AppLoadingView';
+import { AppNoDataFound } from './AppNoDataFound';
+import { PoolCard } from './PoolCard';
+import { PostCard } from './PostCard';
+import { useScrollToTop } from '@react-navigation/native';
+const AppPostsListings = ({ navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true }) => {
   const flatListRef = useRef(null);
   let [state, setState] = useState({
     showMenu: '',
@@ -24,10 +15,10 @@ const AppPostsListings = ({
   useScrollToTop(flatListRef);
   useEffect(() => {
     const unsubscribeFocusListner = navigation.addListener('focus', () => {
-      setState((prev) => ({...prev, focused: true}));
+      setState((prev) => ({ ...prev, focused: true }));
     });
     const unsubscribeBlur = navigation.addListener('blur', () => {
-      setState((prev) => ({...prev, focused: false}));
+      setState((prev) => ({ ...prev, focused: false }));
     });
 
     return () => {
@@ -38,14 +29,14 @@ const AppPostsListings = ({
   const onViewRef = React.useRef((viewableItems) => {
     if (viewableItems && viewableItems?.changed?.length > 0) {
       let currentIndex = viewableItems?.changed[0]?.index;
-      setState((prev) => ({...prev, currentItemIndex: currentIndex}));
+      setState((prev) => ({ ...prev, currentItemIndex: currentIndex }));
     }
   });
 
-  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 70});
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 70 });
 
   return (
-    <View style={[{flex: 1, backgroundColor: 'black'}, style ? style : null]}>
+    <View style={[{ flex: 1, backgroundColor: 'black' }, style ? style : null]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
 
       {loading ? <AppLoadingView /> : null}
@@ -78,14 +69,12 @@ const AppPostsListings = ({
           }
         }}
         onEndReachedThreshold={0.5}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           if (item?.postType === 'media')
             return (
               <PostCard
                 key={'PostCard' + index}
-                startPlaying={
-                  state.currentItemIndex === index && state.focused && autoPlay
-                }
+                startPlaying={state.currentItemIndex === index && state.focused && autoPlay}
                 navigation={navigation}
                 item={item}
                 index={index}
@@ -95,9 +84,7 @@ const AppPostsListings = ({
             return (
               <PoolCard
                 key={'PoolCard' + index}
-                startPlaying={
-                  state.currentItemIndex === index && state.focused && autoPlay
-                }
+                startPlaying={state.currentItemIndex === index && state.focused && autoPlay}
                 navigation={navigation}
                 item={item}
                 index={index}
@@ -107,9 +94,7 @@ const AppPostsListings = ({
             return (
               <PostCard
                 key={'PostCard' + index}
-                startPlaying={
-                  state.currentItemIndex === index && state.focused && autoPlay
-                }
+                startPlaying={state.currentItemIndex === index && state.focused && autoPlay}
                 navigation={navigation}
                 item={item}
                 index={index}
@@ -122,4 +107,4 @@ const AppPostsListings = ({
   );
 };
 
-export {AppPostsListings};
+export { AppPostsListings };

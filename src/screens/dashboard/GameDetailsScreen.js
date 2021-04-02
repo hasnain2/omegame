@@ -162,15 +162,30 @@ const GameDetailsScreen = ({navigation, route}) => {
                   justifyContent: 'space-between',
                 }}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
-                  <AppText size={3} color={'white'} bold={true} style={{}}>
-                    {gameData?.name}
-                  </AppText>
-                  <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>
-                    {gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
-                  </AppText>
-                  <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>
-                    Release date: {moment(gameData?.releaseDate).format('DD MMMM YYYY')}
-                  </AppText>
+                  <View style={{flexDirection: 'row'}}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+                      Name:
+                    </AppText>
+                    <AppText size={3} color={'white'} bold={true} style={{}}>
+                      {gameData?.name}
+                    </AppText>
+                  </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+                      devices:
+                    </AppText>
+                    <AppText size={1} color={AppTheme.colors.text} style={{}}>
+                      {gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
+                    </AppText>
+                  </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+                      Release date:
+                    </AppText>
+                    <AppText size={1} color={AppTheme.colors.text} style={{}}>
+                      {moment(gameData?.releaseDate).format('DD MMMM YYYY')}
+                    </AppText>
+                  </View>
                 </View>
                 <View
                   style={{
@@ -184,57 +199,40 @@ const GameDetailsScreen = ({navigation, route}) => {
                   <AppText size={1} color={'white'} bold={true} style={{}}>
                     RATE
                   </AppText>
-                  <AppText size={4} color={'white'} bold={true} style={{}}>
-                    {HandleNaN((gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 0)).toFixed(2)}
+                  <AppText
+                    size={4}
+                    color={
+                      (gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 1) > 5 ? 'green' : 'red'
+                    }
+                    bold={true}>
+                    {HandleNaN((gameData?.computed[0]?.value || 0) / (gameData?.computed[1]?.value || 1)).toFixed(2)}
                   </AppText>
                 </View>
               </View>
             </LinearGradient>
           </FastImage>
         </View>
-
-        <View style={{padding: RFValue(10)}}>
-          <AppText
-            onPress={() => {
-              setState((prev) => ({
-                ...prev,
-                bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3,
-              }));
-            }}
-            lines={state.bioShowMoreLines}
-            style={{}}>
-            {gameData?.description}
+        <View style={{flexDirection: 'row', paddingLeft: RFValue(10)}}>
+          <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+            Suggested price:
           </AppText>
-
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              setState((prev) => ({
-                ...prev,
-                bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3,
-              }));
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <AppText color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                {state.bioShowMoreLines === 3 ? 'More' : 'Less'}{' '}
-              </AppText>
-              <MaterialIcons
-                name={state.bioShowMoreLines === 3 ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
-                style={{
-                  fontSize: RFValue(20),
-                  color: AppTheme.colors.lightGrey,
-                }}
-              />
-            </View>
-          </TouchableOpacity>
+          <AppText size={2} style={{paddingBottom: RFValue(20)}} color={AppTheme.colors.text}>
+            {gameData?.price || '0'} $
+          </AppText>
         </View>
 
-        <AppText
-          size={2}
-          style={{paddingLeft: RFValue(10), paddingBottom: RFValue(20)}}
-          color={AppTheme.colors.lightGrey}>
-          Suggested price: {gameData?.price || '0'} $
-        </AppText>
+        <View style={{paddingLeft: RFValue(10)}}>
+          {gameData.genre ? (
+            <View style={{flexDirection: 'row'}}>
+              <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                Genre:
+              </AppText>
+              <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                {gameData?.genre}
+              </AppText>
+            </View>
+          ) : null}
+        </View>
 
         <View style={{padding: RFValue(10)}}>
           <AppButton
@@ -344,96 +342,77 @@ const GameDetailsScreen = ({navigation, route}) => {
             maxToRenderPerBatch={2}
             bounces={false}
             keyExtractor={(ii) => (ii._id || '') + 'you'}
-            renderItem={({item, index}) => {
-              const userRating = item.createdBy._id === user._id;
-              return (
+            renderItem={({item, index}) => (
+              <View
+                style={{
+                  padding: RFValue(15),
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: AppTheme.colors.lightGrey,
+                }}>
                 <View
                   style={{
-                    padding: RFValue(15),
-                    borderBottomWidth: 0.3,
-                    borderBottomColor: AppTheme.colors.lightGrey,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingBottom: RFValue(15),
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingBottom: RFValue(15),
-                    }}>
-                    <UserAvatar
-                      corner={item?.createdBy?.corner || ''}
-                      color={item?.createdBy?.cornerColor}
-                      onPress={() => {
-                        if (item?.createdBy?._id)
-                          navigation.navigate('UserProfileScreen', {
-                            userID: item?.createdBy?._id,
-                          });
-                      }}
-                      source={item?.createdBy?.pic ? {uri: item?.createdBy?.pic} : false}
-                    />
+                  <UserAvatar
+                    corner={item?.createdBy?.corner || ''}
+                    color={item?.createdBy?.cornerColor}
+                    onPress={() => {
+                      if (item?.createdBy?._id)
+                        navigation.navigate('UserProfileScreen', {
+                          userID: item?.createdBy?._id,
+                        });
+                    }}
+                    source={item?.createdBy?.pic ? {uri: item?.createdBy?.pic} : false}
+                  />
 
-                    <TouchableOpacity
-                      activeOpacity={0.9}
-                      style={{flex: 1, justifyContent: 'center'}}
-                      onPress={() => {
-                        if (item?.createdBy?._id)
-                          navigation.navigate('UserProfileScreen', {
-                            userID: item?.createdBy?._id,
-                          });
-                      }}>
-                      <View style={{paddingLeft: RFValue(14)}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                          <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                            {item?.createdBy?.firstName || item?.createdBy?.userName}
-                          </AppText>
-                          <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                          <AppText
-                            size={1}
-                            bold={true}
-                            color={AppTheme.colors.primary}
-                            style={{paddingLeft: RFValue(5)}}>
-                            {largeNumberShortify(item?.createdBy?.level)}
-                          </AppText>
-                        </View>
-                        <AppText size={1} color={AppTheme.colors.lightGrey}>
-                          {item?.createdBy?.userName}
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    style={{flex: 1, justifyContent: 'center'}}
+                    onPress={() => {
+                      if (item?.createdBy?._id)
+                        navigation.navigate('UserProfileScreen', {
+                          userID: item?.createdBy?._id,
+                        });
+                    }}>
+                    <View style={{paddingLeft: RFValue(14)}}>
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
+                          {item?.createdBy?.firstName || item?.createdBy?.userName}
+                        </AppText>
+                        <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
+                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
+                          {largeNumberShortify(item?.createdBy?.level)}
                         </AppText>
                       </View>
-                    </TouchableOpacity>
-                    <View
-                      style={{
-                        borderColor: AppTheme.colors.green,
-                        borderWidth: 1,
-                        paddingHorizontal: RFValue(25),
-                        paddingVertical: RFValue(10),
-                        borderRadius: RFValue(15),
-                      }}>
-                      <AppText size={1} style={{textAlign: 'center'}}>
-                        {item?.devices[0]}
-                      </AppText>
-                      <AppText size={3} style={{textAlign: 'center'}}>
-                        {parseFloat(item?.ratings || 0)?.toFixed(2)}
+                      <AppText size={1} color={AppTheme.colors.lightGrey}>
+                        {item?.createdBy?.userName}
                       </AppText>
                     </View>
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      borderColor: AppTheme.colors.green,
+                      borderWidth: 1,
+                      paddingHorizontal: RFValue(25),
+                      paddingVertical: RFValue(10),
+                      borderRadius: RFValue(15),
+                    }}>
+                    <AppText size={1} style={{textAlign: 'center'}}>
+                      {item?.devices[0]}
+                    </AppText>
+                    <AppText size={3} style={{textAlign: 'center'}} color={item?.ratings > 5 ? 'green' : 'red'}>
+                      {parseFloat(item?.ratings || 0)?.toFixed(2)}
+                    </AppText>
                   </View>
-                  <AppText size={2}>{item?.feedback}</AppText>
-                  <AppText size={1} color={AppTheme.colors.lightGrey} style={{paddingTop: RFValue(10)}}>
-                    {moment(item?.createdAt).format('DD MMM YYYY')}
-                  </AppText>
-                  {userRating && (
-                    <View style={{position: 'absolute', bottom: RFValue(12), right: RFValue(15), flexDirection: 'row'}}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate('RateGameScreen', {gameData, userReview: item})}
-                        style={{paddingRight: RFValue(8)}}>
-                        <Feather name="edit" color={AppTheme.colors.lightGrey} size={RFValue(20)} />
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => removePressHandler(item._id)}>
-                        <AntDesign name="delete" color={AppTheme.colors.lightGrey} size={RFValue(20)} />
-                      </TouchableOpacity>
-                    </View>
-                  )}
                 </View>
-              );
-            }}
+                <AppText size={2}>{item?.feedback}</AppText>
+                <AppText size={1} color={AppTheme.colors.lightGrey} style={{paddingTop: RFValue(10)}}>
+                  {moment(item?.createdAt).format('DD MMM YYYY')}
+                </AppText>
+              </View>
+            )}
           />
         </View>
       </ScrollView>

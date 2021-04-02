@@ -1,13 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Dimensions,
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  UIManager,
-  View,
-} from 'react-native';
+import {Dimensions, Image, Platform, StyleSheet, TouchableOpacity, UIManager, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -38,19 +30,14 @@ import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
 import {setUser} from '../../redux/reducers/userSlice';
 import {RemovePostsOfUserFromReduxStore} from '../../services';
-import {
-  ActionsOnUsers,
-  GetSingleUserProfile,
-} from '../../services/profileService';
+import {ActionsOnUsers, GetSingleUserProfile} from '../../services/profileService';
 import {FRIEND_STATUSES_ACTIONS} from '../../utils/AppConstants';
 import {AppLogger, largeNumberShortify} from '../../utils/AppHelperMethods';
 import {MaterialIcons} from '../../utils/AppIcons';
 import {UserProfileTabs} from './UserProfileTabs/UserProfileTabs';
+import moment from 'moment';
 
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
@@ -86,6 +73,7 @@ const UserProfileScreen = ({navigation, route}) => {
     LHeight: 0,
     LWidth: 0,
     bioShowMoreLines: 3,
+    showMore: false,
     scrollPosition: 0,
     enableScrollViewScroll: true,
     userData: userID ? user : null,
@@ -118,20 +106,14 @@ const UserProfileScreen = ({navigation, route}) => {
   function followOrCancelRequest(req) {
     let tempUserObj = state.userData;
     if (req) {
-      ActionsOnUsers(
-        () => {},
-        route.params.userID,
-        FRIEND_STATUSES_ACTIONS.CANCEL_FOLLOW_REQUEST,
-      );
+      ActionsOnUsers(() => {}, route.params.userID, FRIEND_STATUSES_ACTIONS.CANCEL_FOLLOW_REQUEST);
       tempUserObj['isRequested'] = false;
       tempUserObj['isFollowing'] = false;
     } else {
       ActionsOnUsers(
         () => {},
         route.params.userID,
-        tempUserObj?.isFollowing
-          ? FRIEND_STATUSES_ACTIONS.UNFOLLOW
-          : FRIEND_STATUSES_ACTIONS.FOLLOW,
+        tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW,
       );
       if (tempUserObj?.isFollowing) tempUserObj['isFollowing'] = false;
       else tempUserObj['isRequested'] = true;
@@ -154,8 +136,9 @@ const UserProfileScreen = ({navigation, route}) => {
         style={[
           {
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             justifyContent: 'space-between',
+            height: RFValue(56),
           },
           state.enableScrollViewScroll
             ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}
@@ -219,11 +202,7 @@ const UserProfileScreen = ({navigation, route}) => {
         )}
       </View>
 
-      <ScrollView
-        style={{flex: 1}}
-        decelerationRate={0.2}
-        nestedScrollEnabled={true}
-        scrollEventThrottle={1}>
+      <ScrollView style={{flex: 1}} decelerationRate={0.2} nestedScrollEnabled={true} scrollEventThrottle={1}>
         <View style={{}}>
           <View style={{height: state.LHeight, width: state.LWidth}}>
             <FastImage
@@ -250,7 +229,7 @@ const UserProfileScreen = ({navigation, route}) => {
                       ? {uri: userData?.pic}
                       : DEFAULT_USER_PIC
                   }
-                  size={100}
+                  size={120}
                 />
 
                 {userID ? (
@@ -267,7 +246,7 @@ const UserProfileScreen = ({navigation, route}) => {
                         alignItems: 'center',
                         flex: 0.3,
                       }}>
-                      <AppGoldCoin />
+                      <AppGoldCoin size={35} />
                       <AppText size={3} style={{paddingHorizontal: RFValue(5)}}>
                         {largeNumberShortify(userData?.earnedCoins || 0)}
                       </AppText>
@@ -295,7 +274,7 @@ const UserProfileScreen = ({navigation, route}) => {
                 <View
                   style={{
                     flexDirection: 'row',
-                    paddingHorizontal: RFValue(10),
+                    paddingHorizontal: RFValue(16),
                     paddingBottom: RFValue(10),
                     justifyContent: 'space-between',
                   }}>
@@ -306,43 +285,34 @@ const UserProfileScreen = ({navigation, route}) => {
                         flexDirection: 'row',
                         alignItems: 'center',
                       }}>
-                      <AppText size={3} bold={true}>
+                      <AppText size={16} bold={true}>
                         {userData?.userName || userData?.firstName || ''}
                       </AppText>
                       <IsUserVerifiedCheck check={userData?.isVerified} />
                     </View>
                     <AppText
                       size={1}
-                      color={
-                        userData?.nickNameColor
-                          ? userData?.nickNameColor
-                          : AppTheme.colors.lightGrey
-                      }
+                      color={userData?.nickNameColor ? userData?.nickNameColor : AppTheme.colors.lightGrey}
                       style={{}}>
                       {userData?.nickName || userData?.userName}
                     </AppText>
                   </View>
                   <View
                     style={{
-                      borderRadius: RFValue(5),
+                      borderRadius: RFValue(10),
                       borderWidth: 1,
                       justifyContent: 'center',
-                      padding: RFValue(10),
+                      paddingTop: RFValue(10),
+                      paddingBottom: RFValue(10),
+                      paddingLeft: RFValue(20),
+                      paddingRight: RFValue(20),
                       alignItems: 'center',
                       borderColor: AppTheme.colors.primary,
                     }}>
-                    <AppText
-                      size={1}
-                      color={AppTheme.colors.primary}
-                      bold={true}
-                      style={{}}>
+                    <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>
                       LEVEL
                     </AppText>
-                    <AppText
-                      size={4}
-                      color={AppTheme.colors.primary}
-                      bold={true}
-                      style={{}}>
+                    <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>
                       {userData?.level}
                     </AppText>
                   </View>
@@ -352,48 +322,112 @@ const UserProfileScreen = ({navigation, route}) => {
           </View>
 
           <View style={{padding: RFValue(10)}}>
-            {userData?.bio ? (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => {
-                  setState((prev) => ({
-                    ...prev,
-                    bioShowMoreLines: state.bioShowMoreLines === 3 ? 10 : 3,
-                  }));
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <AppText
-                    size={2}
-                    color={AppTheme.colors.lightGrey}
-                    style={{paddingVertical: RFValue(10)}}>
-                    {state.bioShowMoreLines === 3
-                      ? 'More about me'
-                      : 'Less about me'}{' '}
-                  </AppText>
-                  <MaterialIcons
-                    name={
-                      state.bioShowMoreLines === 3
-                        ? 'keyboard-arrow-down'
-                        : 'keyboard-arrow-up'
-                    }
-                    style={{
-                      fontSize: RFValue(20),
-                      color: AppTheme.colors.lightGrey,
-                    }}
-                  />
-                </View>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-          <View>
-            {state.bioShowMoreLines !== 3 ? (
-              <View>
-                <AppText>
-                  {'\n'}
-                  {userData?.bio}
-                </AppText>
+            <TouchableOpacity activeOpacity={0.7}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <AppText>{userData?.bio}</AppText>
               </View>
-            ) : null}
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => {
+                setState((prev) => ({
+                  ...prev,
+                  showMore: !state.showMore,
+                }));
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                  {state.showMore ? 'Hide Information' : 'More about me'}{' '}
+                </AppText>
+                <MaterialIcons
+                  name={state.showMore ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+                  style={{
+                    fontSize: RFValue(20),
+                    color: AppTheme.colors.lightGrey,
+                  }}
+                />
+              </View>
+              <View>
+                {state.showMore ? (
+                  <View>
+                    {userData.dateOfBirth ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          Date of Birth:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {moment(userData.dateOfBirth).format('DD MMM, yyyy')}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData.favouriteGame ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          Favorite Game:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {userData.favouriteGame}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData.favouriteConsole ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          Favorite Console:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {userData.favouriteConsole}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[1] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          PSN account:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[1].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[0] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          XBOX live account:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[0].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[2] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          Stream account:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[2].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                    {userData?.gamingAccounts[3] ? (
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          Nintendo account:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {userData.gamingAccounts[3].account}
+                        </AppText>
+                      </View>
+                    ) : null}
+                  </View>
+                ) : null}
+              </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -437,12 +471,10 @@ const UserProfileScreen = ({navigation, route}) => {
             <TouchableOpacity
               style={{}}
               activeOpacity={0.7}
-              onPress={() =>
-                navigation.navigate('EditUserProfileScreen', {data: userData})
-              }>
+              onPress={() => navigation.navigate('EditUserProfileScreen', {data: userData})}>
               <View
                 style={{
-                  marginHorizontal: RFValue(10),
+                  marginHorizontal: RFValue(16),
                   borderWidth: 1,
                   borderColor: AppTheme.colors.lightGrey,
                   borderRadius: 90,
@@ -468,20 +500,13 @@ const UserProfileScreen = ({navigation, route}) => {
                     followOrCancelRequest(userData?.isRequested);
                   }}
                   fill={true}
-                  label={
-                    userData?.isFollowing
-                      ? 'UNFOLLOW'
-                      : userData?.isRequested
-                      ? 'REQUESTED'
-                      : 'FOLLOW'
-                  }
+                  label={userData?.isFollowing ? 'UNFOLLOW' : userData?.isRequested ? 'REQUESTED' : 'FOLLOW'}
                 />
               </View>
               <View style={{flex: 1, paddingLeft: RFValue(5)}}>
                 <AppButton
                   onPress={() => {
-                    if (userData)
-                      navigation.push('ChatWindow', {friend: userData});
+                    if (userData) navigation.push('ChatWindow', {friend: userData});
                   }}
                   label={'MESSAGE'}
                 />
@@ -496,8 +521,7 @@ const UserProfileScreen = ({navigation, route}) => {
             AppLogger('-----------', isVisible);
             checkVisible(isVisible);
           }}>
-          <View
-            style={{height: state.LHeight - RFValue(50), width: state.LWidth}}>
+          <View style={{height: state.LHeight - RFValue(50), width: state.LWidth}}>
             <UserProfileTabs
               userID={route.params.userID}
               navigation={navigation}
@@ -564,9 +588,7 @@ const UserProfileScreen = ({navigation, route}) => {
               ActionsOnUsers(
                 () => {},
                 route.params.userID,
-                userData?.mute
-                  ? FRIEND_STATUSES_ACTIONS.UNMUTE
-                  : FRIEND_STATUSES_ACTIONS.MUTE,
+                userData?.mute ? FRIEND_STATUSES_ACTIONS.UNMUTE : FRIEND_STATUSES_ACTIONS.MUTE,
               );
               let tmpUserData = {...state.userData};
               tmpUserData.mute = !tmpUserData?.mute || true;
@@ -615,11 +637,7 @@ const UserProfileScreen = ({navigation, route}) => {
               />
             </View>
             <AppText size={2} color="white" style={{flex: 1}}>
-              {userData?.isFollowing
-                ? 'Unfollow'
-                : userData?.isRequested
-                ? 'Requested'
-                : 'Follow'}
+              {userData?.isFollowing ? 'Unfollow' : userData?.isRequested ? 'Requested' : 'Follow'}
             </AppText>
           </TouchableOpacity>
 
@@ -627,11 +645,7 @@ const UserProfileScreen = ({navigation, route}) => {
             onPress={() => {
               RemovePostsOfUserFromReduxStore(route.params.userID);
               navigation.goBack();
-              ActionsOnUsers(
-                () => {},
-                route.params.userID,
-                FRIEND_STATUSES_ACTIONS.BLOCKED,
-              );
+              ActionsOnUsers(() => {}, route.params.userID, FRIEND_STATUSES_ACTIONS.BLOCKED);
               setState((prev) => ({...prev, showMenu: false}));
             }}
             style={styles.modalListItemStyle}>
