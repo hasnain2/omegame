@@ -139,6 +139,7 @@ const UserProfileScreen = ({navigation, route}) => {
             alignItems: 'flex-end',
             justifyContent: 'space-between',
             height: RFValue(56),
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
           },
           state.enableScrollViewScroll
             ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}
@@ -157,6 +158,7 @@ const UserProfileScreen = ({navigation, route}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
+                opacity: 0.9,
               }}>
               <Image
                 source={ICON_CUSTOMIZE}
@@ -165,6 +167,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   tintColor: 'white',
                   height: RFValue(30),
                   width: RFValue(30),
+                  opacity: 1,
                 }}
               />
               <AppText size={2} style={{paddingLeft: RFValue(15)}}>
