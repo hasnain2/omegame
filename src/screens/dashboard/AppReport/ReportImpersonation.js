@@ -69,22 +69,36 @@ const ReportImpersonation = ({navigation, route}) => {
             report it to us. Make sure to provide all requested information, including a photo of your ID. We only
             repond to reports sent to us from the person who's being impersonated.{'\n'}
           </AppText>
-
-          <AppText size={3}>Who do you want to report?{'\n'}</AppText>
-
+          <AppText size={3}>Who do you want to report?</AppText>
           <TextInput
-            style={{backgroundColor: 'black', marginBottom: RFValue(15)}}
+            style={{
+              backgroundColor: 'black',
+              marginBottom: RFValue(15),
+              fontSize: RFValue(16),
+              lineHeight: RFValue(22),
+              paddingHorizontal: 0,
+              marginTop: RFValue(10),
+            }}
             value={state.userToReport}
+            dense={true}
             placeholder={'Username of the account you are reporting'}
             onChangeText={(val) => {
               setState((prev) => ({...prev, userToReport: val}));
             }}
           />
 
-          <AppText size={3}>Please provide your e-mail address. We'll use it to contact you.{'\n'}</AppText>
+          <AppText size={3}>Please provide your e-mail address. We'll use it to contact you.</AppText>
 
           <TextInput
-            style={{backgroundColor: 'black', marginBottom: RFValue(15)}}
+            style={{
+              backgroundColor: 'black',
+              marginBottom: RFValue(15),
+              fontSize: RFValue(16),
+              lineHeight: RFValue(22),
+              marginTop: RFValue(10),
+              paddingHorizontal: 0,
+            }}
+            dense={true}
             value={state.reporterEmailAddress}
             placeholder={'Enter your e-mail'}
             onChangeText={(val) => {
@@ -123,9 +137,9 @@ const ReportImpersonation = ({navigation, route}) => {
                 <AppText size={3} color="white">
                   Please upload a photo of your ID
                 </AppText>
-                <Ionicons name="md-image-outline" style={{fontSize: RFValue(25), color: AppTheme.colors.primary}} />
+                <Ionicons name="md-image-outline" style={{fontSize: RFValue(40), color: AppTheme.colors.primary}} />
               </View>
-              <AppText size={3} color={AppTheme.colors.lightGrey}>
+              <AppText size={3} style={{lineHeight: RFValue(22)}} color={AppTheme.colors.lightGrey}>
                 Valid forms of ID include a government-issued photo ID (e.g. driver's license, passport or national
                 identification card).
               </AppText>
@@ -144,6 +158,7 @@ const ReportImpersonation = ({navigation, route}) => {
               placeholderTextColor={AppTheme.colors.lightGrey}
               multiline={true}
               blurOnSubmit={true}
+              underlineColor={'#000'}
               style={{
                 flex: 1,
                 color: 'white',

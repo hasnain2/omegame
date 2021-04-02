@@ -144,7 +144,7 @@ const RateGameScreen = ({navigation, route}) => {
           />
         </View>
 
-        <View style={{flexDirection: 'row', padding: RFValue(20)}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', padding: RFValue(20)}}>
           <UserAvatar
             corner={user?.corner || ''}
             color={user?.cornerColor}
