@@ -1,101 +1,106 @@
+import React, {useEffect, useState} from 'react';
+import {RefreshControl, ScrollView, View} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppLoadingView, AppPostsListings, AppText, HomeScreenHeader} from '../../components';
+import {AppTheme} from '../../config';
+import {setHomeFeed} from '../../redux/reducers/homeFeedSlice';
+import {setSettings} from '../../redux/reducers/settingsSlice';
+import {store} from '../../redux/store';
+import {GetCounterNumberOfNotifications} from '../../services/appSettingsService';
+import {GetHomeFeed} from '../../services/postService';
+import {initSocket} from '../../services/socketService';
+let cursorArr = [];
+const HomeScreen = ({route, navigation}) => {
+  const [state, setState] = useState({
+    loading: true,
+    refreshing: false,
+    data: [],
+  });
+  const disptach = useDispatch();
+  const {homeFeed, user} = useSelector((state) => state.root);
 
-
-import React, { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, View } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppLoadingView, AppPostsListings, AppText, HomeScreenHeader } from '../../components';
-import { AppTheme } from '../../config';
-import { setHomeFeed } from '../../redux/reducers/homeFeedSlice';
-import { setSettings } from '../../redux/reducers/settingsSlice';
-import { store } from '../../redux/store';
-import { GetCounterNumberOfNotifications } from '../../services/appSettingsService';
-import { GetHomeFeed } from '../../services/postService';
-import { initSocket } from '../../services/socketService';
-let cursorArr = []
-const HomeScreen = ({ route, navigation }) => {
-    const [state, setState] = useState({
-        loading: true,
-        refreshing: false,
-        data: []
-    })
-    const disptach = useDispatch();
-    const { homeFeed, user } = useSelector(state => state.root);
-
-    function getHomeFeedHelper(cursor) {
-        if (!cursor)
-            cursorArr = [];
-        if (!cursorArr.includes(cursor)) {
-            GetHomeFeed((res) => {
-                if (res) {
-                    let newArr = cursor ? [...store.getState().root.homeFeed, ...res] : res;
-                    let uniqueArr = [...new Set(newArr.map(item => item?._id ? item : false))];
-                    disptach(setHomeFeed(uniqueArr))
-                }
-                setState(prev => ({ ...prev, loading: false, refreshing: false }))
-            }, cursor);
-        } else {
-            setState(prev => ({ ...prev, loading: false, refreshing: false }))
+  function getHomeFeedHelper(cursor) {
+    if (!cursor) cursorArr = [];
+    if (!cursorArr.includes(cursor)) {
+      GetHomeFeed((res) => {
+        if (res) {
+          let newArr = cursor ? [...store.getState().root.homeFeed, ...res] : res;
+          let uniqueArr = [...new Set(newArr.map((item) => (item?._id ? item : false)))];
+          disptach(setHomeFeed(uniqueArr));
         }
-        cursorArr.push(cursor)
+        setState((prev) => ({...prev, loading: false, refreshing: false}));
+      }, cursor);
+    } else {
+      setState((prev) => ({...prev, loading: false, refreshing: false}));
     }
+    cursorArr.push(cursor);
+  }
 
-    useEffect(() => {
-        initSocket(user.token);
-        getHomeFeedHelper(false);
-        GetCounterNumberOfNotifications();
-        const unsubscribeFocus = navigation.addListener('focus', e => {
-            store.dispatch(setSettings({ bgColor: AppTheme.colors.darkGrey }));
-        });
-        const unsubscribeBlur = navigation.addListener('blur', e => {
-            store.dispatch(setSettings({ bgColor: 'black' }));
-        });
+  useEffect(() => {
+    initSocket(user.token);
+    getHomeFeedHelper(false);
+    GetCounterNumberOfNotifications();
+    const unsubscribeFocus = navigation.addListener('focus', (e) => {
+      store.dispatch(setSettings({bgColor: AppTheme.colors.darkGrey}));
+    });
+    const unsubscribeBlur = navigation.addListener('blur', (e) => {
+      store.dispatch(setSettings({bgColor: 'black'}));
+    });
 
-        return () => {
-            unsubscribeFocus();
-            unsubscribeBlur();
-        }
-    }, [])
-    return (
-        <View style={{ flex: 1, backgroundColor: 'black' }}>
-            {/* <AppGooglePlacesAutoFill /> */}
-            <HomeScreenHeader navigation={navigation} route={route} />
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+    };
+  }, []);
+  return (
+    <View style={{flex: 1, backgroundColor: 'black'}}>
+      {/* <AppGooglePlacesAutoFill /> */}
+      <HomeScreenHeader navigation={navigation} route={route} />
 
-            {!state.loading && homeFeed?.length < 1 ?
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={state.refreshing}
-                            tintColor={'white'}
-                            onRefresh={() => {
-                                setState(prev => ({ ...prev, refreshing: true }))
-                                getHomeFeedHelper(false);
-                            }}
-                        />
-                    }
-                    style={{}}>
-                    <View style={{ paddingVertical: RFValue(100), justifyContent: 'center', alignItems: 'center' }}>
-                        <AppText color={"grey"} >No posts found!</AppText>
-                        <AppText onPress={() => {
-                            navigation.navigate("Search", { type: 'users' });
-                        }} color={AppTheme.colors.primary} >Follow users?</AppText>
-                    </View>
-                </ScrollView> :
-                state.loading && homeFeed?.length < 1 ?
-                    <AppLoadingView /> :
-                    <AppPostsListings navigation={navigation}
-                        data={homeFeed}
-                        refreshing={state.refreshing}
-                        loadMore={(offset, refreshControl) => {
-                            if (refreshControl) {
-                                setState(prev => ({ ...prev, refreshing: true }));
-                                getHomeFeedHelper(false)
-                            } else {
-                                getHomeFeedHelper(offset)
-                            };
-                        }} />}
-        </View>
-    );
+      {!state.loading && homeFeed?.length < 1 ? (
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={state.refreshing}
+              tintColor={'white'}
+              onRefresh={() => {
+                setState((prev) => ({...prev, refreshing: true}));
+                getHomeFeedHelper(false);
+              }}
+            />
+          }
+          style={{}}>
+          <View style={{paddingVertical: RFValue(100), justifyContent: 'center', alignItems: 'center'}}>
+            <AppText color={'grey'}>No posts found!</AppText>
+            <AppText
+              onPress={() => {
+                navigation.navigate('Search', {type: 'users'});
+              }}
+              color={AppTheme.colors.primary}>
+              Follow users?
+            </AppText>
+          </View>
+        </ScrollView>
+      ) : state.loading && homeFeed?.length < 1 ? (
+        <AppLoadingView />
+      ) : (
+        <AppPostsListings
+          navigation={navigation}
+          data={homeFeed}
+          refreshing={state.refreshing}
+          loadMore={(offset, refreshControl) => {
+            if (refreshControl) {
+              setState((prev) => ({...prev, refreshing: true}));
+              getHomeFeedHelper(false);
+            } else {
+              getHomeFeedHelper(offset);
+            }
+          }}
+        />
+      )}
+    </View>
+  );
 };
 
-export { HomeScreen };
+export {HomeScreen};

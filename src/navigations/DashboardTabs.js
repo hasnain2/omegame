@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
 import {Image, Linking, TouchableOpacity} from 'react-native';
