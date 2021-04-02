@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {ProgressBar} from 'react-native-paper';
+import {Bar} from 'react-native-progress';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -255,10 +256,13 @@ const UserProfileScreen = ({navigation, route}) => {
                       </AppText>
                     </View>
                     <View style={{flex: 0.54}}>
-                      <ProgressBar
-                        style={{height: RFValue(10), borderRadius: 3}}
+                      <Bar
+                        height={RFValue(10)}
+                        width={200}
                         progress={(userData?.earnedXps || 0) / 100}
                         color={AppTheme.colors.primary}
+                        unfilledColor="#666666"
+                        borderColor="none"
                       />
                     </View>
                     <View
