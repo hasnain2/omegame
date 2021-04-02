@@ -331,7 +331,7 @@ const UserProfileScreen = ({navigation, route}) => {
           <View style={{padding: RFValue(10)}}>
             <TouchableOpacity activeOpacity={0.7}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <AppText>{userData?.bio}</AppText>
+                <AppText size={1}>{userData?.bio}</AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
