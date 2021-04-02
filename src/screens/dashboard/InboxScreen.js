@@ -1,13 +1,6 @@
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  FlatList,
-  Image,
-  RefreshControl,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, FlatList, Image, RefreshControl, TouchableOpacity, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {ICON_NEW_MESSAGE} from '../../../assets/icons';
@@ -174,10 +167,7 @@ const InboxScreen = ({navigation, route}) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <AntDesign
-                  name={'close'}
-                  style={{fontSize: RFValue(25), color: AppTheme.colors.red}}
-                />
+                <AntDesign name={'close'} style={{fontSize: RFValue(25), color: AppTheme.colors.red}} />
                 <AppText size={3} color={AppTheme.colors.red}>
                   {' '}
                   DELETE ALL
@@ -227,10 +217,7 @@ const InboxScreen = ({navigation, route}) => {
           />
         }
         renderItem={({item, index}) => {
-          let newUser =
-            user?._id === item?.message?.from?._id
-              ? item?.message?.to
-              : item?.message?.from;
+          let newUser = user?._id === item?.message?.from?._id ? item?.message?.to : item?.message?.from;
           let inboxItem = {
             _id: item?.message?._id,
             createdAt: item?.message?.createdAt,
@@ -257,37 +244,24 @@ const InboxScreen = ({navigation, route}) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   padding: RFValue(5),
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#213A57',
                 }}>
                 <View style={{flex: 1}}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <UserAvatar
                       corner={inboxItem?.user?.corner || ''}
                       color={inboxItem?.user?.cornerColor}
-                      source={
-                        inboxItem?.user?.pic
-                          ? {uri: inboxItem?.user?.pic}
-                          : DEFAULT_REQ
-                      }
+                      source={inboxItem?.user?.pic ? {uri: inboxItem?.user?.pic} : DEFAULT_REQ}
                       size={50}
                     />
                     <View style={{flex: 1, paddingLeft: RFValue(10)}}>
-                      <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <AppText
-                          bold={true}
-                          size={1}
-                          color={AppTheme.colors.lightGrey}>
-                          {inboxItem?.user?.firstName ||
-                            inboxItem?.user?.userName}
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
+                          {inboxItem?.user?.firstName || inboxItem?.user?.userName}
                         </AppText>
-                        <IsUserVerifiedCheck
-                          check={inboxItem?.user?.isVerified}
-                        />
-                        <AppText
-                          size={1}
-                          bold={true}
-                          color={AppTheme.colors.primary}
-                          style={{paddingLeft: RFValue(5)}}>
+                        <IsUserVerifiedCheck check={inboxItem?.user?.isVerified} />
+                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
                           {largeNumberShortify(inboxItem?.user?.level)}
                         </AppText>
                         <AppText size={1} color={AppTheme.colors.lightGrey}>
@@ -298,9 +272,7 @@ const InboxScreen = ({navigation, route}) => {
                       <AppText
                         size={1}
                         color={
-                          inboxItem?.user?.nickNameColor
-                            ? inboxItem?.user?.nickNameColor
-                            : AppTheme.colors.lightGrey
+                          inboxItem?.user?.nickNameColor ? inboxItem?.user?.nickNameColor : AppTheme.colors.lightGrey
                         }>
                         {inboxItem?.user?.nickName || inboxItem?.user?.userName}
                       </AppText>
@@ -329,11 +301,7 @@ const InboxScreen = ({navigation, route}) => {
                     {inboxItem?.message}
                   </AppText>
                 </View>
-                <View style={{}}>
-                  {item?.count ? (
-                    <AppBadge count={largeNumberShortify(item?.count)} />
-                  ) : null}
-                </View>
+                <View style={{}}>{item?.count ? <AppBadge count={largeNumberShortify(item?.count)} /> : null}</View>
               </View>
             </TouchableOpacity>
           );
@@ -342,9 +310,7 @@ const InboxScreen = ({navigation, route}) => {
 
       <AppFriendsListModal
         show={state.showFriendsListModal}
-        toggle={() =>
-          setState((prev) => ({...prev, showFriendsListModal: false}))
-        }
+        toggle={() => setState((prev) => ({...prev, showFriendsListModal: false}))}
         selectedContacts={(contact) => {
           setState((prev) => ({...prev, showFriendsListModal: false}));
           navigation.navigate('ChatWindow', {friend: contact});

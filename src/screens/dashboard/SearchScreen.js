@@ -161,8 +161,8 @@ const SearchScreen = ({route, navigation}) => {
             }}>
             <View
               style={{
-                borderBottomWidth: 0.4,
-                borderBottomColor: AppTheme.colors.lightGrey,
+                borderBottomWidth: 0.5,
+                borderBottomColor: '#213A57',
                 paddingBottom: RFValue(15),
               }}>
               <View style={{padding: RFValue(15)}}>
@@ -252,7 +252,7 @@ const SearchScreen = ({route, navigation}) => {
             />
           ) : null}
 
-          <View style={{paddingTop: RFValue(20)}}>
+          <View style={{paddingLeft: RFValue(15), paddingRight: RFValue(15), paddingTop: RFValue(15)}}>
             <AppButton
               bgColor={'#1b1b1b'}
               label={'START'}

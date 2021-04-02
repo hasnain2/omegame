@@ -150,7 +150,7 @@ const NotificationScreen = ({navigation, route}) => {
                           justifyContent: 'space-between',
                           padding: RFValue(10),
                           borderBottomWidth: 0.5,
-                          borderBottomColor: 'grey',
+                          borderBottomColor: '#213A57',
                         }}>
                         <View>
                           <View>
@@ -307,7 +307,7 @@ const NotificationScreen = ({navigation, route}) => {
                       alignItems: 'center',
                       padding: RFValue(10),
                       borderBottomWidth: 0.5,
-                      borderBottomColor: 'grey',
+                      borderBottomColor: '#213A57',
                     }}>
                     <UserAvatar
                       corner={item?.createdBy?.corner || ''}

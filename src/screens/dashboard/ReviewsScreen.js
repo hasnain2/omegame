@@ -15,11 +15,7 @@ import {
 } from '../../components';
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
-import {
-  MOCK_CONSOLE_TYPES,
-  MOCK_GENRE_TYPES,
-  MOCK_RELEASEDATE_TYPES,
-} from '../../mockups/Mockups';
+import {MOCK_CONSOLE_TYPES, MOCK_GENRE_TYPES, MOCK_RELEASEDATE_TYPES} from '../../mockups/Mockups';
 import {GetGamesList} from '../../services/gamesService';
 import {
   AppLogger,
@@ -92,11 +88,9 @@ const ReviewsScreen = ({navigation}) => {
                   ? GetLastYearEndOf()
                   : GetCurrentDate(),
             };
-            if (state.selectedConsoleTypes.length > 0)
-              tempObj['console'] = state.selectedConsoleTypes;
+            if (state.selectedConsoleTypes.length > 0) tempObj['console'] = state.selectedConsoleTypes;
 
-            if (state.selectedGenreTypes.length > 0)
-              tempObj['genre'] = state.selectedGenreTypes;
+            if (state.selectedGenreTypes.length > 0) tempObj['genre'] = state.selectedGenreTypes;
 
             if (val) tempObj['search'] = val;
             getgameshelper(false, tempObj);
@@ -134,16 +128,12 @@ const ReviewsScreen = ({navigation}) => {
                       padding: RFValue(10),
                       alignItems: 'center',
                       borderBottomWidth: 0.9,
-                      borderBottomColor: AppTheme.colors.darkGrey,
+                      borderBottomColor: '#213A57',
                     }}>
                     <UserAvatar
                       corner={item?.corner || ''}
                       color={item?.cornerColor}
-                      source={
-                        item?.background?.url
-                          ? {uri: item?.background?.url}
-                          : DEFAULT_USER_PIC
-                      }
+                      source={item?.background?.url ? {uri: item?.background?.url} : DEFAULT_USER_PIC}
                       size={55}
                       type="review"
                     />
@@ -152,28 +142,20 @@ const ReviewsScreen = ({navigation}) => {
                         {item.name}
                       </AppText>
                       <AppText size={2} color={AppTheme.colors.lightGrey}>
-                        {item.supportedDevices.map((ii) =>
-                          (ii + ', ').toUpperCase(),
-                        )}
+                        {item.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
                       </AppText>
                       <AppText size={0} color={AppTheme.colors.lightGrey}>
-                        Release Date:{' '}
-                        {moment(item.releaseDate).format('DD MMMM YYYY')}
+                        Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}
                       </AppText>
                     </View>
                     <AppText
                       size={2}
                       color={
-                        (item?.computed[0]?.value || 0) /
-                          (item?.computed[1]?.value || 1) <
-                        5
+                        (item?.computed[0]?.value || 0) / (item?.computed[1]?.value || 1) < 5
                           ? AppTheme.colors.red
                           : AppTheme.colors.green
                       }>
-                      {HandleNaN(
-                        (item?.computed[0]?.value || 0) /
-                          (item?.computed[1]?.value || 0),
-                      )?.toFixed(2) || 0}
+                      {HandleNaN((item?.computed[0]?.value || 0) / (item?.computed[1]?.value || 0))?.toFixed(2) || 0}
                     </AppText>
                     <MaterialIcons
                       name="arrow-forward-ios"
@@ -219,8 +201,7 @@ const ReviewsScreen = ({navigation}) => {
             onPress={() => {
               setState((prev) => ({
                 ...prev,
-                visibleFilter:
-                  state.visibleFilter !== 'console' ? 'console' : '',
+                visibleFilter: state.visibleFilter !== 'console' ? 'console' : '',
               }));
             }}>
             <View
@@ -230,10 +211,7 @@ const ReviewsScreen = ({navigation}) => {
                 paddingBottom: RFValue(15),
               }}>
               <AppText size={2}>Console:</AppText>
-              <AppText
-                size={2}
-                color={AppTheme.colors.primary}
-                style={{paddingTop: RFValue(10)}}>
+              <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                 {state.selectedConsoleTypes.length > 0
                   ? state.selectedConsoleTypes.map((ii) => ii + '; ')
                   : 'Select Console'}
@@ -253,9 +231,7 @@ const ReviewsScreen = ({navigation}) => {
               renderItem={({item, index}) => (
                 <View style={{flex: 1, paddingVertical: RFValue(6)}}>
                   <AppRadioButton
-                    val={state.selectedConsoleTypes.find(
-                      (i) => i === item.name,
-                    )}
+                    val={state.selectedConsoleTypes.find((i) => i === item.name)}
                     onPress={() => {
                       let tempArr = state.selectedConsoleTypes;
                       if (tempArr.find((i) => i === item.name)) {
@@ -292,11 +268,9 @@ const ReviewsScreen = ({navigation}) => {
                       };
                       if (tempArr.length > 0) tempObj['console'] = tempArr;
 
-                      if (state.selectedGenreTypes.length > 0)
-                        tempObj['genre'] = state.selectedGenreTypes;
+                      if (state.selectedGenreTypes.length > 0) tempObj['genre'] = state.selectedGenreTypes;
 
-                      if (state.searchTerm)
-                        tempObj['search'] = state.searchTerm;
+                      if (state.searchTerm) tempObj['search'] = state.searchTerm;
                       getgameshelper(false, tempObj);
 
                       AppLogger('', state.selectedConsoleTypes);
@@ -319,17 +293,12 @@ const ReviewsScreen = ({navigation}) => {
             <View
               style={{
                 borderBottomWidth: 0.4,
-                borderBottomColor: AppTheme.colors.lightGrey,
+                borderBottomColor: '#213A57',
                 paddingVertical: RFValue(15),
               }}>
               <AppText size={2}>Genre:</AppText>
-              <AppText
-                size={2}
-                color={AppTheme.colors.primary}
-                style={{paddingTop: RFValue(10)}}>
-                {state.selectedGenreTypes.length > 0
-                  ? state.selectedGenreTypes.map((ii) => ii + '; ')
-                  : 'Select Genre'}
+              <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
+                {state.selectedGenreTypes.length > 0 ? state.selectedGenreTypes.map((ii) => ii + '; ') : 'Select Genre'}
               </AppText>
             </View>
           </TouchableOpacity>
@@ -382,13 +351,11 @@ const ReviewsScreen = ({navigation}) => {
                             ? GetLastYearEndOf()
                             : GetCurrentDate(),
                       };
-                      if (state.selectedConsoleTypes.length > 0)
-                        tempObj['console'] = state.selectedConsoleTypes;
+                      if (state.selectedConsoleTypes.length > 0) tempObj['console'] = state.selectedConsoleTypes;
 
                       if (tempArr.length > 0) tempObj['genre'] = tempArr;
 
-                      if (state.searchTerm)
-                        tempObj['search'] = state.searchTerm;
+                      if (state.searchTerm) tempObj['search'] = state.searchTerm;
                       getgameshelper(false, tempObj);
 
                       AppLogger('', state.selectedGenreTypes);
@@ -405,16 +372,12 @@ const ReviewsScreen = ({navigation}) => {
             onPress={() => {
               setState((prev) => ({
                 ...prev,
-                visibleFilter:
-                  state.visibleFilter !== 'releasedate' ? 'releasedate' : '',
+                visibleFilter: state.visibleFilter !== 'releasedate' ? 'releasedate' : '',
               }));
             }}>
             <View style={{paddingVertical: RFValue(15)}}>
               <AppText size={2}>Release date:</AppText>
-              <AppText
-                size={2}
-                color={AppTheme.colors.primary}
-                style={{paddingTop: RFValue(10)}}>
+              <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                 {state.releaseDate}
               </AppText>
             </View>
@@ -459,14 +422,11 @@ const ReviewsScreen = ({navigation}) => {
                             ? GetLastYearEndOf()
                             : GetCurrentDate(),
                       };
-                      if (state.selectedConsoleTypes.length > 0)
-                        tempObj['console'] = state.selectedConsoleTypes;
+                      if (state.selectedConsoleTypes.length > 0) tempObj['console'] = state.selectedConsoleTypes;
 
-                      if (state.selectedGenreTypes.length > 0)
-                        tempObj['genre'] = state.selectedGenreTypes;
+                      if (state.selectedGenreTypes.length > 0) tempObj['genre'] = state.selectedGenreTypes;
 
-                      if (state.searchTerm)
-                        tempObj['search'] = state.searchTerm;
+                      if (state.searchTerm) tempObj['search'] = state.searchTerm;
                       getgameshelper(false, tempObj);
                     }}
                     size={20}

@@ -363,6 +363,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Date of Birth:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {moment(userData.dateOfBirth).format('DD MMM, yyyy')}
                         </AppText>
                       </View>
@@ -373,6 +374,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Favorite Game:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.favouriteGame}
                         </AppText>
                       </View>
@@ -383,6 +385,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Favorite Console:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.favouriteConsole}
                         </AppText>
                       </View>
@@ -393,6 +396,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           PSN account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[1].account}
                         </AppText>
                       </View>
@@ -403,6 +407,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           XBOX live account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[0].account}
                         </AppText>
                       </View>
@@ -413,6 +418,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Stream account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[2].account}
                         </AppText>
                       </View>
@@ -423,6 +429,7 @@ const UserProfileScreen = ({navigation, route}) => {
                           Nintendo account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
                           {userData.gamingAccounts[3].account}
                         </AppText>
                       </View>
