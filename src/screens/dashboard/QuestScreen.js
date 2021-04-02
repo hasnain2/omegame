@@ -180,7 +180,8 @@ const QuestScreen = ({route, navigation}) => {
                     </FastImage>
                   </View>
                 ) : null}
-                <View style={{padding: RFValue(10)}}>
+                <View
+                  style={{padding: RFValue(10), borderBottomWidth: 0.9, borderBottomColor: AppTheme.colors.darkGrey}}>
                   <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <AppText lines={2} color={'white'} size={2} bold={true} style={{flex: 1}}>
                       {item?.questTitle}
@@ -232,7 +233,6 @@ const QuestScreen = ({route, navigation}) => {
                     </AppText>
                   ) : null}
                 </View>
-                <Divider style={{backgroundColor: 'grey', height: 0.5}} />
               </>
             </TouchableOpacity>
           );
