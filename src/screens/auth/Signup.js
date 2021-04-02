@@ -3,7 +3,7 @@ import {View, LayoutAnimation, Platform, UIManager, Keyboard} from 'react-native
 import FastImage from 'react-native-fast-image';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {APP_LOGO} from '../../../assets/images';
+import {APP_LOGO, APP_ICON} from '../../../assets/images';
 import {AppButton, AppGradientContainer, AppInput, AppText} from '../../components';
 import {AppTheme} from '../../config/AppTheme';
 import {SignUpUser} from '../../services';
@@ -85,7 +85,7 @@ const Signup = ({route, navigation}) => {
           <KeyboardAvoidingScrollView
             contentContainerStyle={{flex: 0.97, backgroundColor: 'black', paddingBottom: RFValue(30)}}>
             <View style={{flex: 0.45, justifyContent: 'center', alignItems: 'center'}}>
-              <FastImage style={{width: RFValue(70), height: RFValue(70)}} source={APP_LOGO} resizeMode="contain" />
+              <FastImage style={{width: RFValue(70), height: RFValue(70)}} source={APP_ICON} resizeMode="contain" />
             </View>
 
             <View style={{flex: 1}}>

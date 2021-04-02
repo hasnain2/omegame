@@ -4,15 +4,10 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
 import {Image, Linking, TouchableOpacity} from 'react-native';
+import AppBlurView from '../components/AppBlurView';
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {
-  ICON_ADD,
-  ICON_GAME,
-  ICON_HOME,
-  ICON_QUEST,
-  ICON_SEARCH,
-} from '../../assets/icons';
+import {ICON_ADD, ICON_GAME, ICON_HOME, ICON_QUEST, ICON_SEARCH} from '../../assets/icons';
 import {AppTheme} from '../config';
 import {
   AppContactsSearch,
@@ -51,11 +46,7 @@ import {
   UserProfileScreen,
 } from '../screens';
 import {UserSavedPosts} from '../screens/dashboard/UserSavedPosts';
-import {
-  AppShowPushNotification,
-  GetPostByCommentID,
-  requestPushNotificationPermission,
-} from '../services';
+import {AppShowPushNotification, GetPostByCommentID, requestPushNotificationPermission} from '../services';
 import {AppLogger, DynamicLinkHelper} from '../utils/AppHelperMethods';
 import {CustomDrawer} from './CustomDrawer';
 
@@ -76,23 +67,11 @@ function DashboardTabsExtra({navigation}) {
           };
           if (route.name === 'Home')
             return (
-              <Image
-                source={ICON_HOME}
-                style={[
-                  ICON_STYLE,
-                  focused ? {tintColor: AppTheme.colors.primary} : null,
-                ]}
-              />
+              <Image source={ICON_HOME} style={[ICON_STYLE, focused ? {tintColor: AppTheme.colors.primary} : null]} />
             );
           else if (route.name === 'Search')
             return (
-              <Image
-                source={ICON_SEARCH}
-                style={[
-                  ICON_STYLE,
-                  focused ? {tintColor: AppTheme.colors.primary} : null,
-                ]}
-              />
+              <Image source={ICON_SEARCH} style={[ICON_STYLE, focused ? {tintColor: AppTheme.colors.primary} : null]} />
             );
           else if (route.name === 'Creat')
             return (
@@ -109,23 +88,11 @@ function DashboardTabsExtra({navigation}) {
             );
           else if (route.name === 'Reviews')
             return (
-              <Image
-                source={ICON_GAME}
-                style={[
-                  ICON_STYLE,
-                  focused ? {tintColor: AppTheme.colors.primary} : null,
-                ]}
-              />
+              <Image source={ICON_GAME} style={[ICON_STYLE, focused ? {tintColor: AppTheme.colors.primary} : null]} />
             );
           else if (route.name === 'Quests')
             return (
-              <Image
-                source={ICON_QUEST}
-                style={[
-                  ICON_STYLE,
-                  focused ? {tintColor: AppTheme.colors.primary} : null,
-                ]}
-              />
+              <Image source={ICON_QUEST} style={[ICON_STYLE, focused ? {tintColor: AppTheme.colors.primary} : null]} />
             );
         },
       })}
@@ -176,10 +143,7 @@ const DrawerDashboardTabsExtra = ({navigation}) => {
         DynamicLinkHelper(navigation, link);
       })
       .catch((err) => {
-        AppLogger(
-          '----------ERROR LINK GETTING INITIAL URL DEEP LINK----------',
-          err,
-        );
+        AppLogger('----------ERROR LINK GETTING INITIAL URL DEEP LINK----------', err);
       });
     /* NOTIFICATION HANDLERS */
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
@@ -209,14 +173,10 @@ const DrawerDashboardTabsExtra = ({navigation}) => {
 
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       if (remoteMessage) {
-        AppShowPushNotification(
-          remoteMessage?.notification?.title,
-          remoteMessage?.notification?.body,
-          () => {
-            let newData = JSON.parse(remoteMessage?.data?.payload);
-            notificationHandler(newData, navigation);
-          },
-        );
+        AppShowPushNotification(remoteMessage?.notification?.title, remoteMessage?.notification?.body, () => {
+          let newData = JSON.parse(remoteMessage?.data?.payload);
+          notificationHandler(newData, navigation);
+        });
       }
     });
 
@@ -233,10 +193,7 @@ const DrawerDashboardTabsExtra = ({navigation}) => {
       drawerContent={(props) => <CustomDrawer {...props} />}
       drawerStyle={{width: '85%'}}>
       <Drawer.Screen name="Home" component={DashboardTabsExtra} />
-      <Drawer.Screen
-        name="UserProfileCustomizeScreen"
-        component={UserProfileCustomizeScreen}
-      />
+      <Drawer.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
       <Drawer.Screen name="OmegaStore" component={OmegaStoreTabs} />
       <Drawer.Screen name="UserSavedPosts" component={UserSavedPosts} />
       <Drawer.Screen name="AppSettingsScreen" component={AppSettingsScreen} />
@@ -261,58 +218,31 @@ const DashboardTabs = () => {
       <Stack.Screen name="InboxScreen" component={InboxScreen} />
       <Stack.Screen name="AppSettingsScreen" component={AppSettingsScreen} />
       <Stack.Screen name="UserSavedPosts" component={UserSavedPosts} />
-      <Stack.Screen
-        name="PersonalInformationScreen"
-        component={PersonalInformationScreen}
-      />
-      <Stack.Screen
-        name="ChangePasswordScreen"
-        component={ChangePasswordScreen}
-      />
-      <Stack.Screen
-        name="RequestVerificationScreen"
-        component={RequestVerificationScreen}
-      />
+      <Stack.Screen name="PersonalInformationScreen" component={PersonalInformationScreen} />
+      <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
+      <Stack.Screen name="RequestVerificationScreen" component={RequestVerificationScreen} />
       <Stack.Screen name="BlockedAccounts" component={BlockedAccounts} />
       <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
       <Stack.Screen name="DataPolicyScreen" component={DataPolicyScreen} />
       <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
       <Stack.Screen name="ChatWindow" component={ChatWindow} />
       <Stack.Screen name="AppContactsSearch" component={AppContactsSearch} />
-      <Stack.Screen
-        name="AppFollowersAndFollowingList"
-        component={AppFollowersAndFollowingList}
-      />
+      <Stack.Screen name="AppFollowersAndFollowingList" component={AppFollowersAndFollowingList} />
       <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
       <Stack.Screen name="GameDetailsScreen" component={GameDetailsScreen} />
-      <Stack.Screen
-        name="PostDetailScreenWithComments"
-        component={PostDetailScreenWithComments}
-      />
+      <Stack.Screen name="PostDetailScreenWithComments" component={PostDetailScreenWithComments} />
       <Stack.Screen name="RateGameScreen" component={RateGameScreen} />
       <Stack.Screen name="LeaveFeedBack" component={LeaveFeedBack} />
       <Stack.Screen name="AppReport" component={AppReport} />
       <Stack.Screen name="ReportAbuseOrSpam" component={ReportAbuseOrSpam} />
       <Stack.Screen name="ReportAccountHack" component={ReportAccountHack} />
-      <Stack.Screen
-        name="ReportExposedPrivateInfo"
-        component={ReportExposedPrivateInfo}
-      />
-      <Stack.Screen
-        name="ReportImpersonation"
-        component={ReportImpersonation}
-      />
+      <Stack.Screen name="ReportExposedPrivateInfo" component={ReportExposedPrivateInfo} />
+      <Stack.Screen name="ReportImpersonation" component={ReportImpersonation} />
       <Stack.Screen name="ReportSystemIssue" component={ReportSystemIssue} />
       <Stack.Screen name="AppVersionScreen" component={AppVersionScreen} />
       <Stack.Screen name="AppHelpCenter" component={AppHelpCenter} />
-      <Stack.Screen
-        name="EditUserProfileScreen"
-        component={EditUserProfileScreen}
-      />
-      <Stack.Screen
-        name="UserProfileCustomizeScreen"
-        component={UserProfileCustomizeScreen}
-      />
+      <Stack.Screen name="EditUserProfileScreen" component={EditUserProfileScreen} />
+      <Stack.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
     </Stack.Navigator>
   );
 };

@@ -53,7 +53,7 @@ const RequestVerificationScreen = ({navigation, route}) => {
       <AppBackButton navigation={navigation} name={'REQUEST VERIFICATION'} />
       {/* <AppHeaderCommon navigation={navigation} label={'Request Verification'.toUpperCase()} /> */}
       <KeyboardAvoidingScrollView style={{flex: 1}}>
-        <View style={{flex: 1, padding: RFValue(20)}}>
+        <View style={{flex: 1, paddingTop: 0, padding: RFValue(20)}}>
           <AppText bold={true} style={{fontSize: 24}} color="white">
             Apply for Omegame Verification
           </AppText>

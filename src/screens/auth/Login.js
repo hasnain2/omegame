@@ -99,17 +99,17 @@ const Login = ({route, navigation}) => {
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={{paddingHorizontal: RFValue(24), flex: 1}}>
         <View style={{flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             activeOpacity={9}
             onPress={() => {
               if (__DEV__) navigation.navigate('SetUserName');
-            }}>
-            <FastImage
-              style={{width: RFValue(70), height: RFValue(70), color: 'orange'}}
-              source={APP_ICON}
-              resizeMode="contain"
-            />
-          </TouchableHighlight>
+            }}> */}
+          <FastImage
+            style={{width: RFValue(70), height: RFValue(70), color: 'orange'}}
+            source={APP_ICON}
+            resizeMode="contain"
+          />
+          {/* </TouchableHighlight> */}
         </View>
         <View style={{flex: 1}}>
           <AppInput

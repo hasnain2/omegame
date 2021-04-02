@@ -255,6 +255,7 @@ const UserProfileScreen = ({navigation, route}) => {
                       <ProgressBar
                         style={{height: RFValue(10), borderRadius: 3}}
                         progress={(userData?.earnedXps || 0) / 100}
+                        // backgroundColor={'#C2C2C2'}
                         color={AppTheme.colors.primary}
                       />
                     </View>
