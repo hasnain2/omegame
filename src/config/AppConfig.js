@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import Config from 'react-native-config';
 
 const AppConfig = {
@@ -41,4 +41,4 @@ const AppConfig = {
   APP_PRIVACY_POLICY: 'https://omegame.net/privacy-notice/',
 };
 
-export {AppConfig};
+export { AppConfig };

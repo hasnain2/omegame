@@ -24,7 +24,7 @@ async function requestPushNotificationPermission() {
         sound: true,
         announcement: true,
         // ... other permission settings
-      });
+    });
     const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;

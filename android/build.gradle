@@ -8,7 +8,7 @@ buildscript {
         targetSdkVersion = 29
         excludeAppGlideModule = true
         googlePlayServicesAuthVersion = "16.0.1"
-        multiDexEnabled = true
+        multiDexEnabled=true
     }
     repositories {
         google()
