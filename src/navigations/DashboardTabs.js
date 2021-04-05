@@ -190,6 +190,7 @@ const DrawerDashboardTabsExtra = ({navigation}) => {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
+      overlayColor={'rgba(0, 0, 0, 0.7)'}
       drawerContent={(props) => <CustomDrawer {...props} />}
       drawerStyle={{width: '85%'}}>
       <Drawer.Screen name="Home" component={DashboardTabsExtra} />
