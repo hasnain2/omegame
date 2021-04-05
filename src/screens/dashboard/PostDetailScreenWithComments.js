@@ -26,19 +26,10 @@ import {
 } from '../../components';
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
-import {
-  CommentPost,
-  CommentReaction,
-  GetCommentsOfPost,
-  GetCommentsReplies,
-  GetSinglePost,
-} from '../../services';
+import {CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost} from '../../services';
 import {largeNumberShortify} from '../../utils/AppHelperMethods';
 import {FontAwesome} from '../../utils/AppIcons';
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
@@ -78,8 +69,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
   };
 
   const ScrollToSpecificIndex = (index) => {
-    if (flatListRef && flatListRef.current)
-      flatListRef?.current?.scrollToIndex({animated: true, index: index});
+    if (flatListRef && flatListRef.current) flatListRef?.current?.scrollToIndex({animated: true, index: index});
   };
 
   const getcommentreplieshelper = (parentIDparam) => {
@@ -140,16 +130,11 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               }}
               corner={item?.createdBy?.corner || ''}
               color={item?.createdBy?.cornerColor}
-              source={
-                item?.createdBy?.pic
-                  ? {uri: item?.createdBy?.pic}
-                  : DEFAULT_USER_PIC
-              }
+              source={item?.createdBy?.pic ? {uri: item?.createdBy?.pic} : DEFAULT_USER_PIC}
               size={50}
             />
 
-            {(state?.replies?._id === item?.parentComment &&
-              state.replies?.data?.length - 1 !== index) ||
+            {(state?.replies?._id === item?.parentComment && state.replies?.data?.length - 1 !== index) ||
             state?.replies?._id === item?._id ? (
               <View
                 style={{
@@ -173,24 +158,14 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 }}>
                 <View style={{}}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <AppText
-                      bold={true}
-                      size={1}
-                      color={AppTheme.colors.lightGrey}>
+                    <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
                       {item?.createdBy?.firstName || item?.createdBy?.userName}
                     </AppText>
                     <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                    <AppText
-                      size={1}
-                      bold={true}
-                      color={AppTheme.colors.primary}
-                      style={{paddingLeft: RFValue(5)}}>
+                    <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
                       {item?.createdBy?.level}
                     </AppText>
-                    <AppText
-                      size={1}
-                      color={AppTheme.colors.lightGrey}
-                      style={{flex: 1}}>
+                    <AppText size={1} color={AppTheme.colors.lightGrey} style={{flex: 1}}>
                       {' '}
                       - {moment(item?.createdAt || new Date()).fromNow(true)}
                     </AppText>
@@ -204,10 +179,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                   </AppText>
                 </View>
               </TouchableOpacity>
-              <AppText
-                size={2}
-                color={'white'}
-                style={{paddingVertical: RFValue(10)}}>
+              <AppText size={2} color={'white'} style={{paddingVertical: RFValue(10)}}>
                 {item?.text}
               </AppText>
             </View>
@@ -223,9 +195,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 activeOpacity={0.7}
                 onPress={() => {
                   let tempLikesArr = state.commentLikesArr;
-                  let foundIndex = tempLikesArr?.findIndex(
-                    (ii) => ii === item?._id,
-                  );
+                  let foundIndex = tempLikesArr?.findIndex((ii) => ii === item?._id);
                   if (foundIndex > -1) tempLikesArr.splice(foundIndex, 1);
                   else tempLikesArr.push(item?._id);
                   setState((prev) => ({
@@ -247,16 +217,13 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                     style={{
                       fontSize: RFValue(20),
                       paddingRight: RFValue(5),
-                      color: isCommentIsLiked
-                        ? AppTheme.colors.primary
-                        : 'grey',
+                      color: isCommentIsLiked ? AppTheme.colors.primary : 'grey',
                     }}
                   />
                   <AppText size={1} color={AppTheme.colors.lightGrey}>
                     {largeNumberShortify(
-                      ((item?.computed?.find(
-                        (reactionVal) => reactionVal.key === 'LIKE',
-                      )?.value || 0) + isCommentIsLiked
+                      ((item?.computed?.find((reactionVal) => reactionVal.key === 'LIKE')?.value || 0) +
+                      isCommentIsLiked
                         ? 1
                         : 0) || isCommentIsLiked
                         ? 1
@@ -274,25 +241,16 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {/* <Ionicons name="chatbubble-outline" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'white' }} /> */}
-                  <FastImage
-                    source={ICON_COMMENT}
-                    style={{height: RFValue(35), width: RFValue(35)}}
-                  />
+                  <FastImage source={ICON_COMMENT} style={{height: RFValue(35), width: RFValue(35)}} />
                   <AppText size={1} color={AppTheme.colors.lightGrey}>
                     {largeNumberShortify(
-                      item?.computed?.find(
-                        (reactionVal) => reactionVal.key === 'REPLIES',
-                      )?.value ||
-                        0 ||
-                        0,
+                      item?.computed?.find((reactionVal) => reactionVal.key === 'REPLIES')?.value || 0 || 0,
                     )}
                   </AppText>
                 </View>
               </TouchableOpacity>
 
-              {item?.computed?.find(
-                (reactionVal) => reactionVal.key === 'REPLIES',
-              )?.value > 0 ? (
+              {item?.computed?.find((reactionVal) => reactionVal.key === 'REPLIES')?.value > 0 ? (
                 <TouchableOpacity
                   activeOpacity={0.8}
                   activeOpacity={0.7}
@@ -306,9 +264,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       setState((prev) => ({...prev, loading: true}));
                       getcommentreplieshelper(item?._id);
                     }
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.Presets.spring,
-                    );
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
                   }}>
                   <View
                     style={{
@@ -318,9 +274,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       alignItems: 'center',
                     }}>
                     <AppText size={1} color={AppTheme.colors.lightGrey}>
-                      {state?.replies?._id === item?._id
-                        ? 'Hide replies'
-                        : 'View replies'}
+                      {state?.replies?._id === item?._id ? 'Hide replies' : 'View replies'}
                     </AppText>
                   </View>
                 </TouchableOpacity>
@@ -377,9 +331,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
             </View>
           ) : null}
 
-          <KeyboardAvoidingView
-            behavior="padding"
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
             <FlatList
               ref={flatListRef}
               data={state.comments}
@@ -389,9 +341,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               maxToRenderPerBatch={5}
               keyExtractor={(ee) => ee._id + ''}
               renderItem={({item, index}) => {
-                let isCommentIsLiked = state.commentLikesArr.includes(
-                  item?._id,
-                );
+                let isCommentIsLiked = state.commentLikesArr.includes(item?._id);
                 return (
                   <>
                     {index === 0 && postData ? (
@@ -408,17 +358,10 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                     {renderCommentView(item, isCommentIsLiked, index, index)}
                     {state?.replies?._id === item?._id
                       ? state?.replies?.data.map((ittem, inndex) => {
-                          let isReplyIsLiked = state.commentLikesArr.includes(
-                            ittem._id,
-                          );
+                          let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
                           return (
                             <View key={`${inndex}key`} style={{}}>
-                              {renderCommentView(
-                                ittem,
-                                isReplyIsLiked,
-                                inndex,
-                                index,
-                              )}
+                              {renderCommentView(ittem, isReplyIsLiked, inndex, index)}
                             </View>
                           );
                         })
@@ -429,11 +372,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
             />
           </KeyboardAvoidingView>
           <AppInputToolBar
-            placeholder={
-              state.parentID?.createdBy?.userName
-                ? '@' + state.parentID?.createdBy?.userName
-                : ''
-            }
+            placeholder={state.parentID?.createdBy?.userName ? '@' + state.parentID?.createdBy?.userName : ''}
             LHeight={state.LHeight}
             removeTag={() => {
               setState((prev) => ({...prev, parentID: ''}));
@@ -444,12 +383,9 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                   if (newCommentRes) {
                     getcommentshelper();
                     if (state.parentID?.parentComment || state.parentID?._id)
-                      getcommentreplieshelper(
-                        state.parentID?.parentComment || state.parentID?._id,
-                      );
+                      getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id);
                   }
-                  if (state.comments?.length > 0)
-                    ScrollToSpecificIndex(state.currentIndex || 0);
+                  if (state.comments?.length > 0) ScrollToSpecificIndex(state.currentIndex || 0);
                   setState((prev) => ({
                     ...prev,
                     parentID: '',
@@ -460,8 +396,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 state.parentID?.parentComment || state.parentID?._id
                   ? {
                       // mentions: [],
-                      parentComment:
-                        state.parentID?.parentComment || state.parentID?._id,
+                      parentComment: state.parentID?.parentComment || state.parentID?._id,
                       text: msg,
                       post: postData._id,
                     }

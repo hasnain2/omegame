@@ -29,7 +29,8 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
         size={1}
         style={{
           paddingLeft: RFValue(2),
-          paddingBottom: RFValue(5),
+          paddingVertical: RFValue(5),
+          lineHeight: RFValue(20),
         }}>
         {item.text}
       </AppText>

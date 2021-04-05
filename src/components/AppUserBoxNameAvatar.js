@@ -15,7 +15,6 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: RFValue(15),
       }}>
       <View style={{paddingRight: RFValue(16)}}>
         <UserAvatar
