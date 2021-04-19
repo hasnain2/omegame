@@ -234,6 +234,7 @@ const UserProfileScreen = ({navigation, route}) => {
                       : DEFAULT_USER_PIC
                   }
                   size={120}
+                  screen="profile"
                 />
 
                 {userID ? (

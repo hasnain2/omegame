@@ -13,6 +13,7 @@ const PostPoolTopBar = ({item, navigation, goBack}) => {
       <View
         style={{
           flexDirection: 'row',
+          paddingHorizontal: RFValue(10),
         }}>
         <AppUserBoxNameAvatar navigation={navigation} createdAt={item?.createdAt} item={item?.createdBy} />
         <TouchableOpacity
@@ -23,7 +24,7 @@ const PostPoolTopBar = ({item, navigation, goBack}) => {
             source={ICON_MENU}
             style={{
               tintColor: 'white',
-              height: RFValue(30),
+              height: RFValue(28),
               width: RFValue(10),
             }}
           />

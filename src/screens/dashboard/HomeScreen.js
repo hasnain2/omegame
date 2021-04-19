@@ -71,7 +71,12 @@ const HomeScreen = ({route, navigation}) => {
             />
           }
           style={{}}>
-          <View style={{paddingVertical: RFValue(100), justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              paddingVertical: RFValue(100),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <AppText color={'grey'}>No posts found!</AppText>
             <AppText
               onPress={() => {
