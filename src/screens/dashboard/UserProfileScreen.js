@@ -123,15 +123,16 @@ const UserProfileScreen = ({navigation, route}) => {
   }
   let userData = userID ? user : state.userData;
   return (
-    <View
-      onStartShouldSetResponder={() => {
-        setState((prev) => ({...prev, enableScrollViewScroll: true}));
-      }}
+    <ScrollView
+      // onStartShouldSetResponder={() => {
+      //   setState((prev) => ({...prev, enableScrollViewScroll: true}));
+      // }}
       style={{flex: 1, backgroundColor: 'black'}}
-      onLayout={(event) => {
-        var {x, y, width, height} = event.nativeEvent.layout;
-        setState((prev) => ({...prev, LHeight: height, LWidth: width}));
-      }}>
+      // onLayout={(event) => {
+      //   var {x, y, width, height} = event.nativeEvent.layout;
+      //   setState((prev) => ({...prev, LHeight: height, LWidth: width}));
+      // }}
+    >
       {state.loading ? <AppLoadingView /> : null}
       <View
         style={[
@@ -142,9 +143,9 @@ const UserProfileScreen = ({navigation, route}) => {
             height: RFValue(56),
             backgroundColor: 'rgba(0, 0, 0, 0.3)',
           },
-          state.enableScrollViewScroll
-            ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}
-            : {backgroundColor: 'black'},
+          // state.enableScrollViewScroll
+          //   ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}
+          //   : {backgroundColor: 'black'},
         ]}>
         <AppBackButton navigation={navigation} />
 
@@ -206,12 +207,12 @@ const UserProfileScreen = ({navigation, route}) => {
         )}
       </View>
 
-      <ScrollView style={{flex: 1}} decelerationRate={0.2} nestedScrollEnabled={true} scrollEventThrottle={1}>
+      <View style={{flex: 1}}>
         <View style={{}}>
-          <View style={{height: state.LHeight, width: state.LWidth}}>
+          <View style={{width: '100%'}}>
             <FastImage
               source={userData?.cover ? {uri: userData?.cover} : BACKGROUND_IMG}
-              style={{height: state.LHeight, width: state.LWidth}}>
+              style={{height: RFValue(500), width: '100%'}}>
               <LinearGradient
                 colors={COLORS_ARR}
                 style={{
@@ -534,10 +535,9 @@ const UserProfileScreen = ({navigation, route}) => {
         <IsViewInViewPort
           offset={RFValue(200)}
           onChange={(isVisible) => {
-            AppLogger('-----------', isVisible);
             checkVisible(isVisible);
           }}>
-          <View style={{height: state.LHeight - RFValue(50), width: state.LWidth}}>
+          <View style={{flex: 1}}>
             <UserProfileTabs
               userID={route.params.userID}
               navigation={navigation}
@@ -547,7 +547,7 @@ const UserProfileScreen = ({navigation, route}) => {
             />
           </View>
         </IsViewInViewPort>
-      </ScrollView>
+      </View>
 
       <AppModal
         show={state.showMenu}
@@ -686,7 +686,7 @@ const UserProfileScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </AppModal>
-    </View>
+    </ScrollView>
   );
 };
 
