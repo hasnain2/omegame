@@ -342,7 +342,7 @@ const GameDetailsScreen = ({navigation, route}) => {
             initialNumToRender={2}
             windowSize={2}
             decelerationRate={0}
-            nestedScrollEnabled={true}
+            scrollEnabled={false}
             keyExtractor={(ii) => ii?._id}
             removeClippedSubviews={true}
             maxToRenderPerBatch={2}

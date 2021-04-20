@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Bubble, GiftedChat, Time} from 'react-native-gifted-chat';
+import {Bubble, GiftedChat, Time, InputToolbar, Send} from 'react-native-gifted-chat';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useSelector} from 'react-redux';
 import {
@@ -98,28 +98,29 @@ const ChatWindow = ({navigation, route}) => {
   }, []);
 
   const onSend = (val) => {
-    if (val.trim()) {
       let guidd = uuid.v1();
       let new_message = {
         guid: guidd,
-        text: val.trim(),
-        message: val.trim(),
+        text: val[0].text,
+        message: val[0].text,
         createdAt: new Date(),
         to: friend?._id || '',
       };
       socket.emit(CHAT_SOCKET_EVENTS.NEW_MESSAGE, new_message);
-    }
   };
 
   const renderInputToolbar = (props) => (
-    <AppInputToolBar
-      chat={true}
-      LHeight={state.LHeight}
-      onSend={(msg) => {
-        onSend(msg);
-      }}
-    />
+    <InputToolbar {...props} containerStyle={{borderWidth: 1,borderTopWidth: 1, borderColor: 'white', backgroundColor: 'black', borderRadius: 50}} textInputStyle={{ color: "white", paddingLeft: RFValue(12)}} />
   );
+  const renderSend=(props)=> {
+    return (
+      <Send {...props} containerStyle={{border: '0', justifyContent: "center"}}>
+        <AppText color={AppTheme.colors.primary} size={2}
+        bold={true} style={{marginRight: RFValue(10)}} >SEND</AppText>
+        
+      </Send>
+    );
+  }
 
   const renderBubble = (props) => {
     return (
@@ -255,6 +256,7 @@ const ChatWindow = ({navigation, route}) => {
             renderBubble={renderBubble}
             renderTime={renderTime}
             renderAvatar={() => null}
+            renderSend={renderSend}
             onSend={(messages) => onSend(messages)}
             user={{
               _id: user?._id,
