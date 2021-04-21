@@ -114,9 +114,9 @@ const ChatWindow = ({navigation, route}) => {
   );
   const renderSend=(props)=> {
     return (
-      <Send {...props} containerStyle={{border: '0', justifyContent: "center"}}>
+      <Send {...props} containerStyle={{border: '0', justifyContent: "center", height: "100%"}}>
         <AppText color={AppTheme.colors.primary} size={2}
-        bold={true} style={{marginRight: RFValue(10)}} >SEND</AppText>
+        bold={true} style={{marginRight: RFValue(10), marginLeft: RFValue(4)}} >SEND</AppText>
         
       </Send>
     );
