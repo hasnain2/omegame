@@ -20,15 +20,17 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
       style={{
         borderBottomColor: AppTheme.colors.darkGrey,
         borderBottomWidth: 0.5,
-        marginLeft: RFValue(16),
-        marginRight: RFValue(16),
+        // marginLeft: RFValue(16),
+        // marginRight: RFValue(16),
         marginTop: RFValue(16),
+        // backgroundColor: 'red',
+        // paddingHorizontal: RFValue(10),
       }}>
       <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />
       <AppText
         size={1}
         style={{
-          paddingLeft: RFValue(2),
+          paddingLeft: RFValue(10),
           paddingVertical: RFValue(5),
           lineHeight: RFValue(20),
         }}>
@@ -43,7 +45,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
             padding: RFValue(5),
             flexWrap: 'wrap',
           }}>
-          <AppText size={0} color={'grey'} style={{paddingTop: 0}}>
+          <AppText size={0} color={'grey'} style={{paddingTop: 0, paddingLeft: RFValue(10)}}>
             Location: {item.location?.addressName || ''}, {item.location?.country || ''}
           </AppText>
         </View>
@@ -60,7 +62,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
               size={0}
               color={AppTheme.colors.primary}
               style={{
-                paddingHorizontal: RFValue(2),
+                paddingHorizontal: RFValue(10),
                 padding: RFValue(5),
               }}>
               @{iii?.userName},{' '}

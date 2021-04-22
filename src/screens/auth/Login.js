@@ -29,7 +29,7 @@ const Login = ({route, navigation}) => {
   let [instagramLoginRef, setInstagramLoginRef] = useState('');
   const [state, setState] = useState({
     rememberMe: false,
-    email: __DEV__ ? 'asadalicodingpixel@gmail.com' : '',
+    email: __DEV__ ? 'omegame2' : '',
     password: __DEV__ ? '@Sad123456' : '',
     loading: false,
     passwordVisible: true,

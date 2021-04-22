@@ -99,7 +99,7 @@ const RateGameScreen = ({navigation, route}) => {
     },reviewData?._id,{
       feedback: state.reviewText.trim(),
       ratings: state.rating,
-      devices: [state.selectedConsole],
+      console: [state.selectedConsole],
       gameId: gameData?._id,
     })
   }

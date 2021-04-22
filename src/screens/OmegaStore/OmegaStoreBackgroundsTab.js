@@ -97,15 +97,17 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
               />
               <View
                 style={{
-                  width: Dimensions.get('screen').width - RFValue(36),
+                  // width: Dimensions.get('screen').width - RFValue(36),
                   flex: 1,
                   margin: PADDING,
                   borderRadius: RFValue(10),
                   overflow: 'hidden',
+                  // backgroundColor: 'green',
                 }}>
                 <FastImage
                   source={{uri: state.isModalVisible?.attachment?.url}}
                   style={{width: Dimensions.get('screen').width - RFValue(20), height: '80%'}}
+                  resizeMode="contain"
                 />
                 <View
                   style={{
