@@ -60,7 +60,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
   const onSubmit = () => {
     let formData = {};
     if (state.bio) {
-      formData = {...formData, bio: state.bio};
+      formData = {bio: state.bio};
     }
     if (state.dateOfBirth) {
       formData = {
@@ -69,7 +69,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
       };
     }
     if (state.favoriteConsole) {
-      formData = {...formData, favoriteConsole: state.favoriteConsole};
+      formData = {...formData, favouriteConsole: state.favoriteConsole};
     }
     if (state.favoriteGame) {
       formData = {...formData, favouriteGame: state.favoriteGame};
@@ -77,7 +77,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
     if (state.name) {
       formData = {...formData, firstName: state.name};
     }
-    if (state.gamingAccounts[0].account) {
+    if (state.gamingAccounts[0]?.account) {
       formData = {
         ...formData,
         gamingAccounts: [
@@ -88,7 +88,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
         ],
       };
     }
-    if (state.gamingAccounts[1].account) {
+    if (state.gamingAccounts[1]?.account) {
       formData = {
         ...formData,
         gamingAccounts: [
@@ -100,25 +100,25 @@ const EditUserProfileScreen = ({navigation, route}) => {
         ],
       };
     }
-    if (state.gamingAccounts[2].account) {
+    if (state.gamingAccounts[2]?.account) {
       formData = {
         ...formData,
         gamingAccounts: [
           ...formData.gamingAccounts,
           {
-            gamingAccountProvider: 'PSN',
+            gamingAccountProvider: 'STREAM',
             account: state.gamingAccounts[2].account,
           },
         ],
       };
     }
-    if (state.gamingAccounts[3].account) {
+    if (state.gamingAccounts[3]?.account) {
       formData = {
         ...formData,
         gamingAccounts: [
           ...formData.gamingAccounts,
           {
-            gamingAccountProvider: 'PSN',
+            gamingAccountProvider: 'NINTENDO',
             account: state.gamingAccounts[3].account,
           },
         ],
@@ -149,6 +149,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
         navigation.goBack();
         AppShowToast('Profile has been updated');
       } else {
+        AppShowToast('Error');
       }
     }, formData);
   };

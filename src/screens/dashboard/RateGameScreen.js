@@ -19,18 +19,20 @@ import {MOCK_CONSOLE_TYPES} from '../../mockups/Mockups';
 import {setGameReviews} from '../../redux/reducers/gameReviewsSlice';
 import {store} from '../../redux/store';
 import {PostGameReview} from '../../services/gamesService';
+import {EditReview} from '../../services/gamesService';
 import {AppLogger, AppShowToast} from '../../utils/AppHelperMethods';
 import {AntDesign} from '../../utils/AppIcons';
 const NUMBER_OF_COLUMNS = 2;
 const RateGameScreen = ({navigation, route}) => {
   let gameData = route?.params?.gameData;
+  let reviewData = route?.params?.item;
   let userReview = route?.params?.userReview;
 
   let [state, setState] = useState({
     loading: false,
-    reviewText: '',
-    rating: 5,
-    selectedConsole: 'Ps4',
+    reviewText: reviewData?.feedback ||'',
+    rating: reviewData?.ratings || 5,
+    selectedConsole: reviewData?.devices[0] || 'Ps4',
     showFilter: false,
   });
   const {user} = useSelector((state) => state.root);
@@ -41,7 +43,7 @@ const RateGameScreen = ({navigation, route}) => {
       setState({
         reviewText: feedback,
         rating: ratings,
-        selectedConsole: devices[0],
+        selectedConsole: reviewData?.devices[0] || 'Ps4',
       });
     }
   }, [route.params]);
@@ -73,6 +75,34 @@ const RateGameScreen = ({navigation, route}) => {
       AppShowToast('kindly provide feedback');
     }
   };
+  const onEdit = ()=>{
+    setState((prev) => ({...prev, loading: true}));
+    EditReview((res)=>{
+      setState((prev) => ({...prev, loading: false}));
+      if(res){
+        let allReviews = [...store.getState().root.gameReviews];
+        let clone = JSON.parse(JSON.stringify(allReviews));
+        let devices = [];
+        devices.push(state.selectedConsole);
+        clone.map((item,index)=>{
+          if(item._id === reviewData?._id){
+            clone[index].ratings = state.rating;
+            clone[index].feedback= state.reviewText.trim();
+            clone[index].devices = devices;
+          }
+        })
+        store.dispatch(setGameReviews(clone));
+        navigation.navigate('GameDetailsScreen', {gameData: gameData});
+      }else{
+        AppShowToast("Something went wrong, Please try again")
+      }
+    },reviewData?._id,{
+      feedback: state.reviewText.trim(),
+      ratings: state.rating,
+      devices: [state.selectedConsole],
+      gameId: gameData?._id,
+    })
+  }
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -165,7 +195,10 @@ const RateGameScreen = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={{padding: RFValue(15), paddingTop: 0}}>
+        {reviewData?
+        <AppButton bgColor="black" onPress={onEdit} label={'EDIT THIS REVIEW'} />:
         <AppButton bgColor="black" onPress={onSubmit} label={'RATE THIS GAME'} />
+        }
       </View>
 
       <AppModal

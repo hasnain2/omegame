@@ -85,7 +85,7 @@ const UserProfileScreen = ({navigation, route}) => {
       if (profileRes) {
         setState((prev) => ({...prev, loading: false, userData: profileRes}));
         if (userID) disp(setUser(profileRes));
-      } else setState((prev) => ({...prev, loading: false}));
+      } else {setState((prev) => ({...prev, loading: false}))};
     }, route.params.userID);
   }
   useEffect(() => {
@@ -328,7 +328,8 @@ const UserProfileScreen = ({navigation, route}) => {
               </LinearGradient>
             </FastImage>
           </View>
-
+          {(!userID && !userData?.isPrivate)|| userID?
+          <>
           <View style={{padding: RFValue(10)}}>
             <TouchableOpacity activeOpacity={0.7}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -362,18 +363,18 @@ const UserProfileScreen = ({navigation, route}) => {
               <View>
                 {state.showMore ? (
                   <View>
-                    {userData.dateOfBirth ? (
+                    {userData?.dateOfBirth ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           Date of Birth:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
                           {' '}
-                          {moment(userData.dateOfBirth).format('DD MMM, yyyy')}
+                          {moment(userData?.dateOfBirth).format('DD MMM, yyyy')}
                         </AppText>
                       </View>
                     ) : null}
-                    {userData.favouriteGame ? (
+                    {userData?.favouriteGame ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           Favorite Game:
@@ -384,7 +385,7 @@ const UserProfileScreen = ({navigation, route}) => {
                         </AppText>
                       </View>
                     ) : null}
-                    {userData.favouriteConsole ? (
+                    {userData?.favouriteConsole ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           Favorite Console:
@@ -395,7 +396,8 @@ const UserProfileScreen = ({navigation, route}) => {
                         </AppText>
                       </View>
                     ) : null}
-                    {userData?.gamingAccounts[1] ? (
+                    {userData?.gamingAccounts? 
+                    userData?.gamingAccounts[1] ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           PSN account:
@@ -405,8 +407,10 @@ const UserProfileScreen = ({navigation, route}) => {
                           {userData.gamingAccounts[1].account}
                         </AppText>
                       </View>
-                    ) : null}
-                    {userData?.gamingAccounts[0] ? (
+                    ) : null
+                    :null}
+                    {userData.gamingAccounts?
+                    userData?.gamingAccounts[0] ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           XBOX live account:
@@ -416,8 +420,10 @@ const UserProfileScreen = ({navigation, route}) => {
                           {userData.gamingAccounts[0].account}
                         </AppText>
                       </View>
-                    ) : null}
-                    {userData?.gamingAccounts[2] ? (
+                    ) : null
+                    : null}
+                    {userData?.gamingAccounts?
+                    userData?.gamingAccounts[2] ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           Stream account:
@@ -427,8 +433,10 @@ const UserProfileScreen = ({navigation, route}) => {
                           {userData.gamingAccounts[2].account}
                         </AppText>
                       </View>
-                    ) : null}
-                    {userData?.gamingAccounts[3] ? (
+                    ) : null
+                    :null}
+                    {userData?.gamingAccounts?
+                    userData?.gamingAccounts[3] ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           Nintendo account:
@@ -438,7 +446,8 @@ const UserProfileScreen = ({navigation, route}) => {
                           {userData.gamingAccounts[3].account}
                         </AppText>
                       </View>
-                    ) : null}
+                    ) : null
+                    :null}
                   </View>
                 ) : null}
               </View>
@@ -481,6 +490,9 @@ const UserProfileScreen = ({navigation, route}) => {
               </AppText>
             </AppText>
           </View>
+          </>
+          :null}
+          
 
           {userID ? (
             <TouchableOpacity
@@ -518,6 +530,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   label={userData?.isFollowing ? 'UNFOLLOW' : userData?.isRequested ? 'REQUESTED' : 'FOLLOW'}
                 />
               </View>
+              {(!userID && !userData?.isPrivate) || userID?
               <View style={{flex: 1, paddingLeft: RFValue(5)}}>
                 <AppButton
                   onPress={() => {
@@ -526,10 +539,11 @@ const UserProfileScreen = ({navigation, route}) => {
                   label={'MESSAGE'}
                 />
               </View>
+              :null}
             </View>
           )}
         </View>
-
+        {(!userID && !userData?.isPrivate)|| userID?
         <IsViewInViewPort
           offset={RFValue(200)}
           onChange={(isVisible) => {
@@ -546,6 +560,7 @@ const UserProfileScreen = ({navigation, route}) => {
             />
           </View>
         </IsViewInViewPort>
+        :null}
       </ScrollView>
 
       <AppModal

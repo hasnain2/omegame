@@ -54,6 +54,7 @@ const ICON_TWITTER = require('./twitter.png');
 const ICON_UNFOLLOW = require('./unfollow.png');
 const ICON_VERIFIED_ACCOUNT = require('./verifiedaccount.png');
 const ICON_VISIBILITY = require('./visibility.png');
+const ICON_EDIT = require('./edit.png');
 
 export {
     GOLD_ICON,
@@ -111,4 +112,5 @@ export {
     ICON_UNFOLLOW,
     ICON_VERIFIED_ACCOUNT,
     ICON_VISIBILITY,
+    ICON_EDIT,
 }

@@ -140,7 +140,6 @@ const UploadMedia = (callback, bucket, mediaObj) => {
                     name: 'thumbnail.png',
                     type: 'image/png',
                   });
-                  debugger;
                   postFiles(
                     (thumbnailUploadRes) => {
                       if (thumbnailUploadRes) {

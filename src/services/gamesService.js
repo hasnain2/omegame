@@ -59,7 +59,6 @@ function GetUserReviews(callback, userID) {
 }
 
 function PostGameReview(callback, PAYLOAD) {
-  console.log(PAYLOAD);
   fetch(`${EndPoints.POST_GAME_REVIEW}`, {
     method: 'POST',
     headers: Interceptor.getHeaders(),
@@ -78,6 +77,28 @@ function PostGameReview(callback, PAYLOAD) {
       callback(false);
     });
 }
+function EditReview(callback, reviewId, obj) {
+  fetch(`${EndPoints.EDIT_REVIEW}${reviewId}`, {
+    method: "PUT",
+    headers: Interceptor.getHeaders(),
+    body: JSON.stringify(obj),
+  })
+    .then(JSONBodyHelper)
+    .then(([status, data]) => {
+      AppLogger(
+        "-----------EDIT REVIEW ON GAME----------",
+        JSON.stringify(data)
+      );
+      if (status === 201 || status === 200) {
+        AppShowToast('Review has been edited.');
+        callback(data?.data);
+      } else callback(false);
+    })
+    .catch((error) => {
+      callback(false);
+    });
+}
+
 function DeleteUserReview(callback, reviewID) {
   fetch(`${EndPoints.DELETE_REVIEW}${reviewID}`, {
     method: 'DELETE',
@@ -98,4 +119,4 @@ function DeleteUserReview(callback, reviewID) {
     });
 }
 
-export {GetGamesList, GetGameReviews, PostGameReview, GetUserReviews, DeleteUserReview};
+export {GetGamesList, GetGameReviews, PostGameReview, GetUserReviews, DeleteUserReview, EditReview};

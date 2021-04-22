@@ -47,6 +47,7 @@ const EndPoints = {
   GET_GAMES_LIST: BASE_URL + 'games/list',
   GET_GAME_REVIEWS: BASE_URL + 'games/reviews?gameId=', // get specific game reviews by gameID
   POST_GAME_REVIEW: BASE_URL + 'games/action/review', // post review for a game
+  EDIT_REVIEW : BASE_URL + "reviews/",
 
   GET_ASSETS_FOR_CUSTOMIZATION: BASE_URL + 'assets',
 

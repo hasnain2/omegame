@@ -6,7 +6,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
-import {ICON_SHOP} from '../../../assets/icons';
+import {ICON_SHOP, ICON_EDIT} from '../../../assets/icons';
 import {BACKGROUND_IMG} from '../../../assets/images';
 import {AppBackButton, AppButton, AppText, IsUserVerifiedCheck} from '../../components';
 import {UserAvatar} from '../../components/UserAvatar';
@@ -16,6 +16,7 @@ import {GetGameReviews, PostGameReview, DeleteUserReview} from '../../services/g
 import {HandleNaN, largeNumberShortify} from '../../utils/AppHelperMethods';
 import {MaterialIcons} from '../../utils/AppIcons';
 import {AntDesign, Feather} from '../../utils/AppIcons';
+import { AppShowToast} from '../../utils/AppHelperMethods';
 
 const GameDetailsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -244,7 +245,18 @@ const GameDetailsScreen = ({navigation, route}) => {
           <AppButton
             label={'RATE THIS GAME'}
             onPress={() => {
-              navigation.navigate('RateGameScreen', {gameData});
+              let counter = 0;
+              gameReviews.map((item, index)=>{
+                if(item.createdBy._id === user._id){
+                  counter = counter + 1;
+                }
+              })
+              if(counter>0){
+                AppShowToast("You have already rated for this game.");
+              }else{
+                navigation.navigate('RateGameScreen', {gameData});
+              }
+              
             }}
             bgColor={'black'}
           />
@@ -404,16 +416,39 @@ const GameDetailsScreen = ({navigation, route}) => {
                       paddingHorizontal: RFValue(25),
                       paddingVertical: RFValue(10),
                       borderRadius: RFValue(15),
+                      flexDirection: 'row'
                     }}>
+                    <View>
                     <AppText size={1} style={{textAlign: 'center'}}>
                       {item?.devices[0]}
                     </AppText>
+                    
                     <AppText
                       size={3}
                       style={{textAlign: 'center'}}
                       color={item?.ratings > 5 ? AppTheme.colors.green : 'red'}>
                       {parseFloat(item?.ratings || 0)?.toFixed(2)}
                     </AppText>
+                    </View>
+                    <View>
+                    <AppText>
+                    {item?.createdBy?._id === user._id ?
+                    <TouchableOpacity onPress={()=>{
+                      navigation.navigate('RateGameScreen', {gameData, item});
+                    }}>
+                    <Image
+                      source={ICON_EDIT}
+                      style={{
+                      height: RFValue(15),
+                      width: RFValue(15),
+                      tintColor: AppTheme.colors.white,
+                      marginLeft: RFValue(5)
+              }}
+            />
+                  </TouchableOpacity>:null  
+                    }
+                    </AppText>
+                    </View>
                   </View>
                 </View>
                 <AppText size={2}>{item?.feedback}</AppText>
