@@ -581,8 +581,6 @@ const CreatePost = ({navigation, route}) => {
           <AppGallery
             navigation={navigation}
             selectedOne={(selected) => {
-              console.log('---selected------', selected);
-
               setState((prev) => ({...prev, selectedMedia: selected}));
             }}
             toggle={() => setState((prev) => ({...prev, showGallery: false}))}
