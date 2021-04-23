@@ -42,7 +42,7 @@ import {
 import {GET_FRIEND_LIST_TYPES, POST_PRIVACY, PRIVACY} from '../../../utils/AppConstants';
 import {AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber} from '../../../utils/AppHelperMethods';
 import {AntDesign, EvilIcons, Ionicons} from '../../../utils/AppIcons';
-import {OpenCameraGalleryPromptPicker} from '../../../utils/AppMediaPicker';
+import {OpenCameraGalleryPromptPicker, OpenGalleryPicker} from '../../../utils/AppMediaPicker';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({navigation, route}) => {
   const postData = route?.params?.postData;
@@ -334,12 +334,11 @@ const CreatePost = ({navigation, route}) => {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              // OpenCameraGalleryPromptPicker((res) => {
-              //     AppLogger('',res)
-              //     if (res)
-              //         setState(prev => ({ ...prev, selectedMedia: res }))
-              // }, 'gallery')
-              setState((prev) => ({...prev, showGallery: true}));
+              OpenGalleryPicker((res) => {
+                AppLogger('', res);
+                if (res) setState((prev) => ({...prev, selectedMedia: res})); //change this when done
+              }, 'photo');
+              // setState((prev) => ({...prev, showGallery: true}));
             }}>
             <View
               style={[
@@ -582,6 +581,8 @@ const CreatePost = ({navigation, route}) => {
           <AppGallery
             navigation={navigation}
             selectedOne={(selected) => {
+              console.log('---selected------', selected);
+
               setState((prev) => ({...prev, selectedMedia: selected}));
             }}
             toggle={() => setState((prev) => ({...prev, showGallery: false}))}
