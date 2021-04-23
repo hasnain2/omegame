@@ -11,7 +11,6 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {ICON_COMMENT} from '../../../assets/icons';
 import {DEFAULT_USER_PIC} from '../../../assets/images';
@@ -29,6 +28,7 @@ import {AppTheme} from '../../config';
 import {CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost} from '../../services';
 import {largeNumberShortify} from '../../utils/AppHelperMethods';
 import {FontAwesome} from '../../utils/AppIcons';
+
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
@@ -327,6 +327,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 item={postData}
                 navigation={navigation}
                 startPlaying={state.focused}
+                controls={true}
               />
             </View>
           ) : null}
@@ -351,6 +352,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                           item={postData}
                           navigation={navigation}
                           startPlaying={state.focused}
+                          controls={true}
                         />
                       </View>
                     ) : null}

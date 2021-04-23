@@ -10,9 +10,7 @@ const AppVideoPlayer = ({source, startPlaying, style, controls}) => {
       source={
         source?.uri
           ? {
-              uri: /^((http|https|ftp):\/\/)/.test(source.uri)
-                ? convertToCache(source.uri)
-                : source.uri,
+              uri: /^((http|https|ftp):\/\/)/.test(source.uri) ? convertToCache(source.uri) : source.uri,
             }
           : source
       } // Can be a URL or a local file.

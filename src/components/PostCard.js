@@ -9,7 +9,7 @@ import {AppVideoPlayer} from './AppVideoPlayer';
 import {PostPoolBottomBar} from './PostPoolBottomBar';
 import {PostPoolTopBar} from './PostPoolTopBar';
 
-const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
+const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}) => {
   let [state, setState] = useState({
     stopPlaying: false,
     imageLoaded: false,
@@ -82,6 +82,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType}) => {
               <AppVideoPlayer
                 source={{uri: item?.attachments[0]?.url}}
                 startPlaying={startPlaying && !state.stopPlaying}
+                controls={controls}
               />
             ) : (
               <FastImage
