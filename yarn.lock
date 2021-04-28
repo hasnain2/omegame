@@ -7293,7 +7293,7 @@
   "resolved" "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-7.4.0.tgz"
   "version" "7.4.0"
 
-"react-native-fast-image@^8.3.4":
+"react-native-fast-image@^8.3.4", "react-native-fast-image@8.3.4":
   "integrity" "sha512-LpzAdjUphihUpVEBn5fEv5AILe55rHav0YiZroPZ1rumKDhAl4u2cG01ku2Pb7l8sayjTsNu7FuURAlXUUDsow=="
   "resolved" "https://registry.npmjs.org/react-native-fast-image/-/react-native-fast-image-8.3.4.tgz"
   "version" "8.3.4"
@@ -7350,6 +7350,13 @@
   "integrity" "sha512-1S8+0EZJmUMWMcdo2tTadqIIsJo7aPxPed0P7Cop3DhBqEeYrAWfgdrJq9VoTXI+cIrOOcTAxn4NZPz+DQEn7g=="
   "resolved" "https://registry.npmjs.org/react-native-image-crop-picker/-/react-native-image-crop-picker-0.36.0.tgz"
   "version" "0.36.0"
+
+"react-native-image-modal@^2.0.3":
+  "integrity" "sha512-BCBAt0AfD/Z42sxlUW4xDugGpClFh+ZOhXk4I+zWtaCGATBHinmDqHQUaEDr2Vo1nkUruIAbiBsTjfj+ulO8Qg=="
+  "resolved" "https://registry.npmjs.org/react-native-image-modal/-/react-native-image-modal-2.0.3.tgz"
+  "version" "2.0.3"
+  dependencies:
+    "react-native-fast-image" "8.3.4"
 
 "react-native-image-resizer@^1.4.1":
   "integrity" "sha512-cPb2R3ZF/9+gBVYx2QyubqILICJpxElIxgRwLSnBSNRFl8eeaAxzWPHa6QNjtki55dkGsgoq5l5EjEu6XjlUng=="
@@ -7559,7 +7566,7 @@
     "escape-string-regexp" "2.0.0"
     "invariant" "2.2.4"
 
-"react-native@>=0.55", "react-native@0.63.3":
+"react-native@*", "react-native@>=0.55", "react-native@0.63.3":
   "integrity" "sha512-71wq13uNo5W8QVQnFlnzZ3AD+XgUBYGhpsxysQFW/hJ8GAt/J5o+Bvhy81FXichp6IBDJDh/JgfHH2gNji8dFA=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.63.3.tgz"
   "version" "0.63.3"
@@ -7627,7 +7634,7 @@
     "react-is" "^16.8.6"
     "scheduler" "^0.19.1"
 
-"react@16.13.1":
+"react@*", "react@16.13.1":
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"
