@@ -24,12 +24,17 @@ const AppUserListingWithFollowButtons = ({navigation, data, style, loading, refr
     let tempUserObj = {...item};
     if (!tempUserObj?.isRequested) {
       ActionsOnUsers(
-        (actionsRes) => {},
+        (actionsRes) => {
+        },
         item?._id,
         tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW,
       );
     }
-    tempUserObj.isRequested = true;
+    if(tempUserObj.isPrivate){
+      tempUserObj.isRequested = true;
+    }else{
+      tempUserObj.isFollowing = true;
+    }
     let tempData = state.usersData;
     tempData[index] = tempUserObj;
     setState((prev) => ({...prev, usersData: tempData}));
