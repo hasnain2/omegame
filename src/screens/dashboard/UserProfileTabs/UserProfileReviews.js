@@ -1,6 +1,6 @@
 import moment from 'moment';
 import * as React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, View, TouchableOpacity, Image} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppLoadingView, AppNoDataFound, AppText} from '../../../components';
@@ -8,6 +8,7 @@ import {UserAvatar} from '../../../components/UserAvatar';
 import {AppTheme} from '../../../config';
 import {setUserProfileData} from '../../../redux/reducers/userProfileDataSlice';
 import {GetUserReviews} from '../../../services/gamesService';
+import {ICON_EDIT} from '../../../../assets/icons';
 const UserProfileReviews = ({navigation, userID}) => {
   let {userProfileData} = useSelector((state) => state.root);
   let dispatch = useDispatch();
@@ -71,16 +72,36 @@ const UserProfileReviews = ({navigation, userID}) => {
                     flex: 0.2,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    flexDirection: 'row',
                     borderColor: item.negetive
                       ? AppTheme.colors.red
                       : AppTheme.colors.green,
                   }}>
+                    <View>
                   <AppText size={1}>
                     {item?.devices ? item?.devices : item.devices}
                   </AppText>
                   <AppText size={3}>
                     {parseFloat(item?.ratings || 0)?.toFixed(2)}
                   </AppText>
+                  </View>
+                  <View>
+                  <AppText>
+                    <TouchableOpacity onPress={()=>{
+                      navigation.navigate('RateGameScreen', {gameData: item, item, profile: true});
+                    }}>
+                    <Image
+                      source={ICON_EDIT}
+                      style={{
+                      height: RFValue(15),
+                      width: RFValue(15),
+                      marginBottom: RFValue(11),
+                      tintColor: AppTheme.colors.white,
+                      }}
+                    />
+                  </TouchableOpacity>  
+                    </AppText>
+                    </View>
                 </View>
               </View>
               <View style={{paddingVertical: RFValue(15)}}>

@@ -5,6 +5,7 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useSelector} from 'react-redux';
 import {BACKGROUND_IMG} from '../../../assets/images';
+import {setUserProfileData} from '../../redux/reducers/userProfileDataSlice';
 import {
   AppBackButton,
   AppButton,
@@ -26,6 +27,7 @@ const NUMBER_OF_COLUMNS = 2;
 const RateGameScreen = ({navigation, route}) => {
   let gameData = route?.params?.gameData;
   let reviewData = route?.params?.item;
+  let profile = route?.params?.profile;
   let userReview = route?.params?.userReview;
 
   let [state, setState] = useState({
@@ -80,7 +82,12 @@ const RateGameScreen = ({navigation, route}) => {
     EditReview((res)=>{
       setState((prev) => ({...prev, loading: false}));
       if(res){
-        let allReviews = [...store.getState().root.gameReviews];
+        let allReviews=[];
+        if(profile){
+          allReviews = [...store.getState().root.userProfileData.reviews];
+        }else{
+          allReviews = [...store.getState().root.gameReviews];
+        }
         let clone = JSON.parse(JSON.stringify(allReviews));
         let devices = [];
         devices.push(state.selectedConsole);
@@ -91,8 +98,14 @@ const RateGameScreen = ({navigation, route}) => {
             clone[index].devices = devices;
           }
         })
-        store.dispatch(setGameReviews(clone));
-        navigation.navigate('GameDetailsScreen', {gameData: gameData});
+        if(profile){
+        store.dispatch(setUserProfileData({reviews: clone}));
+        navigation.navigate('UserProfileScreen');
+        }else{
+          store.dispatch(setGameReviews(clone));
+          navigation.navigate('GameDetailsScreen', {gameData: gameData});
+        }
+        
       }else{
         AppShowToast("Something went wrong, Please try again")
       }
@@ -130,7 +143,7 @@ const RateGameScreen = ({navigation, route}) => {
                 {gameData?.name}
               </AppText>
               <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
-                {gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
+                {/*gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())*/}
               </AppText>
               <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>
                 Release date: {moment(gameData?.releaseDate).format('DD MMMM YYYY')}
