@@ -3,6 +3,7 @@ import {FlatList, Image, RefreshControl, TouchableOpacity, View} from 'react-nat
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {Divider, ProgressBar} from 'react-native-paper';
+import {Bar} from 'react-native-progress';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {ICON_SHOP} from '../../../assets/icons';
@@ -126,10 +127,15 @@ const QuestScreen = ({route, navigation}) => {
                             </AppText>
                           </View>
                           <View style={{flex: 0.35}}>
-                            <ProgressBar
-                              style={{height: RFValue(10), borderRadius: 3}}
-                              progress={(user?.earnedXps || 0) / 100}
-                              color={AppTheme.colors.primary}
+                            <Bar
+                            height={RFValue(10)}
+                            width={145}
+                            borderRadius={RFValue(3)}
+                            progress={(user?.earnedXps || 0) / 100}
+                            // backgroundColor={'#C2C2C2'}
+                            color={AppTheme.colors.primary}
+                            unfilledColor="#666666"
+                            borderColor="none"
                             />
                           </View>
                           <View
