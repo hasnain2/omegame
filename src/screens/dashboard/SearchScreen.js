@@ -257,7 +257,7 @@ const SearchScreen = ({route, navigation}) => {
               bgColor={'#1b1b1b'}
               label={'START'}
               onPress={() => {
-                setState((prev) => ({...prev, showFilter: false}));
+                setState((prev) => ({...prev, showFilter: false, showBlur: false}));
                 setQueryHelper(state.searchTerm);
               }}
             />
