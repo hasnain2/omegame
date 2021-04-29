@@ -89,12 +89,7 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
       <AppModal show={state.isModalVisible} toggle={() => setState((prev) => ({...prev, isModalVisible: null}))}>
         {state.isModalVisible ? (
           <AppBlurView>
-            <View style={{flex: 1, padding: RFValue(30)}}>
-              <AntDesign
-                name="close"
-                onPress={() => setState((prev) => ({...prev, isModalVisible: null}))}
-                style={{fontSize: RFValue(30), color: 'white', padding: RFValue(10)}}
-              />
+            <View style={{flex: 1, paddingTop: RFValue(30),backgroundColor: 'black'}}>
               <View
                 style={{
                   // width: Dimensions.get('screen').width - RFValue(36),
@@ -104,9 +99,15 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
                   overflow: 'hidden',
                   // backgroundColor: 'green',
                 }}>
+                <TouchableOpacity onPress={() => setState((prev) => ({...prev, isModalVisible: null}))}>
+                <AntDesign
+                name="close"
+                style={{fontSize: RFValue(30), color: 'white'}}
+              />
+              </TouchableOpacity>
                 <FastImage
                   source={{uri: state.isModalVisible?.attachment?.url}}
-                  style={{width: Dimensions.get('screen').width - RFValue(20), height: '80%'}}
+                  style={{width: Dimensions.get('screen').width - RFValue(20), height: '75%'}}
                   resizeMode="contain"
                 />
                 <View
@@ -118,6 +119,7 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
                     borderTopWidth: 1,
                     borderTopColor: 'grey',
                     padding: RFValue(15),
+                    height: "20%",
                   }}>
                   <AppText size={2}>{state.isModalVisible.name}</AppText>
 
@@ -127,7 +129,6 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
                       flex: 1,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      paddingTop: RFValue(5),
                     }}>
                     <AppGoldCoin />
                     <AppText size={2}> x {state.isModalVisible.priceInCoins}</AppText>
