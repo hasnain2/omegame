@@ -428,7 +428,7 @@ const UserProfileScreen = ({navigation, route}) => {
                     userData?.gamingAccounts[2] ? (
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Stream account:
+                          Steam account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
                           {' '}

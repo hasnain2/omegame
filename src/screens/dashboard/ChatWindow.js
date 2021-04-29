@@ -110,7 +110,10 @@ const ChatWindow = ({navigation, route}) => {
   };
 
   const renderInputToolbar = (props) => (
-    <InputToolbar {...props} containerStyle={{borderWidth: 1,borderTopWidth: 1, borderColor: 'white', backgroundColor: 'black', borderRadius: 50}} textInputStyle={{ color: "white", paddingLeft: RFValue(12)}} />
+    <InputToolbar {...props} containerStyle={{ borderTopWidth: 1,backgroundColor: 'black',borderBottomWidth: 1,
+    borderBottomColor: 'white',borderRightWidth:1,borderRightColor: "white",borderLeftWidth:1, borderLeftColor:'white',
+    borderTopColor: 'white', borderRadius: 50,marginRight: RFValue(6), marginLeft: RFValue(14)}} 
+    textInputStyle={{ color: "white", paddingLeft: RFValue(12)}} />
   );
   const renderSend=(props)=> {
     return (
@@ -246,6 +249,8 @@ const ChatWindow = ({navigation, route}) => {
           style={{
             flex: 1,
             backgroundColor: '#1C1C22',
+            paddingLeft: RFValue(16),
+            paddingRight: RFValue(16),
           }}>
           <GiftedChat
             messages={messages}

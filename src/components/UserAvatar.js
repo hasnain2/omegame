@@ -4,12 +4,12 @@ import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {DEFAULT_USER_PIC} from '../../assets/images';
 
-const UserAvatar = ({source, size, onPress, corner, color, type, screen}) => {
+const UserAvatar = ({source, size, onPress, corner, color, type, screen, flag}) => {
   const SIZE = size ? RFValue(size) : RFValue(40);
   useEffect(() => {}, [source, size, onPress, corner, color]);
 
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+    <TouchableOpacity activeOpacity={0.7} onPress={onPress} disabled={flag}>
       <View
         style={{
           justifyContent: 'center',

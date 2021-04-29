@@ -66,7 +66,7 @@ const OmegaStoreCornersTab = ({ navigation }) => {
                                 {/* <FastImage source={item.image} style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} /> */}
 
                                 <View style={{ flex: 1, justifyContent: 'center', paddingVertical: RFValue(30), alignItems: 'center' }}>
-                                    <UserAvatar color={state.selectedColor} corner={item?.attachment?.url || false} source={user?.pic ? { uri: user?.pic } : DEFAULT_USER_PIC} size={110} />
+                                    <UserAvatar flag={true} color={state.selectedColor} corner={item?.attachment?.url || false} source={user?.pic ? { uri: user?.pic } : DEFAULT_USER_PIC} size={110} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', borderTopWidth: 1, borderTopColor: AppTheme.colors.lightGrey, padding: RFValue(15) }}>
                                     <AppText size={2}>{item.name}</AppText>
