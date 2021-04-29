@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {DEFAULT_IMAGE_PLACEHOLDER} from '../../assets/images';
-import {AppText} from '../components';
-import {AppTheme} from '../config';
-import {AppVideoPlayer} from './AppVideoPlayer';
-import {PostPoolBottomBar} from './PostPoolBottomBar';
-import {PostPoolTopBar} from './PostPoolTopBar';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../../assets/images';
+import { AppText } from '../components';
+import { AppTheme } from '../config';
+import { AppVideoPlayer } from './AppVideoPlayer';
+import { PostPoolBottomBar } from './PostPoolBottomBar';
+import { PostPoolTopBar } from './PostPoolTopBar';
+import ImageModal from 'react-native-image-modal';
 
-const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}) => {
+const PostCard = ({ item, startPlaying, goBack, navigation, screenType, controls }) => {
   let [state, setState] = useState({
     stopPlaying: false,
     imageLoaded: false,
@@ -45,18 +46,18 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
             padding: RFValue(5),
             flexWrap: 'wrap',
           }}>
-          <AppText size={0} color={'grey'} style={{paddingTop: 0, paddingLeft: RFValue(10)}}>
+          <AppText size={0} color={'grey'} style={{ paddingTop: 0, paddingLeft: RFValue(10) }}>
             Location: {item.location?.addressName || ''}, {item.location?.country || ''}
           </AppText>
         </View>
       ) : null}
 
       {item.tagged?.length > 0 ? (
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {item.tagged.map((iii, ind) => (
             <AppText
               onPress={() => {
-                if (iii?._id) navigation.navigate('UserProfileScreen', {userID: iii?._id});
+                if (iii?._id) navigation.navigate('UserProfileScreen', { userID: iii?._id });
               }}
               key={`${iii?.userName}${ind}`}
               size={0}
@@ -75,31 +76,51 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => {
-            navigation.navigate('PostDetailScreenWithComments', {post: item});
+            navigation.navigate('PostDetailScreenWithComments', { post: item });
           }}>
-          <View style={{height: RFValue(300), width: '100%'}}>
+          <View style={{ height: RFValue(300), width: '100%' }}>
             {item?.attachments[0]?.type.includes('video') ? (
               <AppVideoPlayer
-                source={{uri: item?.attachments[0]?.url}}
+                source={{ uri: item?.attachments[0]?.url }}
                 startPlaying={startPlaying && !state.stopPlaying}
                 controls={controls}
               />
             ) : (
-              <FastImage
+              // <FastImage
+              // source={
+              //   state.imageLoaded
+              //     ? {
+              //         uri: item?.attachments[0]?.url,
+              //       }
+              //     : DEFAULT_IMAGE_PLACEHOLDER
+              // }
+              //   style={{height: RFValue(300)}}
+              //   // fallback
+              // onLoadEnd={(res) => {
+              //   setState((prev) => ({...prev, imageLoaded: true}));
+              // }}
+              //   // defaultSource={DEFAULT_IMAGE_PLACEHOLDER}
+              //   resizeMode="cover"
+              // />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="cover"
+                modalImageResizeMode='contain'
+                imageBackgroundColor="#000000"
+                style={{
+                  width: Dimensions.get('window').width,
+                  height: RFValue(300),
+                }}
                 source={
                   state.imageLoaded
                     ? {
-                        uri: item?.attachments[0]?.url,
-                      }
+                      uri: item?.attachments[0]?.url,
+                    }
                     : DEFAULT_IMAGE_PLACEHOLDER
                 }
-                style={{height: RFValue(300)}}
-                // fallback
                 onLoadEnd={(res) => {
-                  setState((prev) => ({...prev, imageLoaded: true}));
+                  setState((prev) => ({ ...prev, imageLoaded: true }));
                 }}
-                // defaultSource={DEFAULT_IMAGE_PLACEHOLDER}
-                resizeMode="cover"
               />
             )}
           </View>
@@ -110,7 +131,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
           item={item}
           navigation={navigation}
           stopPlaying={(val) => {
-            setState((prev) => ({...prev, stopPlaying: val}));
+            setState((prev) => ({ ...prev, stopPlaying: val }));
           }}
         />
       ) : null}
@@ -118,4 +139,4 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
   );
 };
 
-export {PostCard};
+export { PostCard };
