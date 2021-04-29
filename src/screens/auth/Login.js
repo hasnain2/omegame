@@ -105,7 +105,7 @@ const Login = ({route, navigation}) => {
               if (__DEV__) navigation.navigate('SetUserName');
             }}> */}
           <FastImage
-            style={{width: RFValue(70), height: RFValue(70), color: 'orange'}}
+            style={{width: RFValue(50), height: RFValue(50), color: 'orange'}}
             source={APP_ICON}
             resizeMode="contain"
           />

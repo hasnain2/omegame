@@ -85,7 +85,7 @@ const Signup = ({route, navigation}) => {
           <KeyboardAvoidingScrollView
             contentContainerStyle={{flex: 0.97, backgroundColor: 'black', paddingBottom: RFValue(30)}}>
             <View style={{flex: 0.45, justifyContent: 'center', alignItems: 'center'}}>
-              <FastImage style={{width: RFValue(70), height: RFValue(70)}} source={APP_ICON} resizeMode={FastImage.resizeMode.contain} />
+              <FastImage style={{width: RFValue(50), height: RFValue(50)}} source={APP_ICON} resizeMode={FastImage.resizeMode.contain} />
             </View>
 
             <View style={{flex: 1}}>

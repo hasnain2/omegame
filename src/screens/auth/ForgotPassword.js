@@ -34,7 +34,7 @@ const ForgotPassword = ({route, navigation}) => {
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <AppHeaderCommon navigation={navigation} />
       <View style={{paddingHorizontal: RFValue(15), flex: 0.5, justifyContent: 'center', alignItems: 'center'}}>
-        <FastImage style={{width: RFValue(70), height: RFValue(70)}} source={APP_ICON} resizeMode="contain" />
+        <FastImage style={{width: RFValue(50), height: RFValue(50)}} source={APP_ICON} resizeMode="contain" />
       </View>
 
       <View style={{flex: 1, paddingHorizontal: RFValue(15)}}>
