@@ -330,7 +330,7 @@ const UserProfileScreen = ({navigation, route}) => {
               </LinearGradient>
             </FastImage>
           </View>
-          {(!userID && !userData?.isPrivate)|| userID?
+          {((!userID && !userData?.isPrivate) || userData?.isFollowing)|| userID?
           <>
           <View style={{padding: RFValue(10)}}>
             <TouchableOpacity activeOpacity={0.7}>
@@ -532,7 +532,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   label={userData?.isFollowing ? 'UNFOLLOW' : userData?.isRequested ? 'REQUESTED' : 'FOLLOW'}
                 />
               </View>
-              {(!userID && !userData?.isPrivate) || userID?
+              {((!userID && !userData?.isPrivate)|| userData?.isFollowing) || userID?
               <View style={{flex: 1, paddingLeft: RFValue(5)}}>
                 <AppButton
                   onPress={() => {
@@ -545,7 +545,7 @@ const UserProfileScreen = ({navigation, route}) => {
             </View>
           )}
         </View>
-        {(!userID && !userData?.isPrivate)|| userID?
+        {((!userID && !userData?.isPrivate)|| userData?.isFollowing)|| userID?
         <IsViewInViewPort
           offset={RFValue(200)}
           onChange={(isVisible) => {
