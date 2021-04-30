@@ -278,7 +278,7 @@ const NotificationScreen = ({navigation, route}) => {
         </View>
 
         <View style={{flex: 1}}>
-          <AppText size={1} bold={true} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+          <AppText size={1} bold={true} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10), paddingLeft: RFValue(8)}}>
             NOTIFICATIONS
           </AppText>
 
