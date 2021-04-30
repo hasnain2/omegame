@@ -25,7 +25,25 @@ const EditUserProfileScreen = ({navigation, route}) => {
   let routeUser = route?.params?.data;
   let changeUserName = route?.params?.userName || false;
   let reduxUser = useSelector((state) => state.root.user);
-  let user = {...routeUser, ...reduxUser};
+  let user = {...routeUser, ...reduxUser}, gac = [];
+  if(user?.gamingAccounts && user?.gamingAccounts.length > 0){
+    ['XBOX','PSN','STREAM','NINTENDO'].forEach((game)=>{
+      let check = user?.gamingAccounts.filter(g => g.gamingAccountProvider == game);
+      if(check.length > 0){
+        gac.push(check[0]);
+      }else{
+        gac.push({gamingAccountProvider: game, account: ''});
+      }
+    })
+  }else{
+   gac= [
+      {gamingAccountProvider: 'XBOX', account: ''},
+      {gamingAccountProvider: 'PSN', account: ''},
+      {gamingAccountProvider: 'STREAM', account: ''},
+      {gamingAccountProvider: 'NINTENDO', account: ''},
+    ]
+  }
+   
   const [state, setState] = useState({
     name: user.firstName || '',
     userName: user.userName || '',
@@ -36,15 +54,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
     gender: user?.gender || '',
     showGenderPicker: false,
 
-    gamingAccounts:
-      user?.gamingAccounts && user?.gamingAccounts.length > 0
-        ? user?.gamingAccounts
-        : [
-            {gamingAccountProvider: 'XBOX', account: ''},
-            {gamingAccountProvider: 'PSN', account: ''},
-            {gamingAccountProvider: 'STREAM', account: ''},
-            {gamingAccountProvider: 'NINTENDO', account: ''},
-          ],
+    gamingAccounts: gac,
 
     imageToUpload: '',
     photo: '',
