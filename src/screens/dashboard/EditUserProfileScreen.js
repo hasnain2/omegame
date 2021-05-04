@@ -27,7 +27,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
   let reduxUser = useSelector((state) => state.root.user);
   let user = {...routeUser, ...reduxUser}, gac = [];
   if(user?.gamingAccounts && user?.gamingAccounts.length > 0){
-    ['XBOX','PSN','STREAM','NINTENDO'].forEach((game)=>{
+    ['XBOX','PSN','STEAM','NINTENDO'].forEach((game)=>{
       let check = user?.gamingAccounts.filter(g => g.gamingAccountProvider == game);
       if(check.length > 0){
         gac.push(check[0]);
@@ -39,7 +39,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
    gac= [
       {gamingAccountProvider: 'XBOX', account: ''},
       {gamingAccountProvider: 'PSN', account: ''},
-      {gamingAccountProvider: 'STREAM', account: ''},
+      {gamingAccountProvider: 'STEAM', account: ''},
       {gamingAccountProvider: 'NINTENDO', account: ''},
     ]
   }
@@ -121,7 +121,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
         gamingAccounts: [
           ...formData.gamingAccounts,
           {
-            gamingAccountProvider: 'STREAM',
+            gamingAccountProvider: 'STEAM',
             account: state.gamingAccounts[2].account,
           },
         ],

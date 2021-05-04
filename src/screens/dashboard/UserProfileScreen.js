@@ -82,7 +82,7 @@ const UserProfileScreen = ({navigation, route}) => {
   });
   let gac=[];
   if(state.userData?.gamingAccounts && state.userData?.gamingAccounts?.length > 0){
-    ['XBOX','PSN','STREAM','NINTENDO'].forEach((game)=>{
+    ['XBOX','PSN','STEAM','NINTENDO'].forEach((game)=>{
       let check = user?.gamingAccounts.filter(g => g.gamingAccountProvider == game);
       if(check.length > 0){
         gac.push(check[0]);
@@ -94,7 +94,7 @@ const UserProfileScreen = ({navigation, route}) => {
    gac= [
       {gamingAccountProvider: 'XBOX', account: ''},
       {gamingAccountProvider: 'PSN', account: ''},
-      {gamingAccountProvider: 'STREAM', account: ''},
+      {gamingAccountProvider: 'STEAM', account: ''},
       {gamingAccountProvider: 'NINTENDO', account: ''},
     ]
   }
