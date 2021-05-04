@@ -80,6 +80,24 @@ const UserProfileScreen = ({navigation, route}) => {
     userData: userID ? user : null,
     isVisible: false,
   });
+  let gac=[];
+  if(state.userData?.gamingAccounts && state.userData?.gamingAccounts?.length > 0){
+    ['XBOX','PSN','STREAM','NINTENDO'].forEach((game)=>{
+      let check = user?.gamingAccounts.filter(g => g.gamingAccountProvider == game);
+      if(check.length > 0){
+        gac.push(check[0]);
+      }else{
+        gac.push({gamingAccountProvider: game, account: ''});
+      }
+    })
+  }else{
+   gac= [
+      {gamingAccountProvider: 'XBOX', account: ''},
+      {gamingAccountProvider: 'PSN', account: ''},
+      {gamingAccountProvider: 'STREAM', account: ''},
+      {gamingAccountProvider: 'NINTENDO', account: ''},
+    ]
+  }
   function getsingleuserprofilehelper() {
     GetSingleUserProfile((profileRes) => {
       if (profileRes) {
@@ -398,58 +416,49 @@ const UserProfileScreen = ({navigation, route}) => {
                         </AppText>
                       </View>
                     ) : null}
-                    {userData?.gamingAccounts? 
-                    userData?.gamingAccounts[1] ? (
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          PSN account:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {userData.gamingAccounts[1].account}
-                        </AppText>
-                      </View>
-                    ) : null
-                    :null}
-                    {userData.gamingAccounts?
-                    userData?.gamingAccounts[0] ? (
+                      {gac[0]?.account?
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           XBOX live account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
                           {' '}
-                          {userData.gamingAccounts[0].account}
+                          {gac[0].account}
                         </AppText>
-                      </View>
-                    ) : null
-                    : null}
-                    {userData?.gamingAccounts?
-                    userData?.gamingAccounts[2] ? (
+                      </View>:null}
+                      {gac[1]?.account?
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Stream account:
+                          PSN account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
                           {' '}
-                          {userData.gamingAccounts[2].account}
+                          {gac[1].account}
                         </AppText>
                       </View>
-                    ) : null
-                    :null}
-                    {userData?.gamingAccounts?
-                    userData?.gamingAccounts[3] ? (
+                      :null}
+                      {gac[2]?.account?
+                      <View style={{flexDirection: 'row'}}>
+                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                          Steam account:
+                        </AppText>
+                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                          {' '}
+                          {gac[2].account}
+                        </AppText>
+                      </View>
+                      :null}
+                      {gac[3]?.account?
                       <View style={{flexDirection: 'row'}}>
                         <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
                           Nintendo account:
                         </AppText>
                         <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
                           {' '}
-                          {userData.gamingAccounts[3].account}
+                          {gac[3].account}
                         </AppText>
                       </View>
-                    ) : null
-                    :null}
+                      :null}
                   </View>
                 ) : null}
               </View>

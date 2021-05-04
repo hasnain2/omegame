@@ -97,6 +97,11 @@ const EditUserProfileScreen = ({navigation, route}) => {
           },
         ],
       };
+    }else{
+      formData={
+        ...formData,
+        gamingAccounts:[],
+      };
     }
     if (state.gamingAccounts[1]?.account) {
       formData = {
