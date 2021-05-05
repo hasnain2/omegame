@@ -1,0 +1,12 @@
+<svg id="Logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" y2="0.001" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#0048ff"/>
+      <stop offset="1" stop-color="aqua"/>
+    </linearGradient>
+  </defs>
+  <rect id="Rectangle_173" data-name="Rectangle 173" width="48" height="48"/>
+  <g id="logo_3_" data-name="logo (3)">
+    <path id="symbol" d="M38.93,22.24a14.74,14.74,0,0,0-.86-5A14.93,14.93,0,1,0,13.46,32.8H9.72v4.36H22.66V32.73A10.58,10.58,0,0,1,16.8,30a24,24,0,0,0,13.85-4.37A38,38,0,0,1,24.9,27.2a33.25,33.25,0,0,1-9.9.61c-3-.34-5.06-1.29-5.33-2.73s1.26-3.06,3.89-4.51A10.58,10.58,0,0,1,33,16.68a8.84,8.84,0,0,1,4.55,1.5,2.19,2.19,0,0,1,.78,1.23c.26,1.43-1.26,3.06-3.89,4.51a10.59,10.59,0,0,1-9.1,8.81v4.43H38.28V32.8H34.54A14.87,14.87,0,0,0,38.93,22.24Z" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

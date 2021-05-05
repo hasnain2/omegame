@@ -7,6 +7,7 @@ import {AppButton, AppHeaderCommon, AppInput, AppText} from '../../components';
 import {AppTheme} from '../../config/AppTheme';
 import {AppShowToast} from '../../utils/AppHelperMethods';
 import {ForgotPasswordCall} from './../../services';
+import Logo from '../../../assets/icons/Logo.svg';
 const ForgotPassword = ({route, navigation}) => {
   let [state, setState] = useState({
     loading: false,
@@ -34,7 +35,7 @@ const ForgotPassword = ({route, navigation}) => {
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <AppHeaderCommon navigation={navigation} />
       <View style={{paddingHorizontal: RFValue(15), flex: 0.5, justifyContent: 'center', alignItems: 'center'}}>
-        <FastImage style={{width: RFValue(50), height: RFValue(50)}} source={APP_ICON} resizeMode="contain" />
+      <Logo width={100} height={100} />
       </View>
 
       <View style={{flex: 1, paddingHorizontal: RFValue(15)}}>

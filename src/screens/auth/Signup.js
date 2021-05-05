@@ -10,6 +10,7 @@ import {SignUpUser} from '../../services';
 import {AppShowToast} from '../../utils/AppHelperMethods';
 import {Ionicons} from '../../utils/AppIcons';
 import {ValidateEmail, ValidatePassword} from '../../utils/AppValidators';
+import Logo from '../../../assets/icons/Logo.svg';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -85,7 +86,7 @@ const Signup = ({route, navigation}) => {
           <KeyboardAvoidingScrollView
             contentContainerStyle={{flex: 0.97, backgroundColor: 'black', paddingBottom: RFValue(30)}}>
             <View style={{flex: 0.45, justifyContent: 'center', alignItems: 'center'}}>
-              <FastImage style={{width: RFValue(50), height: RFValue(50)}} source={APP_ICON} resizeMode={FastImage.resizeMode.contain} />
+              <Logo width={100} height={100} />
             </View>
 
             <View style={{flex: 1}}>

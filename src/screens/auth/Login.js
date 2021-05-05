@@ -18,6 +18,7 @@ import {Ionicons} from '../../utils/AppIcons';
 import {getData, storeData} from '../../utils/AppStorage';
 import {ValidateEmail} from '../../utils/AppValidators';
 const INSTA_SCOPES = ['user_profile', 'user_media', 'instagram_graph_user_profile'];
+import Logo from '../../../assets/icons/Logo.svg';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -104,11 +105,7 @@ const Login = ({route, navigation}) => {
             onPress={() => {
               if (__DEV__) navigation.navigate('SetUserName');
             }}> */}
-          <FastImage
-            style={{width: RFValue(50), height: RFValue(50), color: 'orange'}}
-            source={APP_ICON}
-            resizeMode="contain"
-          />
+          <Logo width={100} height={100} />
           {/* </TouchableHighlight> */}
         </View>
         <View style={{flex: 1}}>
