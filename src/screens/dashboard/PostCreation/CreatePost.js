@@ -95,13 +95,20 @@ const CreatePost = ({navigation, route}) => {
   }, []);
   let {user} = useSelector((state) => state.root);
   const onSubmit = () => {
+    let payload = {};
+    if(state.whatsNewText || state.selectedMedia){
     if (state.whatsNewText) {
-      let payload = {
+        payload = {
         hashTags: [],
         privacy: PRIVACY.find((ii) => ii.name === state.privacy)?.key || 'PUBLIC',
         text: state.whatsNewText,
       };
-      debugger;
+    }else{
+      payload = {
+        hashTags: [],
+        privacy: PRIVACY.find((ii) => ii.name === state.privacy)?.key || 'PUBLIC',
+      };
+    }
       if (state.chosenContacts?.length > 0) payload.tagged = state.chosenContacts.map((ii) => ii?._id);
 
       payload.file = state.selectedMedia || false;
@@ -146,7 +153,7 @@ const CreatePost = ({navigation, route}) => {
         AppShowToast('Post is being uploaded in background!');
       }
     } else {
-      AppShowToast('Please provide post description');
+      AppShowToast('Please provide post description or Upload an image');
     }
   };
   return (

@@ -126,7 +126,6 @@ const PostCard = ({ item, startPlaying, goBack, navigation, screenType, controls
           </View>
         </TouchableOpacity>
       ) : null}
-      {screenType !== 'search' ? (
         <PostPoolBottomBar
           item={item}
           navigation={navigation}
@@ -134,7 +133,6 @@ const PostCard = ({ item, startPlaying, goBack, navigation, screenType, controls
             setState((prev) => ({ ...prev, stopPlaying: val }));
           }}
         />
-      ) : null}
     </View>
   );
 };

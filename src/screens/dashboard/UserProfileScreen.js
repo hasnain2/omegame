@@ -271,14 +271,14 @@ const UserProfileScreen = ({navigation, route}) => {
                         flex: 0.3,
                       }}>
                       <AppGoldCoin size={35} />
-                      <AppText size={3} style={{paddingHorizontal: RFValue(5)}}>
+                      <AppText size={3} style={{paddingHorizontal: RFValue(1)}}>
                         {largeNumberShortify(userData?.earnedCoins || 0)}
                       </AppText>
                     </View>
-                    <View style={{flex: 0.54}}>
+                    <View style={{}}>
                       <Bar
                         height={RFValue(10)}
-                        width={200}
+                        width={Platform.OS === 'ios' ? 180:200}
                         progress={(userData?.earnedXps || 0) / 100}
                         // backgroundColor={'#C2C2C2'}
                         color={AppTheme.colors.primary}

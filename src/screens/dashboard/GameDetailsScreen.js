@@ -18,6 +18,7 @@ import {MaterialIcons} from '../../utils/AppIcons';
 import {AntDesign, Feather} from '../../utils/AppIcons';
 import { AppShowToast} from '../../utils/AppHelperMethods';
 import {useScrollToTop} from '@react-navigation/native';
+import {ActivityIndicator} from 'react-native-paper';
 
 const GameDetailsScreen = ({navigation, route}) => {
   const flatListRef = useRef(null);
@@ -52,6 +53,7 @@ const GameDetailsScreen = ({navigation, route}) => {
   ];
 
   function getgamereviewshelper(cursor, filter) {
+    setState({...state, loading: true});
     GetGameReviews(
       (reviewsRes) => {
         if (reviewsRes) {
@@ -350,6 +352,7 @@ const GameDetailsScreen = ({navigation, route}) => {
             </View>
           </TouchableOpacity>
         </View>
+        {state.loading?<ActivityIndicator color={'#00bbff'} size={'small'} />:null}
 
         <View >
           <FlatList

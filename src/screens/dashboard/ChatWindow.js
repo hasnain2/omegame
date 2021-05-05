@@ -3,6 +3,7 @@ import {
   Alert,
   Dimensions,
   Image,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -117,7 +118,7 @@ const ChatWindow = ({navigation, route}) => {
   );
   const renderSend=(props)=> {
     return (
-      <Send {...props} containerStyle={{border: '0', justifyContent: "center", height: "100%"}}>
+      <Send {...props} containerStyle={{border: '0',justifyContent: "center",height: Platform.OS === 'ios'? "100%":"100%", maxHeight :RFValue(60)}}>
         <AppText color={AppTheme.colors.primary} size={2}
         bold={true} style={{marginRight: RFValue(10), marginLeft: RFValue(4)}} >SEND</AppText>
         
@@ -259,6 +260,7 @@ const ChatWindow = ({navigation, route}) => {
             minInputToolbarHeight={RFValue(80)}
             showAvatarForEveryMessage={true}
             renderBubble={renderBubble}
+            multiline
             renderTime={renderTime}
             renderAvatar={() => null}
             renderSend={renderSend}
