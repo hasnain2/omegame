@@ -12,8 +12,8 @@ function PostFeedback(callback, PAYLOAD) {
     .then(([status, data]) => {
       AppLogger('-----------POSTING REVIEW ON GAME----------', JSON.stringify(data));
       if (status === 201 || status === 200) {
-        {console.log(data);callback(true);}
-      } else {console.log(data);callback(false);}
+        callback(true);
+      } else callback(false);
     })
     .catch((error) => {
       AppLogger('---------POSTING REVIEW ON GAME-----------', error);
