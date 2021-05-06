@@ -258,7 +258,7 @@ const InboxScreen = ({navigation, route}) => {
                     <View style={{flex: 1, paddingLeft: RFValue(10)}}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                          {inboxItem?.user?.firstName || inboxItem?.user?.userName}
+                          {inboxItem?.user?.userName || inboxItem?.user?.firstName}
                         </AppText>
                         <IsUserVerifiedCheck check={inboxItem?.user?.isVerified} />
                         <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>

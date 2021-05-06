@@ -71,6 +71,9 @@ const EndPoints = {
   GET_NOTIFICATION_HISTORY: BASE_URL + 'notifications/history',
   NOTIFICATION_STATUS_SET: BASE_URL + 'notifications/read/',
 
+  //----------POST FEEDBACK----------
+  POST_FEEDBACK: BASE_URL + "report/sendFeedback",
+
   //----------QUESTS LIST----------
   GET_QUEST_LIST: BASE_URL + 'quests', // --- get list of quests
   GET_SPECIFIC_QUEST_BY_ID: BASE_URL + 'quests/', // --- get SPECIFIC QUEST BY ID

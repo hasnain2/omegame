@@ -118,7 +118,7 @@ const ChatWindow = ({navigation, route}) => {
   );
   const renderSend=(props)=> {
     return (
-      <Send {...props} containerStyle={{border: '0',justifyContent: "center",height: Platform.OS === 'ios'? "100%":"100%", maxHeight :RFValue(60)}}>
+      <Send {...props} containerStyle={{justifyContent: "center",height: Platform.OS === 'ios'? "100%":"100%", maxHeight :RFValue(60)}}>
         <AppText color={AppTheme.colors.primary} size={2}
         bold={true} style={{marginRight: RFValue(10), marginLeft: RFValue(4)}} >SEND</AppText>
         
@@ -210,7 +210,7 @@ const ChatWindow = ({navigation, route}) => {
           <View style={{flex: 1, paddingLeft: RFValue(10)}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <AppText bold={true} size={1} color={'white'}>
-                {friend.firstName || friend?.userName}
+                {friend?.userName || friend.firstName}
               </AppText>
               <IsUserVerifiedCheck check={friend?.isVerified} />
               <AppText
@@ -222,8 +222,8 @@ const ChatWindow = ({navigation, route}) => {
               </AppText>
               {/* <AppText size={1} color={AppTheme.colors.lightGrey}> - 4 h</AppText> */}
             </View>
-            <AppText size={1} color={'white'}>
-              {friend?.userName || friend?.firstName}
+            <AppText size={1} color={friend?.nickNameColor ? friend.nickNameColor : AppTheme.colors.lightGrey}>
+              {friend?.nickName || friend?.userName}
             </AppText>
           </View>
           <TouchableOpacity

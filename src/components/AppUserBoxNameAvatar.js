@@ -35,7 +35,7 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
         <View style={{flex: 1, justifyContent: 'center'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-              {item?.firstName || item?.userName || ''} {item?.lastName}
+              {item?.userName} 
             </AppText>
             <IsUserVerifiedCheck check={item?.isVerified} />
             <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
