@@ -108,7 +108,7 @@ const QuestScreen = ({route, navigation}) => {
               <>
                 {index === 0 ? (
                   <View style={{height: state.LHeight, width: state.LWidth}}>
-                    <FastImage source={BACKGROUND_IMG} style={{height: state.LHeight, width: state.LWidth}}>
+                    <FastImage source={user?.cover? {uri: user.cover}:BACKGROUND_IMG} style={{height: state.LHeight, width: state.LWidth}}>
                       <LinearGradient
                         colors={COLORS_ARR}
                         style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
