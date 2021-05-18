@@ -13,6 +13,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {ICON_COMMENT} from '../../../assets/icons';
+import {ICON_DELETE} from '../../../assets/icons';
 import {DEFAULT_USER_PIC} from '../../../assets/images';
 import {
   AppBackButton,
@@ -23,17 +24,20 @@ import {
   IsUserVerifiedCheck,
   PostCard,
 } from '../../components';
+
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
-import {CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost} from '../../services';
+import {CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost, DeleteComment} from '../../services';
 import {largeNumberShortify} from '../../utils/AppHelperMethods';
 import {FontAwesome} from '../../utils/AppIcons';
+import { useSelector } from 'react-redux';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 const PostDetailScreenWithComments = ({navigation, route}) => {
+  let { user } = useSelector((state) => state.root);
   let [postData, setPostData] = useState(route?.params?.post || null);
   let postID = postData?._id || route?.params?.postID;
   const flatListRef = useRef(null);
@@ -100,6 +104,9 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
       setState((prev) => ({...prev, loading: false}));
     }, postID);
   };
+  const deleteCommentHelper = (item) => {
+    DeleteComment((res)=>{console.log(res), item._id});
+  }
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener('focus', (e) => {
@@ -190,6 +197,18 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
+                {user._id === item?.createdBy._id?
+                <TouchableOpacity
+                activeOpacity={0.8}
+                activeOpacity={0.7}
+                onPress={() => {
+                  deleteCommentHelper(item);
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <FastImage source={ICON_DELETE} style={{height: RFValue(30), width: RFValue(30)}} />
+                </View>
+              </TouchableOpacity>
+              :null}
               <TouchableOpacity
                 activeOpacity={0.8}
                 activeOpacity={0.7}

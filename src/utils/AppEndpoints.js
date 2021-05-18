@@ -38,6 +38,7 @@ const EndPoints = {
   GET_BOOKMARKED_OR_SAVED_POST: BASE_URL + 'posts/savedPosts', // get SAVED POST
   GET_POSTS_OF_SPECIFIC_USER: BASE_URL + 'posts/user?', // get all posts of specific user
   COMMENT_POST: BASE_URL + 'comments?', // POSTING COMMENT // OR GETTING COMMENTS
+  DELETE_COMMENT: BASE_URL + 'comments/',
 
   GET_POST_BY_COMMENT_ID: BASE_URL + 'comments/post/',
   COMMENT_REACTIONS: BASE_URL + 'comments/action/react/', // get comments of specific post

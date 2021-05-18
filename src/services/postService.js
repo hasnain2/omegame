@@ -337,6 +337,35 @@ const GetCommentsReplies = (callback, CURSOR, LIMIT, parentCommentID) => {
         callback(false)
     });
 }
+const DeleteComment = (callback, id)=>{
+    Alert.alert(
+        "Delete Comment",
+        "Are you sure to delete this post, this operation cannot be undone",
+        [{
+            text: "Cancel",
+            onPress: () => {
+                callback(false)
+            }, style: "cancel"
+        }, {
+            text: "DELETE", onPress: () => {
+                //RemovePostFromReduxStore(postID)
+                fetch(`${EndPoints.DELETE_COMMENT}${id}`, {
+                    method: 'DELETE',
+                    headers: Interceptor.getHeaders()
+                }).then(JSONBodyHelper).then(([status, data]) => {
+                    AppLogger('-----------COMMENT DELETE RESPONSE-----------', JSON.stringify(data))
+                    if (status === 201 || status === 200) {
+                        callback(true)
+                    } else{
+                        callback(false);
+                    }
+                }).catch((error) => {
+                    AppLogger('---------COMMENT DELETE ERROR-----------', error)
+                    callback(false)
+                });
+            }
+        }], { cancelable: true });
+}
 
 const LikePost = (callback, postID, PAYLOAD) => {
     fetch(`${EndPoints.LIKE_POST}${postID}`, {
@@ -476,4 +505,5 @@ export {
     GetMediaOnlyPosts,
     GetExploreMediaOnlyPosts,
     GetExplorePosts,
+    DeleteComment,
 };
