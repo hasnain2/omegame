@@ -9,11 +9,14 @@ import {
   TouchableOpacity,
   UIManager,
   View,
+  Image
 } from 'react-native';
+import {AppModal} from "../../components";
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {ICON_COMMENT} from '../../../assets/icons';
 import {ICON_DELETE} from '../../../assets/icons';
+import {ICON_EDIT} from '../../../assets/icons';
 import {DEFAULT_USER_PIC} from '../../../assets/images';
 import {
   AppBackButton,
@@ -31,6 +34,7 @@ import {CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, Get
 import {largeNumberShortify} from '../../utils/AppHelperMethods';
 import {FontAwesome} from '../../utils/AppIcons';
 import { useSelector } from 'react-redux';
+import EditComment from './EditComment';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -41,6 +45,8 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
   let [postData, setPostData] = useState(route?.params?.post || null);
   let postID = postData?._id || route?.params?.postID;
   const flatListRef = useRef(null);
+  const [editModal, showEditModal]= useState(false);
+  const [editComment, setComment]= useState('');
   let [state, setState] = useState({
     loading: true,
     focused: true,
@@ -105,7 +111,10 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
     }, postID);
   };
   const deleteCommentHelper = (item) => {
-    DeleteComment((res)=>{setState((prev)=>({...prev, comments: state.comments.filter((cmt)=>cmt._id !== item._id) }))}, item._id);
+    DeleteComment((res)=>{
+      if(res)
+       {setState((prev)=>({...prev, comments: state.comments.filter((cmt)=>cmt._id !== item._id) }))}
+      }, item._id);
   }
 
   useEffect(() => {
@@ -198,6 +207,18 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 alignItems: 'center',
               }}>
                 {user._id === item?.createdBy._id?
+                <>
+                {/* <TouchableOpacity
+                activeOpacity={0.8}
+                activeOpacity={0.7}
+                onPress={() => {
+                  setComment(item)
+                  showEditModal(!editModal);
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+                  <Image source={ICON_EDIT} style={{height: RFValue(20), width: RFValue(20), tintColor: "#777777"}} />
+                </View>
+              </TouchableOpacity>
                 <TouchableOpacity
                 activeOpacity={0.8}
                 activeOpacity={0.7}
@@ -207,7 +228,8 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <FastImage source={ICON_DELETE} style={{height: RFValue(30), width: RFValue(30)}} />
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              </>
               :null}
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -392,6 +414,11 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               }}
             />
           </KeyboardAvoidingView>
+          {
+            editModal?
+            <EditComment item={editComment} editModal={editModal} showEditModal={showEditModal} navigation={navigation}/>
+            :null
+          }
           <AppInputToolBar
             placeholder={state.parentID?.createdBy?.userName ? '@' + state.parentID?.createdBy?.userName : ''}
             LHeight={state.LHeight}
