@@ -120,8 +120,7 @@ const ChatWindow = ({navigation, route}) => {
     return (
       <Send {...props} containerStyle={{justifyContent: "center",height: Platform.OS === 'ios'? "100%":"100%", maxHeight :RFValue(60)}}>
         <AppText color={AppTheme.colors.primary} size={2}
-        bold={true} style={{marginRight: RFValue(10), marginLeft: RFValue(4)}} >SEND</AppText>
-        
+        bold={true} style={{marginRight: RFValue(10), marginLeft: RFValue(4)}} >SEND</AppText> 
       </Send>
     );
   }

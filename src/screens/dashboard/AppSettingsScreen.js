@@ -255,7 +255,7 @@ const AppSettingsScreen = ({navigation, route}) => {
           }}>
           <View
             style={{
-              borderTopColor: '#404040',
+              borderTopColor: '#1A1A1A',
               borderTopWidth: 0.5,
               justifyContent: 'center',
               flexDirection: 'row',

@@ -186,7 +186,7 @@ const QuestScreen = ({route, navigation}) => {
                     </FastImage>
                   </View>
                 ) : null}
-                <View style={{padding: RFValue(10), borderBottomWidth: 0.9, borderBottomColor: '#213A57'}}>
+                <View style={{padding: RFValue(10), borderBottomWidth: 0.9, borderBottomColor: '#1A1A1A'}}>
                   <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <AppText lines={2} color={'white'} size={2} bold={true} style={{flex: 1}}>
                       {item?.questTitle}

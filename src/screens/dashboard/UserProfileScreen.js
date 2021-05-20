@@ -16,7 +16,7 @@ import {
   ICON_SETTINGS,
   ICON_UNFOLLOW,
 } from '../../../assets/icons';
-import {BACKGROUND_IMG, DEFAULT_USER_PIC} from '../../../assets/images';
+import {BACKGROUND_IMG, DEFAULT_USER_PIC, DEFAULT_REQ} from '../../../assets/images';
 import {
   AppBackButton,
   AppButton,
@@ -249,10 +249,10 @@ const UserProfileScreen = ({navigation, route}) => {
                         ? {uri: user.pic}
                         : userData?.pic
                         ? {uri: userData?.pic}
-                        : DEFAULT_USER_PIC
+                        : DEFAULT_REQ
                       : userData?.pic
                       ? {uri: userData?.pic}
-                      : DEFAULT_USER_PIC
+                      : DEFAULT_REQ
                   }
                   size={120}
                   screen="profile"

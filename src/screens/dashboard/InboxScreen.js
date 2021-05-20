@@ -265,8 +265,8 @@ const InboxScreen = ({navigation, route}) => {
                           {largeNumberShortify(inboxItem?.user?.level)}
                         </AppText>
                         <AppText size={1} color={AppTheme.colors.lightGrey}>
-                          {' '}
-                          - {moment(inboxItem.createdAt).fromNow(true)}
+                          {'   '}
+                          {moment(inboxItem.createdAt).fromNow(true)}
                         </AppText>
                       </View>
                       <AppText

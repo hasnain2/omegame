@@ -40,7 +40,7 @@ const AppReport = ({navigation, route}) => {
       </View>
       <KeyboardAvoidingScrollView>
         <View style={{padding: RFValue(15)}}>
-          <AppText style={{fontSize: RFValue(24), fontWeight: 'bold'}}>What do you want to report?{'\n'}</AppText>
+          <AppText style={{fontSize: RFValue(20), fontWeight: 'bold'}}>What do you want to report?{'\n'}</AppText>
 
           {REPORT_TYPE.map((item) => (
             <AppText

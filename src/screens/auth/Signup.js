@@ -158,15 +158,15 @@ const Signup = ({route, navigation}) => {
               )}
 
               <AppText
-                size={2}
+                size={1}
                 style={{lineHeight: RFValue(20), textAlign: 'center', paddingVertical: RFValue(10)}}
-                color={AppTheme.colors.lightGrey}>
+                color={"#252525"}>
                 By clicking Create account, I agree that I have read and accepted the{' '}
-                <AppText size={2} color={AppTheme.colors.lightGrey} style={{textDecorationLine: 'underline'}}>
+                <AppText size={1} color={"#252525"} style={{textDecorationLine: 'underline'}}>
                   Terms of Use
                 </AppText>{' '}
                 and{' '}
-                <AppText size={2} color={AppTheme.colors.lightGrey} style={{textDecorationLine: 'underline'}}>
+                <AppText size={1} color={"#252525"} style={{textDecorationLine: 'underline'}}>
                   Privacy Policy
                 </AppText>
                 .

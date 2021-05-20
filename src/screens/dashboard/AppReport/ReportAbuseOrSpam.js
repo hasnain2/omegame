@@ -56,12 +56,11 @@ const ReportAbuseOrSpam = ({navigation, route}) => {
 
       <KeyboardAvoidingScrollView>
         <View style={{padding: RFValue(15)}}>
-          <AppText bold={true} style={{fontSize: RFValue(24)}}>
-            Is someone engaging in abusive or posting spam?{'\n'}
+          <AppText bold={true} style={{fontSize: RFValue(20)}}>
+            Is someone engaging in{'\n'}
           </AppText>
           <AppText size={3} style={{lineHeight: RFValue(22)}} color={'grey'}>
-            We do not tolerate behavior that crosses the line into abuse, including behavior that harasses, intimidates
-            or discriminates another user.{'\n'}
+            We do not tolerate behavior that crosses the line into abuse, including behavior that harasses.{'\n'}
           </AppText>
           <AppText size={3}>What are you reporting?{'\n\n'}</AppText>
           {REPORT_TYPE.map((item) => (
@@ -117,7 +116,8 @@ const ReportAbuseOrSpam = ({navigation, route}) => {
             style={{
               flex: 1,
               color: 'white',
-              fontSize: RFValue(16),
+              paddingTop: RFValue(12),
+              fontSize: RFValue(12),
               height: '100%',
               maxHeight: RFValue(200),
               marginLeft: RFValue(10),

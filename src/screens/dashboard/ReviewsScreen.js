@@ -128,7 +128,7 @@ const ReviewsScreen = ({navigation}) => {
                       padding: RFValue(10),
                       alignItems: 'center',
                       borderBottomWidth: 0.9,
-                      borderBottomColor: '#213A57',
+                      borderBottomColor: '#1A1A1A',
                     }}>
                     <UserAvatar
                       corner={item?.corner || ''}
@@ -162,7 +162,7 @@ const ReviewsScreen = ({navigation}) => {
                       style={{
                         fontSize: RFValue(18),
                         paddingLeft: RFValue(10),
-                        color: AppTheme.colors.lightGrey,
+                        color: '#1A1A1A',
                       }}
                     />
                   </View>
@@ -293,7 +293,7 @@ const ReviewsScreen = ({navigation}) => {
             <View
               style={{
                 borderBottomWidth: 0.4,
-                borderBottomColor: '#213A57',
+                borderBottomColor: '#1A1A1A',
                 paddingVertical: RFValue(15),
               }}>
               <AppText size={2}>Genre:</AppText>
