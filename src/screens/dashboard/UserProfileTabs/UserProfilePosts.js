@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React, {useState} from 'react';
 import { View } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppLoadingView, AppNoDataFound, AppPostsListings } from "../../../components";
@@ -6,6 +6,7 @@ import { setUserProfileData } from '../../../redux/reducers/userProfileDataSlice
 import { GetPostsOfSpecificUser } from '../../../services';
 const UserProfilePosts = ({ navigation, autoPlay, userID }) => {
     let { userProfileData } = useSelector(state => state.root)
+    const [profileData, setUserProfileData] = useState('');
     let dispatch = useDispatch();
 
     let [state, setState] = React.useState({
@@ -15,7 +16,7 @@ const UserProfilePosts = ({ navigation, autoPlay, userID }) => {
     React.useEffect(() => {
         GetPostsOfSpecificUser((userPosts) => {
             if (userPosts)
-                dispatch(setUserProfileData({ posts: userPosts }))
+                setUserProfileData(userPosts)
             setState(prev => ({ ...prev, loading: false }))
         }, userID)
     }, [])
@@ -26,7 +27,7 @@ const UserProfilePosts = ({ navigation, autoPlay, userID }) => {
                 <AppNoDataFound /> :
                 <AppPostsListings navigation={navigation} style={{ backgroundColor: 'black' }}
                     autoPlay={autoPlay}
-                    data={userProfileData.posts}
+                    data={profileData}
                 />}
             {state.loading && userProfileData?.posts.length < 1 ?
                 <AppLoadingView /> : null}

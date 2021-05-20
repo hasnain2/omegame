@@ -36,4 +36,5 @@ export * from './AppUserListingWithFollowButtons';
 export * from './AppModal';
 export * from './IsViewInViewPort';
 export * from './AppFriendsListModal';
+export * from './AppTagModal';
 export * from './AppGooglePlacesAutoFill';

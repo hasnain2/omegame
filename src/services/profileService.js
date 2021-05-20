@@ -67,6 +67,7 @@ const GetSingleUserProfile = (callback, id) => {
         method: 'GET',
         headers: Interceptor.getHeaders()
     }).then(JSONBodyHelper).then(([status, data]) => {
+        console.log(data)
         if (status === 201 || status === 200) {
             callback(data.data)
         } else
@@ -111,10 +112,26 @@ const GerUserListByType = (callback, id, TYPE, CURSOR, query) => {
         callback(false)
     });
 }
+const GetUserList = (callback,limit, sortBy, query, cursor) => {
+    fetch(`${EndPoints.GET_ALL_TRENDING_USERS}?sortBy=coin${query ? "&search=" + query : ""}${limit ? "&limit="+10: 5}`, {
+        method: 'GET',
+        headers: Interceptor.getHeaders(),
+    }).then(JSONBodyHelper).then(([status, data]) => {
+        if (status === 201 || status === 200) {
+            callback(data.data)
+        } else{
+            console.log("Error")
+            callback(false);}
+    }).catch((error) => {
+        AppLogger('---------GETTING USER LIST OF follower following ERROR-----------    ' + TYPE, error)
+        callback(false)
+    });
+}
 
 export {
     UpdateProfile, UpdateUserProfile,
     GetAllTrendingUsers, RequestVerification,
     GetSingleUserProfile, ActionsOnUsers,
-    GerUserListByType
+    GerUserListByType,
+    GetUserList,
 }

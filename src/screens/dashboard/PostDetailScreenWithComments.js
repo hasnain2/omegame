@@ -105,7 +105,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
     }, postID);
   };
   const deleteCommentHelper = (item) => {
-    DeleteComment((res)=>{console.log(res), item._id});
+    DeleteComment((res)=>{setState((prev)=>({...prev, comments: state.comments.filter((cmt)=>cmt._id !== item._id) }))}, item._id);
   }
 
   useEffect(() => {

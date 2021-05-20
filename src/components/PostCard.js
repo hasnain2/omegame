@@ -57,7 +57,7 @@ const PostCard = ({ item, startPlaying, goBack, navigation, screenType, controls
           {item.tagged.map((iii, ind) => (
             <AppText
               onPress={() => {
-                if (iii?._id) navigation.navigate('UserProfileScreen', { userID: iii?._id });
+                if (iii?._id) navigation.push('UserProfileScreen', { userID: iii?._id });
               }}
               key={`${iii?.userName}${ind}`}
               size={0}

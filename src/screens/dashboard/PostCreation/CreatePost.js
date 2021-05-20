@@ -27,6 +27,7 @@ import {
   AppText,
   AppVideoPlayer,
   UserAvatar,
+  AppTagModal,
 } from '../../../components';
 import {AppTheme} from '../../../config';
 import {setFriends} from '../../../redux/reducers/friendsSlice';
@@ -43,9 +44,12 @@ import {GET_FRIEND_LIST_TYPES, POST_PRIVACY, PRIVACY} from '../../../utils/AppCo
 import {AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber} from '../../../utils/AppHelperMethods';
 import {AntDesign, EvilIcons, Ionicons} from '../../../utils/AppIcons';
 import {OpenCameraGalleryPromptPicker, OpenGalleryPicker} from '../../../utils/AppMediaPicker';
+import CustomMention from "./CustomMention";
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({navigation, route}) => {
   const postData = route?.params?.postData;
+  const [openTag, closeTagModal] = useState(false);
+  const [counter, setCounter] = useState(0);
   let [state, setState] = useState({
     loading: false,
     whatsNewText: postData?.text || '',
@@ -74,7 +78,18 @@ const CreatePost = ({navigation, route}) => {
     showLocationPicker: false,
     showFriendsListModal: false,
   });
-
+  const [text, setText] = useState(state.postTypeIsPool ? 'Ask a question' : "What's new?");
+    onClick = (e) => {
+    if(counter === 0){
+      setText('');
+      setCounter(counter+1); 
+    }
+    this.textInput.focus();
+    };
+  const searchQuery = ()=>{
+    let arr = text.split('@');
+    return arr[arr.length-1];
+  }
   function getfriendshelper(cursor) {
     GerUserListByType(
       (response) => {
@@ -137,6 +152,8 @@ const CreatePost = ({navigation, route}) => {
           payload,
         );
       } else {
+        console.log("payload added");
+        console.log(payload);
         CreatePostService((result) => {
           if (!hasMediaToUpload) setState((prev) => ({...prev, loading: false}));
           if (result) {
@@ -166,13 +183,47 @@ const CreatePost = ({navigation, route}) => {
         />
       </View>
       <KeyboardAvoidingScrollView nestedScrollEnabled={true} style={{flex: 1, padding: RFValue(14)}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', zIndex: 2}}>
           <UserAvatar
             corner={user?.corner || ''}
             color={user?.cornerColor}
             source={user.pic ? {uri: user.pic} : DEFAULT_USER_PIC}
             size={35}
           />
+          {/* <CustomMention/> */}
+          {/* <CustomMentionEditor/> */}
+        {/* <TextInput
+          ref={ref => (this.textInput = ref)}
+          onKeyPress={({nativeEvent})=>{
+            setText('');
+            if(nativeEvent.key === 'Backspace'){
+              if(text.charAt(text.length-1)=== '*'){
+                let temp = text;
+                var index = temp.lastIndexOf(" ");
+                temp = temp.substring(0, index);
+                setRemoveTag(temp)
+                flag=2;
+              }
+            }
+          }}
+          value={text}
+          style={{ position: 'absolute', left: -1000, top: -1000 }}
+          onChangeText={val => {
+          var format = /[@]/;
+          closeTagModal(format.test(val)) 
+          setText( val)}}
+        />
+        <TouchableOpacity onPress={onClick}>
+          <Markdown markdownStyles={{strong:{
+              color: 'blue',
+              textDecorationColor:'blue',
+              fontWeight: 'bold',
+          },
+          text: {
+            color: AppTheme.colors.lightGrey,
+        },
+          }} style={{marginLeft: RFValue(10),marginRight: RFValue(30), minWidth: RFValue(20)}}>{text}</Markdown>
+        </TouchableOpacity> */}
           <TextInput
             placeholder={state.postTypeIsPool ? 'Ask a question' : "What's new?"}
             placeholderTextColor={AppTheme.colors.lightGrey}
@@ -190,6 +241,51 @@ const CreatePost = ({navigation, route}) => {
               setState((prev) => ({...prev, whatsNewText: val}));
             }}
           />
+          {/* {
+            openTag ?
+            <View style={{position: 'absolute', width: "100%",top: RFValue(100)}}>
+             <AppTagModal
+             show={openTag}
+             searchQuery = {searchQuery()}
+             toggle={(username) => {
+             let arr = text.split('@');
+             setText(arr[0]+'**'+username+'**')
+             closeTagModal(!openTag)
+            }}
+             chosenContacts={state.chosenContacts}
+             showDone={true}
+             selectedContacts={(contact) => {
+               let tempArr = state.chosenContacts.slice();
+               let tempInd = tempArr.findIndex((ii) => ii?._id === contact?._id);
+     
+               if (tempInd > -1) {
+                 tempArr.splice(tempInd, 1);
+               } else {
+                 tempArr.push(contact);
+               }
+               setState((prev) => ({...prev, chosenContacts: tempArr}));
+             }}
+             />
+            </View>:null
+          } */}
+          
+        {/* <AppTagModal
+        show={openTag}
+        toggle={() => closeTagModal(!openTag)}
+        chosenContacts={state.chosenContacts}
+        showDone={true}
+        selectedContacts={(contact) => {
+          let tempArr = state.chosenContacts.slice();
+          let tempInd = tempArr.findIndex((ii) => ii?._id === contact?._id);
+
+          if (tempInd > -1) {
+            tempArr.splice(tempInd, 1);
+          } else {
+            tempArr.push(contact);
+          }
+          setState((prev) => ({...prev, chosenContacts: tempArr}));
+        }}
+      /> */}
         </View>
         {state.postTypeIsPool ? (
           <View style={{padding: RFValue(10)}}>
@@ -565,7 +661,7 @@ const CreatePost = ({navigation, route}) => {
         </View>
       </AppModal>
 
-      <AppFriendsListModal
+      <AppTagModal
         show={state.showFriendsListModal}
         toggle={() => setState((prev) => ({...prev, showFriendsListModal: false}))}
         chosenContacts={state.chosenContacts}

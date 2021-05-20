@@ -83,6 +83,8 @@ const CreatePostService = (callback, formData) => {
 
 
 const EditModifyPostService = (callback, postID, formData) => {
+    console.log("Hello")
+    console.log(formData);
     if (formData.file) {
         if (formData?.removeMedia) {
             editModifyPostHelper((creatResults) => {
@@ -338,6 +340,7 @@ const GetCommentsReplies = (callback, CURSOR, LIMIT, parentCommentID) => {
     });
 }
 const DeleteComment = (callback, id)=>{
+    console.log(id)
     Alert.alert(
         "Delete Comment",
         "Are you sure to delete this post, this operation cannot be undone",
