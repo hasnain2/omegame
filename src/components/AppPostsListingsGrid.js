@@ -12,6 +12,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {AppVideoPlayer} from './AppVideoPlayer';
 import {PostPoolBottomBar} from './PostPoolBottomBar';
 import {PostPoolTopBar} from './PostPoolTopBar';
+var uuid = require('react-native-uuid');
 
 const {height, width} = Dimensions.get('screen');
 let POST_DATA = null;
@@ -54,7 +55,7 @@ const AppPostsListingsGrid = ({navigation, data, style, loading, refreshing, loa
           }
         }}
         onEndReachedThreshold={0.5}
-        keyExtractor={(ii) => ii?._id + ''}
+        keyExtractor={(ii) => ii?._id + uuid.v1()}
         renderItem={({item, index}) => (
           <TouchableOpacity
             activeOpacity={0.7}

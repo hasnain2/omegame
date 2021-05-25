@@ -81,31 +81,32 @@ const UserProfileScreen = ({navigation, route}) => {
     userData: userID ? user : null,
     isVisible: false,
   });
-  let gac=[];
-  if(state.userData?.gamingAccounts && state.userData?.gamingAccounts?.length > 0){
-    ['XBOX','PSN','STEAM','NINTENDO'].forEach((game)=>{
-      let check = user?.gamingAccounts.filter(g => g.gamingAccountProvider == game);
-      if(check.length > 0){
+  let gac = [];
+  if (state.userData?.gamingAccounts && state.userData?.gamingAccounts?.length > 0) {
+    ['XBOX', 'PSN', 'STEAM', 'NINTENDO'].forEach((game) => {
+      let check = user?.gamingAccounts.filter((g) => g.gamingAccountProvider == game);
+      if (check.length > 0) {
         gac.push(check[0]);
-      }else{
+      } else {
         gac.push({gamingAccountProvider: game, account: ''});
       }
-    })
-  }else{
-   gac= [
+    });
+  } else {
+    gac = [
       {gamingAccountProvider: 'XBOX', account: ''},
       {gamingAccountProvider: 'PSN', account: ''},
       {gamingAccountProvider: 'STEAM', account: ''},
       {gamingAccountProvider: 'NINTENDO', account: ''},
-    ]
+    ];
   }
-  function getsingleuserprofilehelper() {
+  function getsingleuserprofilehelper(isMounted) {
     GetSingleUserProfile((profileRes) => {
-      console.log(profileRes);
       if (profileRes) {
         setState((prev) => ({...prev, loading: false, userData: profileRes}));
         if (userID) disp(setUser(profileRes));
-      } else {setState((prev) => ({...prev, loading: false}))};
+      } else {
+        setState((prev) => ({...prev, loading: false}));
+      }
     }, route.params.userID);
   }
   useEffect(() => {
@@ -280,7 +281,7 @@ const UserProfileScreen = ({navigation, route}) => {
                     <View style={{}}>
                       <Bar
                         height={RFValue(10)}
-                        width={Platform.OS === 'ios' ? 180:200}
+                        width={Platform.OS === 'ios' ? 180 : 200}
                         progress={(userData?.earnedXps || 0) / 100}
                         // backgroundColor={'#C2C2C2'}
                         color={AppTheme.colors.primary}
@@ -350,162 +351,162 @@ const UserProfileScreen = ({navigation, route}) => {
               </LinearGradient>
             </FastImage>
           </View>
-          {((!userID && !userData?.isPrivate) || userData?.isFollowing)|| userID?
-          <>
-          <View style={{padding: RFValue(10)}}>
-            <TouchableOpacity activeOpacity={0.7}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <AppText size={1}>{userData?.bio}</AppText>
+          {(!userID && !userData?.isPrivate) || userData?.isFollowing || userID ? (
+            <>
+              <View style={{padding: RFValue(10)}}>
+                <TouchableOpacity activeOpacity={0.7}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <AppText size={1}>{userData?.bio}</AppText>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setState((prev) => ({
+                      ...prev,
+                      showMore: !state.showMore,
+                    }));
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                      {state.showMore ? 'Hide Information' : 'More about me'}{' '}
+                    </AppText>
+                    <MaterialIcons
+                      name={state.showMore ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+                      style={{
+                        fontSize: RFValue(20),
+                        color: AppTheme.colors.lightGrey,
+                      }}
+                    />
+                  </View>
+                  <View>
+                    {state.showMore ? (
+                      <View>
+                        {userData?.dateOfBirth ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              Date of Birth:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {moment(userData?.dateOfBirth).format('DD MMM, yyyy')}
+                            </AppText>
+                          </View>
+                        ) : null}
+                        {userData?.favouriteGame ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              Favorite Game:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {userData.favouriteGame}
+                            </AppText>
+                          </View>
+                        ) : null}
+                        {userData?.favouriteConsole ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              Favorite Console:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {userData.favouriteConsole}
+                            </AppText>
+                          </View>
+                        ) : null}
+                        {gac[0]?.account ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              XBOX live account:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {gac[0].account}
+                            </AppText>
+                          </View>
+                        ) : null}
+                        {gac[1]?.account ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              PSN account:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {gac[1].account}
+                            </AppText>
+                          </View>
+                        ) : null}
+                        {gac[2]?.account ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              Steam account:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {gac[2].account}
+                            </AppText>
+                          </View>
+                        ) : null}
+                        {gac[3]?.account ? (
+                          <View style={{flexDirection: 'row'}}>
+                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
+                              Nintendo account:
+                            </AppText>
+                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
+                              {' '}
+                              {gac[3].account}
+                            </AppText>
+                          </View>
+                        ) : null}
+                      </View>
+                    ) : null}
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => {
-                setState((prev) => ({
-                  ...prev,
-                  showMore: !state.showMore,
-                }));
-              }}>
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'space-evenly',
                 }}>
-                <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                  {state.showMore ? 'Hide Information' : 'More about me'}{' '}
-                </AppText>
-                <MaterialIcons
-                  name={state.showMore ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
-                  style={{
-                    fontSize: RFValue(20),
-                    color: AppTheme.colors.lightGrey,
+                <AppText
+                  size={2}
+                  style={{paddingVertical: RFValue(15)}}
+                  onPress={() => {
+                    navigation.push('AppFollowersAndFollowingList', {
+                      isFollowerMode: true,
+                      userID: route?.params?.userID,
+                    });
                   }}
-                />
+                  color={AppTheme.colors.primary}>
+                  {userData?.followers}{' '}
+                  <AppText size={2} color={AppTheme.colors.lightGrey}>
+                    Followers
+                  </AppText>
+                </AppText>
+                <AppText
+                  size={2}
+                  style={{paddingVertical: RFValue(15)}}
+                  onPress={() => {
+                    navigation.push('AppFollowersAndFollowingList', {
+                      isFollowerMode: false,
+                      userID: route?.params?.userID,
+                    });
+                  }}
+                  color={AppTheme.colors.primary}>
+                  {userData?.following}{' '}
+                  <AppText size={2} color={AppTheme.colors.lightGrey}>
+                    Followings
+                  </AppText>
+                </AppText>
               </View>
-              <View>
-                {state.showMore ? (
-                  <View>
-                    {userData?.dateOfBirth ? (
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Date of Birth:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {moment(userData?.dateOfBirth).format('DD MMM, yyyy')}
-                        </AppText>
-                      </View>
-                    ) : null}
-                    {userData?.favouriteGame ? (
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Favorite Game:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {userData.favouriteGame}
-                        </AppText>
-                      </View>
-                    ) : null}
-                    {userData?.favouriteConsole ? (
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Favorite Console:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {userData.favouriteConsole}
-                        </AppText>
-                      </View>
-                    ) : null}
-                      {gac[0]?.account?
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          XBOX live account:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {gac[0].account}
-                        </AppText>
-                      </View>:null}
-                      {gac[1]?.account?
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          PSN account:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {gac[1].account}
-                        </AppText>
-                      </View>
-                      :null}
-                      {gac[2]?.account?
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Steam account:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {gac[2].account}
-                        </AppText>
-                      </View>
-                      :null}
-                      {gac[3]?.account?
-                      <View style={{flexDirection: 'row'}}>
-                        <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                          Nintendo account:
-                        </AppText>
-                        <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                          {' '}
-                          {gac[3].account}
-                        </AppText>
-                      </View>
-                      :null}
-                  </View>
-                ) : null}
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
-            }}>
-            <AppText
-              size={2}
-              style={{paddingVertical: RFValue(15)}}
-              onPress={() => {
-                navigation.push('AppFollowersAndFollowingList', {
-                  isFollowerMode: true,
-                  userID: route?.params?.userID,
-                });
-              }}
-              color={AppTheme.colors.primary}>
-              {userData?.followers}{' '}
-              <AppText size={2} color={AppTheme.colors.lightGrey}>
-                Followers
-              </AppText>
-            </AppText>
-            <AppText
-              size={2}
-              style={{paddingVertical: RFValue(15)}}
-              onPress={() => {
-                navigation.push('AppFollowersAndFollowingList', {
-                  isFollowerMode: false,
-                  userID: route?.params?.userID,
-                });
-              }}
-              color={AppTheme.colors.primary}>
-              {userData?.following}{' '}
-              <AppText size={2} color={AppTheme.colors.lightGrey}>
-                Followings
-              </AppText>
-            </AppText>
-          </View>
-          </>
-          :null}
-          
+            </>
+          ) : null}
 
           {userID ? (
             <TouchableOpacity
@@ -543,36 +544,36 @@ const UserProfileScreen = ({navigation, route}) => {
                   label={userData?.isFollowing ? 'UNFOLLOW' : userData?.isRequested ? 'REQUESTED' : 'FOLLOW'}
                 />
               </View>
-              {((!userID && !userData?.isPrivate)|| userData?.isFollowing) || userID?
-              <View style={{flex: 1, paddingLeft: RFValue(5)}}>
-                <AppButton
-                  onPress={() => {
-                    if (userData) navigation.push('ChatWindow', {friend: userData});
-                  }}
-                  label={'MESSAGE'}
-                />
-              </View>
-              :null}
+              {(!userID && !userData?.isPrivate) || userData?.isFollowing || userID ? (
+                <View style={{flex: 1, paddingLeft: RFValue(5)}}>
+                  <AppButton
+                    onPress={() => {
+                      if (userData) navigation.push('ChatWindow', {friend: userData});
+                    }}
+                    label={'MESSAGE'}
+                  />
+                </View>
+              ) : null}
             </View>
           )}
         </View>
-        {((!userID && !userData?.isPrivate)|| userData?.isFollowing)|| userID?
-        <IsViewInViewPort
-          offset={RFValue(200)}
-          onChange={(isVisible) => {
-            checkVisible(isVisible);
-          }}>
-          <View style={{flex: 1}}>
-            <UserProfileTabs
-              userID={route.params.userID}
-              navigation={navigation}
-              route={route}
-              decelerationRate={0.2}
-              autoPlay={state.isVisible}
-            />
-          </View>
-        </IsViewInViewPort>
-        :null}
+        {(!userID && !userData?.isPrivate) || userData?.isFollowing || userID ? (
+          <IsViewInViewPort
+            offset={RFValue(200)}
+            onChange={(isVisible) => {
+              checkVisible(isVisible);
+            }}>
+            <View style={{flex: 1}}>
+              <UserProfileTabs
+                userID={route.params.userID}
+                navigation={navigation}
+                route={route}
+                decelerationRate={0.2}
+                autoPlay={state.isVisible}
+              />
+            </View>
+          </IsViewInViewPort>
+        ) : null}
       </View>
 
       <AppModal

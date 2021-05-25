@@ -5,6 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
+var uuid = require('react-native-uuid');
 const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true}) => {
   const flatListRef = useRef(null);
   let [state, setState] = useState({
@@ -33,7 +34,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
     }
   });
 
-  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 70});
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 40});
 
   return (
     <View style={[{flex: 1, backgroundColor: 'black'}, style ? style : null]}>
@@ -42,7 +43,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
       {loading ? <AppLoadingView /> : null}
       <FlatList
         ref={flatListRef}
-        nestedScrollEnabled={true}
+        // nestedScrollEnabled={true}
         data={data}
         refreshControl={
           <RefreshControl
@@ -53,22 +54,19 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
             }}
           />
         }
-        windowSize={Platform.OS === 'ios' ? 3 : 2}
-        initialNumToRender={2}
-        maxToRenderPerBatch={2}
+        // windowSize={Platform.OS === 'ios' ? 3 : 2}
+        // initialNumToRender={2}
+        // maxToRenderPerBatch={2}
         // removeClippedSubviews={true}
         // bounces={false}
-
-        keyExtractor={(ii) => ii?._id + 'you'}
+        keyExtractor={(ii) => ii?._id + 'you' + uuid.v1()}
         keyboardShouldPersistTaps={'always'}
-        onViewableItemsChanged={onViewRef.current}
-        viewabilityConfig={viewConfigRef.current}
         onEndReached={() => {
           if (loadMore) {
             loadMore(data[data.length - 1]?._id, false);
           }
         }}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0.4}
         renderItem={({item, index}) => {
           if (item?.postType === 'media')
             return (

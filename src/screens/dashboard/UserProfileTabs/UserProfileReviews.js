@@ -9,6 +9,7 @@ import {AppTheme} from '../../../config';
 import {setUserProfileData} from '../../../redux/reducers/userProfileDataSlice';
 import {GetUserReviews} from '../../../services/gamesService';
 import {ICON_EDIT} from '../../../../assets/icons';
+var uuid = require('react-native-uuid');
 const UserProfileReviews = ({navigation, userID}) => {
   let {userProfileData} = useSelector((state) => state.root);
   let dispatch = useDispatch();
@@ -37,7 +38,7 @@ const UserProfileReviews = ({navigation, userID}) => {
           // removeClippedSubviews={true}
           maxToRenderPerBatch={2}
           // bounces={false}
-          keyExtractor={(ii) => (ii?._id || '') + 'you'}
+          keyExtractor={(ii) => (ii?._id || '') + 'you' + uuid.v1()}
           renderItem={({item, index}) => (
             <View
               style={{
@@ -60,8 +61,7 @@ const UserProfileReviews = ({navigation, userID}) => {
                     {item.forEntity}
                   </AppText>
                   <AppText color={AppTheme.colors.lightGrey} size={0}>
-                    Release Date:{' '}
-                    {moment(item.releaseDate).format('DD MMMM YYYY')}
+                    Release Date: {moment(item.releaseDate).format('DD MMMM YYYY')}
                   </AppText>
                 </View>
                 <View
@@ -69,49 +69,41 @@ const UserProfileReviews = ({navigation, userID}) => {
                     borderRadius: RFValue(10),
                     borderWidth: 1,
                     padding: RFValue(10),
-                    flex: 0.2,
                     justifyContent: 'center',
                     alignItems: 'center',
                     flexDirection: 'row',
-                    borderColor: item.negetive
-                      ? AppTheme.colors.red
-                      : AppTheme.colors.green,
+                    width: RFValue(80),
+                    borderColor: item.negetive ? AppTheme.colors.red : AppTheme.colors.green,
                   }}>
-                    <View>
-                  <AppText size={1}>
-                    {item?.devices ? item?.devices : item.devices}
-                  </AppText>
-                  <AppText size={3}>
-                    {parseFloat(item?.ratings || 0)?.toFixed(2)}
-                  </AppText>
+                  <View>
+                    <AppText size={1}>{item?.devices ? item?.devices : item.devices}</AppText>
+                    <AppText size={3}>{parseFloat(item?.ratings || 0)?.toFixed(2)}</AppText>
                   </View>
                   <View>
-                  <AppText>
-                    <TouchableOpacity onPress={()=>{
-                      navigation.navigate('RateGameScreen', {gameData: item, item, profile: true});
-                    }}>
-                    <Image
-                      source={ICON_EDIT}
-                      style={{
-                      height: RFValue(15),
-                      width: RFValue(15),
-                      marginBottom: RFValue(11),
-                      tintColor: AppTheme.colors.white,
-                      }}
-                    />
-                  </TouchableOpacity>  
+                    <AppText>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('RateGameScreen', {gameData: item, item, profile: true});
+                        }}>
+                        <Image
+                          source={ICON_EDIT}
+                          style={{
+                            height: RFValue(15),
+                            width: RFValue(15),
+                            marginBottom: RFValue(15),
+                            tintColor: AppTheme.colors.white,
+                          }}
+                        />
+                      </TouchableOpacity>
                     </AppText>
-                    </View>
+                  </View>
                 </View>
               </View>
               <View style={{paddingVertical: RFValue(15)}}>
                 <AppText lines={2} size={2}>
                   {item.feedback}
                 </AppText>
-                <AppText
-                  color={AppTheme.colors.lightGrey}
-                  style={{paddingTop: RFValue(10)}}
-                  size={0}>
+                <AppText color={AppTheme.colors.lightGrey} style={{paddingTop: RFValue(10)}} size={0}>
                   {moment(item.createdAt).format('DD MMM YYYY')}
                 </AppText>
               </View>
@@ -119,9 +111,7 @@ const UserProfileReviews = ({navigation, userID}) => {
           )}
         />
       )}
-      {state.loading && userProfileData?.reviews.length < 1 ? (
-        <AppLoadingView />
-      ) : null}
+      {state.loading && userProfileData?.reviews.length < 1 ? <AppLoadingView /> : null}
     </View>
   );
 };
