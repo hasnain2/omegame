@@ -19,7 +19,7 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
     LWidth: 0,
     selectedContent: [],
   });
-  const [value, setValue] = useState('');
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
@@ -31,8 +31,8 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
       Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
     };
   }, [LHeight]);
-  const setSeletedValue = (value, selectedContent) => {
-    setState((prev) => ({...prev, comment: value, selectedContent: selectedContent}));
+  const setSeletedValue = (value) => {
+    setState((prev) => ({...prev, comment: value}));
   };
 
   function _keyboardDidShow(e) {
@@ -76,9 +76,12 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
           <CustomMention
             placeholder={placeholder}
             setSeletedValue={setSeletedValue}
-            value={value}
-            selectedContent={state.selectedContent}
-            changeValue={(val) => setValue(val)}
+            value={state.comment}
+            selected={selected}
+            setSelectedContent={(content) => {
+              selected.push({id: content.id});
+              //setSelected(temp);
+            }}
           />
         </View>
         {/* <TextInput placeholderTextColor={AppTheme.colors.lightGrey} placeholder={placeholder ? placeholder : "Type a message"}
@@ -97,10 +100,10 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
               if (state.comment.trim()) {
                 onSend(
                   replaceMentionValues(state.comment, ({name}) => `@${name}`),
-                  state.selectedContent,
+                  selected,
                 );
                 setState((prev) => ({...prev, comment: '', selectedContent: []}));
-                setValue('');
+                setSelected([]);
               }
             }}>
             <AppText

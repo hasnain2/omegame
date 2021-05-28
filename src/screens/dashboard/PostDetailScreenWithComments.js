@@ -209,15 +209,15 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               <AppText size={2} color={'white'} style={{paddingVertical: RFValue(10)}}>
                 {/* <Text style={{color: 'red'}}>Hello</Text> */}
                 {temp.map((item1, index) => {
+                  let getUser = item1.split('@');
+                  let user = item.mentions.filter((user, index) => user.userName === getUser[1]);
                   return (
                     <>
                       {item1[0] === '@' ? (
                         <Text
-                          style={{color: 'red'}}
+                          style={{color: user.length > 0 ? 'blue' : 'white'}}
                           key={index}
                           onPress={() => {
-                            let getUser = item1.split('@');
-                            let user = item.mentions.filter((user, index) => user.userName === getUser[1]);
                             if (user.length > 0) {
                               navigation.navigate('UserProfileScreen', {
                                 userID: user[0]._id,
@@ -468,7 +468,6 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               let mention = selectedContent.map((item, index) => {
                 return item.id;
               });
-              console.log(mention);
               CommentPost(
                 (newCommentRes) => {
                   if (newCommentRes) {

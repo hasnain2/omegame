@@ -27,7 +27,7 @@ const SkelPlaceHolder = () => {
 const getPlainString = ({string}) => {
   console.log(string);
 };
-const RenderSuggestions = ({keyword, onSuggestionPress, suggestions, loading, selectedUser}) => {
+const RenderSuggestions = ({keyword, onSuggestionPress, suggestions, loading, selectedContent, setSelectedContent}) => {
   if (keyword == null) {
     return null;
   }
@@ -50,7 +50,7 @@ const RenderSuggestions = ({keyword, onSuggestionPress, suggestions, loading, se
                 key={item.id}
                 style={{zIndex: 5}}
                 onPress={() => {
-                  selectedUser.push({id: item.id});
+                  setSelectedContent({id: item.id});
                   onSuggestionPress(item);
                 }}>
                 <View style={{}}>
@@ -78,7 +78,7 @@ const RenderSuggestions = ({keyword, onSuggestionPress, suggestions, loading, se
     </>
   );
 };
-const CustomMention = ({placeholder, setSeletedValue, value, changeValue}) => {
+const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelectedContent}) => {
   let dispatch = useDispatch();
   const [listUser, setUser] = useState([]);
   const [query, setQuery] = useState('');
@@ -91,10 +91,11 @@ const CustomMention = ({placeholder, setSeletedValue, value, changeValue}) => {
     setLoading(true);
     GetUserList(
       (response) => {
+        console.log(selected);
         if (response) {
           let suggestions = [];
           response?.data.map((item, index) => {
-            let temp = selectedUser.filter((newItem) => newItem.id === item._id);
+            let temp = selected.filter((newItem) => newItem.id === item._id);
             if (temp.length === 0) {
               suggestions.push({
                 id: item._id,
@@ -145,17 +146,22 @@ const CustomMention = ({placeholder, setSeletedValue, value, changeValue}) => {
       placeholderTextColor="white"
       value={value}
       onChange={(e) => {
-        setSeletedValue(e, selectedUser);
+        setSeletedValue(e);
         let newStr = e.split('@');
         setQuery(newStr[newStr.length - 1]);
-        changeValue(e);
       }}
       style={{color: 'white', flex: 1, zIndex: 1}}
       partTypes={[
         {
           trigger: '@', // Should be a single character like '@' or '#'
           renderSuggestions: (props) => (
-            <RenderSuggestions {...props} suggestions={listUser} loading={loading} selectedUser={selectedUser} />
+            <RenderSuggestions
+              {...props}
+              suggestions={listUser}
+              loading={loading}
+              selectedContent={selected}
+              setSelectedContent={setSelectedContent}
+            />
           ),
           textStyle: {fontWeight: 'bold', color: 'blue'}, // The mention style in the input
         },
