@@ -59,7 +59,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
         // maxToRenderPerBatch={2}
         // removeClippedSubviews={true}
         // bounces={false}
-        keyExtractor={(ii) => ii?._id + 'you' + uuid.v1()}
+        keyExtractor={(ii) => ii?._id + 'you'}
         keyboardShouldPersistTaps={'always'}
         onEndReached={() => {
           if (loadMore) {

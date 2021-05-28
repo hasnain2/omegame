@@ -5,6 +5,7 @@ import {AppPostsListings} from '../../../components';
 import {AppTheme} from '../../../config';
 import {GetExplorePosts} from '../../../services';
 import {RemoveDuplicateObjectsFromArray} from '../../../utils/AppHelperMethods';
+// import {AdMobBanner, AdMobInterstitial, PublisherBanner, AdMobRewarded} from 'react-native-admob';
 
 let enableReset = true;
 let cursorArrPosts = [];
@@ -57,6 +58,9 @@ const SearchTabsPosts = ({navigation}) => {
   }, [query]);
   return (
     <View style={{flex: 1}}>
+      {/* {AdMobInterstitial.setAdUnitID('ca-app-pub-2545870879357077/1977461651')}
+      {AdMobInterstitial.setTestDeviceID('565A9B68-68A2-4775-AC15-C66162C6DE3D')}
+      {AdMobInterstitial.requestAd(AdMobInterstitial.showAd)} */}
       <AppPostsListings
         navigation={navigation}
         data={state.allPosts}

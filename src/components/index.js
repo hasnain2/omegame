@@ -18,6 +18,7 @@ export * from './AppAvoidKeyboard';
 export * from './AppPostMenuContents';
 export * from './AppHeaderCommon';
 export * from './AppInputToolBar';
+export * from './AppInputMention';
 export * from './AppLoadingView';
 export * from './AppNoDataFound';
 export * from './AppVideoPlayer';

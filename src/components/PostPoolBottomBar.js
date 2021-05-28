@@ -41,9 +41,15 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         activeOpacity={0.7}
         onPress={() => {
           UpdatePostFromReduxStore({...item, isLiked: !state.isLiked});
-          LikePost(() => {}, item?._id, {
-            type: state.isLiked ? 'UN_LIKE' : 'LIKE',
-          });
+          LikePost(
+            () => {
+              console.log('you have successfully liked unliked the post');
+            },
+            item?._id,
+            {
+              type: state.isLiked ? 'UN_LIKE' : 'LIKE',
+            },
+          );
           setState((prev) => ({...prev, isLiked: !state.isLiked}));
         }}>
         <View

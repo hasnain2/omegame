@@ -14,6 +14,7 @@ import userProfileData from './reducers/userProfileDataSlice';
 import query from './reducers/querySlice';
 import nav from './reducers/navSlice';
 import quests from './reducers/questsSlice';
+import suggestions from './reducers/suggestionsSlice';
 
 const rootReducer = combineReducers({
   user: user,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   query: query,
   quests: quests,
   nav: nav,
+  suggestions: suggestions,
 });
 
 export const store = configureStore({

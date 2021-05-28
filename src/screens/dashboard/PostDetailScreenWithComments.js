@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   UIManager,
   View,
-  Image
+  Image,
+  Text,
 } from 'react-native';
-import {AppModal} from "../../components";
+import {AppModal} from '../../components';
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {ICON_COMMENT} from '../../../assets/icons';
@@ -20,7 +21,7 @@ import {ICON_EDIT} from '../../../assets/icons';
 import {DEFAULT_USER_PIC} from '../../../assets/images';
 import {
   AppBackButton,
-  AppInputToolBar,
+  AppInputMention,
   AppLoadingView,
   AppNoDataFound,
   AppText,
@@ -30,10 +31,17 @@ import {
 
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
-import {CommentPost, CommentReaction, GetCommentsOfPost, GetCommentsReplies, GetSinglePost, DeleteComment} from '../../services';
+import {
+  CommentPost,
+  CommentReaction,
+  GetCommentsOfPost,
+  GetCommentsReplies,
+  GetSinglePost,
+  DeleteComment,
+} from '../../services';
 import {largeNumberShortify} from '../../utils/AppHelperMethods';
 import {FontAwesome} from '../../utils/AppIcons';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import EditComment from './EditComment';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -41,12 +49,12 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const PostDetailScreenWithComments = ({navigation, route}) => {
-  let { user } = useSelector((state) => state.root);
+  let {user} = useSelector((state) => state.root);
   let [postData, setPostData] = useState(route?.params?.post || null);
   let postID = postData?._id || route?.params?.postID;
   const flatListRef = useRef(null);
-  const [editModal, showEditModal]= useState(false);
-  const [editComment, setComment]= useState('');
+  const [editModal, showEditModal] = useState(false);
+  const [editComment, setComment] = useState('');
   let [state, setState] = useState({
     loading: true,
     focused: true,
@@ -111,11 +119,12 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
     }, postID);
   };
   const deleteCommentHelper = (item) => {
-    DeleteComment((res)=>{
-      if(res)
-       {setState((prev)=>({...prev, comments: state.comments.filter((cmt)=>cmt._id !== item._id) }))}
-      }, item._id);
-  }
+    DeleteComment((res) => {
+      if (res) {
+        setState((prev) => ({...prev, comments: state.comments.filter((cmt) => cmt._id !== item._id)}));
+      }
+    }, item._id);
+  };
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener('focus', (e) => {
@@ -133,6 +142,8 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
   }, []);
 
   function renderCommentView(item, isCommentIsLiked, index, currentIndexToSet) {
+    let text = item.text;
+    let temp = text.split(' ');
     return (
       <View style={{paddingHorizontal: RFValue(10)}}>
         <View style={{flexDirection: 'row'}}>
@@ -196,7 +207,32 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 </View>
               </TouchableOpacity>
               <AppText size={2} color={'white'} style={{paddingVertical: RFValue(10)}}>
-                {item?.text}
+                {/* <Text style={{color: 'red'}}>Hello</Text> */}
+                {temp.map((item1, index) => {
+                  return (
+                    <>
+                      {item1[0] === '@' ? (
+                        <Text
+                          style={{color: 'red'}}
+                          key={index}
+                          onPress={() => {
+                            let getUser = item1.split('@');
+                            let user = item.mentions.filter((user, index) => user.userName === getUser[1]);
+                            if (user.length > 0) {
+                              navigation.navigate('UserProfileScreen', {
+                                userID: user[0]._id,
+                              });
+                            }
+                          }}>
+                          {' '}
+                          {item1}{' '}
+                        </Text>
+                      ) : (
+                        <Text key={index + 'you'}>{item1 + ' '}</Text>
+                      )}
+                    </>
+                  );
+                })}
               </AppText>
             </View>
 
@@ -206,9 +242,9 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-                {user._id === item?.createdBy._id?
+              {user._id === item?.createdBy._id ? (
                 <>
-                {/* <TouchableOpacity
+                  {/* <TouchableOpacity
                 activeOpacity={0.8}
                 activeOpacity={0.7}
                 onPress={() => {
@@ -229,8 +265,8 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                   <FastImage source={ICON_DELETE} style={{height: RFValue(30), width: RFValue(30)}} />
                 </View>
               </TouchableOpacity> */}
-              </>
-              :null}
+                </>
+              ) : null}
               <TouchableOpacity
                 activeOpacity={0.8}
                 activeOpacity={0.7}
@@ -414,18 +450,25 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               }}
             />
           </KeyboardAvoidingView>
-          {
-            editModal?
-            <EditComment item={editComment} editModal={editModal} showEditModal={showEditModal} navigation={navigation}/>
-            :null
-          }
-          <AppInputToolBar
+          {editModal ? (
+            <EditComment
+              item={editComment}
+              editModal={editModal}
+              showEditModal={showEditModal}
+              navigation={navigation}
+            />
+          ) : null}
+          <AppInputMention
             placeholder={state.parentID?.createdBy?.userName ? '@' + state.parentID?.createdBy?.userName : ''}
             LHeight={state.LHeight}
             removeTag={() => {
               setState((prev) => ({...prev, parentID: ''}));
             }}
-            onSend={(msg) => {
+            onSend={(msg, selectedContent) => {
+              let mention = selectedContent.map((item, index) => {
+                return item.id;
+              });
+              console.log(mention);
               CommentPost(
                 (newCommentRes) => {
                   if (newCommentRes) {
@@ -443,7 +486,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 },
                 state.parentID?.parentComment || state.parentID?._id
                   ? {
-                      // mentions: [],
+                      mentions: mention,
                       parentComment: state.parentID?.parentComment || state.parentID?._id,
                       text: msg,
                       post: postData._id,
@@ -451,6 +494,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                   : {
                       text: msg,
                       post: postData._id,
+                      mentions: mention,
                     },
               );
               Keyboard.dismiss();

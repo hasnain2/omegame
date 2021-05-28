@@ -99,7 +99,7 @@ const UserProfileScreen = ({navigation, route}) => {
       {gamingAccountProvider: 'NINTENDO', account: ''},
     ];
   }
-  function getsingleuserprofilehelper(isMounted) {
+  function getsingleuserprofilehelper() {
     GetSingleUserProfile((profileRes) => {
       if (profileRes) {
         setState((prev) => ({...prev, loading: false, userData: profileRes}));
@@ -110,13 +110,13 @@ const UserProfileScreen = ({navigation, route}) => {
     }, route.params.userID);
   }
   useEffect(() => {
-    const unsubscribeFocus = navigation.addListener('focus', (e) => {
-      getsingleuserprofilehelper();
-    });
+    // const unsubscribeFocus = navigation.addListener('focus', (e) => {
+    getsingleuserprofilehelper();
+    // });
 
-    return () => {
-      unsubscribeFocus();
-    };
+    // return () => {
+    //   unsubscribeFocus();
+    // };
   }, []);
 
   const checkVisible = (isVisible) => {
