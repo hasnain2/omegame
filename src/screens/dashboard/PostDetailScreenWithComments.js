@@ -33,6 +33,7 @@ import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
 import {
   CommentPost,
+  CommentEdit,
   CommentReaction,
   GetCommentsOfPost,
   GetCommentsReplies,
@@ -244,27 +245,30 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               }}>
               {user._id === item?.createdBy._id ? (
                 <>
-                  {/* <TouchableOpacity
-                activeOpacity={0.8}
-                activeOpacity={0.7}
-                onPress={() => {
-                  setComment(item)
-                  showEditModal(!editModal);
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
-                  <Image source={ICON_EDIT} style={{height: RFValue(20), width: RFValue(20), tintColor: "#777777"}} />
-                </View>
-              </TouchableOpacity>
-                <TouchableOpacity
-                activeOpacity={0.8}
-                activeOpacity={0.7}
-                onPress={() => {
-                  deleteCommentHelper(item);
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <FastImage source={ICON_DELETE} style={{height: RFValue(30), width: RFValue(30)}} />
-                </View>
-              </TouchableOpacity> */}
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      setComment(item);
+                      showEditModal(!editModal);
+                    }}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+                      <Image
+                        source={ICON_EDIT}
+                        style={{height: RFValue(20), width: RFValue(20), tintColor: '#777777'}}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      deleteCommentHelper(item);
+                    }}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <FastImage source={ICON_DELETE} style={{height: RFValue(30), width: RFValue(30)}} />
+                    </View>
+                  </TouchableOpacity>
                 </>
               ) : null}
               <TouchableOpacity
@@ -450,52 +454,92 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               }}
             />
           </KeyboardAvoidingView>
-          {editModal ? (
+          {/* {editModal ? (
             <EditComment
               item={editComment}
               editModal={editModal}
               showEditModal={showEditModal}
               navigation={navigation}
             />
-          ) : null}
+          ) : null} */}
           <AppInputMention
             placeholder={state.parentID?.createdBy?.userName ? '@' + state.parentID?.createdBy?.userName : ''}
             LHeight={state.LHeight}
             removeTag={() => {
               setState((prev) => ({...prev, parentID: ''}));
             }}
+            editModal={editModal}
+            editComment={editComment}
             onSend={(msg, selectedContent) => {
               let mention = selectedContent.map((item, index) => {
                 return item.id;
               });
-              CommentPost(
-                (newCommentRes) => {
-                  if (newCommentRes) {
-                    getcommentshelper();
-                    if (state.parentID?.parentComment || state.parentID?._id)
-                      getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id);
-                  }
-                  if (state.comments?.length > 0) ScrollToSpecificIndex(state.currentIndex || 0);
-                  setState((prev) => ({
-                    ...prev,
-                    parentID: '',
-                    currentIndex: 0,
-                  }));
-                  getsinglepostbyidhelper();
-                },
-                state.parentID?.parentComment || state.parentID?._id
-                  ? {
-                      mentions: mention,
-                      parentComment: state.parentID?.parentComment || state.parentID?._id,
-                      text: msg,
-                      post: postData._id,
+              let alreadMention = editComment.mentions.filter((item) => msg.includes(item.userName));
+              alreadMention = alreadMention.map((item, index) => {
+                return item._id;
+              });
+              if (editModal) {
+                CommentEdit(
+                  (newCommentRes) => {
+                    showEditModal(!editModal);
+                    if (newCommentRes) {
+                      getcommentshelper();
+                      if (state.parentID?.parentComment || state.parentID?._id)
+                        getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id);
                     }
-                  : {
-                      text: msg,
-                      post: postData._id,
-                      mentions: mention,
-                    },
-              );
+                    if (state.comments?.length > 0) ScrollToSpecificIndex(state.currentIndex || 0);
+                    setState((prev) => ({
+                      ...prev,
+                      parentID: '',
+                      currentIndex: 0,
+                    }));
+                    getsinglepostbyidhelper();
+                  },
+                  state.parentID?.parentComment || state.parentID?._id
+                    ? {
+                        mentions: alreadMention.concat(mention),
+                        parentComment: state.parentID?.parentComment || state.parentID?._id,
+                        text: msg,
+                        post: postData._id,
+                        id: editComment._id,
+                      }
+                    : {
+                        id: editComment._id,
+                        text: msg,
+                        post: postData._id,
+                        mentions: alreadMention.concat(mention),
+                      },
+                );
+              } else {
+                CommentPost(
+                  (newCommentRes) => {
+                    if (newCommentRes) {
+                      getcommentshelper();
+                      if (state.parentID?.parentComment || state.parentID?._id)
+                        getcommentreplieshelper(state.parentID?.parentComment || state.parentID?._id);
+                    }
+                    if (state.comments?.length > 0) ScrollToSpecificIndex(state.currentIndex || 0);
+                    setState((prev) => ({
+                      ...prev,
+                      parentID: '',
+                      currentIndex: 0,
+                    }));
+                    getsinglepostbyidhelper();
+                  },
+                  state.parentID?.parentComment || state.parentID?._id
+                    ? {
+                        mentions: mention,
+                        parentComment: state.parentID?.parentComment || state.parentID?._id,
+                        text: msg,
+                        post: postData._id,
+                      }
+                    : {
+                        text: msg,
+                        post: postData._id,
+                        mentions: mention,
+                      },
+                );
+              }
               Keyboard.dismiss();
             }}
           />

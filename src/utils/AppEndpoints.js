@@ -39,6 +39,7 @@ const EndPoints = {
   GET_BOOKMARKED_OR_SAVED_POST: BASE_URL + 'posts/savedPosts', // get SAVED POST
   GET_POSTS_OF_SPECIFIC_USER: BASE_URL + 'posts/user?', // get all posts of specific user
   COMMENT_POST: BASE_URL + 'comments?', // POSTING COMMENT // OR GETTING COMMENTS
+  COMMENT_EDIT: BASE_URL + 'comments/id/',
   DELETE_COMMENT: BASE_URL + 'comments/',
 
   GET_POST_BY_COMMENT_ID: BASE_URL + 'comments/post/',
@@ -49,7 +50,7 @@ const EndPoints = {
   GET_GAMES_LIST: BASE_URL + 'games/list',
   GET_GAME_REVIEWS: BASE_URL + 'games/reviews?gameId=', // get specific game reviews by gameID
   POST_GAME_REVIEW: BASE_URL + 'games/action/review', // post review for a game
-  EDIT_REVIEW : BASE_URL + "reviews/",
+  EDIT_REVIEW: BASE_URL + 'reviews/',
 
   GET_ASSETS_FOR_CUSTOMIZATION: BASE_URL + 'assets',
 
@@ -74,7 +75,7 @@ const EndPoints = {
   NOTIFICATION_STATUS_SET: BASE_URL + 'notifications/read/',
 
   //----------POST FEEDBACK----------
-  POST_FEEDBACK: BASE_URL + "report/sendFeedback",
+  POST_FEEDBACK: BASE_URL + 'report/sendFeedback',
 
   //----------QUESTS LIST----------
   GET_QUEST_LIST: BASE_URL + 'quests', // --- get list of quests
@@ -88,4 +89,4 @@ const EndPoints = {
   GET_NOTIFICATION_COUNTERS: BASE_URL + 'profile/counters', // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
 };
 
-export { DOMAIN, EndPoints };
+export {DOMAIN, EndPoints};

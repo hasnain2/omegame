@@ -11,6 +11,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {replaceMentionValues} from 'react-native-controlled-mentions';
 import {DEFAULT_REQ} from '../../../../assets/images';
+import EditComment from '../EditComment';
 const SkelPlaceHolder = () => {
   return (
     <SkeletonPlaceholder>
@@ -24,9 +25,7 @@ const SkelPlaceHolder = () => {
     </SkeletonPlaceholder>
   );
 };
-const getPlainString = ({string}) => {
-  console.log(string);
-};
+const getPlainString = ({string}) => {};
 const RenderSuggestions = ({keyword, onSuggestionPress, suggestions, loading, selectedContent, setSelectedContent}) => {
   if (keyword == null) {
     return null;
@@ -78,7 +77,7 @@ const RenderSuggestions = ({keyword, onSuggestionPress, suggestions, loading, se
     </>
   );
 };
-const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelectedContent}) => {
+const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelectedContent, editModal, editComment}) => {
   let dispatch = useDispatch();
   const [listUser, setUser] = useState([]);
   const [query, setQuery] = useState('');
@@ -91,12 +90,12 @@ const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelect
     setLoading(true);
     GetUserList(
       (response) => {
-        console.log(selected);
         if (response) {
           let suggestions = [];
           response?.data.map((item, index) => {
             let temp = selected.filter((newItem) => newItem.id === item._id);
-            if (temp.length === 0) {
+            let temp1 = editComment?.mentions.filter((newItem) => newItem._id === item._id);
+            if (temp.length === 0 && temp1.length === 0) {
               suggestions.push({
                 id: item._id,
                 name: item.userName,

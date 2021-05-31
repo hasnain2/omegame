@@ -346,6 +346,24 @@ const CommentPost = (callback, PAYLOAD) => {
       callback(false);
     });
 };
+const CommentEdit = (callback, PAYLOAD) => {
+  fetch(`${EndPoints.COMMENT_EDIT}${PAYLOAD.id}`, {
+    method: 'PATCH',
+    headers: Interceptor.getHeaders(),
+    body: JSON.stringify(PAYLOAD),
+  })
+    .then(JSONBodyHelper)
+    .then(([status, data]) => {
+      AppLogger('-----------COMMENTING ON POST BY ID RESPONSE-----------', JSON.stringify(data));
+      if (status === 201 || status === 200) {
+        callback(data?.data);
+      } else callback(false);
+    })
+    .catch((error) => {
+      AppLogger('---------COMMENTING ON POST BY ID ERROR-----------', error);
+      callback(false);
+    });
+};
 
 const CommentReaction = (callback, commentID, PAYLOAD) => {
   fetch(EndPoints.COMMENT_REACTIONS + commentID, {
@@ -608,4 +626,5 @@ export {
   GetExploreMediaOnlyPosts,
   GetExplorePosts,
   DeleteComment,
+  CommentEdit,
 };

@@ -10,7 +10,21 @@ import {replaceMentionValues} from 'react-native-controlled-mentions';
 
 const DHeight = Dimensions.get('screen').height;
 
-const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
+const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder, editModal, editComment}) => {
+  let parsedComment = {...editComment};
+  let parsedText = editComment?.text?.split(' ');
+  parsedText = parsedText?.map((item, index) => {
+    if (item[0] === '@') {
+      let temp = item.substring(1);
+      let str1 = '@[';
+      let res = str1.concat(temp);
+      str1 = ']()';
+      res = res.concat(str1);
+      return res;
+    }
+    return item;
+  });
+  parsedComment.text = parsedText?.join(' ');
   let [state, setState] = useState({
     loading: false,
     selectedSortType: 'recent',
@@ -19,8 +33,13 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
     LWidth: 0,
     selectedContent: [],
   });
+  // let temp = selected;
+  // editComment?.mentions?.map((item, index) => {
+  //   temp = temp.push ({id: item._id});
+  // });
   const [selected, setSelected] = useState([]);
-
+  // console.log('mango');
+  // console.log(temp);
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
@@ -31,6 +50,9 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
       Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
     };
   }, [LHeight]);
+  useEffect(() => {
+    setState((prev) => ({...prev, comment: editModal ? parsedComment.text : ''}));
+  }, [editModal]);
   const setSeletedValue = (value) => {
     setState((prev) => ({...prev, comment: value}));
   };
@@ -78,6 +100,8 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
             setSeletedValue={setSeletedValue}
             value={state.comment}
             selected={selected}
+            editComment={parsedComment}
+            editModal={editModal}
             setSelectedContent={(content) => {
               selected.push({id: content.id});
               //setSelected(temp);
@@ -111,7 +135,7 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder}) => {
               size={2}
               bold={true}
               style={{paddingHorizontal: RFValue(15), textAlign: 'center'}}>
-              SEND
+              {editModal ? 'EDIT' : 'SEND'}
             </AppText>
           </TouchableOpacity>
         )}
