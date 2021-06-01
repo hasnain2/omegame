@@ -50,9 +50,9 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-const actionSheetRef = createRef();
 const PostDetailScreenWithComments = ({navigation, route}) => {
-  let actionSheet;
+  let actionSheetRef = null;
+
   let {user} = useSelector((state) => state.root);
   let [postData, setPostData] = useState(route?.params?.post || null);
   let postID = postData?._id || route?.params?.postID;
@@ -213,7 +213,8 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       activeOpacity={0.8}
                       onPress={() => {
                         setComment(item);
-                        actionSheetRef.current?.setModalVisible();
+
+                        actionSheetRef?.setModalVisible();
                       }}>
                       <View style={{alignItems: 'flex-end'}}>
                         <Image
@@ -229,14 +230,17 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                   ) : null}
                 </View>
               </View>
-              <ActionSheet ref={actionSheetRef}>
+              <ActionSheet
+                ref={(ref) => {
+                  actionSheetRef = ref;
+                }}>
                 <View
                   style={{
                     height: RFValue(150),
                     backgroundColor: 'black',
                     padding: RFValue(10),
                     borderTopColor: 'white',
-                    borderTopWidth: RFValue(1),
+                    borderTopWidth: RFValue(2),
                   }}>
                   <>
                     <TouchableOpacity
@@ -244,7 +248,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       activeOpacity={0.7}
                       onPress={() => {
                         // setComment(item);
-                        actionSheetRef.current?.hide();
+                        actionSheetRef?.hide();
                         showEditModal(!editModal);
                       }}>
                       <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
@@ -276,7 +280,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       onPress={() => {
                         // actionSheetRef.current?.hide();
                         deleteCommentHelper(editComment);
-                        actionSheetRef.current?.hide();
+                        actionSheetRef?.hide();
                       }}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Image

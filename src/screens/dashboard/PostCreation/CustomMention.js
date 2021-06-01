@@ -98,8 +98,10 @@ const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelect
             if (selected.length > 0) {
               temp = selected.filter((newItem) => newItem.id === item._id);
             }
+            console.log('Edit Comment');
+            console.log(editComment);
             // console.log(editComment);
-            // if (editComment?.mentions.length > 0) {
+            // if (editComment?.mentions?.length > 0) {
             //   temp1 = editComment?.mentions.filter((newItem) => newItem._id === item._id);
             // }
             if (temp.length === 0) {
@@ -116,7 +118,6 @@ const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelect
           });
           //newSuggestions = suggestions;
           setLoading(!loading);
-          console.log(suggestions);
           setUser(suggestions);
           dispatch(setSuggestions(suggestions));
         }
