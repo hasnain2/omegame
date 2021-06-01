@@ -93,9 +93,16 @@ const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelect
         if (response) {
           let suggestions = [];
           response?.data.map((item, index) => {
-            let temp = selected.filter((newItem) => newItem.id === item._id);
-            let temp1 = editComment?.mentions.filter((newItem) => newItem._id === item._id);
-            if (temp.length === 0 && temp1.length === 0) {
+            let temp = [],
+              temp1 = [];
+            if (selected.length > 0) {
+              temp = selected.filter((newItem) => newItem.id === item._id);
+            }
+            // console.log(editComment);
+            // if (editComment?.mentions.length > 0) {
+            //   temp1 = editComment?.mentions.filter((newItem) => newItem._id === item._id);
+            // }
+            if (temp.length === 0) {
               suggestions.push({
                 id: item._id,
                 name: item.userName,
@@ -109,8 +116,9 @@ const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelect
           });
           //newSuggestions = suggestions;
           setLoading(!loading);
+          console.log(suggestions);
           setUser(suggestions);
-          // dispatch(setSuggestions(suggestions));
+          dispatch(setSuggestions(suggestions));
         }
       },
       10,

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, createRef} from 'react';
 import {
   FlatList,
   Keyboard,
@@ -16,7 +16,7 @@ import {AppModal} from '../../components';
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {ICON_COMMENT} from '../../../assets/icons';
-import {ICON_DELETE} from '../../../assets/icons';
+import {ICON_DELETE, ICON_MENU} from '../../../assets/icons';
 import {ICON_EDIT} from '../../../assets/icons';
 import {DEFAULT_USER_PIC} from '../../../assets/images';
 import {
@@ -44,12 +44,15 @@ import {largeNumberShortify} from '../../utils/AppHelperMethods';
 import {FontAwesome} from '../../utils/AppIcons';
 import {useSelector} from 'react-redux';
 import EditComment from './EditComment';
+import ActionSheet from 'react-native-actions-sheet';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-
+const actionSheetRef = createRef();
 const PostDetailScreenWithComments = ({navigation, route}) => {
+  let actionSheet;
   let {user} = useSelector((state) => state.root);
   let [postData, setPostData] = useState(route?.params?.post || null);
   let postID = postData?._id || route?.params?.postID;
@@ -176,42 +179,123 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
 
           <View style={{flex: 1}}>
             <View style={{flex: 1, paddingLeft: RFValue(10)}}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => {
-                  if (item?.createdBy?._id)
-                    navigation.navigate('UserProfileScreen', {
-                      userID: item?.createdBy?._id,
-                    });
-                }}>
-                <View style={{}}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                      {item?.createdBy?.firstName || item?.createdBy?.userName}
+              <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 1}}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if (item?.createdBy?._id)
+                        navigation.navigate('UserProfileScreen', {
+                          userID: item?.createdBy?._id,
+                        });
+                    }}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
+                        {item?.createdBy?.firstName || item?.createdBy?.userName}
+                      </AppText>
+                      <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
+                      <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
+                        {item?.createdBy?.level}
+                      </AppText>
+                      <AppText size={1} color={AppTheme.colors.lightGrey} style={{flex: 1}}>
+                        {' '}
+                        - {moment(item?.createdAt || new Date()).fromNow(true)}
+                      </AppText>
+                    </View>
+                    <AppText size={1} color={AppTheme.colors.lightGrey}>
+                      {item?.createdBy?.userName}
                     </AppText>
-                    <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                    <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
-                      {item?.createdBy?.level}
-                    </AppText>
-                    <AppText size={1} color={AppTheme.colors.lightGrey} style={{flex: 1}}>
-                      {' '}
-                      - {moment(item?.createdAt || new Date()).fromNow(true)}
-                    </AppText>
-
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
-                      {/* <Image source={ICON_MENU} style={{ tintColor: 'white', height: RFValue(30), width: RFValue(30), padding: RFValue(15) }} /> */}
-                    </TouchableOpacity>
-                  </View>
-                  <AppText size={1} color={AppTheme.colors.lightGrey}>
-                    {item?.createdBy?.userName}
-                  </AppText>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+                <View sytle={{flex: 1}}>
+                  {user._id === item?.createdBy._id ? (
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        setComment(item);
+                        actionSheetRef.current?.setModalVisible();
+                      }}>
+                      <View style={{alignItems: 'flex-end'}}>
+                        <Image
+                          source={ICON_MENU}
+                          style={{
+                            tintColor: 'white',
+                            height: RFValue(30),
+                            width: RFValue(30),
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+              </View>
+              <ActionSheet ref={actionSheetRef}>
+                <View
+                  style={{
+                    height: RFValue(150),
+                    backgroundColor: 'black',
+                    padding: RFValue(10),
+                    borderTopColor: 'white',
+                    borderTopWidth: RFValue(1),
+                  }}>
+                  <>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        // setComment(item);
+                        actionSheetRef.current?.hide();
+                        showEditModal(!editModal);
+                      }}>
+                      <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+                        <View
+                          style={{
+                            height: RFValue(30),
+                            width: RFValue(30),
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <AntIcon name="edit" color="white" size={RFValue(20)} />
+                        </View>
+                        {/* <Image
+                            source={ICON_EDIT}
+                            style={{
+                              height: RFValue(30),
+                              width: RFValue(30),
+                              tintColor: 'white',
+                            }}
+                          /> */}
+                        <AppText color="white" size={2} style={{paddingHorizontal: RFValue(5)}}>
+                          EDIT
+                        </AppText>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        // actionSheetRef.current?.hide();
+                        deleteCommentHelper(editComment);
+                        actionSheetRef.current?.hide();
+                      }}>
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Image
+                          source={ICON_DELETE}
+                          style={{height: RFValue(30), width: RFValue(30), tintColor: 'white'}}
+                        />
+                        <AppText color="white" size={2} style={{paddingHorizontal: RFValue(5)}}>
+                          DELETE
+                        </AppText>
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                </View>
+              </ActionSheet>
               <AppText size={2} color={'white'} style={{paddingVertical: RFValue(10)}}>
                 {/* <Text style={{color: 'red'}}>Hello</Text> */}
                 {temp.map((item1, index) => {
                   let getUser = item1.split('@');
-                  let user = item.mentions.filter((user, index) => user.userName === getUser[1]);
+                  let user = item.mentions?.filter((user, index) => user.userName === getUser[1]);
                   return (
                     <>
                       {item1[0] === '@' ? (
@@ -229,7 +313,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                           {item1}{' '}
                         </Text>
                       ) : (
-                        <Text key={index + 'you'}>{item1 + ' '}</Text>
+                        <Text key={'you'}>{item1 + ' '}</Text>
                       )}
                     </>
                   );
@@ -243,34 +327,6 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              {user._id === item?.createdBy._id ? (
-                <>
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      setComment(item);
-                      showEditModal(!editModal);
-                    }}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
-                      <Image
-                        source={ICON_EDIT}
-                        style={{height: RFValue(20), width: RFValue(20), tintColor: '#777777'}}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      deleteCommentHelper(item);
-                    }}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <FastImage source={ICON_DELETE} style={{height: RFValue(30), width: RFValue(30)}} />
-                    </View>
-                  </TouchableOpacity>
-                </>
-              ) : null}
               <TouchableOpacity
                 activeOpacity={0.8}
                 activeOpacity={0.7}
@@ -471,11 +527,11 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
             editModal={editModal}
             editComment={editComment}
             onSend={(msg, selectedContent) => {
-              let mention = selectedContent.map((item, index) => {
+              let mention = selectedContent?.map((item, index) => {
                 return item.id;
               });
-              let alreadMention = editComment.mentions.filter((item) => msg.includes(item.userName));
-              alreadMention = alreadMention.map((item, index) => {
+              let alreadMention = editComment?.mentions?.filter((item) => msg.includes(item.userName));
+              alreadMention = alreadMention?.map((item, index) => {
                 return item._id;
               });
               if (editModal) {
