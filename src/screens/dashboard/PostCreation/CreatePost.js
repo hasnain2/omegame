@@ -44,7 +44,7 @@ import {GET_FRIEND_LIST_TYPES, POST_PRIVACY, PRIVACY} from '../../../utils/AppCo
 import {AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber} from '../../../utils/AppHelperMethods';
 import {AntDesign, EvilIcons, Ionicons} from '../../../utils/AppIcons';
 import {OpenCameraGalleryPromptPicker, OpenGalleryPicker} from '../../../utils/AppMediaPicker';
-import CustomMention from "./CustomMention";
+import CustomMention from './CustomMention';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({navigation, route}) => {
   const postData = route?.params?.postData;
@@ -79,17 +79,17 @@ const CreatePost = ({navigation, route}) => {
     showFriendsListModal: false,
   });
   const [text, setText] = useState(state.postTypeIsPool ? 'Ask a question' : "What's new?");
-    onClick = (e) => {
-    if(counter === 0){
+  onClick = (e) => {
+    if (counter === 0) {
       setText('');
-      setCounter(counter+1); 
+      setCounter(counter + 1);
     }
     this.textInput.focus();
-    };
-  const searchQuery = ()=>{
+  };
+  const searchQuery = () => {
     let arr = text.split('@');
-    return arr[arr.length-1];
-  }
+    return arr[arr.length - 1];
+  };
   function getfriendshelper(cursor) {
     GerUserListByType(
       (response) => {
@@ -111,19 +111,19 @@ const CreatePost = ({navigation, route}) => {
   let {user} = useSelector((state) => state.root);
   const onSubmit = () => {
     let payload = {};
-    if(state.whatsNewText || state.selectedMedia){
-    if (state.whatsNewText) {
+    if (state.whatsNewText || state.selectedMedia) {
+      if (state.whatsNewText) {
         payload = {
-        hashTags: [],
-        privacy: PRIVACY.find((ii) => ii.name === state.privacy)?.key || 'PUBLIC',
-        text: state.whatsNewText,
-      };
-    }else{
-      payload = {
-        hashTags: [],
-        privacy: PRIVACY.find((ii) => ii.name === state.privacy)?.key || 'PUBLIC',
-      };
-    }
+          hashTags: [],
+          privacy: PRIVACY.find((ii) => ii.name === state.privacy)?.key || 'PUBLIC',
+          text: state.whatsNewText,
+        };
+      } else {
+        payload = {
+          hashTags: [],
+          privacy: PRIVACY.find((ii) => ii.name === state.privacy)?.key || 'PUBLIC',
+        };
+      }
       if (state.chosenContacts?.length > 0) payload.tagged = state.chosenContacts.map((ii) => ii?._id);
 
       payload.file = state.selectedMedia || false;
@@ -152,7 +152,7 @@ const CreatePost = ({navigation, route}) => {
           payload,
         );
       } else {
-        console.log("payload added");
+        console.log('payload added');
         console.log(payload);
         CreatePostService((result) => {
           if (!hasMediaToUpload) setState((prev) => ({...prev, loading: false}));
@@ -192,7 +192,7 @@ const CreatePost = ({navigation, route}) => {
           />
           {/* <CustomMention/> */}
           {/* <CustomMentionEditor/> */}
-        {/* <TextInput
+          {/* <TextInput
           ref={ref => (this.textInput = ref)}
           onKeyPress={({nativeEvent})=>{
             setText('');
@@ -268,8 +268,8 @@ const CreatePost = ({navigation, route}) => {
              />
             </View>:null
           } */}
-          
-        {/* <AppTagModal
+
+          {/* <AppTagModal
         show={openTag}
         toggle={() => closeTagModal(!openTag)}
         chosenContacts={state.chosenContacts}

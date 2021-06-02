@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {AppBackButton, AppButton, AppCustomSlider, AppText, UserAvatar} from '../../components';
 import {AppConfig, AppTheme} from '../../config';
 import {AppShowToast} from '../../utils/AppHelperMethods';
-import {PostFeedback} from "../../services/feedback";
+import {PostFeedback} from '../../services/feedback';
 const NUMBER_OF_COLUMNS = 2;
 const LeaveFeedBack = ({navigation, route}) => {
   let gameData = route?.params?.gameData;
@@ -21,16 +21,19 @@ const LeaveFeedBack = ({navigation, route}) => {
 
   const onSubmit = () => {
     if (state.feedbacktext.trim()) {
-      setState({...state,loading: true})
-      PostFeedback((res)=>{
-        if(res){
-        AppShowToast("Thanks for your feedback.");
-        navigation.goBack();
-        }else{
-        AppShowToast("Please Try again");
-        }
-        setState({...state,loading: false})
-    },{description: state.feedbacktext.trim()})
+      setState({...state, loading: true});
+      PostFeedback(
+        (res) => {
+          if (res) {
+            AppShowToast('Thanks for your feedback.');
+            navigation.goBack();
+          } else {
+            AppShowToast('Please Try again');
+          }
+          setState({...state, loading: false});
+        },
+        {description: state.feedbacktext.trim()},
+      );
     } else {
       AppShowToast('kindly provide feedback');
     }
@@ -50,7 +53,7 @@ const LeaveFeedBack = ({navigation, route}) => {
           <AppText size={3} color={'grey'}>
             If you have comments, concerns or compliments, please feel welcome to let us know.{'\n\n'}
           </AppText>
-          {/* <AppText size={3} color={'white'} style={{}}>
+          <AppText size={3} color={'white'} style={{}}>
             How much did you like {AppConfig.appName}?
           </AppText>
           <AppText
@@ -64,7 +67,7 @@ const LeaveFeedBack = ({navigation, route}) => {
             onChange={(val) => {
               setState((prev) => ({...prev, rating: val}));
             }}
-          /> */}
+          />
         </View>
 
         <View style={{flexDirection: 'row', padding: RFValue(20)}}>
@@ -94,7 +97,7 @@ const LeaveFeedBack = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={{padding: RFValue(15), paddingTop: 0}}>
-        <AppButton bgColor="black" onPress={onSubmit} label={'SEND FEEDBACK'} loading={state.loading}/>
+        <AppButton bgColor="black" onPress={onSubmit} label={'SEND FEEDBACK'} loading={state.loading} />
       </View>
     </View>
   );

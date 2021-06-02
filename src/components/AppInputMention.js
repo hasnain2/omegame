@@ -94,7 +94,14 @@ const AppInputMention = ({LHeight, onSend, chat, removeTag, placeholder, editMod
           alignItems: 'center',
         }}>
         {/* <Fontisto name="smiley" style={{ fontSize: RFValue(25), color: 'white', padding: RFValue(5) }} /> */}
-        <View style={{height: '100%', paddingVertical: RFValue(15), fontSize: RFValue(16), color: 'white', flex: 1}}>
+        <View
+          style={{
+            height: '100%',
+            paddingVertical: Platform.OS === 'ios' ? RFValue(12) : RFValue(0),
+            fontSize: RFValue(16),
+            color: 'white',
+            flex: 1,
+          }}>
           <CustomMention
             placeholder={placeholder}
             setSeletedValue={setSeletedValue}

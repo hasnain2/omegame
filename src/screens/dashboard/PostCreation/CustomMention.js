@@ -101,10 +101,10 @@ const CustomMention = ({placeholder, setSeletedValue, value, selected, setSelect
             console.log('Edit Comment');
             console.log(editComment);
             // console.log(editComment);
-            if (editComment?.mentions?.length > 0) {
-              temp1 = editComment?.mentions?.filter((newItem) => newItem._id === item._id);
-            }
-            if (temp.length === 0 && temp1 === 0) {
+            // if (editComment?.mentions?.length > 0) {
+            //   temp1 = editComment?.mentions?.filter((newItem) => newItem._id === item._id);
+            // }
+            if (temp.length === 0) {
               suggestions.push({
                 id: item._id,
                 name: item.userName,
