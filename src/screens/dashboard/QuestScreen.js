@@ -108,7 +108,9 @@ const QuestScreen = ({route, navigation}) => {
               <>
                 {index === 0 ? (
                   <View style={{height: state.LHeight, width: state.LWidth}}>
-                    <FastImage source={user?.cover? {uri: user.cover}:BACKGROUND_IMG} style={{height: state.LHeight, width: state.LWidth}}>
+                    <FastImage
+                      source={user?.cover ? {uri: user.cover} : BACKGROUND_IMG}
+                      style={{height: state.LHeight, width: state.LWidth}}>
                       <LinearGradient
                         colors={COLORS_ARR}
                         style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
@@ -128,14 +130,14 @@ const QuestScreen = ({route, navigation}) => {
                           </View>
                           <View style={{flex: 0.35}}>
                             <Bar
-                            height={RFValue(10)}
-                            width={145}
-                            borderRadius={RFValue(3)}
-                            progress={(user?.earnedXps || 0) / 100}
-                            // backgroundColor={'#C2C2C2'}
-                            color={AppTheme.colors.primary}
-                            unfilledColor="#666666"
-                            borderColor="none"
+                              height={RFValue(10)}
+                              width={145}
+                              borderRadius={RFValue(3)}
+                              progress={(user?.earnedXps || 0) / 100}
+                              // backgroundColor={'#C2C2C2'}
+                              color={AppTheme.colors.primary}
+                              unfilledColor="#666666"
+                              borderColor="none"
                             />
                           </View>
                           <View
@@ -155,7 +157,7 @@ const QuestScreen = ({route, navigation}) => {
                           <View style={{flex: 1, justifyContent: 'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                               <AppText size={2} color={AppTheme.colors.lightGrey} bold={true}>
-                                {user?.firstName || user?.userName}
+                                {user?.userName || user?.firstName}
                               </AppText>
                               <IsUserVerifiedCheck check={user?.isVerified} />
                             </View>
