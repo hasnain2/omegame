@@ -25,25 +25,26 @@ const EditUserProfileScreen = ({navigation, route}) => {
   let routeUser = route?.params?.data;
   let changeUserName = route?.params?.userName || false;
   let reduxUser = useSelector((state) => state.root.user);
-  let user = {...routeUser, ...reduxUser}, gac = [];
-  if(user?.gamingAccounts && user?.gamingAccounts.length > 0){
-    ['XBOX','PSN','STEAM','NINTENDO'].forEach((game)=>{
-      let check = user?.gamingAccounts.filter(g => g.gamingAccountProvider == game);
-      if(check.length > 0){
+  let user = {...routeUser, ...reduxUser},
+    gac = [];
+  if (user?.gamingAccounts && user?.gamingAccounts.length > 0) {
+    ['XBOX', 'PSN', 'STEAM', 'NINTENDO'].forEach((game) => {
+      let check = user?.gamingAccounts.filter((g) => g.gamingAccountProvider == game);
+      if (check.length > 0) {
         gac.push(check[0]);
-      }else{
+      } else {
         gac.push({gamingAccountProvider: game, account: ''});
       }
-    })
-  }else{
-   gac= [
+    });
+  } else {
+    gac = [
       {gamingAccountProvider: 'XBOX', account: ''},
       {gamingAccountProvider: 'PSN', account: ''},
       {gamingAccountProvider: 'STEAM', account: ''},
       {gamingAccountProvider: 'NINTENDO', account: ''},
-    ]
+    ];
   }
-   
+
   const [state, setState] = useState({
     name: user.firstName || '',
     userName: user.userName || '',
@@ -97,11 +98,6 @@ const EditUserProfileScreen = ({navigation, route}) => {
           },
         ],
       };
-    }else{
-      formData={
-        ...formData,
-        gamingAccounts:[],
-      };
     }
     if (state.gamingAccounts[1]?.account) {
       formData = {
@@ -154,8 +150,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
     //     // nickName: "" || null,
     //     isPrivate: false
     // };
-    if (changeUserName && state.userName.trim())
-      formData.userName = state.userName?.toLowerCase().trim();
+    if (changeUserName && state.userName.trim()) formData.userName = state.userName?.toLowerCase().trim();
     if (state.imageToUpload) formData = {...formData, pic: state.imageToUpload};
     setState((prev) => ({...prev, loading: true}));
     UpdateProfile((res) => {
@@ -179,13 +174,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
             <UserAvatar
               corner={user?.corner || ''}
               color={user?.cornerColor}
-              source={
-                state.photo
-                  ? {uri: state.photo}
-                  : user.pic
-                  ? {uri: user.pic}
-                  : null
-              }
+              source={state.photo ? {uri: state.photo} : user.pic ? {uri: user.pic} : null}
               size={140}
             />
             <View
@@ -270,11 +259,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
             <View pointerEvents={'none'}>
               <AppInput
                 editable={false}
-                value={
-                  state.dateOfBirth
-                    ? moment(state.dateOfBirth).format('DD MMM, yyyy') + ''
-                    : ''
-                }
+                value={state.dateOfBirth ? moment(state.dateOfBirth).format('DD MMM, yyyy') + '' : ''}
                 label={'Date of birth'}
                 onChangeText={(val) => {}}
               />
@@ -333,12 +318,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
       </AppAvoidKeyboard>
 
       <View style={{padding: RFValue(15)}}>
-        <AppButton
-          loading={state.loading || state.imageLoading}
-          bgColor="black"
-          onPress={onSubmit}
-          label={'SAVE'}
-        />
+        <AppButton loading={state.loading || state.imageLoading} bgColor="black" onPress={onSubmit} label={'SAVE'} />
       </View>
 
       <AppDateTimePicker
@@ -363,9 +343,7 @@ const EditUserProfileScreen = ({navigation, route}) => {
             width: '100%',
             paddingBottom: RFValue(50),
           }}>
-          <AppText style={{paddingVertical: RFValue(15), textAlign: 'center'}}>
-            Select gender
-          </AppText>
+          <AppText style={{paddingVertical: RFValue(15), textAlign: 'center'}}>Select gender</AppText>
 
           {GENDERS_OF_USERS.map((genderItem, index) => (
             <View key={genderItem}>
