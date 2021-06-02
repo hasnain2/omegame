@@ -84,7 +84,7 @@ const UserProfileScreen = ({navigation, route}) => {
   let gac = [];
   if (state.userData?.gamingAccounts && state.userData?.gamingAccounts?.length > 0) {
     ['XBOX', 'PSN', 'STEAM', 'NINTENDO'].forEach((game) => {
-      let check = user?.gamingAccounts.filter((g) => g.gamingAccountProvider == game);
+      let check = state.userData?.gamingAccounts.filter((g) => g.gamingAccountProvider == game);
       if (check.length > 0) {
         gac.push(check[0]);
       } else {
@@ -102,6 +102,7 @@ const UserProfileScreen = ({navigation, route}) => {
   function getsingleuserprofilehelper() {
     GetSingleUserProfile((profileRes) => {
       if (profileRes) {
+        console.log(profileRes);
         setState((prev) => ({...prev, loading: false, userData: profileRes}));
         if (userID) disp(setUser(profileRes));
       } else {
