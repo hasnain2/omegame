@@ -85,52 +85,60 @@ const UserProfileTabs = ({navigation, autoPlay, userID}) => {
         },
       }}>
       <Tab.Screen name="UserProfilePosts">
-        {(props) => (
-          <View style={{flex: 1}}>
+        {(props) =>
+          props.navigation.isFocused() ? (
             <UserProfilePosts
               {...props}
               style={{backgroundColor: AppTheme.colors.background}}
               userID={userID}
               autoPlay={autoPlay}
             />
-          </View>
-        )}
+          ) : (
+            <View style={{maxHeight: 20}}></View>
+          )
+        }
       </Tab.Screen>
       <Tab.Screen name="UserProfileGridPosts">
-        {(props) => (
-          <View style={{flex: 1}}>
+        {(props) =>
+          props.navigation.isFocused() ? (
             <UserProfileGridPosts
               {...props}
               style={{backgroundColor: AppTheme.colors.background}}
               userID={userID}
               autoPlay={autoPlay}
             />
-          </View>
-        )}
+          ) : (
+            <View style={{maxHeight: 20}}></View>
+          )
+        }
       </Tab.Screen>
       <Tab.Screen name="UserProfileReviews">
-        {(props) => (
-          <View style={{flex: 1}}>
+        {(props) =>
+          props.navigation.isFocused() ? (
             <UserProfileReviews
               {...props}
               style={{backgroundColor: AppTheme.colors.background}}
               userID={userID}
               autoPlay={autoPlay}
             />
-          </View>
-        )}
+          ) : (
+            <View style={{maxHeight: 20}}></View>
+          )
+        }
       </Tab.Screen>
       <Tab.Screen name="UserProfileExtras">
-        {(props) => (
-          <View style={{flex: 1}}>
+        {(props) =>
+          props.navigation.isFocused() ? (
             <UserProfileTaggedInPosts
               {...props}
               style={{backgroundColor: AppTheme.colors.background}}
               userID={userID}
               autoPlay={autoPlay}
             />
-          </View>
-        )}
+          ) : (
+            <View style={{maxHeight: 20}}></View>
+          )
+        }
       </Tab.Screen>
     </Tab.Navigator>
   );
