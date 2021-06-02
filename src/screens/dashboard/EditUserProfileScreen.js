@@ -70,98 +70,102 @@ const EditUserProfileScreen = ({navigation, route}) => {
 
   const onSubmit = () => {
     let formData = {};
-    if (state.bio) {
-      formData = {bio: state.bio};
-    }
-    if (state.dateOfBirth) {
-      formData = {
-        ...formData,
-        dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString(),
-      };
-    }
-    if (state.favoriteConsole) {
-      formData = {...formData, favouriteConsole: state.favoriteConsole};
-    }
-    if (state.favoriteGame) {
-      formData = {...formData, favouriteGame: state.favoriteGame};
-    }
-    if (state.name) {
-      formData = {...formData, firstName: state.name};
-    }
-    if (state.gamingAccounts[0]?.account) {
-      formData = {
-        ...formData,
-        gamingAccounts: [
-          {
-            gamingAccountProvider: 'XBOX',
-            account: state.gamingAccounts[0].account,
-          },
-        ],
-      };
-    }
-    if (state.gamingAccounts[1]?.account) {
-      formData = {
-        ...formData,
-        gamingAccounts: [
-          ...formData.gamingAccounts,
-          {
-            gamingAccountProvider: 'PSN',
-            account: state.gamingAccounts[1].account,
-          },
-        ],
-      };
-    }
-    if (state.gamingAccounts[2]?.account) {
-      formData = {
-        ...formData,
-        gamingAccounts: [
-          ...formData.gamingAccounts,
-          {
-            gamingAccountProvider: 'STEAM',
-            account: state.gamingAccounts[2].account,
-          },
-        ],
-      };
-    }
-    if (state.gamingAccounts[3]?.account) {
-      formData = {
-        ...formData,
-        gamingAccounts: [
-          ...formData.gamingAccounts,
-          {
-            gamingAccountProvider: 'NINTENDO',
-            account: state.gamingAccounts[3].account,
-          },
-        ],
-      };
-    }
-    if (state.gender) {
-      formData = {...formData, gender: state.gender};
-    }
-    // let formedData = {
-    //     bio: state.bio || null,
-    //     dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
-    //     favouriteConsole: state.favoriteConsole || null,
-    //     favouriteGame: state.favoriteGame || null,
-    //     firstName: state.name || null,
-    //     gamingAccounts: state.gamingAccounts,
-    //     gender: state.gender || '',
-    //     // lastName: "" || null,
-    //     // nickName: "" || null,
-    //     isPrivate: false
-    // };
-    if (changeUserName && state.userName.trim()) formData.userName = state.userName?.toLowerCase().trim();
-    if (state.imageToUpload) formData = {...formData, pic: state.imageToUpload};
-    setState((prev) => ({...prev, loading: true}));
-    UpdateProfile((res) => {
-      setState((prev) => ({...prev, loading: false}));
-      if (res) {
-        navigation.goBack();
-        AppShowToast('Profile has been updated');
-      } else {
-        AppShowToast('Error');
+    if (state.userName) {
+      if (state.bio) {
+        formData = {bio: state.bio};
       }
-    }, formData);
+      if (state.dateOfBirth) {
+        formData = {
+          ...formData,
+          dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString(),
+        };
+      }
+      if (state.favoriteConsole) {
+        formData = {...formData, favouriteConsole: state.favoriteConsole};
+      }
+      if (state.favoriteGame) {
+        formData = {...formData, favouriteGame: state.favoriteGame};
+      }
+      if (state.name) {
+        formData = {...formData, firstName: state.name};
+      }
+      if (state.gamingAccounts[0]?.account) {
+        formData = {
+          ...formData,
+          gamingAccounts: [
+            {
+              gamingAccountProvider: 'XBOX',
+              account: state.gamingAccounts[0].account,
+            },
+          ],
+        };
+      }
+      if (state.gamingAccounts[1]?.account) {
+        formData = {
+          ...formData,
+          gamingAccounts: [
+            ...formData.gamingAccounts,
+            {
+              gamingAccountProvider: 'PSN',
+              account: state.gamingAccounts[1].account,
+            },
+          ],
+        };
+      }
+      if (state.gamingAccounts[2]?.account) {
+        formData = {
+          ...formData,
+          gamingAccounts: [
+            ...formData.gamingAccounts,
+            {
+              gamingAccountProvider: 'STEAM',
+              account: state.gamingAccounts[2].account,
+            },
+          ],
+        };
+      }
+      if (state.gamingAccounts[3]?.account) {
+        formData = {
+          ...formData,
+          gamingAccounts: [
+            ...formData.gamingAccounts,
+            {
+              gamingAccountProvider: 'NINTENDO',
+              account: state.gamingAccounts[3].account,
+            },
+          ],
+        };
+      }
+      if (state.gender) {
+        formData = {...formData, gender: state.gender};
+      }
+      // let formedData = {
+      //     bio: state.bio || null,
+      //     dateOfBirth: moment(new Date(state.dateOfBirth)).toISOString() || null,
+      //     favouriteConsole: state.favoriteConsole || null,
+      //     favouriteGame: state.favoriteGame || null,
+      //     firstName: state.name || null,
+      //     gamingAccounts: state.gamingAccounts,
+      //     gender: state.gender || '',
+      //     // lastName: "" || null,
+      //     // nickName: "" || null,
+      //     isPrivate: false
+      // };
+      if (state.userName.trim()) formData.userName = state.userName?.toLowerCase().trim();
+      if (state.imageToUpload) formData = {...formData, pic: state.imageToUpload};
+      setState((prev) => ({...prev, loading: true}));
+      UpdateProfile((res) => {
+        setState((prev) => ({...prev, loading: false}));
+        if (res) {
+          navigation.goBack();
+          AppShowToast('Profile has been updated');
+        } else {
+          AppShowToast('Error');
+        }
+      }, formData);
+    } else {
+      AppShowToast('Please Provide Username');
+    }
   };
 
   return (
@@ -227,7 +231,6 @@ const EditUserProfileScreen = ({navigation, route}) => {
           <AppInput
             label={'Username'}
             value={state.userName}
-            editable={changeUserName}
             onChangeText={(val) => {
               setState((prev) => ({...prev, userName: val}));
             }}
