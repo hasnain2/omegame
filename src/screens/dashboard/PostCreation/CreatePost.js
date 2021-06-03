@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, Image, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, TextInput, TouchableOpacity, View, Alert} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -43,7 +43,7 @@ import {
 import {GET_FRIEND_LIST_TYPES, POST_PRIVACY, PRIVACY} from '../../../utils/AppConstants';
 import {AppLogger, AppShowToast, CapitalizeFirstLetter, stringifyNumber} from '../../../utils/AppHelperMethods';
 import {AntDesign, EvilIcons, Ionicons} from '../../../utils/AppIcons';
-import {OpenCameraGalleryPromptPicker, OpenGalleryPicker} from '../../../utils/AppMediaPicker';
+import {OpenCameraGalleryPromptPicker, OpenGalleryPicker, OpenGalleryPickerVideo} from '../../../utils/AppMediaPicker';
 import CustomMention from './CustomMention';
 const BOXES_SIZE = RFValue(80);
 const CreatePost = ({navigation, route}) => {
@@ -437,10 +437,33 @@ const CreatePost = ({navigation, route}) => {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              OpenGalleryPicker((res) => {
-                AppLogger('', res);
-                if (res) setState((prev) => ({...prev, selectedMedia: res})); //change this when done
-              }, 'photo');
+              Alert.alert('Media Picker', 'What do you want to pick?', [
+                {
+                  text: 'Image',
+                  onPress: () => {
+                    OpenGalleryPicker((res) => {
+                      AppLogger('', res);
+                      if (res) setState((prev) => ({...prev, selectedMedia: res})); //change this when done
+                    }, 'photo');
+                    setState((prev) => ({...prev, showGallery: true}));
+                  },
+                  style: 'cancel',
+                },
+                {
+                  text: 'Video',
+                  onPress: () => {
+                    OpenGalleryPickerVideo((res) => {
+                      AppLogger('', res);
+                      if (res) setState((prev) => ({...prev, selectedMedia: res})); //change this when done
+                    }, 'video');
+                    setState((prev) => ({...prev, showGallery: true}));
+                  },
+                },
+              ]);
+              // OpenGalleryPicker((res) => {
+              //   AppLogger('', res);
+              //   if (res) setState((prev) => ({...prev, selectedMedia: res})); //change this when done
+              // }, 'photo');
               // setState((prev) => ({...prev, showGallery: true}));
             }}>
             <View

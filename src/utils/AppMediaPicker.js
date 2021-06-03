@@ -90,6 +90,25 @@ const OpenGalleryPicker = (callback, type = 'video') => {
       AppLogger('---------OpenGalleryPicker ERROR------', err);
     });
 };
+const OpenGalleryPickerVideo = (callback, type = 'video') => {
+  ImagePicker.openPicker({
+    mediaType: 'video',
+  })
+    .then((response) => {
+      pickerResponseMaker(
+        (res) => {
+          console.log('------------image upload res-----------', res);
+          callback(res);
+        },
+        response,
+        type,
+      );
+    })
+    .catch((err) => {
+      callback(false);
+      AppLogger('---------OpenGalleryPicker ERROR------', err);
+    });
+};
 
 const OpenCameraPicker = (callback, type = 'video') => {
   ImagePicker.openCamera({
@@ -196,6 +215,7 @@ const CleanCachedImages = (callback) => {
 export {
   OpenCameraPicker,
   OpenGalleryPicker,
+  OpenGalleryPickerVideo,
   OpenCameraGalleryPromptPicker,
   CleanCachedImages,
   GenerateThumbnailFromVideo,
