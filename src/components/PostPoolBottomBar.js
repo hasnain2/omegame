@@ -43,7 +43,7 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           UpdatePostFromReduxStore({...item, isLiked: !state.isLiked});
           LikePost(
             () => {
-              console.log('you have successfully liked unliked the post');
+              //console.log('you have successfully liked unliked the post');
             },
             item?._id,
             {

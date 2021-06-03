@@ -75,7 +75,6 @@ const GetSingleUserProfile = (callback, id) => {
   })
     .then(JSONBodyHelper)
     .then(([status, data]) => {
-      console.log(data);
       if (status === 201 || status === 200) {
         callback(data.data);
       } else callback(false);
@@ -136,7 +135,6 @@ const GetUserList = (callback, limit, sortBy, query, cursor) => {
       if (status === 201 || status === 200) {
         callback(data.data);
       } else {
-        console.log('Error');
         callback(false);
       }
     })

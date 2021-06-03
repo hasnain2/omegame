@@ -152,8 +152,6 @@ const CreatePost = ({navigation, route}) => {
           payload,
         );
       } else {
-        console.log('payload added');
-        console.log(payload);
         CreatePostService((result) => {
           if (!hasMediaToUpload) setState((prev) => ({...prev, loading: false}));
           if (result) {

@@ -1,9 +1,31 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, AppState} from 'react-native';
 import Video from 'react-native-video';
 import convertToCache from 'react-native-video-cache';
 
 const AppVideoPlayer = ({source, startPlaying, style, controls}) => {
+  const [appState, setAppState] = useState(AppState.currentState);
+  const [pauseVideo, setPause] = useState(false);
+
+  useEffect(() => {
+    AppState.addEventListener('change', handleAppStateChange);
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
+
+  const handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'background') {
+      setPause(true);
+    } else {
+      setPause(false);
+    }
+    if (appState != nextAppState) {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+      }
+      setAppState(nextAppState);
+    }
+  };
   // console.log(source.uri)
   return (
     <Video
@@ -16,9 +38,11 @@ const AppVideoPlayer = ({source, startPlaying, style, controls}) => {
       } // Can be a URL or a local file.
       // source={{uri:"https://pp.tedcdn.com/vids/intro_00/v01/master.m3u8"}}  // -> video streaming URL , (supper fast playback)
       // source={{ uri: source.uri }}
-      paused={!startPlaying}
+      paused={!pauseVideo && !startPlaying}
       controls={controls}
       repeat={startPlaying}
+      playInBackground={false}
+      playWhenInactive={false}
       onLoadStart={(dta) => {
         // setBuffering(dta?.isBuffering)
         // console.log('--------------ON LOAD-------', dta)

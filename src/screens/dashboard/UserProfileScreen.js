@@ -64,7 +64,6 @@ const COLORS_ARR = [
 
 const UserProfileScreen = ({navigation, route}) => {
   let userID = route.params.userID || false;
-  console.log(userID);
   let {user} = useSelector((state) => state.root);
   let disp = useDispatch();
   userID = (user?._id || user?._id) === userID;
@@ -102,7 +101,6 @@ const UserProfileScreen = ({navigation, route}) => {
   function getsingleuserprofilehelper() {
     GetSingleUserProfile((profileRes) => {
       if (profileRes) {
-        console.log(profileRes);
         setState((prev) => ({...prev, loading: false, userData: profileRes}));
         if (userID) disp(setUser(profileRes));
       } else {
