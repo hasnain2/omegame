@@ -552,6 +552,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       ...prev,
                       parentID: '',
                       currentIndex: 0,
+                      replies: {_id: '', data: []},
                     }));
                     getsinglepostbyidhelper();
                   },
