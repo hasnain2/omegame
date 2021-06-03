@@ -38,7 +38,8 @@ const AppVideoPlayer = ({source, startPlaying, style, controls}) => {
       } // Can be a URL or a local file.
       // source={{uri:"https://pp.tedcdn.com/vids/intro_00/v01/master.m3u8"}}  // -> video streaming URL , (supper fast playback)
       // source={{ uri: source.uri }}
-      paused={!pauseVideo && !startPlaying}
+      //paused= {!startPlaying}
+      paused={pauseVideo}
       controls={controls}
       repeat={startPlaying}
       playInBackground={false}
