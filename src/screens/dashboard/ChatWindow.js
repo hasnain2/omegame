@@ -1,35 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  Dimensions,
-  Image,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, Dimensions, Image, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Bubble, GiftedChat, Time, InputToolbar, Send} from 'react-native-gifted-chat';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useSelector} from 'react-redux';
-import {
-  ICON_BLOCK,
-  ICON_DELETE,
-  ICON_MENU,
-  ICON_MUTE,
-  ICON_REPORT,
-  ICON_UNFOLLOW,
-} from '../../../assets/icons';
+import {ICON_BLOCK, ICON_DELETE, ICON_MENU, ICON_MUTE, ICON_REPORT, ICON_UNFOLLOW} from '../../../assets/icons';
 import {DEFAULT_USER_PIC} from '../../../assets/images';
-import {
-  AppBackButton,
-  AppInputToolBar,
-  AppLoadingView,
-  AppModal,
-  AppText,
-  IsUserVerifiedCheck,
-} from '../../components';
+import {AppBackButton, AppInputToolBar, AppLoadingView, AppModal, AppText, IsUserVerifiedCheck} from '../../components';
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
 import {
@@ -40,10 +16,7 @@ import {
   MuteChatOfSpecificUser,
 } from '../../services';
 import {socket} from '../../services/socketService';
-import {
-  CHAT_SOCKET_EVENTS,
-  FRIEND_STATUSES_ACTIONS,
-} from '../../utils/AppConstants';
+import {CHAT_SOCKET_EVENTS, FRIEND_STATUSES_ACTIONS} from '../../utils/AppConstants';
 import {AppLogger, AppShowToast, getChatId} from '../../utils/AppHelperMethods';
 import {BlurView} from '@react-native-community/blur';
 var uuid = require('react-native-uuid');
@@ -83,9 +56,7 @@ const ChatWindow = ({navigation, route}) => {
     getChatmsgeshelper();
     getsingleUserprofile();
     let messagesListner = socket.on(CHAT_SOCKET_EVENTS.NEW_MESSAGE, (msg) => {
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, msg),
-      );
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
     });
 
     socket.emit(CHAT_SOCKET_EVENTS.CONNECTED_WITH, {
@@ -99,31 +70,43 @@ const ChatWindow = ({navigation, route}) => {
   }, []);
 
   const onSend = (val) => {
-      let guidd = uuid.v1();
-      let new_message = {
-        guid: guidd,
-        text: val[0].text,
-        message: val[0].text,
-        createdAt: new Date(),
-        to: friend?._id || '',
-      };
-      socket.emit(CHAT_SOCKET_EVENTS.NEW_MESSAGE, new_message);
+    let guidd = uuid.v1();
+    let new_message = {
+      guid: guidd,
+      text: val[0].text,
+      message: val[0].text,
+      createdAt: new Date(),
+      to: friend?._id || '',
+    };
+    socket.emit(CHAT_SOCKET_EVENTS.NEW_MESSAGE, new_message);
   };
 
   const renderInputToolbar = (props) => (
-    <InputToolbar {...props} containerStyle={{ borderTopWidth: 1,backgroundColor: 'black',borderBottomWidth: 1,
-    borderBottomColor: 'white',borderRightWidth:1,borderRightColor: "white",borderLeftWidth:1, borderLeftColor:'white',
-    borderTopColor: 'white', borderRadius: 50,marginRight: RFValue(6), marginLeft: RFValue(14)}} 
-    textInputStyle={{ color: "white", paddingLeft: RFValue(12)}} />
+    <InputToolbar
+      {...props}
+      containerStyle={styles.inputToolBar}
+      textInputStyle={{color: 'white', paddingLeft: RFValue(12)}}
+    />
   );
-  const renderSend=(props)=> {
+  const renderSend = (props) => {
     return (
-      <Send {...props} containerStyle={{justifyContent: "center",height: Platform.OS === 'ios'? "100%":"100%", maxHeight :RFValue(60)}}>
-        <AppText color={AppTheme.colors.primary} size={2}
-        bold={true} style={{marginRight: RFValue(10), marginLeft: RFValue(4)}} >SEND</AppText> 
+      <Send
+        {...props}
+        containerStyle={{
+          justifyContent: 'center',
+          height: Platform.OS === 'ios' ? '100%' : '100%',
+          maxHeight: RFValue(60),
+        }}>
+        <AppText
+          color={AppTheme.colors.primary}
+          size={2}
+          bold={true}
+          style={{marginRight: RFValue(10), marginLeft: RFValue(4)}}>
+          SEND
+        </AppText>
       </Send>
     );
-  }
+  };
 
   const renderBubble = (props) => {
     return (
@@ -173,9 +156,7 @@ const ChatWindow = ({navigation, route}) => {
     return (
       <View>
         {!currentMessage.sent && false && tickedUser === user?._id && (
-          <Text style={{color: AppTheme.colors.primary, paddingRight: 10}}>
-            ✓✓
-          </Text>
+          <Text style={{color: AppTheme.colors.primary, paddingRight: 10}}>✓✓</Text>
         )}
       </View>
     );
@@ -200,8 +181,7 @@ const ChatWindow = ({navigation, route}) => {
             corner={friend?.corner || ''}
             color={friend?.cornerColor}
             onPress={() => {
-              if (friend?._id)
-                navigation.push('UserProfileScreen', {userID: friend?._id});
+              if (friend?._id) navigation.push('UserProfileScreen', {userID: friend?._id});
             }}
             source={friend?.pic ? {uri: friend?.pic} : DEFAULT_USER_PIC}
             size={35}
@@ -212,11 +192,7 @@ const ChatWindow = ({navigation, route}) => {
                 {friend?.userName || friend.firstName}
               </AppText>
               <IsUserVerifiedCheck check={friend?.isVerified} />
-              <AppText
-                size={1}
-                bold={true}
-                color={AppTheme.colors.primary}
-                style={{paddingLeft: RFValue(5)}}>
+              <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
                 {friend.level}
               </AppText>
               {/* <AppText size={1} color={AppTheme.colors.lightGrey}> - 4 h</AppText> */}
@@ -290,9 +266,7 @@ const ChatWindow = ({navigation, route}) => {
           show={state.showMenu}
           shadow={true}
           type="bottom"
-          toggle={() =>
-            setState((prev) => ({...prev, showMenu: false, showBlur: false}))
-          }>
+          toggle={() => setState((prev) => ({...prev, showMenu: false, showBlur: false}))}>
           <View
             style={{
               borderTopRightRadius: RFValue(10),
@@ -315,8 +289,7 @@ const ChatWindow = ({navigation, route}) => {
               onPress={() => {
                 Alert.alert(
                   'Delete conversation',
-                  'Are you sure to delete your conversation with ' +
-                    friend?.userName,
+                  'Are you sure to delete your conversation with ' + friend?.userName,
                   [
                     {
                       text: 'Cancel',
@@ -375,11 +348,7 @@ const ChatWindow = ({navigation, route}) => {
                   showMenu: false,
                   loading: false,
                 }));
-                MuteChatOfSpecificUser(
-                  () => {},
-                  friend?._id,
-                  `${friend.isChatMuted ? 'false' : 'true'}`,
-                );
+                MuteChatOfSpecificUser(() => {}, friend?._id, `${friend.isChatMuted ? 'false' : 'true'}`);
                 let tempFriend = {...friend};
                 tempFriend.isChatMuted = !tempFriend.isChatMuted;
                 setFriend(tempFriend);
@@ -422,11 +391,7 @@ const ChatWindow = ({navigation, route}) => {
               <View style={styles.modalListItemStyle}>
                 <Image source={ICON_UNFOLLOW} style={ICONSTYLE} />
                 <AppText size={2} style={{paddingLeft: RFValue(10)}}>
-                  {friend?.isFollowing
-                    ? 'Unfollow'
-                    : friend?.isRequested
-                    ? 'Requested'
-                    : 'Follow'}
+                  {friend?.isFollowing ? 'Unfollow' : friend?.isRequested ? 'Requested' : 'Follow'}
                 </AppText>
               </View>
             </TouchableOpacity>
@@ -450,10 +415,7 @@ const ChatWindow = ({navigation, route}) => {
                           () => {
                             setState((prev) => ({...prev, showMenu: false}));
                             navigation.goBack();
-                            AppShowToast(
-                              (friend?.userName || 'User') +
-                                ' has been blocked.',
-                            );
+                            AppShowToast((friend?.userName || 'User') + ' has been blocked.');
                           },
                           friend?._id,
                           FRIEND_STATUSES_ACTIONS.BLOCKED,
@@ -485,6 +447,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: RFValue(10),
     alignItems: 'center',
+  },
+  inputToolBar: {
+    borderTopWidth: 1,
+    backgroundColor: 'black',
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    borderRightWidth: 1,
+    borderRightColor: 'white',
+    borderLeftWidth: 1,
+    borderLeftColor: 'white',
+    borderTopColor: 'white',
+    borderRadius: 50,
+    marginRight: RFValue(6),
+    marginLeft: RFValue(14),
   },
 });
 export {ChatWindow};
