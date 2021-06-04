@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Dimensions, Image, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Bubble, GiftedChat, Time, InputToolbar, Send} from 'react-native-gifted-chat';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useSelector} from 'react-redux';
@@ -230,12 +241,11 @@ const ChatWindow = ({navigation, route}) => {
           }}>
           <GiftedChat
             messages={messages}
-            renderTicks={renderTicks}
             renderInputToolbar={renderInputToolbar}
-            minInputToolbarHeight={RFValue(80)}
             showAvatarForEveryMessage={true}
             renderBubble={renderBubble}
             multiline
+            bottomOffset={(Platform.OS === 'ios' && 33) || null}
             renderTime={renderTime}
             renderAvatar={() => null}
             renderSend={renderSend}
@@ -246,6 +256,7 @@ const ChatWindow = ({navigation, route}) => {
               name: user?.userName,
             }}
           />
+          <KeyboardAvoidingView style={{marginBottom: RFValue(10)}} />
           {state.loading ? <AppLoadingView /> : null}
         </View>
         {state.showBlur ? (
