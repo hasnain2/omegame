@@ -8,7 +8,7 @@ import {DEFAULT_REQ} from '../../../assets/images';
 import {
   AppBackButton,
   AppBadge,
-  AppFriendsListModal,
+  AppUserSearch,
   AppLoadingView,
   AppNoDataFound,
   AppRadioButton,
@@ -308,7 +308,7 @@ const InboxScreen = ({navigation, route}) => {
         }}
       />
 
-      <AppFriendsListModal
+      <AppUserSearch
         show={state.showFriendsListModal}
         toggle={() => setState((prev) => ({...prev, showFriendsListModal: false}))}
         selectedContacts={(contact) => {

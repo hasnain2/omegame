@@ -39,3 +39,4 @@ export * from './IsViewInViewPort';
 export * from './AppFriendsListModal';
 export * from './AppTagModal';
 export * from './AppGooglePlacesAutoFill';
+export * from './AppUserSearch';
