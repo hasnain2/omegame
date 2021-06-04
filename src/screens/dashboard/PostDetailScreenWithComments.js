@@ -251,12 +251,11 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                         actionSheetRef?.hide();
                         showEditModal(!editModal);
                       }}>
-                      <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <View
                           style={{
                             height: RFValue(30),
                             width: RFValue(30),
-                            alignItems: 'center',
                             justifyContent: 'center',
                           }}>
                           <AntIcon name="edit" color="white" size={RFValue(20)} />
@@ -269,7 +268,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                               tintColor: 'white',
                             }}
                           /> */}
-                        <AppText color="white" size={2} style={{paddingHorizontal: RFValue(5)}}>
+                        <AppText color="white" size={2}>
                           EDIT
                         </AppText>
                       </View>
@@ -283,11 +282,15 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                         actionSheetRef?.hide();
                       }}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Image
-                          source={ICON_DELETE}
-                          style={{height: RFValue(30), width: RFValue(30), tintColor: 'white'}}
-                        />
-                        <AppText color="white" size={2} style={{paddingHorizontal: RFValue(5)}}>
+                        <View
+                          style={{
+                            height: RFValue(30),
+                            width: RFValue(30),
+                            justifyContent: 'center',
+                          }}>
+                          <AntIcon name="delete" color="white" size={RFValue(20)} />
+                        </View>
+                        <AppText color="white" size={2}>
                           DELETE
                         </AppText>
                       </View>
