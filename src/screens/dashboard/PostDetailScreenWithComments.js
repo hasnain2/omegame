@@ -70,7 +70,6 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
     replies: {_id: '', data: []},
     parentID: {parentComment: '', _id: ''},
   });
-
   const getcommentshelper = () => {
     GetCommentsOfPost(
       (postCommentsResponse) => {
@@ -476,7 +475,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
             </View>
           ) : null}
 
-          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+          {/* <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}> */}
             <FlatList
               ref={flatListRef}
               data={state.comments}
@@ -484,7 +483,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
               windowSize={2}
               initialNumToRender={5}
               maxToRenderPerBatch={5}
-              keyExtractor={(ee) => ee._id + ''}
+              keyExtractor={(_,index) => index.toString()}
               renderItem={({item, index}) => {
                 let isCommentIsLiked = state.commentLikesArr.includes(item?._id);
                 return (
@@ -516,7 +515,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                 );
               }}
             />
-          </KeyboardAvoidingView>
+          {/* </KeyboardAvoidingView> */}
           {/* {editModal ? (
             <EditComment
               item={editComment}
