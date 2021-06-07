@@ -14,7 +14,7 @@ import {FontAwesome} from '../utils/AppIcons';
 const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
   let [state, setState] = useState({
     isShared: item.isShared || false,
-    isLiked: item.isLiked || false,
+    isLiked: false,
     isSaved: item.isSaved || false,
   });
 
@@ -40,7 +40,18 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => {
-          UpdatePostFromReduxStore({...item, isLiked: !state.isLiked});
+          let temp = {...item}
+          console.log(temp)
+          let computed = [...item.computed]
+          let newComp = {};
+          computed.map((item,index)=>{
+            if(item.key === 'LIKE'){
+              newComp = {...computed[index]}
+              newComp.value = !state.isLiked? newComp.value +1:newComp.value -1;
+              computed[index] = newComp;
+            }
+          })
+          UpdatePostFromReduxStore({...item, isLiked: !state.isLiked, computed: computed});
           LikePost(
             () => {
               //console.log('you have successfully liked unliked the post');
@@ -69,7 +80,7 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
             {largeNumberShortify(
-              item?.computed?.find((ii) => ii.key === 'LIKE')?.value + (state.isLiked ? 1 : 0) ||
+              item?.computed?.find((ii) => ii.key === 'LIKE')?.value||
                 (state.isLiked ? 1 : 0),
             )}
           </AppText>

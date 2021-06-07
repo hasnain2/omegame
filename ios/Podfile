@@ -47,10 +47,10 @@ target 'OneGame' do
     inherit! :complete
   end
 
-  use_flipper!({ 'Flipper' => '0.80.0' }) 
-  post_install do |installer|
-    flipper_post_install(installer)
-  end
+  # use_flipper!({ 'Flipper' => '0.80.0' }) 
+  # post_install do |installer|
+  #   flipper_post_install(installer)
+  # end
 end
 
 target 'OneGame-tvOS' do
