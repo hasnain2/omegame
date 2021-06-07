@@ -20,6 +20,15 @@ const App = ({}) => {
   let [state, setState] = useState({
     loading: true,
   });
+  const linking = {
+    prefixes: ['https://omegame.net'],
+    config: {
+      screens: {
+        UserProfileScreen: 'user/:id',
+      },
+    },
+  };
+
   let navRef = useRef(null);
   let {user, settings} = useSelector((state) => state.root);
 

@@ -4,6 +4,7 @@ const TESTING_DOMAIN = Config.BASE_URL;
 const PRODUCTION_DOMAIN = Config.BASE_URL;
 // const DOMAIN = __DEV__ ? TESTING_DOMAIN : PRODUCTION_DOMAIN;
 const DOMAIN = 'https://api.omegame.net';
+const DEEP_LINK = 'http://omegame.net';
 // const BASE_URL = DOMAIN + '/api/';
 
 const BASE_URL = 'https://api.omegame.net' + '/api/';
@@ -89,4 +90,4 @@ const EndPoints = {
   GET_NOTIFICATION_COUNTERS: BASE_URL + 'profile/counters', // ----- SET APP SETTINGS PATCH AND GET --> BODY {"notificationsAllowed": true}
 };
 
-export {DOMAIN, EndPoints};
+export {DOMAIN, EndPoints, DEEP_LINK};

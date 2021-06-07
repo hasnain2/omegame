@@ -8,7 +8,7 @@ import {AppTheme} from '../config';
 import {UpdatePostFromReduxStore} from '../services/mutateReduxState';
 import {LikePost, SaveOrBookMarkPost, SharePost} from '../services/postService';
 import {DEEP_LINK_TYPES, SHARE_STATUS_TYPES} from '../utils/AppConstants';
-import {DOMAIN} from '../utils/AppEndpoints';
+import {DEEP_LINK} from '../utils/AppEndpoints';
 import {AppShareContents, largeNumberShortify} from '../utils/AppHelperMethods';
 import {FontAwesome} from '../utils/AppIcons';
 const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
@@ -109,10 +109,11 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           SharePost(() => {}, item?._id, {
             platform: SHARE_STATUS_TYPES.FACEBOOK,
           });
+          
           AppShareContents((res) => {
             if (stopPlaying) stopPlaying(false);
             setState((prev) => ({...prev, isShared: res}));
-          }, `Hey you might wanna check this post out on OmeGame.\n${DOMAIN}?${DEEP_LINK_TYPES.POST_ID}=${item?._id}`);
+          }, `Hey you might wanna check this post out on OmeGame.\n${DEEP_LINK}?${DEEP_LINK_TYPES.POST_ID}=${item?._id}`);
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <FastImage source={ICON_SHARE} style={{height: RFValue(36), width: RFValue(36)}} />
