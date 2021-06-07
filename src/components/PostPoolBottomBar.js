@@ -51,6 +51,7 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
               computed[index] = newComp;
             }
           })
+          console.log(computed)
           UpdatePostFromReduxStore({...item, isLiked: !state.isLiked, computed: computed});
           LikePost(
             () => {
