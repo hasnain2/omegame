@@ -190,7 +190,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                     }}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                        {item?.createdBy?.firstName || item?.createdBy?.userName}
+                        {item?.createdBy?.firstName+' '+ item?.createdBy?.lastName || item?.createdBy?.userName}
                       </AppText>
                       <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
                       <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>

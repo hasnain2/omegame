@@ -48,7 +48,9 @@ const Signup = ({route, navigation}) => {
   }
 
   const onSubmit = () => {
+    var reWhiteSpace = new RegExp("\\s+");
     if (state.username) {
+      if(!reWhiteSpace.test(state.username)){
       if (ValidateEmail(state.email)) {
         if (state.password && state.password.length > 7) {
           if (state.password === state.retypedPassword) {
@@ -77,6 +79,7 @@ const Signup = ({route, navigation}) => {
           } else AppShowToast('Password does not match');
         } else AppShowToast('Password must b 8 or more characters long');
       } else AppShowToast('Please provide valid email address');
+    }else AppShowToast('Please remove white space from username.');
     } else AppShowToast('Please provide username');
   };
   return (
