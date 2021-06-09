@@ -454,7 +454,7 @@ const CreatePost = ({navigation, route}) => {
                       AppLogger('', res);
                       if (res) setState((prev) => ({...prev, selectedMedia: res})); //change this when done
                     }, 'video');
-                    setState((prev) => ({...prev, showGallery: true}));
+                    setState((prev) => ({...prev, showGallery: false}));
                   },
                 },
               ]);
