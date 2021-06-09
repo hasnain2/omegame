@@ -310,7 +310,7 @@ PODS:
     - react-native-config/App (= 1.4.2)
   - react-native-config/App (1.4.2):
     - React-Core
-  - react-native-create-thumbnail (1.2.2):
+  - react-native-create-thumbnail (1.4.1):
     - React
   - react-native-fbsdk (3.0.0):
     - React
@@ -779,7 +779,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
-  react-native-create-thumbnail: 4c445d78f7fe6537292e169744faff065c4e71f8
+  react-native-create-thumbnail: d31c84dd69fb4d60aec0ff2f49bc0de41ede7b2c
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
   react-native-image-resizer: 13ac4af788f88af36d0353a1324401ebabd04fe4
   react-native-login-twitter: f0f71fa99f7ec2cd7578b0982c2ef11a4cc90a03

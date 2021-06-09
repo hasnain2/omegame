@@ -133,7 +133,7 @@ const ReviewsScreen = ({navigation}) => {
                     <UserAvatar
                       corner={item?.corner || ''}
                       color={item?.cornerColor}
-                      source={item?.background?.url ? {uri: item?.background?.url} : DEFAULT_USER_PIC}
+                      source={item?.profile?.url ? {uri: item?.profile?.url} : DEFAULT_USER_PIC}
                       size={55}
                       type="review"
                     />

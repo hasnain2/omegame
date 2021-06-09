@@ -127,7 +127,7 @@ const RateGameScreen = ({navigation, route}) => {
           <UserAvatar
             corner={gameData?.corner || ''}
             color={gameData?.cornerColor}
-            source={gameData?.background?.url ? {uri: gameData?.background?.url} : BACKGROUND_IMG}
+            source={gameData?.profile?.url ? {uri: gameData?.profile?.url} : BACKGROUND_IMG}
             size={50}
           />
 

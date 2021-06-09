@@ -156,7 +156,7 @@ const GameDetailsScreen = ({navigation, route}) => {
               <UserAvatar
                 corner={gameData?.corner || ''}
                 color={false}
-                source={gameData?.background?.url ? {uri: gameData?.background?.url} : BACKGROUND_IMG}
+                source={gameData?.profile?.url ? {uri: gameData?.profile?.url} : BACKGROUND_IMG}
                 size={140}
               />
 

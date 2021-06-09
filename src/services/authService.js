@@ -35,6 +35,7 @@ const LogInUser = (callback, formData) => {
         headers: Interceptor.getHeaders(),
         body: JSON.stringify(formData)
     }).then(JSONBodyHelper).then(async ([status, data]) => {
+        console.log(data)
         if (status === 201 || status === 200) {
             const res = await SetUpUserAndToken(data?.data);
             callback(true)
