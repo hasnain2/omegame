@@ -6,11 +6,13 @@ import {useSelector} from 'react-redux';
 import {AppBackButton, AppButton, AppLoadingView, AppRadioButton, AppText, UserAvatar} from '../../../components';
 import {AppTheme} from '../../../config';
 import {ReportIssueOrSpam} from '../../../services';
+import {PostFeedback} from '../../../services/feedback';
 import {REPORT_TYPE} from '../../../utils/AppConstants';
 import {AppShowToast} from '../../../utils/AppHelperMethods';
 
 const ReportAbuseOrSpam = ({navigation, route}) => {
   let postID = route?.params?.postID || '';
+  let fromPostNavigation = route?.params?.post || false;
   let userID = route?.params?.userID || '';
   let [state, setState] = useState({
     loading: false,
@@ -37,12 +39,19 @@ const ReportAbuseOrSpam = ({navigation, route}) => {
         payload.targetEntity = 'user';
       }
       setState((prev) => ({...prev, loading: true}));
-      const reportResponse = await ReportIssueOrSpam(payload);
-      setState((prev) => ({...prev, loading: false}));
-      if (reportResponse) {
-        navigation.goBack();
-        AppShowToast('Thank you for your feedback, Report sent!');
+      if(fromPostNavigation){
+        const reportResponse = await ReportIssueOrSpam(payload);
+        if (reportResponse) {
+          navigation.goBack();
+          AppShowToast('Thank you for your feedback, Report sent!');
+        }
+      }else{
+        PostFeedback((res)=>{console.log(res)
+          navigation.goBack();
+          AppShowToast('Thank you for your feedback, Report sent!');
+        }, {description: state.reportText})
       }
+      setState((prev) => ({...prev, loading: false}));
     } else {
       AppShowToast('kindly provide details of the issue.');
     }

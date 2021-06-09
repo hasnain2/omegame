@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import {AppBackButton, AppButton, UserAvatar} from '../../../components';
 import {AppTheme} from '../../../config';
 import {ReportIssueOrSpam} from '../../../services';
+import {PostFeedback} from '../../../services/feedback';
 import {AppShowToast} from '../../../utils/AppHelperMethods';
 
 const ReportSystemIssue = ({navigation, route}) => {
@@ -27,12 +28,16 @@ const ReportSystemIssue = ({navigation, route}) => {
     };
 
     setState((prev) => ({...prev, loading: true}));
-    const reportResponse = await ReportIssueOrSpam(payload);
-    setState((prev) => ({...prev, loading: false}));
-    if (reportResponse) {
+    PostFeedback((res)=>{console.log(res)
       navigation.goBack();
       AppShowToast('Thank you for your feedback, Report sent!');
-    }
+    }, {description: state.feedbacktext})
+    // const reportResponse = await ReportIssueOrSpam(payload);
+    setState((prev) => ({...prev, loading: false}));
+    // if (reportResponse) {
+    //   navigation.goBack();
+    //   AppShowToast('Thank you for your feedback, Report sent!');
+    // }
   };
 
   return (

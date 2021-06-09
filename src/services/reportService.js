@@ -18,7 +18,7 @@ async function ReportIssueOrSpam(PAYLOAD) {
     }).catch((error) => {
         AppLogger('---------REPORT ERROR---------------', error)
         return false
-    });
+    });     
 }
 
 export { ReportIssueOrSpam };

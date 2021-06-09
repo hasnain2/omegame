@@ -20,11 +20,11 @@ const REPORT_TYPE = [
     key: 'HACKED_ACCOUNT',
     nav: 'ReportAccountHack',
   },
-  {
-    name: 'Impersonation',
-    key: 'IMPERSONATION',
-    nav: 'ReportImpersonation',
-  },
+  // {
+  //   name: 'Impersonation',
+  //   key: 'IMPERSONATION',
+  //   nav: 'ReportImpersonation',
+  // },
   {
     name: 'System issue',
     key: 'SYSTEM_ISSUE',
