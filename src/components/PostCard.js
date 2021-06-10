@@ -94,7 +94,8 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
           activeOpacity={0.9}
           onPress={() => {
             navigation.navigate('PostDetailScreenWithComments', {post: item});
-          }}>
+          }}
+          >
           <View style={{height: RFValue(300), width: '100%'}}>
             {item?.attachments[0]?.type.includes('video') ? (
               <AppVideoPlayer
