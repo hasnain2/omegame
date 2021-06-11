@@ -266,11 +266,12 @@ const ReviewsScreen = ({navigation}) => {
                             ? GetLastYearEndOf()
                             : GetCurrentDate(),
                       };
-                      if (tempArr.length > 0) tempObj['console'] = tempArr;
+                      if (tempArr.length > 0) tempObj['Console'] = tempArr;
 
                       if (state.selectedGenreTypes.length > 0) tempObj['genre'] = state.selectedGenreTypes;
 
                       if (state.searchTerm) tempObj['search'] = state.searchTerm;
+                      console.log(tempObj)
                       getgameshelper(false, tempObj);
 
                       AppLogger('', state.selectedConsoleTypes);
