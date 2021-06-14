@@ -5,7 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
-import { TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
+// import { TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
 var uuid = require('react-native-uuid');
 
 const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true}) => {
@@ -41,7 +41,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
   return (
     <View style={[{flex: 1, backgroundColor: 'black'}, style ? style : null]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
-      <BannerAd
+      {/* <BannerAd
         unitId={TestIds.BANNER}
         size={BannerAdSize.SMART_BANNER}
         requestOptions={{
@@ -50,7 +50,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
         console.log('Advert loaded');}}
         onAdFailedToLoad={(error) => {
         console.error('Advert failed to load: ', error);}}
-      />
+      /> */}
       {loading ? <AppLoadingView /> : null}
       <FlatList
         ref={flatListRef}
