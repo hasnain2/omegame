@@ -1,5 +1,7 @@
 {
     "react-native": {
-      "messaging_android_notification_channel_id": "high-priority"
+      "messaging_android_notification_channel_id": "high-priority",
+      "admob_android_app_id": "ca-app-pub-4198954261699814~4026858159",
+      "admob_ios_app_id": "ca-app-pub-4198954261699814~1761763257" 
     }
   }
