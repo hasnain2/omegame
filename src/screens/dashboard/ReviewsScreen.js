@@ -12,6 +12,7 @@ import {
   AppRadioButton,
   AppSearchBar,
   AppText,
+  AppBlurView,
 } from '../../components';
 import {UserAvatar} from '../../components/UserAvatar';
 import {AppTheme} from '../../config';
@@ -29,6 +30,7 @@ import {
   GetLastYearStartOf,
 } from '../../utils/AppHelperMethods';
 import {AntDesign, MaterialIcons} from '../../utils/AppIcons';
+import {BlurView} from '@react-native-community/blur';
 const NUMBER_OF_COLUMNS = 2;
 const ReviewsScreen = ({navigation}) => {
   let [state, setState] = useState({
@@ -36,6 +38,7 @@ const ReviewsScreen = ({navigation}) => {
     searchTerm: '',
     offset: 0,
     showFilter: false,
+    showBlur: false,
     visibleFilter: '',
     selectedConsoleTypes: [],
     selectedGenreTypes: [],
@@ -97,7 +100,7 @@ const ReviewsScreen = ({navigation}) => {
             setState((prev) => ({...prev, searchTerm: val}));
           }}
           onRightPess={() => {
-            setState((prev) => ({...prev, showFilter: true}));
+            setState((prev) => ({...prev, showFilter: true, showBlur: true}));
           }}
           type="review"
         />
@@ -172,22 +175,35 @@ const ReviewsScreen = ({navigation}) => {
           }}
         />
       </View>
-
+      {state.showBlur ? (
+        <BlurView
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          }}
+          reducedTransparencyFallbackColor="gray"
+          blurType="light"
+          blurAmount={1}
+        />
+      ) : null}
       <AppModal
         show={state.showFilter}
         toggle={() => {
-          setState((prev) => ({...prev, showFilter: !state.showFilter}));
+          setState((prev) => ({...prev, showFilter: !state.showFilter, showBlur: !state.showBlur}));
         }}>
         <View
           style={{
-            backgroundColor: '#1b1b1b',
+            backgroundColor: 'black',
             padding: RFValue(15),
             width: '85%',
             maxHeight: '90%',
             borderRadius: 15,
           }}>
           <AntDesign
-            onPress={() => setState((prev) => ({...prev, showFilter: false}))}
+            onPress={() => setState((prev) => ({...prev, showFilter: false, showBlur: false}))}
             name="close"
             style={{
               fontSize: RFValue(25),
@@ -206,8 +222,8 @@ const ReviewsScreen = ({navigation}) => {
             }}>
             <View
               style={{
-                borderBottomWidth: 0.7,
-                borderBottomColor: AppTheme.colors.lightGrey,
+                borderBottomWidth: 1,
+                borderBottomColor: '#262626',
                 paddingBottom: RFValue(15),
               }}>
               <AppText size={2}>Console:</AppText>
@@ -271,7 +287,7 @@ const ReviewsScreen = ({navigation}) => {
                       if (state.selectedGenreTypes.length > 0) tempObj['genre'] = state.selectedGenreTypes;
 
                       if (state.searchTerm) tempObj['search'] = state.searchTerm;
-                      console.log(tempObj)
+                      console.log(tempObj);
                       getgameshelper(false, tempObj);
 
                       AppLogger('', state.selectedConsoleTypes);
@@ -293,8 +309,8 @@ const ReviewsScreen = ({navigation}) => {
             }}>
             <View
               style={{
-                borderBottomWidth: 0.4,
-                borderBottomColor: '#1A1A1A',
+                borderBottomWidth: 1,
+                borderBottomColor: '#262626',
                 paddingVertical: RFValue(15),
               }}>
               <AppText size={2}>Genre:</AppText>
@@ -376,7 +392,7 @@ const ReviewsScreen = ({navigation}) => {
                 visibleFilter: state.visibleFilter !== 'releasedate' ? 'releasedate' : '',
               }));
             }}>
-            <View style={{paddingVertical: RFValue(15)}}>
+            <View style={{paddingVertical: RFValue(15), borderBottomColor: '#262626'}}>
               <AppText size={2}>Release date:</AppText>
               <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                 {state.releaseDate}

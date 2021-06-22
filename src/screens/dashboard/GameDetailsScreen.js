@@ -169,30 +169,21 @@ const GameDetailsScreen = ({navigation, route}) => {
                 }}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                   <View style={{flexDirection: 'row'}}>
-                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+                    {/* <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
                       Name:
-                    </AppText>
-                    <AppText size={3} color={'white'} style={{}}>
+                    </AppText> */}
+                    <AppText size={3} color={'white'} bold={true} style={{}}>
                       {' '}
                       {gameData?.name}
                     </AppText>
                   </View>
                   <View style={{flexDirection: 'row'}}>
-                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+                    {/* <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
                       devices:
-                    </AppText>
-                    <AppText size={1} color={AppTheme.colors.text} style={{}}>
+                    </AppText> */}
+                    <AppText size={1} color={AppTheme.colors.lightGrey} style={{}}>
                       {' '}
                       {gameData?.supportedDevices.map((ii) => (ii + ', ').toUpperCase())}
-                    </AppText>
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
-                      Release date:
-                    </AppText>
-                    <AppText size={1} color={AppTheme.colors.text} style={{}}>
-                      {' '}
-                      {moment(gameData?.releaseDate).format('DD MMMM YYYY')}
                     </AppText>
                   </View>
                 </View>
@@ -221,17 +212,43 @@ const GameDetailsScreen = ({navigation, route}) => {
             </LinearGradient>
           </FastImage>
         </View>
-        <View style={{flexDirection: 'row', paddingLeft: RFValue(10)}}>
-          <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
-            Suggested price:
-          </AppText>
+        <View style={{flexDirection: 'column', paddingLeft: RFValue(10)}}>
           <AppText size={2} style={{paddingBottom: RFValue(20)}} color={AppTheme.colors.text}>
             {' '}
-            {gameData?.price || '0'} $
+            {gameData?.description || ''} $
           </AppText>
+          <View style={{flexDirection: 'row'}}>
+            <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+              Release date:
+            </AppText>
+            <AppText size={1} color={AppTheme.colors.text} style={{}}>
+              {' '}
+              {moment(gameData?.releaseDate).format('DD MMMM YYYY')}
+            </AppText>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <AppText size={2} color={AppTheme.colors.lightGrey} style={{}}>
+              Suggested price:
+            </AppText>
+            <AppText size={2} style={{}} color={AppTheme.colors.text}>
+              {' '}
+              {gameData?.price || '0'} $
+            </AppText>
+          </View>
+          {gameData.genre ? (
+            <View style={{flexDirection: 'row'}}>
+              <AppText size={2} color={AppTheme.colors.lightGrey}>
+                Genre:
+              </AppText>
+              <AppText size={2} color={AppTheme.colors.text}>
+                {' '}
+                {gameData?.genre}
+              </AppText>
+            </View>
+          ) : null}
         </View>
 
-        <View style={{paddingLeft: RFValue(10)}}>
+        {/* <View style={{paddingLeft: RFValue(10)}}>
           {gameData.genre ? (
             <View style={{flexDirection: 'row'}}>
               <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
@@ -243,7 +260,7 @@ const GameDetailsScreen = ({navigation, route}) => {
               </AppText>
             </View>
           ) : null}
-        </View>
+        </View> */}
 
         <View style={{padding: RFValue(10)}}>
           <AppButton
@@ -418,13 +435,13 @@ const GameDetailsScreen = ({navigation, route}) => {
                     style={{
                       borderColor: item?.ratings > 5 ? AppTheme.colors.green : 'red',
                       borderWidth: 1,
-                      paddingHorizontal: RFValue(25),
-                      paddingVertical: RFValue(10),
+                      paddingHorizontal: RFValue(35),
+                      paddingVertical: RFValue(5),
                       borderRadius: RFValue(15),
                       flexDirection: 'row',
                     }}>
                     <View>
-                      <AppText size={1} style={{textAlign: 'center'}}>
+                      <AppText size={1} style={{textAlign: 'center', paddingHorizontal: RFValue(5)}}>
                         {item?.devices[0]}
                       </AppText>
 
@@ -448,7 +465,6 @@ const GameDetailsScreen = ({navigation, route}) => {
                                 height: RFValue(15),
                                 width: RFValue(15),
                                 tintColor: AppTheme.colors.white,
-                                marginLeft: RFValue(5),
                               }}
                             />
                           </TouchableOpacity>

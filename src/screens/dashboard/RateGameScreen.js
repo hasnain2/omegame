@@ -32,7 +32,7 @@ const RateGameScreen = ({navigation, route}) => {
 
   let [state, setState] = useState({
     loading: false,
-    reviewText: reviewData?.feedback ||'',
+    reviewText: reviewData?.feedback || '',
     rating: reviewData?.ratings || 5,
     selectedConsole: reviewData?.devices[0] || 'Ps4',
     showFilter: false,
@@ -77,45 +77,48 @@ const RateGameScreen = ({navigation, route}) => {
       AppShowToast('kindly provide feedback');
     }
   };
-  const onEdit = ()=>{
+  const onEdit = () => {
     setState((prev) => ({...prev, loading: true}));
-    EditReview((res)=>{
-      setState((prev) => ({...prev, loading: false}));
-      if(res){
-        let allReviews=[];
-        if(profile){
-          allReviews = [...store.getState().root.userProfileData.reviews];
-        }else{
-          allReviews = [...store.getState().root.gameReviews];
-        }
-        let clone = JSON.parse(JSON.stringify(allReviews));
-        let devices = [];
-        devices.push(state.selectedConsole);
-        clone.map((item,index)=>{
-          if(item._id === reviewData?._id){
-            clone[index].ratings = state.rating;
-            clone[index].feedback= state.reviewText.trim();
-            clone[index].devices = devices;
+    EditReview(
+      (res) => {
+        setState((prev) => ({...prev, loading: false}));
+        if (res) {
+          let allReviews = [];
+          if (profile) {
+            allReviews = [...store.getState().root.userProfileData.reviews];
+          } else {
+            allReviews = [...store.getState().root.gameReviews];
           }
-        })
-        if(profile){
-        store.dispatch(setUserProfileData({reviews: clone}));
-        navigation.navigate('UserProfileScreen');
-        }else{
-          store.dispatch(setGameReviews(clone));
-          navigation.navigate('GameDetailsScreen', {gameData: gameData});
+          let clone = JSON.parse(JSON.stringify(allReviews));
+          let devices = [];
+          devices.push(state.selectedConsole);
+          clone.map((item, index) => {
+            if (item._id === reviewData?._id) {
+              clone[index].ratings = state.rating;
+              clone[index].feedback = state.reviewText.trim();
+              clone[index].devices = devices;
+            }
+          });
+          if (profile) {
+            store.dispatch(setUserProfileData({reviews: clone}));
+            navigation.navigate('UserProfileScreen');
+          } else {
+            store.dispatch(setGameReviews(clone));
+            navigation.navigate('GameDetailsScreen', {gameData: gameData});
+          }
+        } else {
+          AppShowToast('Something went wrong, Please try again');
         }
-        
-      }else{
-        AppShowToast("Something went wrong, Please try again")
-      }
-    },reviewData?._id,{
-      feedback: state.reviewText.trim(),
-      ratings: state.rating,
-      console: [state.selectedConsole],
-      gameId: gameData?._id,
-    })
-  }
+      },
+      reviewData?._id,
+      {
+        feedback: state.reviewText.trim(),
+        ratings: state.rating,
+        console: [state.selectedConsole],
+        gameId: gameData?._id,
+      },
+    );
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -208,10 +211,11 @@ const RateGameScreen = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={{padding: RFValue(15), paddingTop: 0}}>
-        {reviewData?
-        <AppButton bgColor="black" onPress={onEdit} label={'EDIT THIS REVIEW'} />:
-        <AppButton bgColor="black" onPress={onSubmit} label={'RATE THIS GAME'} />
-        }
+        {reviewData ? (
+          <AppButton bgColor="black" onPress={onEdit} label={'EDIT THIS REVIEW'} />
+        ) : (
+          <AppButton bgColor="black" onPress={onSubmit} label={'RATE THIS GAME'} />
+        )}
       </View>
 
       <AppModal
