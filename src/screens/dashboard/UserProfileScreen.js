@@ -178,9 +178,10 @@ const UserProfileScreen = ({navigation, route}) => {
               style={{
                 flex: 1,
                 flexDirection: 'row',
+                alignSelf: 'center',
                 alignItems: 'center',
-                justifyContent: 'center',
                 opacity: 0.9,
+                paddingLeft: RFValue(21),
               }}>
               <Image
                 source={ICON_CUSTOMIZE}
@@ -192,7 +193,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   opacity: 1,
                 }}
               />
-              <AppText size={2} style={{paddingLeft: RFValue(15)}}>
+              <AppText size={2} style={{paddingLeft: RFValue(2)}}>
                 Customize
               </AppText>
             </View>
@@ -283,8 +284,8 @@ const UserProfileScreen = ({navigation, route}) => {
                         width={Platform.OS === 'ios' ? 180 : 200}
                         progress={(userData?.earnedXps || 0) / 100}
                         // backgroundColor={'#C2C2C2'}
-                        color={AppTheme.colors.primary}
-                        unfilledColor="#666666"
+                        color={'#0f4FF5'}
+                        unfilledColor="#47557B"
                         borderColor="none"
                       />
                     </View>
@@ -315,15 +316,14 @@ const UserProfileScreen = ({navigation, route}) => {
                         flexDirection: 'row',
                         alignItems: 'center',
                       }}>
-                      <AppText size={16} bold={true}>
+                      <AppText bold={true} style={{fontSize: 16}}>
                         {userData?.userName || userData?.firstName || ''}
                       </AppText>
                       <IsUserVerifiedCheck check={userData?.isVerified} />
                     </View>
                     <AppText
-                      size={1}
                       color={userData?.nickNameColor ? userData?.nickNameColor : AppTheme.colors.lightGrey}
-                      style={{}}>
+                      style={{fontSize: 16}}>
                       {userData?.nickName || userData?.userName}
                     </AppText>
                   </View>
@@ -339,10 +339,10 @@ const UserProfileScreen = ({navigation, route}) => {
                       alignItems: 'center',
                       borderColor: AppTheme.colors.primary,
                     }}>
-                    <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{}}>
+                    <AppText size={1} color={AppTheme.colors.primary} bold={true} style={{fontSize: 10}}>
                       LEVEL
                     </AppText>
-                    <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{}}>
+                    <AppText size={4} color={AppTheme.colors.primary} bold={true} style={{fontSize: 26}}>
                       {userData?.level}
                     </AppText>
                   </View>
@@ -352,10 +352,12 @@ const UserProfileScreen = ({navigation, route}) => {
           </View>
           {(!userID && !userData?.isPrivate) || userData?.isFollowing || userID ? (
             <>
-              <View style={{padding: RFValue(10)}}>
+              <View style={{padding: RFValue(10), marginLeft: RFValue(10)}}>
                 <TouchableOpacity activeOpacity={0.7}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <AppText size={1}>{userData?.bio}</AppText>
+                    <AppText size={1} style={{fontSize: 14, lineHeight: 20}}>
+                      {userData?.bio}
+                    </AppText>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -375,7 +377,7 @@ const UserProfileScreen = ({navigation, route}) => {
                       {state.showMore ? 'Hide Information' : 'More about me'}{' '}
                     </AppText>
                     <MaterialIcons
-                      name={state.showMore ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+                      name={state.showMore ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                       style={{
                         fontSize: RFValue(20),
                         color: AppTheme.colors.lightGrey,
