@@ -416,7 +416,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                           userID: item?.createdBy?._id,
                         });
                     }}>
-                    <View style={{paddingLeft: RFValue(14)}}>
+                    <View style={{paddingLeft: RFValue(4)}}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
                           {item?.createdBy?.firstName || item?.createdBy?.userName}
@@ -424,6 +424,10 @@ const GameDetailsScreen = ({navigation, route}) => {
                         <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
                         <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
                           {largeNumberShortify(item?.createdBy?.level)}
+                        </AppText>
+                        <AppText size={1} color={AppTheme.colors.lightGrey}>
+                          {'  -'} {moment(item?.createdAt).fromNow(true)}
+                          {' ago'}
                         </AppText>
                       </View>
                       <AppText size={1} color={AppTheme.colors.lightGrey}>
@@ -435,7 +439,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                     style={{
                       borderColor: item?.ratings > 5 ? AppTheme.colors.green : 'red',
                       borderWidth: 1,
-                      paddingHorizontal: RFValue(35),
+                      paddingHorizontal: RFValue(20),
                       paddingVertical: RFValue(5),
                       borderRadius: RFValue(15),
                       flexDirection: 'row',
