@@ -135,8 +135,8 @@ const QuestScreen = ({route, navigation}) => {
                               borderRadius={RFValue(3)}
                               progress={(user?.earnedXps || 0) / 100}
                               // backgroundColor={'#C2C2C2'}
-                              color={AppTheme.colors.primary}
-                              unfilledColor="#666666"
+                              color={'#0f4FF5'}
+                              unfilledColor="#47557B"
                               borderColor="none"
                             />
                           </View>

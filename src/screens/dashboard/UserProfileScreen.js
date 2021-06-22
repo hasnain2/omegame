@@ -283,7 +283,7 @@ const UserProfileScreen = ({navigation, route}) => {
                       <Bar
                         height={RFValue(10)}
                         width={Platform.OS === 'ios' ? 150 : 150}
-                        progress={(80 || 0) / 100}
+                        progress={(userData?.earnedCoins || 0) / 100}
                         // backgroundColor={'#C2C2C2'}
                         color={'#0f4FF5'}
                         unfilledColor="#47557B"
