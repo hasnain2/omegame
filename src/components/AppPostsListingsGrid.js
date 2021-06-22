@@ -27,8 +27,7 @@ const AppPostsListingsGrid = ({navigation, data, style, loading, refreshing, loa
   });
 
   return (
-    <View
-      style={[{flex: 1, paddingTop: RFValue(10), backgroundColor: AppTheme.colors.background}, style ? style : null]}>
+    <View style={[{flex: 1, backgroundColor: AppTheme.colors.background}, style ? style : null]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
       {loading ? <AppLoadingView /> : null}
       <FlatList
