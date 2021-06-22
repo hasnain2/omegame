@@ -5,7 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
-import { TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
+import {TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
 var uuid = require('react-native-uuid');
 
 const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true}) => {
@@ -39,17 +39,22 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 40});
 
   return (
-    <View style={[{flex: 1, backgroundColor: 'black'}, style ? style : null]}>
+    <View style={[{flex: 1, backgroundColor: '#1C1C22'}, style ? style : null]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
       <BannerAd
-        unitId={Platform.OS==='ios'? 'ca-app-pub-3340588473245469/6100457340':'ca-app-pub-3340588473245469/3261174039'}
+        unitId={
+          Platform.OS === 'ios' ? 'ca-app-pub-3340588473245469/6100457340' : 'ca-app-pub-3340588473245469/3261174039'
+        }
         size={BannerAdSize.SMART_BANNER}
         requestOptions={{
-        requestNonPersonalizedAdsOnly: true,}}
+          requestNonPersonalizedAdsOnly: true,
+        }}
         onAdLoaded={() => {
-        console.log('Advert loaded');}}
+          console.log('Advert loaded');
+        }}
         onAdFailedToLoad={(error) => {
-        console.error('Advert failed to load: ', error);}}
+          console.error('Advert failed to load: ', error);
+        }}
       />
       {loading ? <AppLoadingView /> : null}
       <FlatList

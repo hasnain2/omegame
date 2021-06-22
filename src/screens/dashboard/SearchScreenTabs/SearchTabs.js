@@ -74,9 +74,12 @@ const SearchTabs = ({navigation, type}) => {
         },
         indicatorStyle: {
           backgroundColor: AppTheme.colors.primary,
+          color: 'red',
         },
         style: {
           backgroundColor: AppTheme.colors.background,
+          borderBottomColor: 'black',
+          borderBottomWidth: RFValue(2),
         },
       }}>
       <Tab.Screen name="TabPosts">{(props) => <SearchTabsPosts {...props} />}</Tab.Screen>

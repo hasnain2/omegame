@@ -12,16 +12,13 @@ const AppSearchBar = ({onChangeText, onRightPess, hideFilter, type}) => {
   return (
     <View
       style={{
-        paddingVertical: type === 'review' ? RFValue(0) : RFValue(5),
         flexDirection: 'row',
-        borderBottomWidth: 0.5,
+        borderBottomWidth: RFValue(1),
         borderBottomColor: AppTheme.colors.lightGrey,
         alignItems: 'center',
+        marginHorizontal: RFValue(20),
       }}>
-      <FastImage
-        source={ICON_SEARCH}
-        style={{height: RFValue(30), width: RFValue(30), fontSize: RFValue(30)}}
-      />
+      <FastImage source={ICON_SEARCH} style={{height: RFValue(30), width: RFValue(30), fontSize: RFValue(30)}} />
       <TextInput
         style={{height: '100%', flex: 1, color: 'white', borderBottomWidth: 0}}
         placeholder={'Search'}
@@ -34,10 +31,7 @@ const AppSearchBar = ({onChangeText, onRightPess, hideFilter, type}) => {
       />
       {!hideFilter ? (
         <TouchableOpacity onPress={onRightPess}>
-          <FastImage
-            source={ICON_FILTER}
-            style={{height: RFValue(30), width: RFValue(30)}}
-          />
+          <FastImage source={ICON_FILTER} style={{height: RFValue(30), width: RFValue(30)}} />
         </TouchableOpacity>
       ) : null}
     </View>

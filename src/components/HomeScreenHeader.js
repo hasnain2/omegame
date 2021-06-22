@@ -22,11 +22,8 @@ const HomeScreenHeader = ({route, navigation}) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         height: RFValue(56),
-        shadowColor: 'black',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
+        borderBottomColor: 'black',
+        borderBottomWidth: RFValue(2),
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,

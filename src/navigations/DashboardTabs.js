@@ -99,6 +99,8 @@ function DashboardTabsExtra({navigation}) {
       tabBarOptions={{
         style: {
           height: RFValue(56),
+          borderTopColor: 'black',
+          borderTopWidth: RFValue(2),
           // paddingTop: RFValue(10)
         },
         showLabel: false,
