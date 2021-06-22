@@ -32,7 +32,7 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        alignSelf: 'center',
         alignItems: 'center',
         paddingHorizontal: RFValue(20),
         // backgroundColor: '#1C1C22',
@@ -40,18 +40,17 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => {
-          let temp = {...item}
-          console.log(temp)
-          let computed = [...item.computed]
+          let temp = {...item};
+          console.log(temp);
+          let computed = [...item.computed];
           let newComp = {};
-          computed.map((item,index)=>{
-            if(item.key === 'LIKE'){
-              newComp = {...computed[index]}
-              newComp.value = !state.isLiked? newComp.value +1:newComp.value -1;
+          computed.map((item, index) => {
+            if (item.key === 'LIKE') {
+              newComp = {...computed[index]};
+              newComp.value = !state.isLiked ? newComp.value + 1 : newComp.value - 1;
               computed[index] = newComp;
             }
-          })
-          console.log(computed)
+          });
           UpdatePostFromReduxStore({...item, isLiked: !state.isLiked, computed: computed});
           LikePost(
             () => {
@@ -76,14 +75,11 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
             style={{
               fontSize: RFValue(20),
               paddingRight: RFValue(5),
-              color: state.isLiked ? AppTheme.colors.primary : AppTheme.colors.lightGrey,
+              color: state.isLiked ? AppTheme.colors.primary : AppTheme.colors.white,
             }}
           />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
-            {largeNumberShortify(
-              item?.computed?.find((ii) => ii.key === 'LIKE')?.value||
-                (state.isLiked ? 1 : 0),
-            )}
+            {largeNumberShortify(item?.computed?.find((ii) => ii.key === 'LIKE')?.value || (state.isLiked ? 1 : 0))}
           </AppText>
         </View>
       </TouchableOpacity>
@@ -93,9 +89,13 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
         onPress={() => {
           navigation.navigate('PostDetailScreenWithComments', {post: item});
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
           {/* <Ionicons name="chatbubble-outline" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'white' }} /> */}
-          <FastImage source={ICON_COMMENT} style={{height: RFValue(37), width: RFValue(37)}} />
+          <FastImage
+            source={ICON_COMMENT}
+            tintColor={AppTheme.colors.white}
+            style={{height: RFValue(37), width: RFValue(37)}}
+          />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
             {largeNumberShortify(item?.computed?.find((ii) => ii.key === 'COMMENTS')?.value || 0)}
           </AppText>
@@ -109,14 +109,18 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           SharePost(() => {}, item?._id, {
             platform: SHARE_STATUS_TYPES.FACEBOOK,
           });
-          
+
           AppShareContents((res) => {
             if (stopPlaying) stopPlaying(false);
             setState((prev) => ({...prev, isShared: res}));
           }, `Hey you might wanna check this post out on OmeGame.\n${DEEP_LINK}?${DEEP_LINK_TYPES.POST_ID}=${item?._id}`);
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <FastImage source={ICON_SHARE} style={{height: RFValue(36), width: RFValue(36)}} />
+        <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+          <FastImage
+            source={ICON_SHARE}
+            tintColor={AppTheme.colors.white}
+            style={{height: RFValue(36), width: RFValue(36)}}
+          />
           <AppText size={1} color={AppTheme.colors.lightGrey}>
             {largeNumberShortify(
               item?.computed?.find((ii) => ii.key === 'SHARE')?.value + (state.isShared ? 1 : 0) ||
@@ -145,7 +149,7 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
             style={{
               height: RFValue(34),
               width: RFValue(34),
-              tintColor: state.isSaved ? AppTheme.colors.primary : 'grey',
+              tintColor: state.isSaved ? AppTheme.colors.primary : AppTheme.colors.white,
             }}
           />
         </View>

@@ -40,20 +40,22 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
         borderBottomWidth: 0.5,
         // marginLeft: RFValue(16),
         // marginRight: RFValue(16),
-        marginTop: RFValue(16),
+        // marginTop: RFValue(16),
         // backgroundColor: 'red',
         // paddingHorizontal: RFValue(10),
       }}>
       <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />
-      <AppText
-        size={1}
-        style={{
-          paddingLeft: RFValue(10),
-          paddingVertical: RFValue(5),
-          lineHeight: RFValue(20),
-        }}>
-        {item.text}
-      </AppText>
+      {item.text ? (
+        <AppText
+          size={1}
+          style={{
+            paddingLeft: RFValue(10),
+            paddingVertical: RFValue(5),
+            lineHeight: RFValue(20),
+          }}>
+          {item.text}
+        </AppText>
+      ) : null}
 
       {item.location?.addressName ? (
         <View
@@ -94,8 +96,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
           activeOpacity={0.9}
           onPress={() => {
             navigation.navigate('PostDetailScreenWithComments', {post: item});
-          }}
-          >
+          }}>
           <View style={{height: RFValue(300), width: '100%'}}>
             {item?.attachments[0]?.type.includes('video') ? (
               <AppVideoPlayer

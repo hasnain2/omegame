@@ -10,6 +10,7 @@ const AppTheme = {
     accent: '#0049ff',
     lightBlue: '#02aaff',
     background: '#1b1b1b',
+    white: '#ffffff',
     green: '#0fff27',
     yellow: '#ffd949',
     red: '#ff1a4a',

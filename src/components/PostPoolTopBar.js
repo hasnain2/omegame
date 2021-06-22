@@ -14,6 +14,7 @@ const PostPoolTopBar = ({item, navigation, goBack}) => {
         style={{
           flexDirection: 'row',
           paddingHorizontal: RFValue(10),
+          padding: RFValue(3),
         }}>
         <AppUserBoxNameAvatar navigation={navigation} createdAt={item?.createdAt} item={item?.createdBy} />
         <TouchableOpacity
