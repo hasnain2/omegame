@@ -10,7 +10,7 @@ import {
   ICON_PRIVATE,
   ICON_SAVE_POST,
 } from '../../../assets/icons';
-import {AppBackButton, AppSwitchButton, AppText} from '../../components';
+import {AppBackButton, AppSwitchButton, AppText, AppButton} from '../../components';
 import {AppTheme} from '../../config';
 import {setUser} from '../../redux/reducers/userSlice';
 import {store} from '../../redux/store';
@@ -122,7 +122,7 @@ const AppSettingsScreen = ({navigation, route}) => {
             {rendListItem(ICON_ACCOUNT_SETTINGS, 'Account Settings', false)}
           </TouchableOpacity>
           {state.accountSettingDetails ? (
-            <View style={{paddingLeft: RFValue(50)}}>
+            <View style={{paddingLeft: RFValue(58)}}>
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={{paddingBottom: RFValue(10)}}
@@ -249,24 +249,16 @@ const AppSettingsScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('LeaveFeedBack');
-          }}>
-          <View
-            style={{
-              borderTopColor: '#1A1A1A',
-              borderTopWidth: 0.5,
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: RFValue(25),
-            }}>
-            <EvilIcons name="star" style={{fontSize: RFValue(20), color: AppTheme.colors.lightBlue}} />
-            <AppText size={2} color={AppTheme.colors.lightBlue}>
-              Leave a feedback
-            </AppText>
-          </View>
+        <TouchableOpacity>
+          {/* <EvilIcons name="star" style={{fontSize: RFValue(20), color: AppTheme.colors.lightBlue}} /> */}
+          <AppButton
+            color={AppTheme.colors.lightBlue}
+            label="Leave a feedback"
+            style={{width: '100%', height: 50}}
+            onPress={() => {
+              navigation.navigate('LeaveFeedBack');
+            }}
+          />
         </TouchableOpacity>
       </View>
     </View>
