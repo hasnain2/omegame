@@ -10,10 +10,11 @@ import {BuyAsset, GetAllAssets} from '../../services/customizationService';
 import {ASSET_TYPES} from '../../utils/AppConstants';
 import {AppShowToast} from '../../utils/AppHelperMethods';
 import {AntDesign} from '../../utils/AppIcons';
+import {BlurView} from '@react-native-community/blur';
 const NUMBER_OF_COLUMNS = 2;
 const {height, width} = Dimensions.get('screen');
 
-const OmegaStoreBackgroundsTab = ({navigation}) => {
+const OmegaStoreBackgroundsTab = ({navigation, showBlur, toggleBlur}) => {
   let [state, setState] = React.useState({
     isModalVisible: null,
     data: [],
@@ -38,7 +39,7 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
   const isPurchased =
     state?.isModalVisible?.isPurchased || !!myAssets?.backgrounds?.find((ii) => ii?._id === state?.isModalVisible?._id);
   return (
-    <View style={{backgroundColor: 'black', flex: 1, paddingTop: RFValue(10)}}>
+    <View style={{backgroundColor: 'black', flex: 1, padding: RFValue(2)}}>
       <FlatList
         data={state.data}
         numColumns={NUMBER_OF_COLUMNS}
@@ -53,6 +54,7 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => {
+                toggleBlur();
                 setState((prev) => ({...prev, isModalVisible: item}));
               }}>
               <View
@@ -85,76 +87,80 @@ const OmegaStoreBackgroundsTab = ({navigation}) => {
           );
         }}
       />
-
-      <AppModal show={state.isModalVisible} toggle={() => setState((prev) => ({...prev, isModalVisible: null}))}>
+      <AppModal
+        show={state.isModalVisible}
+        toggle={() => {
+          toggleBlur();
+          setState((prev) => ({...prev, isModalVisible: null}));
+        }}>
         {state.isModalVisible ? (
-          <AppBlurView>
-            <View style={{flex: 1, paddingTop: RFValue(30),backgroundColor: 'black'}}>
+          <View style={{paddingTop: RFValue(30), backgroundColor: 'black', height: '70%'}}>
+            <View
+              style={{
+                // width: Dimensions.get('screen').width - RFValue(36),
+                flex: 1,
+                margin: PADDING,
+                borderRadius: RFValue(10),
+                overflow: 'hidden',
+                // backgroundColor: 'green',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  toggleBlur();
+                  setState((prev) => ({...prev, isModalVisible: null}));
+                }}>
+                <AntDesign name="close" style={{fontSize: 30, color: 'white'}} />
+              </TouchableOpacity>
+              <FastImage
+                source={{uri: state.isModalVisible?.attachment?.url}}
+                style={{
+                  width: Dimensions.get('screen').width - RFValue(20),
+                  height: RFValue(350),
+                }}
+              />
               <View
                 style={{
-                  // width: Dimensions.get('screen').width - RFValue(36),
+                  justifyContent: 'center',
                   flex: 1,
-                  margin: PADDING,
-                  borderRadius: RFValue(10),
-                  overflow: 'hidden',
-                  // backgroundColor: 'green',
+                  alignItems: 'center',
+                  backgroundColor: 'black',
+                  borderTopWidth: 1,
+                  borderTopColor: 'grey',
+                  height: '20%',
                 }}>
-                <TouchableOpacity onPress={() => setState((prev) => ({...prev, isModalVisible: null}))}>
-                <AntDesign
-                name="close"
-                style={{fontSize: RFValue(30), color: 'white'}}
-              />
-              </TouchableOpacity>
-                <FastImage
-                  source={{uri: state.isModalVisible?.attachment?.url}}
-                  style={{width: Dimensions.get('screen').width - RFValue(20), height: '75%'}}
-                  resizeMode="contain"
-                />
+                <AppText size={2}>{state.isModalVisible.name}</AppText>
+
                 <View
                   style={{
-                    justifyContent: 'center',
+                    flexDirection: 'row',
                     flex: 1,
                     alignItems: 'center',
-                    backgroundColor: 'black',
-                    borderTopWidth: 1,
-                    borderTopColor: 'grey',
-                    padding: RFValue(15),
-                    height: "20%",
+                    justifyContent: 'center',
                   }}>
-                  <AppText size={2}>{state.isModalVisible.name}</AppText>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <AppGoldCoin />
-                    <AppText size={2}> x {state.isModalVisible.priceInCoins}</AppText>
-                  </View>
-                  <AppButtonPlane
-                    onPress={() => {
-                      if (!isPurchased) {
-                        setState((prev) => ({...prev, isModalVisible: null, loading: true}));
-                        BuyAsset((buyAssetRes) => {
-                          setState((prev) => ({...prev, loading: false}));
-                          if (buyAssetRes) {
-                            AddAssetBackground(state.isModalVisible);
-                          } else {
-                            AppShowToast('You dont have enough coins');
-                          }
-                        }, state.isModalVisible?._id);
-                      } else {
-                        AppShowToast('You already own this background');
-                      }
-                    }}
-                    label={isPurchased ? 'PURCHASED' : 'BUY'}
-                  />
+                  <AppGoldCoin />
+                  <AppText size={2}> x {state.isModalVisible.priceInCoins}</AppText>
                 </View>
+                <AppButtonPlane
+                  onPress={() => {
+                    if (!isPurchased) {
+                      setState((prev) => ({...prev, isModalVisible: null, loading: true}));
+                      BuyAsset((buyAssetRes) => {
+                        setState((prev) => ({...prev, loading: false}));
+                        if (buyAssetRes) {
+                          AddAssetBackground(state.isModalVisible);
+                        } else {
+                          AppShowToast('You dont have enough coins');
+                        }
+                      }, state.isModalVisible?._id);
+                    } else {
+                      AppShowToast('You already own this background');
+                    }
+                  }}
+                  label={isPurchased ? 'PURCHASED' : 'BUY'}
+                />
               </View>
             </View>
-          </AppBlurView>
+          </View>
         ) : null}
       </AppModal>
     </View>
