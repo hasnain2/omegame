@@ -24,15 +24,14 @@ const AppUserListingWithFollowButtons = ({navigation, data, style, loading, refr
     let tempUserObj = {...item};
     if (!tempUserObj?.isRequested) {
       ActionsOnUsers(
-        (actionsRes) => {
-        },
+        (actionsRes) => {},
         item?._id,
         tempUserObj?.isFollowing ? FRIEND_STATUSES_ACTIONS.UNFOLLOW : FRIEND_STATUSES_ACTIONS.FOLLOW,
       );
     }
-    if(tempUserObj.isPrivate){
+    if (tempUserObj.isPrivate) {
       tempUserObj.isRequested = true;
-    }else{
+    } else {
       tempUserObj.isFollowing = true;
     }
     let tempData = state.usersData;
@@ -124,7 +123,7 @@ const AppUserListingWithFollowButtons = ({navigation, data, style, loading, refr
                           justifyContent: 'center',
                           width: '85%',
                           alignItems: 'center',
-                          padding: RFValue(10),
+                          padding: RFValue(6),
                           alignSelf: 'center',
                           borderRadius: 90,
                           borderWidth: 1,
@@ -152,7 +151,7 @@ const AppUserListingWithFollowButtons = ({navigation, data, style, loading, refr
                         width: '85%',
                         alignSelf: 'center',
                         alignItems: 'center',
-                        padding: RFValue(10),
+                        padding: RFValue(6),
                         borderRadius: 90,
                       }}>
                       <AppText size={1} bold={true} color={'white'}>
@@ -169,7 +168,7 @@ const AppUserListingWithFollowButtons = ({navigation, data, style, loading, refr
                         width: '85%',
                         alignSelf: 'center',
                         alignItems: 'center',
-                        padding: RFValue(10),
+                        padding: RFValue(6),
                         borderRadius: 90,
                       }}>
                       <AppText size={1} bold={true} color={'white'}>
