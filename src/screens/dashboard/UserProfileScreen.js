@@ -264,25 +264,26 @@ const UserProfileScreen = ({navigation, route}) => {
                     style={{
                       flexDirection: 'row',
                       paddingVertical: RFValue(15),
+                      justifyContent: 'space-between',
                       alignItems: 'center',
                     }}>
                     <View
                       style={{
                         flexDirection: 'row',
-                        justifyContent: 'center',
                         alignItems: 'center',
-                        flex: 0.3,
+                        paddingLeft: RFValue(10),
+                        flex: 1,
                       }}>
                       <AppGoldCoin size={35} />
                       <AppText size={3} style={{paddingHorizontal: RFValue(1)}}>
                         {largeNumberShortify(userData?.earnedCoins || 0)}
                       </AppText>
                     </View>
-                    <View style={{}}>
+                    <View style={{marginLeft: RFValue(15)}}>
                       <Bar
                         height={RFValue(10)}
-                        width={Platform.OS === 'ios' ? 180 : 200}
-                        progress={(userData?.earnedXps || 0) / 100}
+                        width={Platform.OS === 'ios' ? 150 : 150}
+                        progress={(80 || 0) / 100}
                         // backgroundColor={'#C2C2C2'}
                         color={'#0f4FF5'}
                         unfilledColor="#47557B"
@@ -292,9 +293,10 @@ const UserProfileScreen = ({navigation, route}) => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flex: 0.3,
+                        alignItems: 'flex-end',
+                        justifyContent: 'flex-end',
+                        flex: 1,
+                        marginRight: RFValue(20),
                       }}>
                       <AppText size={1} bold={true} style={{}}>
                         XP {largeNumberShortify(userData?.earnedXps)}/100
@@ -360,6 +362,89 @@ const UserProfileScreen = ({navigation, route}) => {
                     </AppText>
                   </View>
                 </TouchableOpacity>
+                <View>
+                  {state.showMore ? (
+                    <View>
+                      {userData?.dateOfBirth ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            Date of Birth:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {moment(userData?.dateOfBirth).format('DD MMM, yyyy')}
+                          </AppText>
+                        </View>
+                      ) : null}
+                      {userData?.favouriteGame ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            Favorite Game:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {userData.favouriteGame}
+                          </AppText>
+                        </View>
+                      ) : null}
+                      {userData?.favouriteConsole ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            Favorite Console:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {userData.favouriteConsole}
+                          </AppText>
+                        </View>
+                      ) : null}
+                      {gac[0]?.account ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            XBOX live account:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {gac[0].account}
+                          </AppText>
+                        </View>
+                      ) : null}
+                      {gac[1]?.account ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            PSN account:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {gac[1].account}
+                          </AppText>
+                        </View>
+                      ) : null}
+                      {gac[2]?.account ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            Steam account:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {gac[2].account}
+                          </AppText>
+                        </View>
+                      ) : null}
+                      {gac[3]?.account ? (
+                        <View style={{flexDirection: 'row'}}>
+                          <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(5)}}>
+                            Nintendo account:
+                          </AppText>
+                          <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(5)}}>
+                            {' '}
+                            {gac[3].account}
+                          </AppText>
+                        </View>
+                      ) : null}
+                    </View>
+                  ) : null}
+                </View>
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => {
@@ -383,89 +468,6 @@ const UserProfileScreen = ({navigation, route}) => {
                         color: AppTheme.colors.lightGrey,
                       }}
                     />
-                  </View>
-                  <View>
-                    {state.showMore ? (
-                      <View>
-                        {userData?.dateOfBirth ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              Date of Birth:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {moment(userData?.dateOfBirth).format('DD MMM, yyyy')}
-                            </AppText>
-                          </View>
-                        ) : null}
-                        {userData?.favouriteGame ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              Favorite Game:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {userData.favouriteGame}
-                            </AppText>
-                          </View>
-                        ) : null}
-                        {userData?.favouriteConsole ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              Favorite Console:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {userData.favouriteConsole}
-                            </AppText>
-                          </View>
-                        ) : null}
-                        {gac[0]?.account ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              XBOX live account:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {gac[0].account}
-                            </AppText>
-                          </View>
-                        ) : null}
-                        {gac[1]?.account ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              PSN account:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {gac[1].account}
-                            </AppText>
-                          </View>
-                        ) : null}
-                        {gac[2]?.account ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              Steam account:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {gac[2].account}
-                            </AppText>
-                          </View>
-                        ) : null}
-                        {gac[3]?.account ? (
-                          <View style={{flexDirection: 'row'}}>
-                            <AppText size={2} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10)}}>
-                              Nintendo account:
-                            </AppText>
-                            <AppText size={2} color={AppTheme.colors.text} style={{paddingVertical: RFValue(10)}}>
-                              {' '}
-                              {gac[3].account}
-                            </AppText>
-                          </View>
-                        ) : null}
-                      </View>
-                    ) : null}
                   </View>
                 </TouchableOpacity>
               </View>
