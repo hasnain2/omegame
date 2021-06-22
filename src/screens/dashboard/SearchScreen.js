@@ -130,7 +130,7 @@ const SearchScreen = ({route, navigation}) => {
         }}>
         <View
           style={{
-            backgroundColor: '#1b1b1b',
+            backgroundColor: AppTheme.colors.onSurface,
             width: '85%',
             maxHeight: '90%',
             borderRadius: 15,
@@ -161,8 +161,8 @@ const SearchScreen = ({route, navigation}) => {
             }}>
             <View
               style={{
-                borderBottomWidth: 0.5,
-                borderBottomColor: '#213A57',
+                borderBottomWidth: 1,
+                borderBottomColor: '#262626',
                 paddingBottom: RFValue(15),
               }}>
               <View style={{padding: RFValue(15)}}>
@@ -171,37 +171,37 @@ const SearchScreen = ({route, navigation}) => {
                   {state.sortPostBy || 'Select'}
                 </AppText>
               </View>
+              {state.visibleFilter === 'sortPostBy' ? (
+                <FlatList
+                  data={POST_SORTING_TYPES}
+                  numColumns={NUMBER_OF_COLUMNS}
+                  initialNumToRender={2}
+                  windowSize={2}
+                  removeClippedSubviews={true}
+                  maxToRenderPerBatch={2}
+                  bounces={false}
+                  keyExtractor={(ii) => (ii._id || '') + 'you'}
+                  renderItem={({item, index}) => (
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingVertical: RFValue(6),
+                        padding: RFValue(15),
+                      }}>
+                      <AppRadioButton
+                        val={state.sortPostBy === item.name}
+                        onPress={() => {
+                          setState((prev) => ({...prev, sortPostBy: item.name}));
+                        }}
+                        size={20}
+                        label={item.name}
+                      />
+                    </View>
+                  )}
+                />
+              ) : null}
             </View>
           </TouchableOpacity>
-          {state.visibleFilter === 'sortPostBy' ? (
-            <FlatList
-              data={POST_SORTING_TYPES}
-              numColumns={NUMBER_OF_COLUMNS}
-              initialNumToRender={2}
-              windowSize={2}
-              removeClippedSubviews={true}
-              maxToRenderPerBatch={2}
-              bounces={false}
-              keyExtractor={(ii) => (ii._id || '') + 'you'}
-              renderItem={({item, index}) => (
-                <View
-                  style={{
-                    flex: 1,
-                    paddingVertical: RFValue(6),
-                    padding: RFValue(15),
-                  }}>
-                  <AppRadioButton
-                    val={state.sortPostBy === item.name}
-                    onPress={() => {
-                      setState((prev) => ({...prev, sortPostBy: item.name}));
-                    }}
-                    size={20}
-                    label={item.name}
-                  />
-                </View>
-              )}
-            />
-          ) : null}
 
           <TouchableOpacity
             activeOpacity={0.7}
