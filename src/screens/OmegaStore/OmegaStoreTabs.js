@@ -30,7 +30,7 @@ const OmegaStoreTabs = ({navigation, route}) => {
             <Ionicons
               onPress={() => navigation.goBack()}
               name="arrow-back"
-              style={{fontSize: RFValue(25), color: 'white', padding: RFValue(10)}}
+              style={{fontSize: RFValue(25), color: 'white', padding: RFValue(0)}}
             />
           </View>
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
