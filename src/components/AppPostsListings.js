@@ -41,7 +41,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
   return (
     <View style={[{flex: 1, backgroundColor: '#1C1C22'}, style ? style : null]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
-      <BannerAd
+      {/* <BannerAd
         unitId={
           Platform.OS === 'ios' ? 'ca-app-pub-3340588473245469/6100457340' : 'ca-app-pub-3340588473245469/3261174039'
         }
@@ -55,7 +55,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
         onAdFailedToLoad={(error) => {
           console.error('Advert failed to load: ', error);
         }}
-      />
+      /> */}
       {loading ? <AppLoadingView /> : null}
       <FlatList
         ref={flatListRef}
