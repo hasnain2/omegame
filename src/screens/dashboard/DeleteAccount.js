@@ -26,7 +26,7 @@ const DeleteAccount = ({navigation, route}) => {
         <AppText style={{fontSize: RFValue(24)}} bold={true}>
           We're sorry to see you go.
         </AppText>
-        <AppText size={1} style={{paddingVertical: RFValue(10)}}>
+        <AppText style={{paddingVertical: RFValue(10), fontSize: 14}}>
           Before you go...
         </AppText>
 
