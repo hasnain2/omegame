@@ -113,7 +113,7 @@ const ChatWindow = ({navigation, route}) => {
           size={2}
           bold={true}
           style={{marginRight: RFValue(10), marginLeft: RFValue(4)}}>
-          SEND
+          Send
         </AppText>
       </Send>
     );
@@ -125,7 +125,8 @@ const ChatWindow = ({navigation, route}) => {
         {...props}
         wrapperStyle={{
           left: {
-            backgroundColor: LIGHT_GREY,
+            backgroundColor: 'blue',
+            
           },
           right: {
             backgroundColor: 'black',
@@ -470,7 +471,7 @@ const styles = StyleSheet.create({
     borderLeftColor: 'white',
     borderTopColor: 'white',
     borderRadius: 50,
-    marginRight: RFValue(6),
+    marginRight: RFValue(9),
     marginLeft: RFValue(14),
   },
 });
