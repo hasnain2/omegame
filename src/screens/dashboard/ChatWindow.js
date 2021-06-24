@@ -125,8 +125,7 @@ const ChatWindow = ({navigation, route}) => {
         {...props}
         wrapperStyle={{
           left: {
-            backgroundColor: 'blue',
-            
+            backgroundColor: '#4D4D4D',
           },
           right: {
             backgroundColor: 'black',
