@@ -497,7 +497,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   style={{paddingVertical: RFValue(15)}}
                   onPress={() => {
                     navigation.push('AppFollowersAndFollowingList', {
-                      isFollowerMode: false,
+                      isFollowerMode: user._id === route?.params?.userID ? false : true,
                       userID: route?.params?.userID,
                     });
                   }}

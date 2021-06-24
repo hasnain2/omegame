@@ -17,6 +17,7 @@ import {storeData} from '../../../utils/AppStorage';
 const NUMBER_OF_COLUMNS = 4;
 const CustomizeCornersTab = ({navigation}) => {
   let {myAssets, user} = useSelector((state) => state.root);
+  console.log(myAssets.corners);
   const dispatch = useDispatch();
   let [state, setState] = React.useState({
     loading: true,
