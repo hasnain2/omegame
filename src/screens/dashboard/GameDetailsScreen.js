@@ -419,7 +419,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                     <View style={{paddingLeft: RFValue(4)}}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                          {item?.createdBy?.firstName || item?.createdBy?.userName}
+                          {item?.createdBy?.userName || item?.createdBy?.firstName}
                         </AppText>
                         <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
                         <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
@@ -430,8 +430,8 @@ const GameDetailsScreen = ({navigation, route}) => {
                           {' ago'}
                         </AppText>
                       </View>
-                      <AppText size={1} color={AppTheme.colors.lightGrey}>
-                        {item?.createdBy?.userName}
+                      <AppText size={1} color={item?.createdBy?.nickNameColor || AppTheme.colors.lightGrey}>
+                        {item?.createdBy?.nickName}
                       </AppText>
                     </View>
                   </TouchableOpacity>

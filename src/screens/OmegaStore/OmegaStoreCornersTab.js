@@ -20,7 +20,7 @@ const OmegaStoreCornersTab = ({navigation, showBlur, toggleBlur}) => {
   });
   const PADDING = RFValue(3);
   const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - PADDING * RFValue(NUMBER_OF_COLUMNS);
-  const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88','#02eeff', '#0049ff', '#ff03f7'];
+  const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7'];
   const BUBBLE_SIZE = RFValue(25);
   let {user} = useSelector((state) => state.root);
   AppLogger('-------', user._id);
@@ -40,7 +40,7 @@ const OmegaStoreCornersTab = ({navigation, showBlur, toggleBlur}) => {
       <View style={{flexDirection: 'row', padding: RFValue(10)}}>
         {/* <FontAwesome name="paint-brush" style={{ fontSize: RFValue(20), margin: RFValue(10), color: '#02eeff' }} /> */}
         {/* <ScrollView horizontal={true}> */}
-         <View style={{flexDirection: 'row', justifyContent:'center', width: '100%'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'center', width: '100%'}}>
           {COLORS.map((itm, indx) => (
             <TouchableOpacity
               key={`${indx}key`}
@@ -57,7 +57,7 @@ const OmegaStoreCornersTab = ({navigation, showBlur, toggleBlur}) => {
               />
             </TouchableOpacity>
           ))}
-          </View>
+        </View>
         {/* </ScrollView> */}
       </View>
       <FlatList
@@ -171,6 +171,7 @@ const OmegaStoreCornersTab = ({navigation, showBlur, toggleBlur}) => {
                           {
                             text: 'Cancel',
                             onPress: () => {
+                              toggleBlur();
                               setState((prev) => ({...prev, isModalVisible: null}));
                               AppLogger('', 'Cancel Pressed');
                             },
@@ -179,6 +180,7 @@ const OmegaStoreCornersTab = ({navigation, showBlur, toggleBlur}) => {
                           {
                             text: 'OK',
                             onPress: () => {
+                              toggleBlur();
                               setState((prev) => ({...prev, isModalVisible: null, loading: true}));
                               BuyAsset((buyAssetRes) => {
                                 if (buyAssetRes) {

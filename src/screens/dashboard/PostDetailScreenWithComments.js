@@ -190,7 +190,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                     }}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                        {item?.createdBy?.firstName+' '+ item?.createdBy?.lastName || item?.createdBy?.userName}
+                        {item?.createdBy?.userName || item?.createdBy?.firstName + ' ' + item?.createdBy?.lastName}
                       </AppText>
                       <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
                       <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
@@ -201,8 +201,8 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                         - {moment(item?.createdAt || new Date()).fromNow(true)}
                       </AppText>
                     </View>
-                    <AppText size={1} color={AppTheme.colors.lightGrey}>
-                      {item?.createdBy?.userName}
+                    <AppText size={1} color={item?.createdBy?.nickNameColor || AppTheme.colors.lightGrey}>
+                      {item?.createdBy?.nickName}
                     </AppText>
                   </TouchableOpacity>
                 </View>
@@ -476,45 +476,45 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
           ) : null}
 
           {/* <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}> */}
-            <FlatList
-              ref={flatListRef}
-              data={state.comments}
-              contentContainerStyle={{paddingBottom: RFValue(50)}}
-              windowSize={2}
-              initialNumToRender={5}
-              maxToRenderPerBatch={5}
-              keyExtractor={(_,index) => index.toString()}
-              renderItem={({item, index}) => {
-                let isCommentIsLiked = state.commentLikesArr.includes(item?._id);
-                return (
-                  <>
-                    {index === 0 && postData ? (
-                      <View style={{paddingBottom: RFValue(20)}}>
-                        <PostCard
-                          // goBack={() => navigation.goBack()}
-                          item={postData}
-                          navigation={navigation}
-                          startPlaying={state.focused}
-                          controls={true}
-                        />
-                      </View>
-                    ) : null}
+          <FlatList
+            ref={flatListRef}
+            data={state.comments}
+            contentContainerStyle={{paddingBottom: RFValue(50)}}
+            windowSize={2}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({item, index}) => {
+              let isCommentIsLiked = state.commentLikesArr.includes(item?._id);
+              return (
+                <>
+                  {index === 0 && postData ? (
+                    <View style={{paddingBottom: RFValue(20)}}>
+                      <PostCard
+                        // goBack={() => navigation.goBack()}
+                        item={postData}
+                        navigation={navigation}
+                        startPlaying={state.focused}
+                        controls={true}
+                      />
+                    </View>
+                  ) : null}
 
-                    {renderCommentView(item, isCommentIsLiked, index, index)}
-                    {state?.replies?._id === item?._id
-                      ? state?.replies?.data.map((ittem, inndex) => {
-                          let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
-                          return (
-                            <View key={`${inndex}key`} style={{}}>
-                              {renderCommentView(ittem, isReplyIsLiked, inndex, index)}
-                            </View>
-                          );
-                        })
-                      : null}
-                  </>
-                );
-              }}
-            />
+                  {renderCommentView(item, isCommentIsLiked, index, index)}
+                  {state?.replies?._id === item?._id
+                    ? state?.replies?.data.map((ittem, inndex) => {
+                        let isReplyIsLiked = state.commentLikesArr.includes(ittem._id);
+                        return (
+                          <View key={`${inndex}key`} style={{}}>
+                            {renderCommentView(ittem, isReplyIsLiked, inndex, index)}
+                          </View>
+                        );
+                      })
+                    : null}
+                </>
+              );
+            }}
+          />
           {/* </KeyboardAvoidingView> */}
           {/* {editModal ? (
             <EditComment

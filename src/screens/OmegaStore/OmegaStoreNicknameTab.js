@@ -166,6 +166,7 @@ const OmegaStoreNicknameTab = ({navigation, showBlur, toggleBlur}) => {
                 <AppButtonPlane
                   onPress={() => {
                     if (!isPurchased) {
+                      toggleBlur();
                       setState((prev) => ({...prev, isModalVisible: null, loading: true}));
                       BuyAsset((buyAssetRes) => {
                         setState((prev) => ({...prev, loading: false}));

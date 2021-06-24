@@ -11,7 +11,8 @@ import {GetUserReviews} from '../../../services/gamesService';
 import {ICON_EDIT} from '../../../../assets/icons';
 var uuid = require('react-native-uuid');
 const UserProfileReviews = ({navigation, userID}) => {
-  let {userProfileData} = useSelector((state) => state.root);
+  let {userProfileData, user} = useSelector((state) => state.root);
+
   let dispatch = useDispatch();
 
   let [state, setState] = React.useState({
@@ -75,28 +76,30 @@ const UserProfileReviews = ({navigation, userID}) => {
                     width: RFValue(80),
                     borderColor: item.negetive ? AppTheme.colors.red : AppTheme.colors.green,
                   }}>
-                  <View>
+                  <View style={{alignItems: 'center'}}>
                     <AppText size={1}>{item?.devices ? item?.devices : item.devices}</AppText>
                     <AppText size={3}>{parseFloat(item?.ratings || 0)?.toFixed(2)}</AppText>
                   </View>
-                  <View>
-                    <AppText>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate('RateGameScreen', {gameData: item, item, profile: true});
-                        }}>
-                        <Image
-                          source={ICON_EDIT}
-                          style={{
-                            height: RFValue(15),
-                            width: RFValue(15),
-                            marginBottom: RFValue(15),
-                            tintColor: AppTheme.colors.white,
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </AppText>
-                  </View>
+                  {user._id === userID ? (
+                    <View>
+                      <AppText>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('RateGameScreen', {gameData: item, item, profile: true});
+                          }}>
+                          <Image
+                            source={ICON_EDIT}
+                            style={{
+                              height: RFValue(15),
+                              width: RFValue(15),
+                              marginBottom: RFValue(15),
+                              tintColor: AppTheme.colors.white,
+                            }}
+                          />
+                        </TouchableOpacity>
+                      </AppText>
+                    </View>
+                  ) : null}
                 </View>
               </View>
               <View style={{paddingVertical: RFValue(15)}}>
