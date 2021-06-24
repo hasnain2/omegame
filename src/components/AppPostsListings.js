@@ -39,7 +39,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 40});
 
   return (
-    <View style={[{flex: 1, backgroundColor: '#1C1C22'}, style ? style : null]}>
+    <View style={[{flex: 1, backgroundColor: screenType === 'search' ? '#1C1C22' : 'black'}, style ? style : null]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
       {/* <BannerAd
         unitId={
@@ -112,7 +112,6 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
                 navigation={navigation}
                 item={item}
                 index={index}
-                screenType={screenType}
               />
             );
         }}

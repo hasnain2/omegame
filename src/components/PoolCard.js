@@ -16,8 +16,11 @@ const PoolCard = ({item, navigation}) => {
   return (
     <View
       style={{
-        borderBottomColor: AppTheme.colors.darkGrey,
-        borderBottomWidth: 0.5,
+        borderBottomColor: '#262626',
+        borderBottomWidth: RFValue(1),
+        marginVertical: RFValue(5),
+        // borderBottomColor: AppTheme.colors.darkGrey,
+        // borderBottomWidth: 0.5,
       }}>
       <PostPoolTopBar item={item} navigation={navigation} />
       <AppText size={1} style={{padding: RFValue(15), paddingTop: 0}}>
@@ -33,8 +36,7 @@ const PoolCard = ({item, navigation}) => {
             flexWrap: 'wrap',
           }}>
           <AppText size={0} color={'grey'} style={{paddingTop: 0}}>
-            Location: {item.location?.addressName || ''},{' '}
-            {item.location?.country || ''}
+            Location: {item.location?.addressName || ''}, {item.location?.country || ''}
           </AppText>
         </View>
       ) : null}
@@ -50,8 +52,7 @@ const PoolCard = ({item, navigation}) => {
           {item.tagged.map((iii, ind) => (
             <AppText
               onPress={() => {
-                if (iii?._id)
-                  navigation.navigate('UserProfileScreen', {userID: iii?._id});
+                if (iii?._id) navigation.navigate('UserProfileScreen', {userID: iii?._id});
               }}
               key={`${iii?.userName}${ind}`}
               size={0}
@@ -67,8 +68,7 @@ const PoolCard = ({item, navigation}) => {
         <View style={{paddingHorizontal: RFValue(15)}}>
           {item.options.map((itm, ind) => (
             <View key={`${ind}key`} style={{paddingVertical: RFValue(10)}}>
-              <View
-                style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
+              <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
                 <View style={{flex: 0.16}}>
                   <AppText color={AppTheme.colors.lightGrey} size={2}>
                     {itm.votes + '%'}
@@ -114,8 +114,7 @@ const PoolCard = ({item, navigation}) => {
             ))}
           </View>
 
-          <View
-            style={{flex: 1, padding: RFValue(15), justifyContent: 'center'}}>
+          <View style={{flex: 1, padding: RFValue(15), justifyContent: 'center'}}>
             <AppButton
               onPress={() => {
                 setState((prev) => ({...prev, voded: true}));
@@ -126,10 +125,7 @@ const PoolCard = ({item, navigation}) => {
         </>
       )}
 
-      <AppText
-        size={1}
-        color={AppTheme.colors.lightGrey}
-        style={{textAlign: 'center', padding: RFValue(5)}}>
+      <AppText size={1} color={AppTheme.colors.lightGrey} style={{textAlign: 'center', padding: RFValue(5)}}>
         TIME LEFT: 3d 4h 50m
       </AppText>
       <PostPoolBottomBar item={item} navigation={navigation} />

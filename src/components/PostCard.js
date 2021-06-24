@@ -12,7 +12,7 @@ import ImageModal from 'react-native-image-modal';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {Keyboard} from 'react-native';
 
-const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}) => {
+const PostCard = ({item, startPlaying, goBack, navigation, controls}) => {
   let [state, setState] = useState({
     stopPlaying: false,
     imageLoaded: false,
@@ -35,15 +35,17 @@ const PostCard = ({item, startPlaying, goBack, navigation, screenType, controls}
 
   return (
     <View
-      style={{
-        borderBottomColor: AppTheme.colors.darkGrey,
-        borderBottomWidth: 0.5,
-        // marginLeft: RFValue(16),
-        // marginRight: RFValue(16),
-        // marginTop: RFValue(16),
-        // backgroundColor: 'red',
-        // paddingHorizontal: RFValue(10),
-      }}>
+      style={
+        {
+          // borderBottomColor: AppTheme.colors.darkGrey,
+          // borderBottomWidth: 0.5,
+          // marginLeft: RFValue(16),
+          // marginRight: RFValue(16),
+          // marginTop: RFValue(16),
+          // backgroundColor: 'red',
+          // paddingHorizontal: RFValue(10),
+        }
+      }>
       <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />
       {item.text ? (
         <AppText

@@ -54,7 +54,7 @@ const HomeScreen = ({route, navigation}) => {
     };
   }, []);
   return (
-    <View style={{flex: 1, backgroundColor: '#1C1C22'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
       {/* <AppGooglePlacesAutoFill /> */}
       <HomeScreenHeader navigation={navigation} route={route} />
 
