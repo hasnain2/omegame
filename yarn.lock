@@ -1334,7 +1334,7 @@
   "resolved" "https://registry.npmjs.org/@react-native-firebase/admob/-/admob-11.5.0.tgz"
   "version" "11.5.0"
 
-"@react-native-firebase/app@^10.8.1":
+"@react-native-firebase/app@^10.8.1", "@react-native-firebase/app@11.5.0":
   "integrity" "sha512-EHbFGCbRdZMxSbdq5YCc47E9C+ckzsMeZdknJbSddTYJ9JxPDiorUyoHFOUCAHS2ZoklhpdlrU5zGNzxpBgDUw=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-10.8.1.tgz"
   "version" "10.8.1"
@@ -7917,7 +7917,7 @@
     "escape-string-regexp" "2.0.0"
     "invariant" "2.2.4"
 
-"react-native@0.63.3":
+"react-native@>=0.59.0-rc.0 <1.0.x", "react-native@0.63.3":
   "integrity" "sha512-71wq13uNo5W8QVQnFlnzZ3AD+XgUBYGhpsxysQFW/hJ8GAt/J5o+Bvhy81FXichp6IBDJDh/JgfHH2gNji8dFA=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.63.3.tgz"
   "version" "0.63.3"
@@ -7985,7 +7985,7 @@
     "react-is" "^16.8.6"
     "scheduler" "^0.19.1"
 
-"react@16.13.1":
+"react@^16.8.1", "react@16.13.1":
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"
