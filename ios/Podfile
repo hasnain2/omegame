@@ -43,6 +43,8 @@ target 'OneGame' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'react-native-payments', :path => '../node_modules/react-native-payments'
+
   target 'OneGameTests' do
     inherit! :complete
   end

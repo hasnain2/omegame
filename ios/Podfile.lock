@@ -5,6 +5,28 @@ PODS:
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
   - boost-for-react-native (1.63.0)
+  - Braintree (4.37.1):
+    - Braintree/Card (= 4.37.1)
+    - Braintree/Core (= 4.37.1)
+    - Braintree/PayPal (= 4.37.1)
+    - Braintree/UI (= 4.37.1)
+  - Braintree/Card (4.37.1):
+    - Braintree/Core
+  - Braintree/Core (4.37.1)
+  - Braintree/PayPal (4.37.1):
+    - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPalDataCollector (4.37.1):
+    - Braintree/Core
+    - Braintree/PayPalUtils
+  - Braintree/PayPalOneTouch (4.37.1):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+    - Braintree/PayPalUtils
+  - Braintree/PayPalUtils (4.37.1)
+  - Braintree/UI (4.37.1):
+    - Braintree/Card
+    - Braintree/Core
   - BVLinearGradient (2.5.6):
     - React
   - CocoaAsyncSocket (7.6.5)
@@ -354,6 +376,10 @@ PODS:
   - react-native-login-twitter (3.0.4):
     - React
     - TwitterKit5
+  - react-native-payments (0.8.4):
+    - Braintree (~> 4)
+    - React
+    - Stripe (~> 19)
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-simple-toast (1.1.3):
@@ -502,6 +528,7 @@ PODS:
   - SDWebImageWebPCoder (0.6.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
+  - Stripe (19.4.1)
   - Toast (4.0.0)
   - TOCropViewController (2.6.0)
   - TwitterCore (3.2.0)
@@ -544,6 +571,7 @@ DEPENDENCIES:
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-login-twitter (from `../node_modules/react-native-login-twitter`)
+  - react-native-payments (from `../node_modules/react-native-payments`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -589,6 +617,7 @@ SPEC REPOS:
   trunk:
     - AppAuth
     - boost-for-react-native
+    - Braintree
     - CocoaAsyncSocket
     - FBSDKCoreKit
     - FBSDKLoginKit
@@ -615,6 +644,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - SDWebImageWebPCoder
+    - Stripe
     - Toast
     - TOCropViewController
     - TwitterCore
@@ -683,6 +713,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-resizer"
   react-native-login-twitter:
     :path: "../node_modules/react-native-login-twitter"
+  react-native-payments:
+    :path: "../node_modules/react-native-payments"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
@@ -767,6 +799,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  Braintree: 94a20907b70aeffb29c40380eec583d783a347b6
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cde416483dac037923206447da6e1454df403714
@@ -822,6 +855,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
   react-native-image-resizer: 13ac4af788f88af36d0353a1324401ebabd04fe4
   react-native-login-twitter: f0f71fa99f7ec2cd7578b0982c2ef11a4cc90a03
+  react-native-payments: 0cb00209f3b25a72d5b614554abf688e2cc53002
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
@@ -863,12 +897,13 @@ SPEC CHECKSUMS:
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
+  Stripe: 5914399ac5878056b985d56b409cb4bb1e7fc7e8
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit5: 64095dfefcf39be2355711ef27112d55e340d90e
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: 3b0bbcc830bfc05169e6bce86131078daf4a68c5
+PODFILE CHECKSUM: 76dbb0eb4850a2c56ccfa64629a7226ffd9e2c4c
 
 COCOAPODS: 1.10.1
