@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         applicationId "com.onegame"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion '21'
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
@@ -80,6 +80,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.gms:play-services-wallet:17.0.0'
+    implementation 'com.android.support:appcompat-v7:24.1.1'
     implementation project(':react-native-video')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
