@@ -48,38 +48,39 @@ const Signup = ({route, navigation}) => {
   }
 
   const onSubmit = () => {
-    var reWhiteSpace = new RegExp("\\s+");
+    var reWhiteSpace = new RegExp('\\s+');
     if (state.username) {
-      if(!reWhiteSpace.test(state.username)){
-      if (ValidateEmail(state.email)) {
-        if (state.password && state.password.length > 7) {
-          if (state.password === state.retypedPassword) {
-            if (ValidatePassword(state.password)) {
-              setState((prev) => ({...prev, loading: true, passwordError: ''}));
-              SignUpUser(
-                (res) => {
-                  if (res) {
-                    if (res !== 'verify') AppShowToast('Verification Email has been sent!');
-                    navigation.navigate('CodeVerification', {email: state.email?.toLowerCase().trim()});
-                  }
-                  setState((prev) => ({...prev, loading: false}));
-                },
-                {
-                  userName: state.username.trim(),
-                  password: state.password.trim(),
-                  email: state.email.toLowerCase().trim(),
-                },
-              );
-            } else
-              setState((prev) => ({
-                ...prev,
-                passwordError:
-                  'Password should contain [special characters, Upper and Lower case Alphabets and numbers]',
-              }));
-          } else AppShowToast('Password does not match');
-        } else AppShowToast('Password must b 8 or more characters long');
-      } else AppShowToast('Please provide valid email address');
-    }else AppShowToast('Please remove white space from username.');
+      if (!reWhiteSpace.test(state.username)) {
+        if (ValidateEmail(state.email)) {
+          if (state.password && state.password.length > 7) {
+            if (state.password === state.retypedPassword) {
+              if (ValidatePassword(state.password)) {
+                setState((prev) => ({...prev, loading: true, passwordError: ''}));
+                SignUpUser(
+                  (res) => {
+                    console.log(res);
+                    if (res) {
+                      if (res !== 'verify') AppShowToast('Verification Email has been sent!');
+                      navigation.navigate('CodeVerification', {email: state.email?.toLowerCase().trim()});
+                    }
+                    setState((prev) => ({...prev, loading: false}));
+                  },
+                  {
+                    userName: state.username.trim(),
+                    password: state.password.trim(),
+                    email: state.email.toLowerCase().trim(),
+                  },
+                );
+              } else
+                setState((prev) => ({
+                  ...prev,
+                  passwordError:
+                    'Password should contain [special characters, Upper and Lower case Alphabets and numbers]',
+                }));
+            } else AppShowToast('Password does not match');
+          } else AppShowToast('Password must b 8 or more characters long');
+        } else AppShowToast('Please provide valid email address');
+      } else AppShowToast('Please remove white space from username.');
     } else AppShowToast('Please provide username');
   };
   return (
@@ -163,13 +164,13 @@ const Signup = ({route, navigation}) => {
               <AppText
                 size={1}
                 style={{lineHeight: RFValue(20), textAlign: 'center', paddingVertical: RFValue(10)}}
-                color={"#252525"}>
+                color={'#252525'}>
                 By clicking Create account, I agree that I have read and accepted the{' '}
-                <AppText size={1} color={"#252525"} style={{textDecorationLine: 'underline'}}>
+                <AppText size={1} color={'#252525'} style={{textDecorationLine: 'underline'}}>
                   Terms of Use
                 </AppText>{' '}
                 and{' '}
-                <AppText size={1} color={"#252525"} style={{textDecorationLine: 'underline'}}>
+                <AppText size={1} color={'#252525'} style={{textDecorationLine: 'underline'}}>
                   Privacy Policy
                 </AppText>
                 .

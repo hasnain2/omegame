@@ -148,13 +148,15 @@ const PostCard = ({item, startPlaying, goBack, navigation, controls}) => {
           </View>
         </Pressable>
       ) : null}
-      <PostPoolBottomBar
-        item={item}
-        navigation={navigation}
-        stopPlaying={(val) => {
-          setState((prev) => ({...prev, stopPlaying: val}));
-        }}
-      />
+      <View style={{height: RFValue(50)}}>
+        <PostPoolBottomBar
+          item={item}
+          navigation={navigation}
+          stopPlaying={(val) => {
+            setState((prev) => ({...prev, stopPlaying: val}));
+          }}
+        />
+      </View>
     </View>
   );
 };

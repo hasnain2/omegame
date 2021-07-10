@@ -153,6 +153,7 @@ const CreatePost = ({navigation, route}) => {
         );
       } else {
         CreatePostService((result) => {
+          console.log(result);
           if (!hasMediaToUpload) setState((prev) => ({...prev, loading: false}));
           if (result) {
             if (result.data) {

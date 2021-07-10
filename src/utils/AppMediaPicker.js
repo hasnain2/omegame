@@ -59,7 +59,6 @@ const GenerateThumbnailFromVideo = (callback, videoPath) => {
   })
     .then((response) => {
       AppLogger('--------------THUMBNAIL GENERATION RES----------', response);
-      debugger;
       if (response.path) callback(response.path);
       else callback(false);
     })
