@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Image, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Platform, TouchableOpacity, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useSelector} from 'react-redux';
 import {
@@ -20,6 +20,7 @@ import {LogOutUser} from '../../services/authService';
 import {AppLogger} from '../../utils/AppHelperMethods';
 import {EvilIcons} from '../../utils/AppIcons';
 import {storeData} from '../../utils/AppStorage';
+import {METHOD_DATA_IOS, DETAILS_IOS} from '../../utils/AppConstants';
 
 const ICONSTYLE = {height: RFValue(40), width: RFValue(40), tintColor: 'white'};
 const AppSettingsScreen = ({navigation, route}) => {
@@ -251,6 +252,20 @@ const AppSettingsScreen = ({navigation, route}) => {
 
         <TouchableOpacity>
           {/* <EvilIcons name="star" style={{fontSize: RFValue(20), color: AppTheme.colors.lightBlue}} /> */}
+          <View style={{marginVertical: RFValue(5)}}>
+            <AppButton
+              color={AppTheme.colors.lightBlue}
+              label="Donate"
+              style={{width: '100%', height: 50}}
+              onPress={() => {
+                if (Platform.os === 'ios') {
+                  const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+                  paymentRequest.show();
+                } else {
+                }
+              }}
+            />
+          </View>
           <AppButton
             color={AppTheme.colors.lightBlue}
             label="Leave a feedback"
