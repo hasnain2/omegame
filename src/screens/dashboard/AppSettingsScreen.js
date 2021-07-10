@@ -268,7 +268,7 @@ const AppSettingsScreen = ({navigation, route}) => {
 
         <TouchableOpacity>
           {/* <EvilIcons name="star" style={{fontSize: RFValue(20), color: AppTheme.colors.lightBlue}} /> */}
-          <View style={{marginVertical: RFValue(5)}}>
+          {/* <View style={{marginVertical: RFValue(5)}}>
             <AppButton
               color={AppTheme.colors.lightBlue}
               label="Donate"
@@ -283,7 +283,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 }
               }}
             />
-          </View>
+          </View> */}
           <AppButton
             color={AppTheme.colors.lightBlue}
             label="Leave a feedback"
