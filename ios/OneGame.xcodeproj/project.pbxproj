@@ -349,7 +349,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = J537C3NTZC;
+						DevelopmentTeam = Z2APUMCWUU;
 						LastSwiftMigration = 1200;
 						ProvisioningStyle = Automatic;
 					};
@@ -453,6 +453,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-OneGame/Pods-OneGame-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Braintree/Braintree-UI-Localization.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Braintree/Braintree-Drop-In-Localization.bundle",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
@@ -474,11 +476,15 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/Stripe/InternalFrameworks/Stripe3DS2.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/TwitterKit5/iOS/TwitterKit.framework/TwitterKitResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Braintree-UI-Localization.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Braintree-Drop-In-Localization.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
@@ -500,6 +506,8 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
 			);
@@ -551,6 +559,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-OneGame-OneGameTests/Pods-OneGame-OneGameTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Braintree/Braintree-UI-Localization.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Braintree/Braintree-Drop-In-Localization.bundle",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
@@ -572,11 +582,15 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/Stripe/InternalFrameworks/Stripe3DS2.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/TwitterKit5/iOS/TwitterKit.framework/TwitterKitResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Braintree-UI-Localization.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Braintree-Drop-In-Localization.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
@@ -598,6 +612,8 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
 			);
@@ -859,7 +875,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J537C3NTZC;
+				DEVELOPMENT_TEAM = Z2APUMCWUU;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = OneGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -868,7 +884,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.SiteSeekr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.omegame.dev;
 				PRODUCT_NAME = OneGame;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "OneGame-Bridging-Header.h";
@@ -888,7 +904,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J537C3NTZC;
+				DEVELOPMENT_TEAM = Z2APUMCWUU;
 				INFOPLIST_FILE = OneGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -896,7 +912,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.SiteSeekr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.omegame.dev;
 				PRODUCT_NAME = OneGame;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "OneGame-Bridging-Header.h";

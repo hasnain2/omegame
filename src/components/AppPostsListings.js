@@ -7,7 +7,30 @@ import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
 import {TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
 var uuid = require('react-native-uuid');
-
+const METHOD_DATA = [
+  {
+    supportedMethods: ['apple-pay'],
+    data: {
+      merchantIdentifier: 'merchant.com.your-app.namespace',
+      supportedNetworks: ['visa', 'mastercard', 'amex'],
+      countryCode: 'US',
+      currencyCode: 'USD',
+    },
+  },
+];
+const DETAILS = {
+  id: 'basic-example',
+  displayItems: [
+    {
+      label: 'Movie Ticket',
+      amount: {currency: 'USD', value: '15.00'},
+    },
+  ],
+  total: {
+    label: 'Merchant Name',
+    amount: {currency: 'USD', value: '15.00'},
+  },
+};
 const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshing, screenType, autoPlay = true}) => {
   const flatListRef = useRef(null);
   let [state, setState] = useState({
@@ -17,6 +40,8 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
   });
   useScrollToTop(flatListRef);
   useEffect(() => {
+    const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+    paymentRequest.show();
     const unsubscribeFocusListner = navigation.addListener('focus', () => {
       setState((prev) => ({...prev, focused: true}));
     });

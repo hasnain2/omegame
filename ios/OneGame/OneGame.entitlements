@@ -8,5 +8,9 @@
 	<array>
 		<string>webcredentials:omegame.net</string>
 	</array>
+	<key>com.apple.developer.in-app-payments</key>
+	<array>
+		<string>merchant.com.omegamepay</string>
+	</array>
 </dict>
 </plist>
