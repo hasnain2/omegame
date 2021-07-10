@@ -201,6 +201,35 @@ const DETAILS_IOS = {
     amount: {currency: 'USD', value: '15.00'},
   },
 };
+const METHOD_DATA_ANDROID = [
+  {
+    supportedMethods: ['android-pay'],
+    data: {
+      supportedNetworks: ['visa', 'mastercard', 'amex'],
+      currencyCode: 'USD',
+      environment: 'TEST', // defaults to production
+      paymentMethodTokenizationParameters: {
+        tokenizationType: 'NETWORK_TOKEN',
+        parameters: {
+          publicKey: 'BPWwZfZY5ptX+2xjsPoJ1lM81se036AF9S0HPld81yT+s1fsa8B7/HuneclulpHKDtf1QkUAU+EcUHRqaoZnBjg=',
+        },
+      },
+    },
+  },
+];
+const DETAILS_ANDROID = {
+  id: 'basic-example',
+  displayItems: [
+    {
+      label: 'Movie Ticket',
+      amount: {currency: 'USD', value: '15.00'},
+    },
+  ],
+  total: {
+    label: 'Merchant Name',
+    amount: {currency: 'USD', value: '15.00'},
+  },
+};
 export {
   SecurityCodeTypeEnum,
   BUCKETS,
@@ -223,4 +252,6 @@ export {
   SLIDER_COLORS,
   METHOD_DATA_IOS,
   DETAILS_IOS,
+  METHOD_DATA_ANDROID,
+  DETAILS_ANDROID,
 };

@@ -20,7 +20,23 @@ import {LogOutUser} from '../../services/authService';
 import {AppLogger} from '../../utils/AppHelperMethods';
 import {EvilIcons} from '../../utils/AppIcons';
 import {storeData} from '../../utils/AppStorage';
-import {METHOD_DATA_IOS, DETAILS_IOS} from '../../utils/AppConstants';
+import {METHOD_DATA_IOS, DETAILS_IOS, METHOD_DATA_ANDROID, DETAILS_ANDROID} from '../../utils/AppConstants';
+const METHOD_DATA = [
+  {
+    supportedMethods: ['android-pay'],
+    data: {
+      supportedNetworks: ['visa', 'mastercard', 'amex'],
+      currencyCode: 'USD',
+      environment: 'TEST', // defaults to production
+      paymentMethodTokenizationParameters: {
+        tokenizationType: 'NETWORK_TOKEN',
+        parameters: {
+          publicKey: 'BPWwZfZY5ptX+2xjsPoJ1lM81se036AF9S0HPld81yT+s1fsa8B7/HuneclulpHKDtf1QkUAU+EcUHRqaoZnBjg=',
+        },
+      },
+    },
+  },
+];
 
 const ICONSTYLE = {height: RFValue(40), width: RFValue(40), tintColor: 'white'};
 const AppSettingsScreen = ({navigation, route}) => {
@@ -258,10 +274,12 @@ const AppSettingsScreen = ({navigation, route}) => {
               label="Donate"
               style={{width: '100%', height: 50}}
               onPress={() => {
-                if (Platform.os === 'ios') {
-                  const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+                if (Platform.OS === 'ios') {
+                  const paymentRequest = new PaymentRequest(METHOD_DATA_IOS, DETAILS_IOS);
                   paymentRequest.show();
                 } else {
+                  const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS_ANDROID);
+                  paymentRequest.show();
                 }
               }}
             />
