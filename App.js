@@ -15,7 +15,9 @@ import {getData} from './src/utils/AppStorage';
 import Interceptor from './src/utils/Interceptor';
 import SplashScreen from 'react-native-splash-screen';
 import {getFCMToken, requestPushNotificationPermission} from './src/services';
+
 global.PaymentRequest = require('react-native-payments').PaymentRequest;
+
 const App = ({}) => {
   let [state, setState] = useState({
     loading: true,
