@@ -22,9 +22,10 @@ const OmegaStoreTabs = ({navigation, route}) => {
     setValues((prev) => ({...prev, showBlur: !values.showBlur}));
   };
   useEffect(() => {}, []);
+  const paddings = 5;
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
-      <View style={{flex: 1, backgroundColor: 'black'}}>
+      <View style={{flex: 1, backgroundColor: 'black', paddingHorizontal: RFValue(paddings)}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View style={{flex: 0.3}}>
             <Ionicons
@@ -77,7 +78,12 @@ const OmegaStoreTabs = ({navigation, route}) => {
           <Tab.Screen
             name="Backgrounds"
             children={() => (
-              <OmegaStoreBackgroundsTab navigation={navigation} showBlur={values.showBlur} toggleBlur={toggle} />
+              <OmegaStoreBackgroundsTab
+                navigation={navigation}
+                showBlur={values.showBlur}
+                toggleBlur={toggle}
+                paddings={paddings}
+              />
             )}
           />
           <Tab.Screen

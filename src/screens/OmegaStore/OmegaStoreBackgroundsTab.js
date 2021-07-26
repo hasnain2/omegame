@@ -21,7 +21,7 @@ const OmegaStoreBackgroundsTab = ({navigation, showBlur, toggleBlur}) => {
   });
   let {myAssets} = useSelector((state) => state.root);
   const PADDING = RFValue(3);
-  const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - PADDING * RFValue(NUMBER_OF_COLUMNS);
+  const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - 7 * RFValue(NUMBER_OF_COLUMNS);
   const CARD_HEIGHT = CARD_WIDTH + RFValue(50);
 
   function getallassetshelper() {

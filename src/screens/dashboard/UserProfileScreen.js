@@ -353,7 +353,7 @@ const UserProfileScreen = ({navigation, route}) => {
           </View>
           {(!userID && !userData?.isPrivate) || userData?.isFollowing || userID ? (
             <>
-              <View style={{paddingHorizontal: RFValue(10), marginLeft: RFValue(10)}}>
+              <View style={{padding: RFValue(10), marginLeft: RFValue(10)}}>
                 <TouchableOpacity activeOpacity={0.7}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <AppText size={1} style={{fontSize: 14, lineHeight: 20}}>

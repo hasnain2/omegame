@@ -18,7 +18,7 @@ const OmegaStoreNicknameTab = ({navigation, showBlur, toggleBlur}) => {
     data: [],
   });
   const PADDING = RFValue(3);
-  const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - PADDING * RFValue(NUMBER_OF_COLUMNS);
+  const CARD_WIDTH = Dimensions.get('screen').width / NUMBER_OF_COLUMNS - 7 * RFValue(NUMBER_OF_COLUMNS);
   const COLORS = ['#666666', '#ff1a4a', '#ffd949', '#00ff88', '#02eeff', '#0049ff', '#ff03f7'];
   const BUBBLE_SIZE = RFValue(25);
 

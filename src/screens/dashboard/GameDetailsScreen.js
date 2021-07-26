@@ -393,7 +393,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    paddingBottom: RFValue(15),
+                    paddingBottom: RFValue(5),
                   }}>
                   <UserAvatar
                     corner={item?.createdBy?.corner || ''}
@@ -418,17 +418,25 @@ const GameDetailsScreen = ({navigation, route}) => {
                     }}>
                     <View style={{paddingLeft: RFValue(4)}}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <AppText bold={true} size={1} color={AppTheme.colors.lightGrey}>
-                          {item?.createdBy?.userName || item?.createdBy?.firstName}
-                        </AppText>
-                        <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
-                        <AppText size={1} bold={true} color={AppTheme.colors.primary} style={{paddingLeft: RFValue(5)}}>
-                          {largeNumberShortify(item?.createdBy?.level)}
-                        </AppText>
-                        <AppText size={1} color={AppTheme.colors.lightGrey}>
-                          {'  -'} {moment(item?.createdAt).fromNow(true)}
-                          {' ago'}
-                        </AppText>
+                        <View style={{flex: 0.6, flexDirection: 'row'}}>
+                          <AppText bold={true} size={1} color={AppTheme.colors.lightGrey} lines={2}>
+                            {item?.createdBy?.userName || item?.createdBy?.firstName}
+                          </AppText>
+                          <IsUserVerifiedCheck check={item?.createdBy?.isVerified} />
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                          <AppText
+                            size={1}
+                            bold={true}
+                            color={AppTheme.colors.primary}
+                            style={{paddingLeft: RFValue(5)}}>
+                            {largeNumberShortify(item?.createdBy?.level)}
+                          </AppText>
+                          <AppText size={1} color={AppTheme.colors.lightGrey}>
+                            {' -'} {moment(item?.createdAt).fromNow(true)}
+                            {' ago'}
+                          </AppText>
+                        </View>
                       </View>
                       <AppText size={1} color={item?.createdBy?.nickNameColor || AppTheme.colors.lightGrey}>
                         {item?.createdBy?.nickName}
@@ -478,9 +486,9 @@ const GameDetailsScreen = ({navigation, route}) => {
                   </View>
                 </View>
                 <AppText size={2}>{item?.feedback}</AppText>
-                <AppText size={1} color={AppTheme.colors.lightGrey} style={{paddingTop: RFValue(10)}}>
+                {/* <AppText size={1} color={AppTheme.colors.lightGrey} style={{paddingTop: RFValue(10)}}>
                   {moment(item?.createdAt).format('DD MMM YYYY')}
-                </AppText>
+                </AppText> */}
               </View>
             )}
           />
