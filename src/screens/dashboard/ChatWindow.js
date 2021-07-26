@@ -240,6 +240,7 @@ const ChatWindow = ({navigation, route}) => {
             paddingRight: RFValue(16),
           }}>
           <GiftedChat
+            placeholder="Type a message"
             messages={messages}
             renderInputToolbar={renderInputToolbar}
             showAvatarForEveryMessage={true}
@@ -461,17 +462,17 @@ const styles = StyleSheet.create({
   },
   inputToolBar: {
     borderTopWidth: 1,
-    backgroundColor: 'black',
+
     borderBottomWidth: 1,
     borderBottomColor: 'white',
+    backgroundColor: '#1C1C22',
     borderRightWidth: 1,
     borderRightColor: 'white',
     borderLeftWidth: 1,
     borderLeftColor: 'white',
     borderTopColor: 'white',
     borderRadius: 50,
-    marginRight: RFValue(9),
-    marginLeft: RFValue(14),
+    marginHorizontal: RFValue(5),
   },
 });
 export {ChatWindow};

@@ -50,6 +50,7 @@ const QuestScreen = ({route, navigation}) => {
 
   function getquesthelper(offset) {
     GetQuests((questListResponse) => {
+      consol;
       if (questListResponse) {
         dispatch(setQuests(questListResponse));
         setState((prev) => ({...prev, loading: false, refreshing: false}));
@@ -110,7 +111,7 @@ const QuestScreen = ({route, navigation}) => {
                   <View style={{height: state.LHeight, width: state.LWidth}}>
                     <FastImage
                       source={user?.cover ? {uri: user.cover} : BACKGROUND_IMG}
-                      style={{height: state.LHeight, width: state.LWidth}}>
+                      style={{height: RFValue(450), width: state.LWidth}}>
                       <LinearGradient
                         colors={COLORS_ARR}
                         style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>

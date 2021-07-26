@@ -49,7 +49,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, controls}) => {
       <PostPoolTopBar goBack={goBack} item={item} navigation={navigation} />
       {item.text ? (
         <AppText
-          size={1}
+          size={2}
           style={{
             paddingLeft: RFValue(10),
             paddingVertical: RFValue(5),

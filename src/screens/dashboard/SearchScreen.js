@@ -163,9 +163,9 @@ const SearchScreen = ({route, navigation}) => {
               style={{
                 borderBottomWidth: 1,
                 borderBottomColor: '#262626',
-                paddingBottom: RFValue(15),
+                paddingBottom: RFValue(0),
               }}>
-              <View style={{padding: RFValue(15)}}>
+              <View style={{padding: RFValue(16)}}>
                 <AppText size={2}>Sort Post by:</AppText>
                 <AppText size={2} color={AppTheme.colors.primary} style={{paddingTop: RFValue(10)}}>
                   {state.sortPostBy || 'Select'}
@@ -254,7 +254,6 @@ const SearchScreen = ({route, navigation}) => {
 
           <View style={{paddingLeft: RFValue(15), paddingRight: RFValue(15), paddingTop: RFValue(15)}}>
             <AppButton
-              bgColor={'#1b1b1b'}
               label={'START'}
               onPress={() => {
                 setState((prev) => ({...prev, showFilter: false, showBlur: false}));
@@ -276,7 +275,7 @@ const SearchScreen = ({route, navigation}) => {
             size={2}
             style={{
               paddingTop: RFValue(20),
-              paddingBottom: RFValue(10),
+              paddingBottom: RFValue(16),
               textAlign: 'center',
               textDecorationLine: 'underline',
             }}>

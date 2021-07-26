@@ -275,7 +275,7 @@ const UserProfileScreen = ({navigation, route}) => {
                         flex: 1,
                       }}>
                       <AppGoldCoin size={35} />
-                      <AppText size={3} style={{paddingHorizontal: RFValue(1)}}>
+                      <AppText size={2} style={{paddingHorizontal: RFValue(10)}} bold={true}>
                         {largeNumberShortify(userData?.earnedCoins || 0)}
                       </AppText>
                     </View>
@@ -298,7 +298,7 @@ const UserProfileScreen = ({navigation, route}) => {
                         flex: 1,
                         marginRight: RFValue(20),
                       }}>
-                      <AppText size={1} bold={true} style={{}}>
+                      <AppText size={2} bold={true} style={{}}>
                         XP {largeNumberShortify(userData?.earnedXps)}/100
                       </AppText>
                     </View>
@@ -314,7 +314,6 @@ const UserProfileScreen = ({navigation, route}) => {
                   <View style={{flex: 1, justifyContent: 'center'}}>
                     <View
                       style={{
-                        flex: 1,
                         flexDirection: 'row',
                         alignItems: 'center',
                       }}>
@@ -325,7 +324,7 @@ const UserProfileScreen = ({navigation, route}) => {
                     </View>
                     <AppText
                       color={userData?.nickNameColor ? userData?.nickNameColor : AppTheme.colors.lightGrey}
-                      style={{fontSize: 16}}>
+                      style={{fontSize: 16, paddingTop: RFValue(3)}}>
                       {userData?.nickName || userData?.userName}
                     </AppText>
                   </View>
@@ -334,8 +333,8 @@ const UserProfileScreen = ({navigation, route}) => {
                       borderRadius: RFValue(10),
                       borderWidth: 1,
                       justifyContent: 'center',
-                      paddingTop: RFValue(10),
-                      paddingBottom: RFValue(10),
+                      paddingTop: RFValue(7),
+                      paddingBottom: RFValue(7),
                       paddingLeft: RFValue(20),
                       paddingRight: RFValue(20),
                       alignItems: 'center',
@@ -354,7 +353,7 @@ const UserProfileScreen = ({navigation, route}) => {
           </View>
           {(!userID && !userData?.isPrivate) || userData?.isFollowing || userID ? (
             <>
-              <View style={{padding: RFValue(10), marginLeft: RFValue(10)}}>
+              <View style={{paddingHorizontal: RFValue(10), marginLeft: RFValue(10)}}>
                 <TouchableOpacity activeOpacity={0.7}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <AppText size={1} style={{fontSize: 14, lineHeight: 20}}>
@@ -504,7 +503,7 @@ const UserProfileScreen = ({navigation, route}) => {
                   color={AppTheme.colors.primary}>
                   {userData?.following}{' '}
                   <AppText size={2} color={AppTheme.colors.lightGrey}>
-                    Followings
+                    Following
                   </AppText>
                 </AppText>
               </View>

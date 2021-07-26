@@ -72,7 +72,7 @@ const CustomDrawer = ({state: {routeNames}, navigation}) => {
               paddingBottom: RFValue(10),
               justifyContent: 'space-between',
             }}>
-            <View style={{flex: 1, justifyContent: 'center'}}>
+            <View style={{flex: 1, justifyContent: 'center', paddingLeft: RFValue(15)}}>
               <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>
                 {user?.userName} <IsUserVerifiedCheck check={user?.isVerified} />
               </AppText>

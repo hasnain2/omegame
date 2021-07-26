@@ -244,8 +244,8 @@ const InboxScreen = ({navigation, route}) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   padding: RFValue(5),
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#213A57',
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: '#333333',
                 }}>
                 <View style={{flex: 1}}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>

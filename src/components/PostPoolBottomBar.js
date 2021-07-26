@@ -67,14 +67,14 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           <View
             style={{
               flexDirection: 'row',
-              paddingRight: RFValue(15),
+              paddingRight: RFValue(30),
               paddingLeft: RFValue(0),
               alignItems: 'center',
             }}>
             <FontAwesome
               name="heart-o"
               style={{
-                fontSize: RFValue(20),
+                fontSize: RFValue(15),
                 paddingRight: RFValue(5),
                 color: state.isLiked ? AppTheme.colors.primary : AppTheme.colors.white,
               }}
@@ -90,12 +90,12 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
           onPress={() => {
             navigation.navigate('PostDetailScreenWithComments', {post: item});
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(30)}}>
             {/* <Ionicons name="chatbubble-outline" style={{ fontSize: RFValue(20), paddingRight: RFValue(5), color: 'white' }} /> */}
             <FastImage
               source={ICON_COMMENT}
               tintColor={AppTheme.colors.white}
-              style={{height: RFValue(37), width: RFValue(37)}}
+              style={{height: RFValue(25), width: RFValue(25)}}
             />
             <AppText size={1} color={AppTheme.colors.lightGrey}>
               {largeNumberShortify(item?.computed?.find((ii) => ii.key === 'COMMENTS')?.value || 0)}
@@ -116,11 +116,11 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
               setState((prev) => ({...prev, isShared: res}));
             }, `Hey you might wanna check this post out on OmeGame.\n${DEEP_LINK}?${DEEP_LINK_TYPES.POST_ID}=${item?._id}`);
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(15)}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', paddingRight: RFValue(30)}}>
             <FastImage
               source={ICON_SHARE}
               tintColor={AppTheme.colors.white}
-              style={{height: RFValue(36), width: RFValue(36)}}
+              style={{height: RFValue(25), width: RFValue(25)}}
             />
             <AppText size={1} color={AppTheme.colors.lightGrey}>
               {largeNumberShortify(
@@ -148,8 +148,8 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
             <Image
               source={ICON_SAVE_POST}
               style={{
-                height: RFValue(34),
-                width: RFValue(34),
+                height: RFValue(25),
+                width: RFValue(25),
                 tintColor: state.isSaved ? AppTheme.colors.primary : AppTheme.colors.white,
               }}
             />
@@ -158,8 +158,8 @@ const PostPoolBottomBar = ({item, navigation, stopPlaying}) => {
       </View>
       <View
         style={{
-          borderBottomColor: '#262626',
-          borderBottomWidth: RFValue(1),
+          borderBottomColor: '#333333',
+          borderBottomWidth: 0.5,
           marginVertical: RFValue(5),
         }}></View>
     </View>

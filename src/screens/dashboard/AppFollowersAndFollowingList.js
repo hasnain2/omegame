@@ -134,7 +134,7 @@ const AppFollowersAndFollowingList = ({navigation, route}) => {
                   padding: RFValue(20),
                   flexDirection: 'row',
                   borderBottomWidth: 0.5,
-                  borderColor: AppTheme.colors.lightGrey,
+                  borderColor: AppTheme.colors.divider,
                   alignItems: 'center',
                 }}>
                 <UserAvatar

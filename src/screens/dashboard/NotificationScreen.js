@@ -122,7 +122,7 @@ const NotificationScreen = ({navigation, route}) => {
 
       <View style={{padding: RFValue(5), flex: 1}}>
         <View>
-          {!state.loading && notifications?.requests?.length < 1 ? null : (
+          {state.loading || notifications?.requests?.length < 1 ? null : (
             <View>
               <AppText size={1} bold={true} style={{paddingVertical: RFValue(10)}} color={AppTheme.colors.lightGrey}>
                 FOLLOW REQUESTS
@@ -278,7 +278,11 @@ const NotificationScreen = ({navigation, route}) => {
         </View>
 
         <View style={{flex: 1}}>
-          <AppText size={1} bold={true} color={AppTheme.colors.lightGrey} style={{paddingVertical: RFValue(10), paddingLeft: RFValue(8)}}>
+          <AppText
+            size={1}
+            bold={true}
+            color={AppTheme.colors.lightGrey}
+            style={{paddingVertical: RFValue(10), paddingLeft: RFValue(8)}}>
             NOTIFICATIONS
           </AppText>
 
@@ -307,7 +311,7 @@ const NotificationScreen = ({navigation, route}) => {
                       alignItems: 'center',
                       padding: RFValue(10),
                       borderBottomWidth: 0.5,
-                      borderBottomColor: '#213A57',
+                      borderBottomColor: '#333333',
                     }}>
                     <UserAvatar
                       corner={item?.createdBy?.corner || ''}
@@ -316,6 +320,7 @@ const NotificationScreen = ({navigation, route}) => {
                       size={40}
                     />
                     <View style={{flex: 1, paddingHorizontal: RFValue(10)}}>
+                      {console.log(item)}
                       <AppText color={item.read ? AppTheme.colors.lightGrey : 'white'} size={2}>
                         {item.body}{' '}
                         <AppText color={AppTheme.colors.lightGrey} size={2}>

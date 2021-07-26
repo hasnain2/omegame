@@ -28,6 +28,7 @@ const AppTheme = {
     placeholder: color('lightgrey').alpha(0.54).rgb().string(),
     backdrop: color('black').alpha(0.5).rgb().string(),
     notification: 'pink',
+    divider: '#333333',
   },
   textShadow: {
     textShadowColor: 'rgba(0, 0, 0, 0.6)',

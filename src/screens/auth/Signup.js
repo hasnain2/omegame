@@ -58,7 +58,6 @@ const Signup = ({route, navigation}) => {
                 setState((prev) => ({...prev, loading: true, passwordError: ''}));
                 SignUpUser(
                   (res) => {
-                    console.log(res);
                     if (res) {
                       if (res !== 'verify') AppShowToast('Verification Email has been sent!');
                       navigation.navigate('CodeVerification', {email: state.email?.toLowerCase().trim()});

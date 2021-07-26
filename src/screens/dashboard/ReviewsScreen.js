@@ -222,8 +222,6 @@ const ReviewsScreen = ({navigation}) => {
             }}>
             <View
               style={{
-                borderBottomWidth: 1,
-                borderBottomColor: '#262626',
                 paddingBottom: RFValue(15),
               }}>
               <AppText size={2}>Console:</AppText>
@@ -299,6 +297,11 @@ const ReviewsScreen = ({navigation}) => {
               )}
             />
           ) : null}
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: '#262626',
+            }}></View>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
@@ -456,7 +459,6 @@ const ReviewsScreen = ({navigation}) => {
 
           <View style={{paddingTop: RFValue(20)}}>
             <AppButton
-              bgColor={'#1b1b1b'}
               label={'START'}
               onPress={() => {
                 setState((prev) => ({...prev, showFilter: false}));
