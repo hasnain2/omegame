@@ -50,7 +50,7 @@ const QuestScreen = ({route, navigation}) => {
 
   function getquesthelper(offset) {
     GetQuests((questListResponse) => {
-      consol;
+      console.log(questListResponse);
       if (questListResponse) {
         dispatch(setQuests(questListResponse));
         setState((prev) => ({...prev, loading: false, refreshing: false}));
@@ -108,7 +108,7 @@ const QuestScreen = ({route, navigation}) => {
               }}>
               <>
                 {index === 0 ? (
-                  <View style={{height: state.LHeight, width: state.LWidth}}>
+                  <View style={{height: RFValue(450), width: state.LWidth}}>
                     <FastImage
                       source={user?.cover ? {uri: user.cover} : BACKGROUND_IMG}
                       style={{height: RFValue(450), width: state.LWidth}}>
@@ -123,13 +123,13 @@ const QuestScreen = ({route, navigation}) => {
                         />
                         <View style={{flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center'}}>
                           <View
-                            style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3}}>
-                            <AppGoldCoin />
-                            <AppText style={{paddingHorizontal: RFValue(5)}}>
+                            style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.33}}>
+                            <AppGoldCoin size={RFValue(24)} />
+                            <AppText style={{paddingHorizontal: RFValue(5)}} size={2} bold>
                               {largeNumberShortify(user?.earnedCoins || 0)}
                             </AppText>
                           </View>
-                          <View style={{flex: 0.35}}>
+                          <View style={{flex: 0.33}}>
                             <Bar
                               height={RFValue(10)}
                               width={145}
@@ -142,7 +142,7 @@ const QuestScreen = ({route, navigation}) => {
                             />
                           </View>
                           <View
-                            style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.3}}>
+                            style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.33}}>
                             <AppText size={1} bold={true}>
                               XP {largeNumberShortify(user?.earnedXps || 0)}/100
                             </AppText>
