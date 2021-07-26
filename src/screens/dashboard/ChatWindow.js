@@ -236,8 +236,7 @@ const ChatWindow = ({navigation, route}) => {
           style={{
             flex: 1,
             backgroundColor: '#1C1C22',
-            paddingLeft: RFValue(16),
-            paddingRight: RFValue(16),
+            paddingRight: RFValue(7),
           }}>
           <GiftedChat
             placeholder="Type a message"
@@ -472,7 +471,8 @@ const styles = StyleSheet.create({
     borderLeftColor: 'white',
     borderTopColor: 'white',
     borderRadius: 50,
-    marginHorizontal: RFValue(5),
+    marginRight: RFValue(5),
+    marginLeft: RFValue(13),
   },
 });
 export {ChatWindow};

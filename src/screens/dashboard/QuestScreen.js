@@ -121,7 +121,12 @@ const QuestScreen = ({route, navigation}) => {
                           color={user?.cornerColor}
                           size={100}
                         />
-                        <View style={{flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center'}}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            paddingVertical: RFValue(15),
+                            alignItems: 'center',
+                          }}>
                           <View
                             style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0.33}}>
                             <AppGoldCoin size={RFValue(24)} />
@@ -129,7 +134,7 @@ const QuestScreen = ({route, navigation}) => {
                               {largeNumberShortify(user?.earnedCoins || 0)}
                             </AppText>
                           </View>
-                          <View style={{flex: 0.33}}>
+                          <View style={{flex: 0.34}}>
                             <Bar
                               height={RFValue(10)}
                               width={145}

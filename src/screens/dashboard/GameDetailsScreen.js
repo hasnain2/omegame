@@ -142,10 +142,10 @@ const GameDetailsScreen = ({navigation, route}) => {
         <View style={{flex: 0.3}} />
       </View>
       <ScrollView style={{flex: 1}} decelerationRate={0} nestedScrollEnabled={false}>
-        <View style={{height: state.LHeight, width: state.LWidth}}>
+        <View style={{height: RFValue(400), width: state.LWidth}}>
           <FastImage
             source={gameData?.background?.url ? {uri: gameData?.background?.url} : BACKGROUND_IMG}
-            style={{height: state.LHeight, width: state.LWidth}}>
+            style={{height: RFValue(400), width: state.LWidth}}>
             <LinearGradient
               colors={COLORS_ARR}
               style={{
@@ -189,11 +189,12 @@ const GameDetailsScreen = ({navigation, route}) => {
                 </View>
                 <View
                   style={{
-                    borderRadius: RFValue(5),
+                    borderRadius: RFValue(15),
                     borderWidth: 1,
                     justifyContent: 'center',
-                    padding: RFValue(10),
+                    padding: RFValue(5),
                     alignItems: 'center',
+                    paddingHorizontal: RFValue(30),
                     borderColor: AppTheme.colors.green,
                   }}>
                   <AppText size={1} color={'white'} bold={true} style={{}}>
@@ -418,7 +419,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                     }}>
                     <View style={{paddingLeft: RFValue(4)}}>
                       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <View style={{flex: 0.6, flexDirection: 'row'}}>
+                        <View style={{flex: 0.6, flexDirection: 'row', alignItems: 'center'}}>
                           <AppText bold={true} size={1} color={AppTheme.colors.lightGrey} lines={2}>
                             {item?.createdBy?.userName || item?.createdBy?.firstName}
                           </AppText>

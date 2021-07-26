@@ -25,7 +25,7 @@ const OmegaStoreTabs = ({navigation, route}) => {
   const paddings = 5;
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
-      <View style={{flex: 1, backgroundColor: 'black', paddingHorizontal: RFValue(paddings)}}>
+      <View style={{flex: 1, backgroundColor: 'black', marginHorizontal: RFValue(paddings)}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View style={{flex: 0.3}}>
             <Ionicons
