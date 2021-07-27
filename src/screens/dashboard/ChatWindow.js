@@ -187,7 +187,7 @@ const ChatWindow = ({navigation, route}) => {
             backgroundColor: LIGHT_GREY,
             height: RFValue(56),
           }}>
-          <AppBackButton navigation={navigation} />
+          <AppBackButton navigation={navigation} padding={0} />
           <UserAvatar
             corner={friend?.corner || ''}
             color={friend?.cornerColor}
@@ -213,7 +213,7 @@ const ChatWindow = ({navigation, route}) => {
             </AppText>
           </View>
           <TouchableOpacity
-            style={{paddingHorizontal: RFValue(10)}}
+            style={{}}
             onPress={() =>
               setState((prev) => ({
                 ...prev,
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
     borderLeftColor: 'white',
     borderTopColor: 'white',
     borderRadius: 50,
-    marginRight: RFValue(5),
+    marginRight: RFValue(9),
     marginLeft: RFValue(13),
   },
 });
