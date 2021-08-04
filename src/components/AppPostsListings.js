@@ -5,6 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
+import randomatic from 'randomatic';
 import {TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
 var uuid = require('react-native-uuid');
 
@@ -75,7 +76,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
         // maxToRenderPerBatch={2}
         // removeClippedSubviews={true}
         // bounces={false}
-        keyExtractor={(ii) => ii?._id + 'you'}
+        keyExtractor={() => randomatic('Aa0!', 10)}
         keyboardShouldPersistTaps={'always'}
         onEndReached={() => {
           if (loadMore) {

@@ -15,6 +15,9 @@ const SearchTabs = ({navigation, type}) => {
   return (
     <Tab.Navigator
       initialRouteName={type === 'users' ? 'TabUsers' : 'TabPosts'}
+      sceneContainerStyle={{
+        backgroundColor: '#1C1C22',
+      }}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused}) => {
           if (route.name === 'TabPosts')

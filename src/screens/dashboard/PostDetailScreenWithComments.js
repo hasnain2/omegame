@@ -303,7 +303,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                   let getUser = item1.split('@');
                   let user = item.mentions?.filter((user, index) => user.userName === getUser[1]);
                   return (
-                    <>
+                    <React.Fragment key={index}>
                       {item1[0] === '@' ? (
                         <Text
                           style={{color: user.length > 0 ? 'blue' : 'white'}}
@@ -321,7 +321,7 @@ const PostDetailScreenWithComments = ({navigation, route}) => {
                       ) : (
                         <Text key={'you'}>{item1 + ' '}</Text>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </AppText>

@@ -57,6 +57,7 @@ const Drawer = createDrawerNavigator();
 function DashboardTabsExtra({navigation}) {
   return (
     <Tab.Navigator
+      sceneContainerStyle={{backgroundColor: 'black'}}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarIcon: ({focused, color, size}) => {
