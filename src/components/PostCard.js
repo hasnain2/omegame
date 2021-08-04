@@ -105,6 +105,7 @@ const PostCard = ({item, startPlaying, goBack, navigation, controls}) => {
                 source={{uri: item?.attachments[0]?.url}}
                 startPlaying={startPlaying && !state.stopPlaying}
                 controls={controls}
+                navigation={navigation}
               />
             ) : (
               // <FastImage

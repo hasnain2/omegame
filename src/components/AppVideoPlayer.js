@@ -5,7 +5,8 @@ import Video from 'react-native-video';
 import convertToCache from 'react-native-video-cache';
 import {AppModal} from './AppModal';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-const AppVideoPlayer = ({source, startPlaying, style, controls}) => {
+import VideoPlayer from 'react-native-video-controls';
+const AppVideoPlayer = ({source, startPlaying, style, controls, navigation}) => {
   const [appState, setAppState] = useState(AppState.currentState);
   const [pauseVideo, setPause] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
@@ -140,41 +141,42 @@ const AppVideoPlayer = ({source, startPlaying, style, controls}) => {
                 style={[styles.backgroundVideo, style ? style : {}]}
               />
             ) : (
-              <Video
-                source={
-                  source?.uri
-                    ? {
-                        uri: /^((http|https|ftp):\/\/)/.test(source.uri) ? convertToCache(source.uri) : source.uri,
-                      }
-                    : source
-                } // Can be a URL or a local file.
-                // source={{uri:"https://pp.tedcdn.com/vids/intro_00/v01/master.m3u8"}}  // -> video streaming URL , (supper fast playback)
-                // source={{ uri: source.uri }}
-                paused={pauseVideo}
-                controls={controls}
-                repeat={startPlaying}
-                playInBackground={false}
-                playWhenInactive={false}
-                onLoadStart={(dta) => {
-                  // setBuffering(dta?.isBuffering)
-                  // console.log('--------------ON LOAD-------', dta)
-                }}
-                onBuffer={(dta) => {
-                  // setBuffering(dta?.isBuffering)
-                  // console.log('--------------BUFFERING-------', dta)
-                }}
-                onError={(err) => {
-                  // console.log('--------------VIDEO PLAY BACK ERROR-------', err)
-                }}
-                resizeMode={'cover'}
-                bufferConfig={{
-                  minBufferMs: 5000,
-                  maxBufferMs: 5000,
-                  // bufferForPlaybackMs: 100,
-                  // bufferForPlaybackAfterRebufferMs: 1000,
-                }}
-                style={[styles.backgroundVideo, style ? style : {}]}
-              />
+              <VideoPlayer navigation={navigation} source={{uri: 'https://vjs.zencdn.net/v/oceans.mp4'}} />
+              // <Video
+              //   source={
+              //     source?.uri
+              //       ? {
+              //           uri: /^((http|https|ftp):\/\/)/.test(source.uri) ? convertToCache(source.uri) : source.uri,
+              //         }
+              //       : source
+              //   } // Can be a URL or a local file.
+              //   // source={{uri:"https://pp.tedcdn.com/vids/intro_00/v01/master.m3u8"}}  // -> video streaming URL , (supper fast playback)
+              //   // source={{ uri: source.uri }}
+              //   paused={pauseVideo}
+              //   controls={controls}
+              //   repeat={startPlaying}
+              //   playInBackground={false}
+              //   playWhenInactive={false}
+              //   onLoadStart={(dta) => {
+              //     // setBuffering(dta?.isBuffering)
+              //     // console.log('--------------ON LOAD-------', dta)
+              //   }}
+              //   onBuffer={(dta) => {
+              //     // setBuffering(dta?.isBuffering)
+              //     // console.log('--------------BUFFERING-------', dta)
+              //   }}
+              //   onError={(err) => {
+              //     // console.log('--------------VIDEO PLAY BACK ERROR-------', err)
+              //   }}
+              //   resizeMode={'cover'}
+              //   bufferConfig={{
+              //     minBufferMs: 5000,
+              //     maxBufferMs: 5000,
+              //     // bufferForPlaybackMs: 100,
+              //     // bufferForPlaybackAfterRebufferMs: 1000,
+              //   }}
+              //   style={[styles.backgroundVideo, style ? style : {}]}
+              // />
             )}
           </View>
         </>
