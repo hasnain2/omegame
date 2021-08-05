@@ -84,7 +84,7 @@ const AppVideoPlayer = ({source, startPlaying, style, controls, navigation}) => 
           <AntIcon name="shrink" color="white" size={RFValue(20)} />
         </TouchableOpacity>
       </AppModal> */}
-      {Platform.OS === 'android' ? (
+      {navigation && Platform.OS === 'android' ? (
         <View
           style={{
             height: RFValue(20),
@@ -146,6 +146,7 @@ const AppVideoPlayer = ({source, startPlaying, style, controls, navigation}) => 
           disableFullscreen={true}
           disableBack={true}
           repeat={startPlaying}
+          tapAnywhereToPause={true}
         />
         // <Video
         //   source={

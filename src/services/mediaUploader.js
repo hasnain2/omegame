@@ -86,68 +86,71 @@ function postFiles(callback, fileName, bucket, data) {
     });
 }
 
-const UploadMedia = (callback, bucket, mediaObj) => {
-  VideoAndImageCompressor(mediaObj)
-    .then((compressionResponse) => {
-      let fileName =
-        'assetmedia.' + (compressionResponse.oType.split('/')[1] ? '' + compressionResponse.oType.split('/')[1] : '');
-      let multiFormData = new FormData();
-      multiFormData.append('files', {
-        uri: compressionResponse?.compressed?.uri,
-        name: fileName,
-        type: compressionResponse?.oType,
-      });
-      postFiles(
-        (fileUploadRes) => {
-          if (fileUploadRes) {
-            if (mediaObj?.type === 'video' || mediaObj?.type?.includes('video')) {
-              GenerateThumbnailFromVideo((thumbnail) => {
-                if (thumbnail) {
-                  let multiFormDataForThumbnail = new FormData();
-                  multiFormDataForThumbnail.append('files', {
-                    uri: thumbnail,
-                    name: 'thumbnail.png',
-                    type: 'image/png',
-                  });
-                  postFiles(
-                    (thumbnailUploadRes) => {
-                      if (thumbnailUploadRes) {
-                        callback({
-                          ...fileUploadRes,
-                          thumbnail: {
-                            thumbnail: true,
-                            url: thumbnailUploadRes.url,
-                            oType: 'image/png',
-                          },
-                        });
-                      } else {
-                        callback(fileUploadRes);
-                      }
-                    },
-                    'thumbnail.png',
-                    bucket,
-                    multiFormDataForThumbnail,
-                  );
-                } else {
-                  callback(fileUploadRes);
-                }
-              }, compressionResponse?.compressed?.uri);
+const UploadMedia = async (callback, bucket, mediaObj) => {
+  console.log('media obj uri', mediaObj.image.uri);
+  let uri = mediaObj.image.uri;
+  // VideoAndImageCompressor(mediaObj)
+  //   .then((compressionResponse) => {
+  console.log('compression Response', compressionResponse?.compressed?.uri);
+  let fileName = 'assetmedia.' + (mediaObj.oType.split('/')[1] ? '' + mediaObj.oType.split('/')[1] : '');
+  let multiFormData = new FormData();
+  multiFormData.append('files', {
+    uri: mediaObj.image.uri,
+    name: fileName,
+    type: mediaObj.oType,
+  });
+  console.log('-----Media Object', mediaObj.image.uri, fileName, mediaObj.oType);
+  postFiles(
+    (fileUploadRes) => {
+      if (fileUploadRes) {
+        if (mediaObj?.type === 'video' || mediaObj?.type?.includes('video')) {
+          GenerateThumbnailFromVideo((thumbnail) => {
+            if (thumbnail) {
+              let multiFormDataForThumbnail = new FormData();
+              multiFormDataForThumbnail.append('files', {
+                uri: thumbnail,
+                name: 'thumbnail.png',
+                type: 'image/png',
+              });
+              postFiles(
+                (thumbnailUploadRes) => {
+                  if (thumbnailUploadRes) {
+                    callback({
+                      ...fileUploadRes,
+                      thumbnail: {
+                        thumbnail: true,
+                        url: thumbnailUploadRes.url,
+                        oType: 'image/png',
+                      },
+                    });
+                  } else {
+                    callback(fileUploadRes);
+                  }
+                },
+                'thumbnail.png',
+                bucket,
+                multiFormDataForThumbnail,
+              );
             } else {
               callback(fileUploadRes);
             }
-          } else {
-            callback(false);
-          }
-        },
-        fileName,
-        bucket,
-        multiFormData,
-      );
-    })
-    .catch((err) => {
-      AppLogger('--------ERROR COMMPRESSING MEDIA -------->\n', err);
-      callback(false);
-    });
+          }, compressionResponse?.compressed?.uri);
+        } else {
+          callback(fileUploadRes);
+        }
+      } else {
+        callback(false);
+      }
+    },
+    fileName,
+    bucket,
+    multiFormData,
+  );
+  // })
+  // .catch((err) => {
+  //   AppLogger('--------ERROR COMMPRESSING MEDIA -------->\n', err);
+  //   callback(false);
+  // });
 };
 
 export {UploadMedia};
