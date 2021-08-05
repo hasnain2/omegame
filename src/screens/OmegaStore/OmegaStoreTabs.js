@@ -43,6 +43,7 @@ const OmegaStoreTabs = ({navigation, route}) => {
           <View style={{flex: 0.3}} />
         </View>
         <Tab.Navigator
+          sceneContainerStyle={{backgroundColor: 'black'}}
           initialRouteName={
             route?.params?.name === 'Corners'
               ? 'Corners'

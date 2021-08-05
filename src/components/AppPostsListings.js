@@ -37,7 +37,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
     }
   });
 
-  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 40});
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 70});
 
   return (
     <View style={[{flex: 1, backgroundColor: screenType === 'search' ? '#1C1C22' : 'black'}, style ? style : null]}>
