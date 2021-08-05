@@ -49,6 +49,7 @@ import {UserSavedPosts} from '../screens/dashboard/UserSavedPosts';
 import {AppShowPushNotification, GetPostByCommentID, requestPushNotificationPermission} from '../services';
 import {AppLogger, DynamicLinkHelper} from '../utils/AppHelperMethods';
 import {CustomDrawer} from './CustomDrawer';
+import AndroidFullScreen from '../components/AndroidFullScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -247,6 +248,7 @@ const DashboardTabs = () => {
       <Stack.Screen name="AppHelpCenter" component={AppHelpCenter} />
       <Stack.Screen name="EditUserProfileScreen" component={EditUserProfileScreen} />
       <Stack.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
+      <Stack.Screen name="AndroidFullScreen" component={AndroidFullScreen} />
     </Stack.Navigator>
   );
 };
