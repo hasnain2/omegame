@@ -60,7 +60,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
       {loading ? <AppLoadingView /> : null}
       <FlatList
         ref={flatListRef}
-        // nestedScrollEnabled={true}
+        nestedScrollEnabled={true}
         data={data}
         refreshControl={
           <RefreshControl
@@ -71,19 +71,22 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
             }}
           />
         }
-        // windowSize={Platform.OS === 'ios' ? 3 : 2}
-        // initialNumToRender={2}
-        // maxToRenderPerBatch={2}
+        windowSize={Platform.OS === 'ios' ? 3 : 10}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
         // removeClippedSubviews={true}
         // bounces={false}
-        keyExtractor={() => randomatic('Aa0!', 10)}
+
+        keyExtractor={(ii) => ii?._id + 'you'}
         keyboardShouldPersistTaps={'always'}
+        onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={viewConfigRef.current}
         onEndReached={() => {
           if (loadMore) {
             loadMore(data[data.length - 1]?._id, false);
           }
         }}
-        onEndReachedThreshold={0.4}
+        onEndReachedThreshold={0.5}
         renderItem={({item, index}) => {
           if (item?.postType === 'media')
             return (
@@ -113,6 +116,7 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
                 navigation={navigation}
                 item={item}
                 index={index}
+                screenType={screenType}
               />
             );
         }}

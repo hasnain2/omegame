@@ -140,12 +140,12 @@ const AppVideoPlayer = ({source, startPlaying, style, controls, navigation}) => 
         />
       ) : (
         <VideoPlayer
-          paused={true}
+          paused={!startPlaying}
           navigation={navigation}
           source={{uri: source?.uri}}
           disableFullscreen={true}
-          tapAnywhereToPause={true}
           disableBack={true}
+          repeat={startPlaying}
         />
         // <Video
         //   source={
