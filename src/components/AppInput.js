@@ -23,6 +23,7 @@ const AppInput = ({
     <TextInput
       right={right ? <TextInput.Icon name={() => right} onPress={onRightPress} /> : null}
       multiline={lines && lines > 1}
+      autoCapitalize={false}
       blurOnSubmit={true}
       numberOfLines={lines ? lines : 1}
       label={label}

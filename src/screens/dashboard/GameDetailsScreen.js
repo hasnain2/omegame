@@ -388,7 +388,7 @@ const GameDetailsScreen = ({navigation, route}) => {
                 style={{
                   padding: RFValue(15),
                   borderBottomWidth: 0.3,
-                  borderBottomColor: '#213A57',
+                  borderBottomColor: '#333333',
                 }}>
                 <View
                   style={{

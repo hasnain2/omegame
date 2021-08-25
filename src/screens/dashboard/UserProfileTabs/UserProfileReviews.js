@@ -43,7 +43,7 @@ const UserProfileReviews = ({navigation, userID}) => {
           renderItem={({item, index}) => (
             <View
               style={{
-                borderBottomColor: AppTheme.colors.lightGrey,
+                borderBottomColor: '#333333',
                 borderBottomWidth: 0.5,
                 padding: RFValue(15),
               }}>

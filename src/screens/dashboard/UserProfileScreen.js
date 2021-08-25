@@ -210,7 +210,7 @@ const UserProfileScreen = ({navigation, route}) => {
                         <Bar
                           height={RFValue(10)}
                           width={Platform.OS === 'ios' ? 150 : 150}
-                          progress={(userData?.earnedCoins || 0) / 100}
+                          progress={(userData?.earnedXps || 0) / 100}
                           // backgroundColor={'#C2C2C2'}
                           color={'#0f4FF5'}
                           unfilledColor="#47557B"
@@ -653,7 +653,6 @@ const UserProfileScreen = ({navigation, route}) => {
             width: '100%',
             top: 0,
             backgroundColor: 'rgba(0, 0, 0,0.5)',
-            opacity: 0.5,
           },
           // state.enableScrollViewScroll
           //   ? {top: 0, position: 'absolute', left: 0, right: 0, zIndex: 10}

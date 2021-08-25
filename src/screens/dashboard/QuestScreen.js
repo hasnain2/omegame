@@ -119,7 +119,8 @@ const QuestScreen = ({route, navigation}) => {
                           corner={user?.corner || ''}
                           source={user?.pic ? {uri: user.pic} : DEFAULT_USER_PIC}
                           color={user?.cornerColor}
-                          size={100}
+                          size={120}
+                          screen="profile"
                         />
                         <View
                           style={{
@@ -162,7 +163,7 @@ const QuestScreen = ({route, navigation}) => {
                           }}>
                           <View style={{flex: 1, justifyContent: 'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                              <AppText size={2} color={AppTheme.colors.lightGrey} bold={true}>
+                              <AppText size={2} color={AppTheme.colors.white} bold={true}>
                                 {user?.userName || user?.firstName}
                               </AppText>
                               <IsUserVerifiedCheck check={user?.isVerified} />

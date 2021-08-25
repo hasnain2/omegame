@@ -94,11 +94,10 @@ const OmegaStoreBackgroundsTab = ({navigation, showBlur, toggleBlur}) => {
           setState((prev) => ({...prev, isModalVisible: null}));
         }}>
         {state.isModalVisible ? (
-          <View style={{paddingTop: RFValue(30), backgroundColor: 'black', height: '70%'}}>
+          <View style={{height: '75%'}}>
             <View
               style={{
                 // width: Dimensions.get('screen').width - RFValue(36),
-                flex: 1,
                 margin: PADDING,
                 borderRadius: RFValue(10),
                 overflow: 'hidden',
@@ -114,51 +113,51 @@ const OmegaStoreBackgroundsTab = ({navigation, showBlur, toggleBlur}) => {
               <FastImage
                 source={{uri: state.isModalVisible?.attachment?.url}}
                 style={{
-                  width: Dimensions.get('screen').width - RFValue(20),
+                  width: Dimensions.get('screen').width - RFValue(30),
+                  borderRadius: RFValue(10),
                   height: RFValue(350),
                 }}
               />
               <View
                 style={{
                   justifyContent: 'center',
-                  flex: 1,
                   alignItems: 'center',
                   backgroundColor: 'black',
-                  borderTopWidth: 1,
-                  borderTopColor: 'grey',
-                  height: '20%',
+                  paddingTop: RFValue(10),
                 }}>
                 <AppText size={2}>{state.isModalVisible.name}</AppText>
 
                 <View
                   style={{
                     flexDirection: 'row',
-                    flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
+                    paddingTop: RFValue(10),
                   }}>
                   <AppGoldCoin />
                   <AppText size={2}> x {state.isModalVisible.priceInCoins}</AppText>
                 </View>
-                <AppButtonPlane
-                  onPress={() => {
-                    if (!isPurchased) {
-                      toggleBlur();
-                      setState((prev) => ({...prev, isModalVisible: null, loading: true}));
-                      BuyAsset((buyAssetRes) => {
-                        setState((prev) => ({...prev, loading: false}));
-                        if (buyAssetRes) {
-                          AddAssetBackground(state.isModalVisible);
-                        } else {
-                          AppShowToast('You dont have enough coins');
-                        }
-                      }, state.isModalVisible?._id);
-                    } else {
-                      AppShowToast('You already own this background');
-                    }
-                  }}
-                  label={isPurchased ? 'PURCHASED' : 'BUY'}
-                />
+                <View style={{paddingVertical: RFValue(10), marginBottom: RFValue(10)}}>
+                  <AppButtonPlane
+                    onPress={() => {
+                      if (!isPurchased) {
+                        toggleBlur();
+                        setState((prev) => ({...prev, isModalVisible: null, loading: true}));
+                        BuyAsset((buyAssetRes) => {
+                          setState((prev) => ({...prev, loading: false}));
+                          if (buyAssetRes) {
+                            AddAssetBackground(state.isModalVisible);
+                          } else {
+                            AppShowToast('You dont have enough coins');
+                          }
+                        }, state.isModalVisible?._id);
+                      } else {
+                        AppShowToast('You already own this background');
+                      }
+                    }}
+                    label={isPurchased ? 'PURCHASED' : 'BUY'}
+                  />
+                </View>
               </View>
             </View>
           </View>

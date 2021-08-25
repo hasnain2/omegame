@@ -86,8 +86,14 @@ const SearchScreen = ({route, navigation}) => {
     };
   }, []);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: AppTheme.colors.background}}>
-      <View style={{padding: RFValue(10), paddingBottom: 0, backgroundColor: '#1C1C22', height: RFValue(56)}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: AppTheme.colors.searchPage}}>
+      <View
+        style={{
+          padding: RFValue(10),
+          paddingBottom: 0,
+          backgroundColor: AppTheme.colors.searchPage,
+          height: RFValue(56),
+        }}>
         <AppSearchBar
           onChangeText={(val) => {
             setState((prev) => ({...prev, searchTerm: val}));
@@ -98,7 +104,7 @@ const SearchScreen = ({route, navigation}) => {
           }}
         />
       </View>
-      <View style={{flex: 1, backgroundColor: AppTheme.colors.darkGrey}}>
+      <View style={{flex: 1, backgroundColor: AppTheme.colors.searchPage}}>
         <SearchTabs
           navigation={navigation}
           // &sort=${state.sortPostBy.toUpperCase()}

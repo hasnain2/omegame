@@ -20,8 +20,10 @@ const UserAvatar = ({source, size, onPress, corner, color, type, screen, flag}) 
         <FastImage
           source={source || DEFAULT_USER_PIC}
           style={{
-            height: screen == 'profile' ? SIZE - RFValue(24) : SIZE - RFValue(8),
-            width: screen == 'profile' ? SIZE - RFValue(24) : SIZE - RFValue(8),
+            // height: screen == 'profile' ? SIZE - RFValue(24) : SIZE - RFValue(8),
+            // width: screen == 'profile' ? SIZE - RFValue(24) : SIZE - RFValue(8),
+            height: screen == 'profile' ? SIZE - RFValue(8) : SIZE - RFValue(2),
+            width: screen == 'profile' ? SIZE - RFValue(8) : SIZE - RFValue(2),
             borderRadius: 100,
             overflow: 'hidden',
             zIndex: 999,

@@ -29,6 +29,7 @@ const AppTheme = {
     backdrop: color('black').alpha(0.5).rgb().string(),
     notification: 'pink',
     divider: '#333333',
+    searchPage: '#1C1C22',
   },
   textShadow: {
     textShadowColor: 'rgba(0, 0, 0, 0.6)',

@@ -61,32 +61,42 @@ const UserProfileCustomizeScreen = ({navigation, route}) => {
         <AppBackButton navigation={navigation} />
       </View>
       <ScrollView style={{flex: 1}}>
-        <View style={{height: state.LHeight, width: state.LWidth}}>
+        <View style={{height: RFValue(450), width: state.LWidth}}>
           <FastImage
             source={user?.cover ? {uri: user.cover} : BACKGROUND_IMG}
-            style={{height: state.LHeight, width: state.LWidth}}>
+            style={{height: RFValue(430), width: state.LWidth}}>
             <LinearGradient colors={COLORS_ARR} style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
               <UserAvatar
                 corner={user?.corner || ''}
                 color={user?.cornerColor}
                 source={user?.pic ? {uri: user.pic} : DEFAULT_USER_PIC}
-                size={100}
+                size={120}
+                screen={'profile'}
               />
               <View style={{flexDirection: 'row', paddingVertical: RFValue(15), alignItems: 'center'}}>
-                <View style={{flexDirection: 'row', flex: 1, paddingLeft: RFValue(10)}}>
+                <View style={{flexDirection: 'row', flex: 1, paddingLeft: RFValue(5)}}>
                   <AppGoldCoin />
                   <AppText size={2} style={{paddingHorizontal: RFValue(5)}}>
                     {largeNumberShortify(user?.earnedCoins || 0)}
                   </AppText>
                 </View>
-                <View style={{flex: 1, marginRight: RFValue(35)}}>
+                <View style={{flex: 1, marginRight: RFValue(20)}}>
                   <Bar
+                    height={RFValue(10)}
+                    width={Platform.OS === 'ios' ? 150 : 150}
+                    progress={(user?.earnedXps || 0) / 100}
+                    // backgroundColor={'#C2C2C2'}
+                    color={'#0f4FF5'}
+                    unfilledColor="#47557B"
+                    borderColor="none"
+                  />
+                  {/* <Bar
                     style={{height: RFValue(10), borderRadius: 3}}
                     progress={(user?.earnedXps || 0) / 100}
                     color={AppTheme.colors.primary}
                     color={'#0f4FF5'}
                     unfilledColor="#47557B"
-                  />
+                  /> */}
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1, marginRight: RFValue(10)}}>
                   <AppText size={1} bold={true} style={{}}>
@@ -97,14 +107,15 @@ const UserProfileCustomizeScreen = ({navigation, route}) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  paddingHorizontal: RFValue(10),
-                  paddingBottom: RFValue(10),
-                  justifyContent: 'space-between',
+                  marginHorizontal: RFValue(10),
                 }}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
-                  <AppText size={2} color={AppTheme.colors.lightGrey} bold={true} style={{}}>
-                    {user?.userName} <IsUserVerifiedCheck check={user?.isVerified} />
-                  </AppText>
+                  <View style={{flexDirection: 'row'}}>
+                    <AppText size={2} color={AppTheme.colors.white} bold={true} style={{}}>
+                      {user?.userName}
+                    </AppText>
+                    <IsUserVerifiedCheck check={user?.isVerified} />
+                  </View>
                   <AppText size={1} color={user?.nickNameColor ? user?.nickNameColor : AppTheme.colors.lightGrey}>
                     {user?.nickName || user?.firstName || user?.userName}
                   </AppText>
