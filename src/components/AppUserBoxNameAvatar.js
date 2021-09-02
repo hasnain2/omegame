@@ -7,10 +7,8 @@ import {IsUserVerifiedCheck} from './IsUserVerifiedCheck';
 import {UserAvatar} from './UserAvatar';
 import moment from 'moment';
 import {largeNumberShortify} from '../utils/AppHelperMethods';
-import {useTranslation} from 'react-i18next';
 
 const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
-  const {t, i18n} = useTranslation();
   return (
     <View
       style={{
@@ -46,7 +44,7 @@ const AppUserBoxNameAvatar = ({navigation, createdAt, item}) => {
             {createdAt && (
               <AppText size={1} color={AppTheme.colors.lightGrey}>
                 {' '}
-                - {t(moment(createdAt).fromNow(true))}
+                - {moment(createdAt).fromNow(true)}
               </AppText>
             )}
           </View>

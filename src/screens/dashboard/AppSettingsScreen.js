@@ -114,7 +114,7 @@ const AppSettingsScreen = ({navigation, route}) => {
             onPress={() => {
               navigation.navigate('UserSavedPosts');
             }}>
-            {rendListItem(ICON_SAVE_POST, 'Saved Posts', false)}
+            {rendListItem(ICON_SAVE_POST, t('setting.savedPosts'), false)}
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -123,7 +123,7 @@ const AppSettingsScreen = ({navigation, route}) => {
               SetAppSettings(() => {}, {notificationsAllowed: !state.isNotificationOn});
               setState((prev) => ({...prev, isNotificationOn: !state.isNotificationOn}));
             }}>
-            {rendListItem(ICON_NOTIFICATION, 'Notifications', state.isNotificationOn)}
+            {rendListItem(ICON_NOTIFICATION, t('setting.notifications'), state.isNotificationOn)}
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -140,10 +140,10 @@ const AppSettingsScreen = ({navigation, route}) => {
                 {isPrivate: !user.isPrivate},
               );
             }}>
-            {rendListItem(ICON_PRIVATE, 'Private Account', user.isPrivate)}
+            {rendListItem(ICON_PRIVATE, t('setting.privateAccount'), user.isPrivate)}
           </TouchableOpacity>
           <TouchableOpacity onPress={handleLanguageChange}>
-            {rendListItem(ICON_PRIVATE, 'Switch To Italian', isItalian)}
+            {rendListItem(ICON_PRIVATE, t('setting.switchItalian'), isItalian)}
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -154,7 +154,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 infoHelpDetails: false,
               }));
             }}>
-            {rendListItem(ICON_ACCOUNT_SETTINGS, 'Account Settings', false)}
+            {rendListItem(ICON_ACCOUNT_SETTINGS, t('setting.accountSettings'), false)}
           </TouchableOpacity>
           {state.accountSettingDetails ? (
             <View style={{paddingLeft: RFValue(58)}}>
@@ -208,7 +208,7 @@ const AppSettingsScreen = ({navigation, route}) => {
             onPress={() => {
               setState((prev) => ({...prev, infoHelpDetails: !state.infoHelpDetails, accountSettingDetails: false}));
             }}>
-            {rendListItem(ICON_INFO, 'Info & Help', false)}
+            {rendListItem(ICON_INFO, t('setting.infoHelp'), false)}
           </TouchableOpacity>
 
           {state.infoHelpDetails ? (
@@ -280,7 +280,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 {cancelable: false},
               );
             }}>
-            {rendListItem(ICON_GAMEOVER, 'Gameover', false)}
+            {rendListItem(ICON_GAMEOVER, t('setting.Gameover'), false)}
           </TouchableOpacity>
         </View>
 
@@ -304,7 +304,7 @@ const AppSettingsScreen = ({navigation, route}) => {
           </View> */}
           <AppButton
             color={AppTheme.colors.lightBlue}
-            label="Leave a feedback"
+            label={t('setting.leaveFeedback')}
             style={{width: '100%', height: 50}}
             onPress={() => {
               navigation.navigate('LeaveFeedBack');

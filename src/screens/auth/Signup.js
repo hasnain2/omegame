@@ -98,7 +98,7 @@ const Signup = ({route, navigation}) => {
               <AppInput
                 editable={!state.loading}
                 type={'any'}
-                label={t('username')}
+                label={t('auth.username')}
                 onChangeText={(val) => {
                   setState((prev) => ({...prev, username: val}));
                 }}
@@ -106,7 +106,7 @@ const Signup = ({route, navigation}) => {
               <AppInput
                 editable={!state.loading}
                 type={'type'}
-                label={'E-mail'}
+                label={t('auth.email')}
                 onChangeText={(val) => {
                   setState((prev) => ({...prev, email: val}));
                 }}
@@ -115,7 +115,7 @@ const Signup = ({route, navigation}) => {
                 editable={!state.loading}
                 type={'any'}
                 passwordVisible={state.passwordVisibleA}
-                label={'Password'}
+                label={t('auth.password')}
                 onChangeText={(val) => {
                   setState((prev) => ({...prev, password: val}));
                 }}
@@ -131,7 +131,7 @@ const Signup = ({route, navigation}) => {
                 editable={!state.loading}
                 type={'any'}
                 passwordVisible={state.passwordVisibleB}
-                label={'Confirm password'}
+                label={t('auth.confirmPassword')}
                 onChangeText={(val) => {
                   setState((prev) => ({...prev, retypedPassword: val}));
                 }}
@@ -149,16 +149,20 @@ const Signup = ({route, navigation}) => {
                   size={1}
                   italic={true}
                   style={{lineHeight: RFValue(25), marginTop: RFValue(10)}}>
-                  Must atleast 8 characters.{'\n'}
-                  Must contain atleast 1 Number.{'\n'}
-                  Must contain atleast 1 Capital Case.{'\n'}
-                  Must contain atleast 1 small case.{'\n'}
-                  Must contain atleast 1 special character.
+                  {t('auth.atLeast8')}
+                  {'\n'}
+                  {t('auth.oneNumber')}
+                  {'\n'}
+                  {t('auth.oneCapital')}
+                  {'\n'}
+                  {t('auth.oneSmall')}
+                  {'\n'}
+                  {t('auth.oneSpecial')}
                 </AppText>
               ) : null}
               {!state.keyboardVisible && (
                 <View style={{justifyContent: 'center', paddingTop: RFValue(10)}}>
-                  <AppButton loading={state.loading} onPress={onSubmit} label={'Create Account'} />
+                  <AppButton loading={state.loading} onPress={onSubmit} label={t('auth.createAccount')} />
                 </View>
               )}
 
@@ -166,13 +170,13 @@ const Signup = ({route, navigation}) => {
                 size={1}
                 style={{lineHeight: RFValue(20), textAlign: 'center', paddingVertical: RFValue(10)}}
                 color={'#252525'}>
-                By clicking Create account, I agree that I have read and accepted the{' '}
+                {t('auth.policy1')}
                 <AppText size={1} color={'#252525'} style={{textDecorationLine: 'underline'}}>
-                  Terms of Use
+                  {t('auth.policy2')}
                 </AppText>{' '}
-                and{' '}
+                {t('auth.and')}{' '}
                 <AppText size={1} color={'#252525'} style={{textDecorationLine: 'underline'}}>
-                  Privacy Policy
+                  {t('auth.policy3')}
                 </AppText>
                 .
               </AppText>
@@ -185,9 +189,9 @@ const Signup = ({route, navigation}) => {
             <AppGradientContainer
               onPress={() => navigation.replace('Login')}
               style={{paddingVertical: RFValue(20), justifyContent: 'center', alignItems: 'center'}}>
-              <AppText size={2}>Already have an account?</AppText>
+              <AppText size={2}>{t('auth.alreadyAccount')}</AppText>
               <AppText size={4} bold={true} style={{paddingTop: RFValue(10)}}>
-                LOGIN
+                {t('auth.login')}
               </AppText>
             </AppGradientContainer>
           </View>

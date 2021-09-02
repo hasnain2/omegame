@@ -8,7 +8,31 @@
       "start": "COMINCIARE",
       "startWith": "o inizia con",
       "dontAccount": "Non hai un account?",
-      "signup": "ISCRIVITI"
+      "signup": "ISCRIVITI",
+      "username": "Nome utente",
+      "email": "E-mail",
+      "confirmPassword": "Conferma password",
+      "createAccount": "Creare un profilo",
+      "alreadyAccount": "Hai già un account?",
+      "atLeast8": "Deve contenere almeno 8 caratteri.",
+      "oneNumber": "Deve contenere almeno 1 numero.",
+      "oneCapital": "Deve contenere almeno 1 Maiuscolo",
+      "oneSmall": "Deve contenere almeno 1 custodia piccola.",
+      "oneSpecial": "Deve contenere almeno 1 carattere speciale.",
+      "policy1": "Facendo clic su Crea account, dichiaro di aver letto e accettato il",
+      "policy2": "Termini di utilizzo",
+      "policy3": "politica sulla riservatezza",
+      "and": "e"
+    },
+    "setting": {
+      "savedPosts": "Post salvati",
+      "notifications": "Notifiche",
+      "privateAccount": "Conto privato",
+      "switchItalian": "Passa all'italiano",
+      "accountSettings": "Impostazioni dell'account",
+      "infoHelp": "Informazioni e aiuto",
+      "Gameover": "Gameover",
+      "leaveFeedback": "LASCIA UN FEEDBACK"
     }
   }
 }

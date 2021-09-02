@@ -7,12 +7,36 @@
       "rememberMe": "Remember me",
       "start": "START",
       "startWith": "or start with",
-      "dontAccount": "Dont't you have an account?",
+      "dontAccount": "Don't you have an account?",
       "signup": "SIGN UP",
       "username": "Username",
       "email": "E-mail",
       "confirmPassword": "Confirm password",
-      "createAccount": "Create Account"
+      "createAccount": "Create Account",
+      "alreadyAccount": "Already have an account?",
+      "atLeast8": "Must atleast 8 characters.",
+      "oneNumber": "Must contain atleast 1 Number.",
+      "oneCapital": "Must contain atleast 1 Capital Case.",
+      "oneSmall": "Must contain atleast 1 small case.",
+      "oneSpecial": "Must contain atleast 1 special character.",
+      "policy1": "By clicking Create account, I agree that I have read and accepted the",
+      "policy2": "Terms of Use",
+      "policy3": "Privacy Policy",
+      "and": "and",
+      "time": "{{value}}"
+    },
+    "setting": {
+      "savedPosts": "Saved Posts",
+      "notifications": "Notifications",
+      "privateAccount": "Private Account",
+      "switchItalian": "Switch to Italian",
+      "accountSettings": "Account Settings",
+      "infoHelp": "Info & Help",
+      "Gameover": "Gameover",
+      "leaveFeedback": "LEAVE A FEEDBACK"
+    },
+    "dynamic": {
+      "text": "{{value}}"
     }
   }
 }
