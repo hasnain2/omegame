@@ -1,0 +1,18 @@
+{
+  "translation": {
+    "auth": {
+      "login": "Login",
+      "password": "Passwrod",
+      "forgotPassword": "Forgot Passwrod",
+      "rememberMe": "Remember me",
+      "start": "START",
+      "startWith": "or start with",
+      "dontAccount": "Dont't you have an account?",
+      "signup": "SIGN UP",
+      "username": "Username",
+      "email": "E-mail",
+      "confirmPassword": "Confirm password",
+      "createAccount": "Create Account"
+    }
+  }
+}

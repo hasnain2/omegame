@@ -1,0 +1,14 @@
+{
+  "translation": {
+    "auth": {
+      "login": "Accedere",
+      "password": "Parola d'ordine",
+      "forgotPassword": "Ha dimenticato la password",
+      "rememberMe": "Ricordati di me",
+      "start": "COMINCIARE",
+      "startWith": "o inizia con",
+      "dontAccount": "Non hai un account?",
+      "signup": "ISCRIVITI"
+    }
+  }
+}

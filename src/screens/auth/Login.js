@@ -19,6 +19,7 @@ import {getData, storeData} from '../../utils/AppStorage';
 import {ValidateEmail} from '../../utils/AppValidators';
 const INSTA_SCOPES = ['user_profile', 'user_media', 'instagram_graph_user_profile'];
 import Logo from '../../../assets/icons/Logo.svg';
+import {useTranslation} from 'react-i18next';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -27,6 +28,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 GoogleSignin.configure();
 
 const Login = ({route, navigation}) => {
+  const {t, i18n} = useTranslation();
   let [instagramLoginRef, setInstagramLoginRef] = useState('');
   const [state, setState] = useState({
     rememberMe: false,
@@ -115,7 +117,7 @@ const Login = ({route, navigation}) => {
             value={state.email}
             style={{backgroundColor: 'black', marginBottom: RFValue(10)}}
             type={'any'}
-            label={'Username or e-mail'}
+            label={t('auth.login')}
             onChangeText={(val) => {
               setState((prev) => ({...prev, email: val}));
             }}
@@ -127,7 +129,7 @@ const Login = ({route, navigation}) => {
             style={{backgroundColor: 'black'}}
             type={'any'}
             passwordVisible={state.passwordVisible}
-            label={'Password'}
+            label={t('auth.password')}
             onChangeText={(val) => {
               setState((prev) => ({...prev, password: val}));
             }}
@@ -147,7 +149,7 @@ const Login = ({route, navigation}) => {
               alignItems: 'center',
             }}>
             <AppRadioButton
-              label={'Remember me'}
+              label={t('auth.rememberMe')}
               size={20}
               val={state.rememberMe}
               onPress={() => {
@@ -161,11 +163,11 @@ const Login = ({route, navigation}) => {
               style={{textAlign: 'right'}}
               size={1}
               color={AppTheme.colors.primary}>
-              Forgot Password
+              {t('auth.forgotPassword')}
             </AppText>
           </View>
           <View style={{flex: 1, paddingTop: RFValue(25), justifyContent: 'center'}}>
-            <AppButton loading={state.loading} bgColor="black" onPress={onsubmit} label={'Start'} />
+            <AppButton loading={state.loading} bgColor="black" onPress={onsubmit} label={t('auth.start')} />
           </View>
         </View>
       </View>
@@ -195,7 +197,7 @@ const Login = ({route, navigation}) => {
               size={1}
               style={{textAlign: 'center', paddingBottom: RFValue(10)}}
               color={AppTheme.colors.lightGrey}>
-              or start with:
+              {t('auth.startWith')}
             </AppText>
             <View
               style={{
@@ -258,9 +260,9 @@ const Login = ({route, navigation}) => {
             alignItems: 'center',
             marginTop: RFValue(10),
           }}>
-          <AppText size={2}>Don't you have an account?</AppText>
+          <AppText size={2}>{t('auth.dontAccount')}</AppText>
           <AppText size={4} bold={true} style={{paddingTop: RFValue(10)}}>
-            SIGN UP
+            {t('auth.signup')}
           </AppText>
         </AppGradientContainer>
       </View>

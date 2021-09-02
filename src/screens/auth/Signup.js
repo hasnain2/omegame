@@ -11,11 +11,13 @@ import {AppShowToast} from '../../utils/AppHelperMethods';
 import {Ionicons} from '../../utils/AppIcons';
 import {ValidateEmail, ValidatePassword} from '../../utils/AppValidators';
 import Logo from '../../../assets/icons/Logo.svg';
+import {useTranslation} from 'react-i18next';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 const Signup = ({route, navigation}) => {
+  const {t, i18n} = useTranslation();
   let [state, setState] = useState({
     loading: false,
     passwordVisibleA: true,
@@ -96,7 +98,7 @@ const Signup = ({route, navigation}) => {
               <AppInput
                 editable={!state.loading}
                 type={'any'}
-                label={'Username'}
+                label={t('username')}
                 onChangeText={(val) => {
                   setState((prev) => ({...prev, username: val}));
                 }}

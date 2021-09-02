@@ -15,6 +15,7 @@ import query from './reducers/querySlice';
 import nav from './reducers/navSlice';
 import quests from './reducers/questsSlice';
 import suggestions from './reducers/suggestionsSlice';
+import isItalian from './reducers/translationSlice';
 
 const rootReducer = combineReducers({
   user: user,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   quests: quests,
   nav: nav,
   suggestions: suggestions,
+  isItalian: isItalian,
 });
 
 export const store = configureStore({

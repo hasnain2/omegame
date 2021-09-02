@@ -45,6 +45,8 @@ target 'OneGame' do
 
   pod 'react-native-payments', :path => '../node_modules/react-native-payments'
 
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
   target 'OneGameTests' do
     inherit! :complete
   end

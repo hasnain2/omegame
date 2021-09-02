@@ -13,6 +13,7 @@ import {
 import {AppBackButton, AppSwitchButton, AppText, AppButton} from '../../components';
 import {AppTheme} from '../../config';
 import {setUser} from '../../redux/reducers/userSlice';
+import {setItalian} from '../../redux/reducers/translationSlice';
 import {store} from '../../redux/store';
 import {GetSingleUserProfile, UpdateProfile, UpdateUserProfile} from '../../services';
 import {GetAppSettings, SetAppSettings} from '../../services/appSettingsService';
@@ -20,7 +21,9 @@ import {LogOutUser} from '../../services/authService';
 import {AppLogger} from '../../utils/AppHelperMethods';
 import {EvilIcons} from '../../utils/AppIcons';
 import {storeData} from '../../utils/AppStorage';
+import {useTranslation} from 'react-i18next';
 import {METHOD_DATA_IOS, DETAILS_IOS, METHOD_DATA_ANDROID, DETAILS_ANDROID} from '../../utils/AppConstants';
+import {useDispatch} from 'react-redux';
 const METHOD_DATA = [
   {
     supportedMethods: ['android-pay'],
@@ -40,7 +43,9 @@ const METHOD_DATA = [
 
 const ICONSTYLE = {height: RFValue(40), width: RFValue(40), tintColor: 'white'};
 const AppSettingsScreen = ({navigation, route}) => {
-  let {user} = useSelector((state) => state.root);
+  let {user, isItalian} = useSelector((state) => state.root);
+  let dispatch = useDispatch();
+  const {t, i18n} = useTranslation();
   let [state, setState] = useState({
     loading: true,
     isNotificationOn: false,
@@ -58,6 +63,14 @@ const AppSettingsScreen = ({navigation, route}) => {
       }
     });
   }, []);
+  const handleLanguageChange = () => {
+    if (!isItalian) {
+      i18n.changeLanguage('it');
+    } else {
+      i18n.changeLanguage('en');
+    }
+    dispatch(setItalian(!isItalian));
+  };
 
   const rendListItem = (Iconn, name, toggle) => {
     return (
@@ -72,7 +85,9 @@ const AppSettingsScreen = ({navigation, route}) => {
           </AppText>
         </View>
         <View style={{flex: 0.3}}>
-          {name === 'Notifications' || name === 'Private Account' ? <AppSwitchButton value={toggle} /> : null}
+          {name === 'Notifications' || name === 'Private Account' || name === 'Switch To Italian' ? (
+            <AppSwitchButton value={toggle} />
+          ) : null}
         </View>
       </View>
     );
@@ -126,6 +141,9 @@ const AppSettingsScreen = ({navigation, route}) => {
               );
             }}>
             {rendListItem(ICON_PRIVATE, 'Private Account', user.isPrivate)}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleLanguageChange}>
+            {rendListItem(ICON_PRIVATE, 'Switch To Italian', isItalian)}
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}

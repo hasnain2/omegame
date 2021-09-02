@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {RefreshControl, ScrollView, View} from 'react-native';
+import {RefreshControl, ScrollView, View, Text} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppLoadingView, AppPostsListings, AppText, HomeScreenHeader} from '../../components';
@@ -10,8 +10,10 @@ import {store} from '../../redux/store';
 import {GetCounterNumberOfNotifications} from '../../services/appSettingsService';
 import {GetHomeFeed} from '../../services/postService';
 import {initSocket} from '../../services/socketService';
+import {useTranslation} from 'react-i18next';
 let cursorArr = [];
 const HomeScreen = ({route, navigation}) => {
+  const {t, i18n} = useTranslation();
   const [state, setState] = useState({
     loading: true,
     refreshing: false,
@@ -57,7 +59,6 @@ const HomeScreen = ({route, navigation}) => {
     <View style={{flex: 1, backgroundColor: 'black'}}>
       {/* <AppGooglePlacesAutoFill /> */}
       <HomeScreenHeader navigation={navigation} route={route} />
-
       {!state.loading && homeFeed?.length < 1 ? (
         <ScrollView
           refreshControl={
