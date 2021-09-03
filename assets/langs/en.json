@@ -33,7 +33,17 @@
       "accountSettings": "Account Settings",
       "infoHelp": "Info & Help",
       "Gameover": "Gameover",
-      "leaveFeedback": "LEAVE A FEEDBACK"
+      "leaveFeedback": "LEAVE A FEEDBACK",
+      "personalInformation": "Personal Information",
+      "changePassword": "Change Password",
+      "requestVerification": "Request Verification",
+      "blockedAccount": "Blocked Account",
+      "deleteAccount": "Delete Account",
+      "appVersion": "App Version",
+      "dataPolicy": "Data Policy",
+      "termUse": "Terms of Use",
+      "reportProblem": "Report a problem",
+      "helpCenter": "Help Center"
     },
     "dynamic": {
       "text": "{{value}}"

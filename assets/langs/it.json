@@ -28,11 +28,21 @@
       "savedPosts": "Post salvati",
       "notifications": "Notifiche",
       "privateAccount": "Conto privato",
-      "switchItalian": "Passa all'italiano",
+      "switchItalian": "Passa all italiano",
       "accountSettings": "Impostazioni dell'account",
       "infoHelp": "Informazioni e aiuto",
       "Gameover": "Gameover",
-      "leaveFeedback": "LASCIA UN FEEDBACK"
+      "leaveFeedback": "LASCIA UN FEEDBACK",
+      "personalInformation": "Informazione personale",
+      "changePassword": "Cambia la password",
+      "requestVerification": "Richiedi verifica",
+      "blockedAccount": "Conto bloccato",
+      "deleteAccount": "Eliminare l'account",
+      "appVersion": "Versione dell'app",
+      "dataPolicy": "Informativa sui dati",
+      "termUse": "Termini di utilizzo",
+      "reportProblem": "Segnala un problema",
+      "helpCenter": "Centro assistenza"
     }
   }
 }

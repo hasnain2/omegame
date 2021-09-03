@@ -85,7 +85,12 @@ const AppSettingsScreen = ({navigation, route}) => {
           </AppText>
         </View>
         <View style={{flex: 0.3}}>
-          {name === 'Notifications' || name === 'Private Account' || name === 'Switch To Italian' ? (
+          {name === 'Notifications' ||
+          name === 'Private Account' ||
+          name === 'Switch to Italian' ||
+          name === 'Conto privato' ||
+          name === 'Passa all italiano' ||
+          name === 'Notifiche' ? (
             <AppSwitchButton value={toggle} />
           ) : null}
         </View>
@@ -164,7 +169,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('PersonalInformationScreen');
                 }}>
-                {rendOptionsItem('Personal Information')}
+                {rendOptionsItem(t('setting.personalInformation'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -173,7 +178,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('ChangePasswordScreen');
                 }}>
-                {rendOptionsItem('Change Password')}
+                {rendOptionsItem(t('setting.changePassword'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -182,7 +187,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('RequestVerificationScreen');
                 }}>
-                {rendOptionsItem('Request Verification')}
+                {rendOptionsItem(t('setting.requestVerification'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -191,7 +196,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('BlockedAccounts');
                 }}>
-                {rendOptionsItem('Blocked Account')}
+                {rendOptionsItem(t('setting.blockedAccount'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -199,7 +204,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('DeleteAccount');
                 }}>
-                {rendOptionsItem('Delete account')}
+                {rendOptionsItem(t('setting.deleteAccount'))}
               </TouchableOpacity>
             </View>
           ) : null}
@@ -219,7 +224,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('AppVersionScreen');
                 }}>
-                {rendOptionsItem('App Version')}
+                {rendOptionsItem(t('setting.appVersion'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -228,7 +233,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('DataPolicyScreen');
                 }}>
-                {rendOptionsItem('Data Policy')}
+                {rendOptionsItem(t('setting.dataPolicy'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -237,7 +242,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('TermsAndConditions');
                 }}>
-                {rendOptionsItem('Terms of Use')}
+                {rendOptionsItem(t('setting.termUse'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -246,7 +251,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('AppReport');
                 }}>
-                {rendOptionsItem('Report a problem')}
+                {rendOptionsItem(t('setting.reportProblem'))}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -254,7 +259,7 @@ const AppSettingsScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('AppHelpCenter');
                 }}>
-                {rendOptionsItem('Help Center')}
+                {rendOptionsItem(t('setting.helpCenter'))}
               </TouchableOpacity>
             </View>
           ) : null}
