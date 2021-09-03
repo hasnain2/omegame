@@ -76,7 +76,7 @@ const SearchTabsPosts = ({navigation}) => {
             getexplorepostshelper(cursor, query);
           }
         }}
-        style={{backgroundColor: AppTheme.colors.background}}
+        style={{backgroundColor: AppTheme.colors.searchPage}}
       />
     </View>
   );

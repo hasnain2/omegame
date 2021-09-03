@@ -80,7 +80,7 @@ const SearchTabs = ({navigation, type}) => {
           color: 'red',
         },
         style: {
-          backgroundColor: AppTheme.colors.background,
+          backgroundColor: AppTheme.colors.searchPage,
           borderBottomColor: 'black',
           borderBottomWidth: RFValue(2),
         },

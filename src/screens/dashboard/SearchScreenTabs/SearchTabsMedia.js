@@ -66,7 +66,7 @@ const SearchTabsMedia = ({navigation}) => {
             getexploremediaonlypostshelper(cursor, query);
           }
         }}
-        style={{backgroundColor: AppTheme.colors.background}}
+        style={{backgroundColor: AppTheme.colors.searchPage}}
       />
     </View>
   );
