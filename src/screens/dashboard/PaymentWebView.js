@@ -1,11 +1,21 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-const PaymentWebView = ({route}) => {
+import {View} from 'react-native';
+import {AppBackButton} from '../../components';
+import {WebView} from 'react-native-webview';
+const PaymentWebView = ({navigation, route}) => {
   const url = route.params.url;
   return (
-    <View>
-      <Text>Hello</Text>
-    </View>
+    <>
+      <View style={{backgroundColor: 'black'}}>
+        <AppBackButton
+          navigation={navigation}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      </View>
+      <WebView source={{uri: url}} style={{backgroundColor: 'black'}} />
+    </>
   );
 };
 export {PaymentWebView};
