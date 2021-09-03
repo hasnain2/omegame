@@ -5,6 +5,7 @@ import {AppNoDataFound} from './AppNoDataFound';
 import {PoolCard} from './PoolCard';
 import {PostCard} from './PostCard';
 import {useScrollToTop} from '@react-navigation/native';
+import {AppTheme} from '../config';
 import randomatic from 'randomatic';
 import {TestIds, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
 var uuid = require('react-native-uuid');
@@ -40,7 +41,11 @@ const AppPostsListings = ({navigation, loading, data, style, loadMore, refreshin
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 70});
 
   return (
-    <View style={[{flex: 1, backgroundColor: screenType === 'search' ? '#1C1C22' : 'black'}, style ? style : null]}>
+    <View
+      style={[
+        {flex: 1, backgroundColor: screenType === 'search' ? AppTheme.colors.searchPage : 'black'},
+        style ? style : null,
+      ]}>
       {!loading && data.length < 1 ? <AppNoDataFound /> : null}
       {/* <BannerAd
         unitId={
