@@ -13,8 +13,7 @@ const largeNumberShortify = (num) => {
 };
 
 // get numbers like 3,32,123
-const numberWithCommas = (x) =>
-  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 function AppShowToast(msg) {
   Toast.show(msg, Toast.SHORT);
@@ -41,16 +40,7 @@ var special = [
   'eighteenth',
   'nineteenth',
 ];
-var deca = [
-  'twent',
-  'thirt',
-  'fort',
-  'fift',
-  'sixt',
-  'sevent',
-  'eight',
-  'ninet',
-];
+var deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
 
 // get number like first, second, third and so on
 function stringifyNumber(n) {
@@ -99,8 +89,7 @@ function timeRemaining(date) {
 
 function generateRandomString(length) {
   let result = '';
-  const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
   // tslint:disable-next-line:no-shadowed-variable
   for (let i = 0; i < length; i += 1) {
@@ -134,6 +123,9 @@ const DynamicLinkHelper = async (navigation, link) => {
   let url = link?.url || link || false;
   // http://ec2-18-219-104-108.us-east-2.compute.amazonaws.com?userID=5fd71492477b9b12dbe05c40
   // http://ec2-18-219-104-108.us-east-2.compute.amazonaws.com?postID=5fdc564d87235e83ebddf16d
+  if (url.match('https://omegame.net/donations')) {
+    navigation.navigate('PaymentWebView', {url: url});
+  }
   if (url) {
     let postId = url.split(`${DEEP_LINK_TYPES.POST_ID}=`)[1] || false;
     let userId = url.split(`${DEEP_LINK_TYPES.USER_ID}=`)[1] || false;
@@ -152,10 +144,7 @@ const DynamicLinkHelper = async (navigation, link) => {
 };
 
 const RemoveDuplicateObjectsFromArray = (arrayToProcess) => {
-  return arrayToProcess.filter(
-    (item, index, self) =>
-      index === self?.findIndex((t) => t?._id === item?._id),
-  );
+  return arrayToProcess.filter((item, index, self) => index === self?.findIndex((t) => t?._id === item?._id));
 };
 
 function AppLogger(identifier, msgOrError) {
@@ -167,20 +156,14 @@ function AppLogger(identifier, msgOrError) {
 const GetCurrentDate = () => moment().toISOString() + '';
 
 // Starting date of WEEK , MONTH AND YEAR
-const GetLastWeekStartOf = () =>
-  moment().subtract(1, 'weeks').startOf('week').toISOString() + '';
-const GetLastMonthStartOf = () =>
-  moment().subtract(1, 'months').startOf('month').toISOString() + '';
-const GetLastYearStartOf = () =>
-  moment().subtract(1, 'years').startOf('year').toISOString() + '';
+const GetLastWeekStartOf = () => moment().subtract(1, 'weeks').startOf('week').toISOString() + '';
+const GetLastMonthStartOf = () => moment().subtract(1, 'months').startOf('month').toISOString() + '';
+const GetLastYearStartOf = () => moment().subtract(1, 'years').startOf('year').toISOString() + '';
 
 // Ending date of WEEK , MONTH AND YEAR
-const GetLastWeekEndOf = () =>
-  moment().subtract(1, 'weeks').endOf('week').toISOString() + '';
-const GetLastMonthEndOf = () =>
-  moment().subtract(1, 'months').endOf('month').toISOString() + '';
-const GetLastYearEndOf = () =>
-  moment().subtract(1, 'years').endOf('year').toISOString() + '';
+const GetLastWeekEndOf = () => moment().subtract(1, 'weeks').endOf('week').toISOString() + '';
+const GetLastMonthEndOf = () => moment().subtract(1, 'months').endOf('month').toISOString() + '';
+const GetLastYearEndOf = () => moment().subtract(1, 'years').endOf('year').toISOString() + '';
 
 const HandleNaN = (data) => (isNaN(data) ? 0 : data);
 

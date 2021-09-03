@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Image, Platform, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Linking, TouchableOpacity, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useSelector} from 'react-redux';
 import {
@@ -307,6 +307,16 @@ const AppSettingsScreen = ({navigation, route}) => {
               }}
             />
           </View> */}
+          <View style={{marginVertical: RFValue(5)}}>
+            <AppButton
+              color={AppTheme.colors.lightBlue}
+              label="Donate"
+              style={{width: '100%', height: 50}}
+              onPress={() => {
+                Linking.openURL(`https://omegame.net/donations/${user._id}`);
+              }}
+            />
+          </View>
           <AppButton
             color={AppTheme.colors.lightBlue}
             label={t('setting.leaveFeedback')}

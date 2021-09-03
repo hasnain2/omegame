@@ -44,6 +44,7 @@ import {
   TermsAndConditions,
   UserProfileCustomizeScreen,
   UserProfileScreen,
+  PaymentWebView,
 } from '../screens';
 import {UserSavedPosts} from '../screens/dashboard/UserSavedPosts';
 import {AppShowPushNotification, GetPostByCommentID, requestPushNotificationPermission} from '../services';
@@ -249,6 +250,7 @@ const DashboardTabs = () => {
       <Stack.Screen name="EditUserProfileScreen" component={EditUserProfileScreen} />
       <Stack.Screen name="UserProfileCustomizeScreen" component={UserProfileCustomizeScreen} />
       <Stack.Screen name="AndroidFullScreen" component={AndroidFullScreen} />
+      <Stack.Screen name="PaymentWebView" component={PaymentWebView} />
     </Stack.Navigator>
   );
 };

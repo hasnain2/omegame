@@ -96,13 +96,13 @@
     "react-native-video-cache": "^2.0.5",
     "react-native-video-controls": "^2.8.1",
     "react-native-video-helper": "^1.5.0",
-    "react-native-webview": "^11.0.2",
     "react-navigation": "^4.4.4",
     "react-redux": "^7.2.2",
     "recyclerlistview": "^3.0.0",
     "redux": "^4.0.5",
     "rn-fetch-blob": "^0.12.0",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "uninstall": "0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
